@@ -4,6 +4,7 @@ import eu.hansolo.medusa.*;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartData;
+import eu.hansolo.tilesfx.chart.DoubleChartData;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.GaugeTileSkin;
 import javafx.application.Application;
@@ -57,6 +58,9 @@ public class Main extends Application
         Tile optic;
         Tile retail;
         Tile misc;
+        Tile tester;
+
+        DoubleChartData testerData = new DoubleChartData("Tester,",100,0);
 
         ChartData hospitalityData = new ChartData("Hospitality", 462, Tile.RED);
         ChartData retailData = new ChartData("Retail", 250, Tile.BLUE);
@@ -155,6 +159,16 @@ public class Main extends Application
                 .decimals(0)
                 .build();
 
+        tester = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Point of Sales")
+                .text("Today's Production")
+                //.prefSize(320, 270)
+                //--- .maxValue(50) ---//
+                .minValue(1)
+                .barChartItems(testerData)
+                .decimals(0)
+                .build();
         servers = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Servers")
@@ -202,6 +216,8 @@ public class Main extends Application
 
         pos.setAnimated(true);
         pos.setAnimationDuration(2);
+        tester.setAnimated(true);
+        tester.setAnimationDuration(2);
         servers.setAnimated(true);
         servers.setAnimationDuration(2);
         retail.setAnimated(true);
@@ -348,7 +364,7 @@ public class Main extends Application
                 .build();
 
 
-        flowPane.getChildren().addAll(pos, retail, servers, peripherals, optic, misc, donutChart, slimTile, medusaDashboard, slimClockTile, safetyDashboard, radialChart, quoteTile, mccChart, assignedJobs);
+        flowPane.getChildren().addAll(pos, tester, retail, servers, peripherals, optic, misc, donutChart, slimTile, medusaDashboard, slimClockTile, safetyDashboard, radialChart, quoteTile, mccChart, assignedJobs);
 
         primaryStage.setMaximized(true);
 

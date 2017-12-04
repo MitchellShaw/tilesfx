@@ -932,6 +932,8 @@ public class TileBuilder<B extends TileBuilder<B>> {
                     break;
                 case BAR_CHART:
                     break;
+                case DOUBLE_CHART:
+                    break;
                 case CLOCK:
                     break;
                 case GAUGE:
