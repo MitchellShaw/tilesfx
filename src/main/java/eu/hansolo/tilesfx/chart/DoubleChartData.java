@@ -1,9 +1,9 @@
 package eu.hansolo.tilesfx.chart;
 
 import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.ChartDataEvent;
-import eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
+import eu.hansolo.tilesfx.events.DoubleChartDataEvent.EventType;
+import eu.hansolo.tilesfx.events.DoubleChartDataEvent;
+import eu.hansolo.tilesfx.events.DoubleChartDataEventListener;
 import eu.hansolo.tilesfx.tools.Location;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -28,8 +28,8 @@ import static eu.hansolo.tilesfx.tools.Helper.clamp;
  * Created by hansolo on 17.02.17.
  */
 public class DoubleChartData implements Comparable<DoubleChartData> {
-    private final ChartDataEvent               UPDATE_EVENT   = new ChartDataEvent(EventType.UPDATE, DoubleChartData.this);
-    private final ChartDataEvent               FINISHED_EVENT = new ChartDataEvent(EventType.FINISHED, DoubleChartData.this);
+    private final DoubleChartDataEvent               UPDATE_EVENT   = new DoubleChartDataEvent(EventType.UPDATE, DoubleChartData.this);
+    private final DoubleChartDataEvent               FINISHED_EVENT = new DoubleChartDataEvent(EventType.FINISHED, DoubleChartData.this);
     private       String                       name;
     private       double                       goalValue;
     private       double                       presentValue;
@@ -41,7 +41,7 @@ public class DoubleChartData implements Comparable<DoubleChartData> {
     private       Location                     location;
     private       boolean                      animated;
     private       long                         animationDuration;
-    private       List<ChartDataEventListener> listenerList = new CopyOnWriteArrayList<>();
+    private       List<DoubleChartDataEventListener> listenerList = new CopyOnWriteArrayList<>();
     private       DoubleProperty               goalValueProp;
     private       DoubleProperty               presentValueProp;
     private       Timeline                     timeline;
@@ -230,11 +230,11 @@ public class DoubleChartData implements Comparable<DoubleChartData> {
 
 
     // ******************** Event Handling ************************************
-    public void setOnChartDataEvent(final ChartDataEventListener LISTENER) { addChartDataEventListener(LISTENER); }
-    public void addChartDataEventListener(final ChartDataEventListener LISTENER) { if (!listenerList.contains(LISTENER)) listenerList.add(LISTENER); }
-    public void removeChartDataEventListener(final ChartDataEventListener LISTENER) { if (listenerList.contains(LISTENER)) listenerList.remove(LISTENER); }
+    public void setOnChartDataEvent(final DoubleChartDataEventListener LISTENER) { addChartDataEventListener(LISTENER); }
+    public void addChartDataEventListener(final DoubleChartDataEventListener LISTENER) { if (!listenerList.contains(LISTENER)) listenerList.add(LISTENER); }
+    public void removeChartDataEventListener(final DoubleChartDataEventListener LISTENER) { if (listenerList.contains(LISTENER)) listenerList.remove(LISTENER); }
 
-    public void fireChartDataEvent(final ChartDataEvent EVENT) {
-        for (ChartDataEventListener listener : listenerList) { listener.onChartDataEvent(EVENT); }
+    public void fireChartDataEvent(final DoubleChartDataEvent EVENT) {
+        for (DoubleChartDataEventListener listener : listenerList) { listener.onChartDataEvent(EVENT); }
     }
 }
