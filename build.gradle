@@ -36,6 +36,14 @@ ext {
 
 dependencies {
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
+
+
+    //delete before final push
+    compile 'eu.hansolo:Medusa:7.9'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.12.Final'
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '1.9.1'
+    compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
 }
 
 jar {
