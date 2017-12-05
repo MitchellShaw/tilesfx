@@ -139,6 +139,18 @@ public class Main extends Application
 
         }, 0, 0, TimeUnit.SECONDS);
         stageLatch.await();
+
+        //---------------------------------Scheduled Executors for Document Variables------------------------------------
+        final CountDownLatch stageLatch = new CountDownLatch(1);
+        executorService.scheduleAtFixedRate(() ->
+        {
+
+        }, 0, 0, TimeUnit.SECONDS);
+        stageLatch.await();
+
+
+
+
 */
 
         //---------------------------------Creating the Chart Data for the graphs-------------------------------------
