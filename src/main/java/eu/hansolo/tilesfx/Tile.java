@@ -273,7 +273,6 @@ public class Tile extends Control {
     private              LocalTime                                     _duration;
     private              ObjectProperty<LocalTime>                     duration;
     private              ObservableList<BarChartItem>                  barChartItems;
-    private              ObservableList<DoubleBarChartItem>            doubleBarChartItems;
     private              ObservableList<LeaderBoardItem>               leaderBoardItems;
     private              ObjectProperty<Node>                          graphic;
     private              Location                                      _currentLocation;
@@ -1448,28 +1447,15 @@ public class Tile extends Control {
         if (null == barChartItems) { barChartItems = FXCollections.observableArrayList(); }
         return barChartItems;
     }
-    public ObservableList<DoubleBarChartItem> getDoubleBarChartItems() {
-        if (null == doubleBarChartItems) { doubleBarChartItems = FXCollections.observableArrayList(); }
-        return doubleBarChartItems;
-    }
+
     public void setBarChartItems(final List<BarChartItem> ITEMS) {
         getBarChartItems().setAll(ITEMS);
         fireTileEvent(DATA_EVENT);
     }
-    public void setDoubleBarChartItems(final List<DoubleBarChartItem> ITEMS) {
-        getDoubleBarChartItems().setAll(ITEMS);
-        fireTileEvent(DATA_EVENT);
-    }
     public void setBarChartItems(final BarChartItem... ITEMS) { setBarChartItems(Arrays.asList(ITEMS)); }
-    public void setDoubleBarChartItems(final DoubleBarChartItem... ITEMS) { setDoubleBarChartItems(Arrays.asList(ITEMS)); }
     public void addBarChartItem(final BarChartItem ITEM) {
         if (null == ITEM) return;
         getBarChartItems().add(ITEM);
-        fireTileEvent(DATA_EVENT);
-    }
-    public void addDoubleBarChartItem(final DoubleBarChartItem ITEM) {
-        if (null == ITEM) return;
-        getDoubleBarChartItems().add(ITEM);
         fireTileEvent(DATA_EVENT);
     }
     public void removeBarChartItem(final BarChartItem ITEM) {
@@ -1477,17 +1463,8 @@ public class Tile extends Control {
         getBarChartItems().remove(ITEM);
         fireTileEvent(DATA_EVENT);
     }
-    public void removeDoubleBarChartItem(final DoubleBarChartItem ITEM) {
-        if (null == ITEM) return;
-        getDoubleBarChartItems().remove(ITEM);
-        fireTileEvent(DATA_EVENT);
-    }
     public void clearBarChartItems() {
         getBarChartItems().clear();
-        fireTileEvent(DATA_EVENT);
-    }
-    public void clearDoubleBarChartItems() {
-        getDoubleBarChartItems().clear();
         fireTileEvent(DATA_EVENT);
     }
 

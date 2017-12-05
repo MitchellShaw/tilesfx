@@ -36,10 +36,10 @@ public class TileEvent {
     private final ChartData DATA;
 
 
+
+
     // ******************** Constructors **************************************
-    public TileEvent(final EventType EVENT_TYPE) {
-        this(EVENT_TYPE, null);
-    }
+    public TileEvent(final EventType EVENT_TYPE){this(EVENT_TYPE,null);}
     public TileEvent(final EventType EVENT_TYPE, final ChartData DATA) {
         this.EVENT_TYPE = EVENT_TYPE;
         this.DATA       = DATA;
