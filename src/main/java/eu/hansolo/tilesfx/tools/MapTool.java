@@ -42,7 +42,7 @@ public class MapTool {
             }else
             {
                 System.out.println("Error: Product ' "+productList.get(i)+" ' not found in list.");
-                toReturn = -1;
+                toReturn = 0;
                 break;
             }
         }

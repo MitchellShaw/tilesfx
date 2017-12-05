@@ -445,75 +445,75 @@ public class Main extends Application
 
         //---------------------------------Creating the Bar Chart Items for POS---------------------------------------
         BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, Tile.RED);
-        BarChartItem p1x35DataGoal = new BarChartItem("P1X35 Goal", 100, Tile.RED);
+        BarChartItem p1x35DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         BarChartItem p132Data = new BarChartItem("P1532", p1532CurrentBuild, Tile.BLUE);
-        BarChartItem p132DataGoal = new BarChartItem("P1532 Goal", 100, Tile.BLUE);
+        BarChartItem p132DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, Tile.GREEN);
-        BarChartItem p1x30DataGoal = new BarChartItem("P1X30 Goal", 100, Tile.GREEN);
+        BarChartItem p1x30DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, Tile.GREEN);
-        BarChartItem t1000Goal = new BarChartItem("T1000 Goal", 100, Tile.GREEN);
+        BarChartItem t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, Tile.YELLOW);
+        BarChartItem t1000Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
-
-        BarChartItem questData = new BarChartItem("Quest", questsCurrentBuild, Tile.YELLOW);
-        BarChartItem questGoal = new BarChartItem("Quest Goal", 100, Tile.YELLOW);
 
         //---------------------------------Creating the Bar Chart Items for Servers---------------------------------
-        BarChartItem serverData = new BarChartItem("161X", 0, Tile.RED);
-        BarChartItem serverGoal = new BarChartItem("161X Goal", 100, Tile.RED);
+        BarChartItem n3000Data = new BarChartItem("N3000", n3000CurrentBuild, Tile.RED);
+        BarChartItem n3000Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
+
+        BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, Tile.GREEN);
+        BarChartItem s500Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem mediaPlayer = new BarChartItem("Media Player/N3000", 0, Tile.BLUE);
-        BarChartItem mediaGoal = new BarChartItem("Media Player/N3000 Goal", 100, Tile.BLUE);
+        BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, Tile.BLUE);
+        BarChartItem mediaGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
         //---------------------------------Creating the Bar Chart Items for Peripherals-----------------------------
-        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", 0, Tile.RED);
-        BarChartItem kiwi4Goal = new BarChartItem("Kiwi 4 Goal", 100, Tile.RED);
+        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, Tile.RED);
+        BarChartItem kiwi4Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", 0, Tile.BLUE);
-        BarChartItem kiwi25Goal = new BarChartItem("Kiwi 2.5 Goal", 100, Tile.BLUE);
+        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", kiwi2XsCurrentBuild, Tile.GREEN);
+        BarChartItem kiwi25Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem bumpBarData = new BarChartItem("Bumpbar", 0, Tile.GREEN);
-        BarChartItem bumpBarGoal = new BarChartItem("Bumpbar Goal", 100, Tile.GREEN);
+        BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, Tile.BLUE);
+        BarChartItem bumpBarGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", 0, Tile.YELLOW);
-        BarChartItem pantherEPC4Goal = new BarChartItem("Panther/EPC4 Goal", 100, Tile.YELLOW);
+        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, Tile.YELLOW);
+        BarChartItem pantherEPC4Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
         //---------------------------------Creating the Bar Chart Items for Optic-----------------------------------
         BarChartItem optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, Tile.RED);
-        BarChartItem optic12Goal = new BarChartItem("Optic 12 Goal", 100, Tile.RED);
+        BarChartItem optic12Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, Tile.BLUE);
-        BarChartItem optic5Goal = new BarChartItem("Optic 5 Goal", 100, Tile.BLUE);
+        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, Tile.GREEN);
+        BarChartItem optic5Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
-        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, Tile.YELLOW);
-        BarChartItem opticKitsGoal = new BarChartItem("Optic Kits Goal", 100, Tile.YELLOW);
+        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, Tile.BLUE);
+        BarChartItem opticKitsGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         //---------------------------------Creating the Bar Chart Items for Retail-----------------------------------
         BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, Tile.RED);
-        BarChartItem xr7DataGoal = new BarChartItem("7702 Goal", 100, Tile.RED);
+        BarChartItem xr7DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, Tile.BLUE);
-        BarChartItem xr7PlusDataGoal = new BarChartItem("7703 Goal", 100, Tile.BLUE);
+        BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, Tile.GREEN);
+        BarChartItem xr7PlusDataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild, Tile.GREEN);
-        BarChartItem xr5DataGoal = new BarChartItem("7701 Goal", 100, Tile.GREEN);
+        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild, Tile.BLUE);
+        BarChartItem xr5DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, Tile.YELLOW);
-        BarChartItem nextGenDisplaysGoal = new BarChartItem("Next Gen Displays Goal", 100, Tile.YELLOW);
+        BarChartItem nextGenDisplaysGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
         //---------------------------------Creating the Bar Chart for POS-----------------------------------
         pos = TileBuilder.create()
@@ -561,7 +561,7 @@ public class Main extends Application
                 .title("Servers Build")
                 .roundedCorners(true)
                 .prefSize(384, 640)
-                .barChartItems(serverData, serverGoal, mediaPlayer, mediaGoal)
+                .barChartItems(s500Data, s500Goal, n3000Data, n3000Goal, mediaPlayer, mediaGoal)
                 .decimals(0)
                 .build();
 
