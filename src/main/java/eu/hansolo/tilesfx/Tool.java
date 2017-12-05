@@ -121,7 +121,7 @@ public class Tool {
 
 
     //---------------------------------Hosp Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> hospBuildDatabase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> hospBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         ArrayList<String> strings = new ArrayList<>();
 
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -230,18 +230,7 @@ public class Tool {
                 "\n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '7791MC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MC[0-9]%' \n" +
-                "                 \n" +
-                "                  OR ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MC[0-9]%' ) \n" +
-                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MC[0-9]%') \n" +
                 "                 \n" +
                 "                  ORDER BY [Assembly] ASC";
 
@@ -298,7 +287,7 @@ public class Tool {
     }
 
     //---------------------------------Hosp Staging Query----------------------------------------------------------------
-    public HashMap<String,Integer> hospStagetDataBase() throws ClassNotFoundException, SQLException
+    public HashMap<String,Integer> hospStageDataBase() throws ClassNotFoundException, SQLException
     {
         ArrayList<String> readMe = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -323,18 +312,7 @@ public class Tool {
                 "\n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '7791MC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MC[0-9]%' \n" +
-                "                 \n" +
-                "                  OR ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MC[0-9]%' \n" +
-                "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MC[0-9]%' ) \n" +
-                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MC[0-9]%') \n" +
                 "                 \n" +
                 "                  ORDER BY [Assembly] ASC";
 
@@ -390,7 +368,7 @@ public class Tool {
     }
 
     //---------------------------------Retail Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> retailBuildDatabase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> retailBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         ArrayList<String> strings = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -554,7 +532,7 @@ public class Tool {
     }
 
     //---------------------------------Retail Stage Query----------------------------------------------------------------
-    public HashMap<String,Integer> retailTestDataBase() throws ClassNotFoundException, SQLException
+    public HashMap<String,Integer> retailStageDataBase() throws ClassNotFoundException, SQLException
     {
 
         ArrayList<String> readMe = new ArrayList<>();
@@ -632,7 +610,7 @@ public class Tool {
 
 
     //---------------------------------Periph Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> periphBuildDatabase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> periphBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         ArrayList<String> strings = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -813,12 +791,118 @@ public class Tool {
 
         }
 
+        for(int i = 0;i<readMe.size();i++)
+        {
+            String tempString = readMe.get(i);
+            int tempValue = Collections.frequency(readMe, readMe.get(i));
+            readMe.removeAll(Collections.singleton(readMe.get(i)));
+            returnMap.put(tempString,tempValue);
+        }
 
+        return returnMap;
     }
 
+    //---------------------------------Periph Stage Query----------------------------------------------------------------
+    public HashMap<String,Integer> periphStageDataBase() throws ClassNotFoundException, SQLException
+    {
+
+        ArrayList<String> readMe = new ArrayList<>();
+        HashMap<String,Integer> returnMap = new HashMap<>();
+
+
+        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+                "                 \n" +
+                "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
+                "                 \n" +
+                "                  WHERE CompletedQuantity = '1' \n" +
+                "                 \n" +
+                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                 \n" +
+                "                  AND (ut.[Assembly] LIKE '5931MC[0-9]%' \n" +
+                "                 \n" +
+                "                  OR ut.[Assembly] LIKE '5933MC[0-9]%' \n" +
+                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5934MC[0-9]%' \n" +
+                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5937MC[0-9]%' \n" +
+                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5938MC[0-9]%' \n" +
+                "\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5943MC[0-9]%' \n" +
+                "                 \n" +
+                "                  OR ut.[Assembly] LIKE '5967MC[0-9]%'\n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1635MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1640MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1641MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1642MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1924MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1646MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1650MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1651MC[0-9]%' ) \n" +
+                "\n" +
+                "                 \n" +
+                "                  ORDER BY [Assembly] ASC";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next())
+            {
+                String staging = resultSet.getString("Assembly");
+
+                String sub = staging.substring(0, staging.indexOf('M'));
+
+                readMe.add(sub);
+            }
+        }finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+        for(int i = 0;i<readMe.size();i++)
+        {
+            String tempString = readMe.get(i);
+            int tempValue = Collections.frequency(readMe, readMe.get(i));
+            readMe.removeAll(Collections.singleton(readMe.get(i)));
+            returnMap.put(tempString,tempValue);
+        }
+
+        return returnMap;
+    }
 
     //---------------------------------Servers Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> serversBuildDatabase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> serversBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         ArrayList<String> strings = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -907,8 +991,164 @@ public class Tool {
         return returnMap;
     }
 
+    //---------------------------------Servers Test Query----------------------------------------------------------------
+    public HashMap<String,Integer> serversTestDataBase() throws ClassNotFoundException, SQLException
+    {
+        ArrayList<String> readMe = new ArrayList<>();
+        HashMap<String,Integer> returnMap = new HashMap<>();
+
+        ////EDIT THE COLUMN NAME
+
+        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+                "                 \n" +
+                "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
+                "                 \n" +
+                "                  WHERE CompletedQuantity = '1' \n" +
+                "                 \n" +
+                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MC[0-9]%' ) \n" +
+                "\n" +
+                "                 \n" +
+                "                  ORDER BY [Assembly] ASC";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next())
+            {
+                String staging = resultSet.getString("Assembly");
+
+                String sub = staging.substring(0, staging.indexOf('M'));
+
+
+                readMe.add(sub);
+            }
+        }finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+        for(int i = 0;i<readMe.size();i++)
+        {
+            String tempString = readMe.get(i);
+            int tempValue = Collections.frequency(readMe, readMe.get(i));
+            readMe.removeAll(Collections.singleton(readMe.get(i)));
+            returnMap.put(tempString,tempValue);
+        }
+
+        return returnMap;
+    }
+    //---------------------------------Servers Stage Query----------------------------------------------------------------
+    public HashMap<String,Integer> serversStageDataBase() throws ClassNotFoundException, SQLException
+    {
+        ArrayList<String> readMe = new ArrayList<>();
+        HashMap<String,Integer> returnMap = new HashMap<>();
+
+        ////EDIT THE COLUMN NAME
+
+        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+                "                 \n" +
+                "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
+                "                 \n" +
+                "                  WHERE CompletedQuantity = '1' \n" +
+                "                 \n" +
+                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MC[0-9]%' ) \n" +
+                "\n" +
+                "                 \n" +
+                "                  ORDER BY [Assembly] ASC";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next())
+            {
+                String staging = resultSet.getString("Assembly");
+
+                String sub = staging.substring(0, staging.indexOf('M'));
+
+
+                readMe.add(sub);
+            }
+        }finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+        for(int i = 0;i<readMe.size();i++)
+        {
+            String tempString = readMe.get(i);
+            int tempValue = Collections.frequency(readMe, readMe.get(i));
+            readMe.removeAll(Collections.singleton(readMe.get(i)));
+            returnMap.put(tempString,tempValue);
+        }
+
+        return returnMap;
+    }
     //---------------------------------Optic Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> opticBuildDatabase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> opticBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         ArrayList<String> strings = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
@@ -997,11 +1237,82 @@ public class Tool {
             returnMap.put(tempString,tempValue);
         }
 
-
         return returnMap;
     }
 
+    //---------------------------------Optic Test Query----------------------------------------------------------------
+    public HashMap<String,Integer> opticTestDataBase() throws ClassNotFoundException, SQLException
+    {
+        ArrayList<String> readMe = new ArrayList<>();
+        HashMap<String,Integer> returnMap = new HashMap<>();
+
+        ////EDIT THE COLUMN NAME
+
+        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+                "                 \n" +
+                "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
+                "                 \n" +
+                "                  WHERE CompletedQuantity = '1' \n" +
+                "                 \n" +
+                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '6001MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '6002MC[0-9]%' \n" +
+                "\t\t\t\t  \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '6003MC[0-9]%') \n" +
+                "                 \n" +
+                "                  ORDER BY [Assembly] ASC";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
 
 
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
 
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next())
+            {
+                String staging = resultSet.getString("Assembly");
+
+                String sub = staging.substring(0, staging.indexOf('M'));
+
+
+                readMe.add(sub);
+            }
+        }finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+        for(int i = 0;i<readMe.size();i++)
+        {
+            String tempString = readMe.get(i);
+            int tempValue = Collections.frequency(readMe, readMe.get(i));
+            readMe.removeAll(Collections.singleton(readMe.get(i)));
+            returnMap.put(tempString,tempValue);
+        }
+
+        return returnMap;
+    }
 }

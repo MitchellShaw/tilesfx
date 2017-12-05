@@ -13,8 +13,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,6 +32,90 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main extends Application
 {
+    Tile pos;
+    Tile servers;
+    Tile peripherals;
+    Tile optic;
+    Tile retail;
+    Tile misc;
+
+    //---------------------------------Variables for Query Data (POS)-----------------------------------------
+    double p1x30Current;
+    double p1x30Goal;
+    double p1x35Current;
+    double p1x35Goal;
+    double p1532Current;
+    double p1532Goal;
+    double p1520Current;
+    double p1520Goal;
+
+    //---------------------------------Variables for Query Data (Retail)-----------------------------------------
+    double xr7Current;
+    double xr7Goal;
+    double xr7PlusCurrent;
+    double xr7PlusGoal;
+    double xr5Current;
+    double xr5Goal;
+    double nextGenDisplayCurrent;
+    double nextGenDisplayGoals;
+
+    //---------------------------------Variables for Query Data (Servers)-----------------------------------------
+    double serversCurrent;
+    double serversGoal;
+    double mediaPlayerCurrent;
+    double mediaPlayerGoal;
+    double t1000sCurrent;
+    double t1000sGoal;
+    double questsCurrent;
+    double questsGoal;
+
+    //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
+    double kiwi4sCurrent;
+    double kiwi4sGoal;
+    double kiwi25sCurrent;
+    double kiwi25sGoal;
+    double bumpBarsCurrent;
+    double bumpBarsGoal;
+    double pantherEPC4sCurrent;
+    double pantherEPC4sGoal;
+
+    //---------------------------------Variables for Query Data (Optic)--------------------------------------------
+    double optic5sCurrent;
+    double optic5sGoal;
+    double optic12sCurrent;
+    double optic12sGoal;
+    double cubCurrent;
+    double cubGoal;
+    double printerCurrent;
+    double printerGoal;
+
+    //---------------------------------Variables for Map Creation for POS Database Call----------------------------
+    HashMap<String,Integer> posBuildMap;
+    HashMap<String,Integer> posTestMap;
+    HashMap<String,Integer> posStageMap;
+
+    //---------------------------------Variables for Map Creation for Retail Database Call-------------------------
+    HashMap<String,Integer> retailBuildMap;
+    HashMap<String,Integer> retailTestMap;
+    HashMap<String,Integer> retailStageMap;
+
+    //---------------------------------Variables for Map Creation for Servers Database Call------------------------
+    HashMap<String,Integer> serversBuildMap;
+    HashMap<String,Integer> serversTestMap;
+    HashMap<String,Integer> serversStageMap;
+
+    //---------------------------------Variables for Map Creation for Peripherals Database Call--------------------
+    HashMap<String,Integer> periphBuildMap;
+    HashMap<String,Integer> periphTestMap;
+    HashMap<String,Integer> periphStageMap;
+
+    //---------------------------------Variables for Map Creation for Optic Database Call----------------------------
+    HashMap<String,Integer> opticBuildMap;
+    HashMap<String,Integer> opticTestMap;
+
+    //---------------------------------Variables for Map Creation for Document Reader---------------------------------
+    ArrayList<HashMap<String,Integer>> mapList;
+
     public static void main(String[] args)
     {
         launch(args);
@@ -52,72 +141,34 @@ public class Main extends Application
     {
         //---------------------------------Variables for Tiles----------------------------------------------------
         FlowPane flowPane = new FlowPane();
-        Tile pos;
-        Tile servers;
-        Tile peripherals;
-        Tile optic;
-        Tile retail;
-        Tile misc;
 
-        //---------------------------------Variables for Query Data (POS)-----------------------------------------
-        double p1x30Current;
-        double p1x30Goal;
-        double p1x35Current;
-        double p1x35Goal;
-        double p1532Current;
-        double p1532Goal;
-        double p1520Current;
-        double p1520Goal;
-
-        //---------------------------------Variables for Query Data (Retail)-----------------------------------------
-        double xr7Current;
-        double xr7Goal;
-        double xr7PlusCurrent;
-        double xr7PlusGoal;
-        double xr5Current;
-        double xr5Goal;
-        double nextGenDisplayCurrent;
-        double nextGenDisplayGoals;
-
-        //---------------------------------Variables for Query Data (Servers)-----------------------------------------
-        double serversCurrent;
-        double serversGoal;
-        double mediaPlayerCurrent;
-        double mediaPlayerGoal;
-        double t1000sCurrent;
-        double t1000sGoal;
-        double questsCurrent;
-        double questsGoal;
-
-        //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
-        double kiwi4sCurrent;
-        double kiwi4sGoal;
-        double kiwi25sCurrent;
-        double kiwi25sGoal;
-        double bumpBarsCurrent;
-        double bumpBarsGoal;
-        double pantherEPC4sCurrent;
-        double pantherEPC4sGoal;
-
-        //---------------------------------Variables for Query Data (Optic)--------------------------------------------
-        double optic5sCurrent;
-        double optic5sGoal;
-        double optic12sCurrent;
-        double optic12sGoal;
-        double cubCurrent;
-        double cubGoal;
-        double printerCurrent;
-        double printerGoal;
 
         //---------------------------------Scheduled Executors for Updating Variables---------------------------------
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(24);
+        Tool dataBaseTool = new Tool();
 
-/*
+
         //---------------------------------Scheduled Executors for Build Variables-------------------------------------
         final CountDownLatch buildLatch = new CountDownLatch(1);
         executorService.scheduleAtFixedRate(() ->
         {
-            //Create tool to handles this.
+            try
+            {
+                posBuildMap = dataBaseTool.hospBuildDataBase();
+                retailBuildMap = dataBaseTool.retailBuildDataBase();
+                serversBuildMap = dataBaseTool.serversBuildDataBase();
+                periphBuildMap = dataBaseTool.periphBuildDataBase();
+                opticBuildMap = dataBaseTool.opticBuildDataBase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
 
         }, 0, 0, TimeUnit.SECONDS);
         buildLatch.await();
@@ -126,7 +177,18 @@ public class Main extends Application
         final CountDownLatch testLatch = new CountDownLatch(1);
         executorService.scheduleAtFixedRate(() ->
         {
-            //Create tool to handles this.
+            try
+            {
+                posTestMap = dataBaseTool.hospTestDataBase();
+                retailTestMap = dataBaseTool.retailTestDataBase();
+                serversTestMap = dataBaseTool.serversTestDataBase();
+                periphTestMap = dataBaseTool.periphTestDataBase();
+                opticTestMap = dataBaseTool.opticTestDataBase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
         }, 0, 0, TimeUnit.SECONDS);
         testLatch.await();
@@ -135,23 +197,40 @@ public class Main extends Application
         final CountDownLatch stageLatch = new CountDownLatch(1);
         executorService.scheduleAtFixedRate(() ->
         {
-            //Create tool to handles this.
+            try
+            {
+                posStageMap = dataBaseTool.hospStageDataBase();
+                retailStageMap = dataBaseTool.retailStageDataBase();
+                serversStageMap = dataBaseTool.serversStageDataBase();
+                periphStageMap = dataBaseTool.periphStageDataBase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
         }, 0, 0, TimeUnit.SECONDS);
         stageLatch.await();
 
         //---------------------------------Scheduled Executors for Document Variables------------------------------------
-        final CountDownLatch stageLatch = new CountDownLatch(1);
+        final CountDownLatch documentLatch = new CountDownLatch(1);
         executorService.scheduleAtFixedRate(() ->
         {
+            try {
+                mapList = dataBaseTool.documentReader("hosp","retail","servers","periph","optic");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            }
 
         }, 0, 0, TimeUnit.SECONDS);
-        stageLatch.await();
+        documentLatch.await();
 
 
 
-
-*/
 
         //---------------------------------Creating the Chart Data for the graphs-------------------------------------
 
