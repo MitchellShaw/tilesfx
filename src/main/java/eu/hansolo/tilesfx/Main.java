@@ -4,13 +4,25 @@ import eu.hansolo.medusa.*;
 import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+
 /**
- * Created by Ramon Johnson
+ * Created by Ramon Johnson & Mitchell Shaw
  * 2017-11-22.
  */
 public class Main extends Application
@@ -38,63 +50,440 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        //---------------------------------Variables for Tiles----------------------------------------------------
         FlowPane flowPane = new FlowPane();
-
-        Tile radialChart;
-        Tile donutChart;
-        Tile donutChart2;
-        Tile donutChart3;
-        Tile mccChart;
-
         Tile pos;
         Tile servers;
         Tile peripherals;
         Tile optic;
         Tile retail;
         Tile misc;
-        Tile tester;
+
+        //---------------------------------Variables for Query Data (POS)-----------------------------------------
+        double p1x30Current;
+        double p1x30Goal;
+        double p1x35Current;
+        double p1x35Goal;
+        double p1532Current;
+        double p1532Goal;
+        double p1520Current;
+        double p1520Goal;
+
+        //---------------------------------Variables for Query Data (Retail)-----------------------------------------
+        double xr7Current;
+        double xr7Goal;
+        double xr7PlusCurrent;
+        double xr7PlusGoal;
+        double xr5Current;
+        double xr5Goal;
+        double nextGenDisplayCurrent;
+        double nextGenDisplayGoals;
+
+        //---------------------------------Variables for Query Data (Servers)-----------------------------------------
+        double serversCurrent;
+        double serversGoal;
+        double mediaPlayerCurrent;
+        double mediaPlayerGoal;
+        double t1000sCurrent;
+        double t1000sGoal;
+        double questsCurrent;
+        double questsGoal;
+
+        //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
+        double kiwi4sCurrent;
+        double kiwi4sGoal;
+        double kiwi25sCurrent;
+        double kiwi25sGoal;
+        double bumpBarsCurrent;
+        double bumpBarsGoal;
+        double pantherEPC4sCurrent;
+        double pantherEPC4sGoal;
+
+        //---------------------------------Variables for Query Data (Optic)--------------------------------------------
+        double optic5sCurrent;
+        double optic5sGoal;
+        double optic12sCurrent;
+        double optic12sGoal;
+        double cubCurrent;
+        double cubGoal;
+        double printerCurrent;
+        double printerGoal;
+
+        //---------------------------------Scheduled Executors for Updating Variables---------------------------------
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(24);
+
+/*
+        //---------------------------------Scheduled Executors for Build Variables-------------------------------------
+        final CountDownLatch buildLatch = new CountDownLatch(1);
+        executorService.scheduleAtFixedRate(() ->
+        {
+            //Create tool to handles this.
+
+        }, 0, 0, TimeUnit.SECONDS);
+        buildLatch.await();
+
+        //---------------------------------Scheduled Executors for Test Variables-------------------------------------
+        final CountDownLatch testLatch = new CountDownLatch(1);
+        executorService.scheduleAtFixedRate(() ->
+        {
+            //Create tool to handles this.
+
+        }, 0, 0, TimeUnit.SECONDS);
+        testLatch.await();
+
+        //---------------------------------Scheduled Executors for Stage Variables------------------------------------
+        final CountDownLatch stageLatch = new CountDownLatch(1);
+        executorService.scheduleAtFixedRate(() ->
+        {
+            //Create tool to handles this.
+
+        }, 0, 0, TimeUnit.SECONDS);
+        stageLatch.await();
+*/
+
+        //---------------------------------Creating the Chart Data for the graphs-------------------------------------
 
 
-        ChartData hospitalityData = new ChartData("Hospitality", 462, Tile.RED);
-        ChartData retailData = new ChartData("Retail", 250, Tile.BLUE);
-        ChartData pcrData = new ChartData("PCR", 120, Tile.DARK_BLUE);
-        ChartData peripheralsData = new ChartData("Peripherals", 700, Tile.GREEN);
+        //---------------------------------Creating the Bar Chart Items for POS---------------------------------------
+        BarChartItem p1x35Data = new BarChartItem("P1X35", 0, Tile.RED);
+        BarChartItem p1x35DataGoal = new BarChartItem("P1X35 Goal", 100, Tile.RED);
 
-        ChartData mccClosed = new ChartData("Closed", 220, Tile.GREEN);
-        ChartData mccOpen = new ChartData("Open", 400, Tile.RED);
-        ChartData mccTested = new ChartData("Tested", 100, Tile.BLUE);
 
-        BarChartItem p1x35Data = new BarChartItem("P1X35", 25, Tile.RED);
-        BarChartItem p132Data = new BarChartItem("P1532", 50, Tile.BLUE);
-        BarChartItem p1x30Data = new BarChartItem("P1X30", 5, Tile.GREEN);
-        BarChartItem p1520Data = new BarChartItem("1520's", 1, Tile.YELLOW);
+        BarChartItem p132Data = new BarChartItem("P1532", 0, Tile.BLUE);
+        BarChartItem p132DataGoal = new BarChartItem("P1532 Goal", 100, Tile.BLUE);
 
-        BarChartItem serverData = new BarChartItem("161X", 15, Tile.RED);
-        BarChartItem mediaPlayer = new BarChartItem("Media Player/N3000", 90, Tile.BLUE);
-        BarChartItem t1000Data = new BarChartItem("T1000", 40, Tile.GREEN);
-        BarChartItem questData = new BarChartItem("Quest", 8, Tile.YELLOW);
 
-        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", 200, Tile.RED);
-        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", 120, Tile.BLUE);
-        BarChartItem bumpBarData = new BarChartItem("Bumpbar", 320, Tile.GREEN);
-        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", 80, Tile.YELLOW);
+        BarChartItem p1x30Data = new BarChartItem("P1X30", 0, Tile.GREEN);
+        BarChartItem p1x30DataGoal = new BarChartItem("P1X30 Goal", 100, Tile.GREEN);
 
-        BarChartItem optic12Data = new BarChartItem("Optic 12", 200, Tile.RED);
-        BarChartItem optic5Data = new BarChartItem("Optic 5", 384, Tile.BLUE);
-        BarChartItem cubs = new BarChartItem("Cubs", 600, Tile.GREEN);
-        BarChartItem opticPrinters = new BarChartItem("Optic Printers", 300, Tile.YELLOW);
 
-        BarChartItem xr7Data = new BarChartItem("7702", 175, Tile.RED);
-        BarChartItem xr7PlusData = new BarChartItem("7703", 23, Tile.BLUE);
-        BarChartItem xr5Data = new BarChartItem("7701", 176, Tile.GREEN);
-        BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", 40, Tile.YELLOW);
+        BarChartItem p1520Data = new BarChartItem("1520's", 0, Tile.YELLOW);
+        BarChartItem p1520DataGoal = new BarChartItem("1520's Goal", 100, Tile.YELLOW);
 
+
+        //---------------------------------Creating the Bar Chart Items for Servers---------------------------------
+        BarChartItem serverData = new BarChartItem("161X", 0, Tile.RED);
+        BarChartItem serverGoal = new BarChartItem("161X Goal", 100, Tile.RED);
+
+
+        BarChartItem mediaPlayer = new BarChartItem("Media Player/N3000", 0, Tile.BLUE);
+        BarChartItem mediaGoal = new BarChartItem("Media Player/N3000 Goal", 100, Tile.BLUE);
+
+
+        BarChartItem t1000Data = new BarChartItem("T1000", 0, Tile.GREEN);
+        BarChartItem t1000Goal = new BarChartItem("T1000 Goal", 100, Tile.GREEN);
+
+
+        BarChartItem questData = new BarChartItem("Quest", 0, Tile.YELLOW);
+        BarChartItem questGoal = new BarChartItem("Quest Goal", 100, Tile.YELLOW);
+
+
+        //---------------------------------Creating the Bar Chart Items for Peripherals-----------------------------
+        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", 0, Tile.RED);
+        BarChartItem kiwi4Goal = new BarChartItem("Kiwi 4 Goal", 100, Tile.RED);
+
+
+        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", 0, Tile.BLUE);
+        BarChartItem kiwi25Goal = new BarChartItem("Kiwi 2.5 Goal", 100, Tile.BLUE);
+
+
+        BarChartItem bumpBarData = new BarChartItem("Bumpbar", 0, Tile.GREEN);
+        BarChartItem bumpBarGoal = new BarChartItem("Bumpbar Goal", 100, Tile.GREEN);
+
+
+        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", 0, Tile.YELLOW);
+        BarChartItem pantherEPC4Goal = new BarChartItem("Panther/EPC4 Goal", 100, Tile.YELLOW);
+
+        //---------------------------------Creating the Bar Chart Items for Optic-----------------------------------
+        BarChartItem optic12Data = new BarChartItem("Optic 12", 0, Tile.RED);
+        BarChartItem optic12Goal = new BarChartItem("Optic 12 Goal", 100, Tile.RED);
+
+
+        BarChartItem optic5Data = new BarChartItem("Optic 5", 0, Tile.BLUE);
+        BarChartItem optic5Goal = new BarChartItem("Optic 5 Goal", 100, Tile.BLUE);
+
+
+        BarChartItem cubs = new BarChartItem("Cubs", 0, Tile.GREEN);
+        BarChartItem cubsGoal = new BarChartItem("Cubs Goal", 100, Tile.GREEN);
+
+
+        BarChartItem opticPrinters = new BarChartItem("Optic Printers", 0, Tile.YELLOW);
+        BarChartItem opticPrintersGoal = new BarChartItem("Optic Printers Goal", 100, Tile.YELLOW);
+
+
+        //---------------------------------Creating the Bar Chart Items for Retail-----------------------------------
+        BarChartItem xr7Data = new BarChartItem("7702", 0, Tile.RED);
+        BarChartItem xr7DataGoal = new BarChartItem("7702 Goal", 100, Tile.RED);
+
+
+        BarChartItem xr7PlusData = new BarChartItem("7703", 0, Tile.BLUE);
+        BarChartItem xr7PlusDataGoal = new BarChartItem("7703 Goal", 100, Tile.BLUE);
+
+
+        BarChartItem xr5Data = new BarChartItem("7701", 0, Tile.GREEN);
+        BarChartItem xr5DataGoal = new BarChartItem("7701 Goal", 100, Tile.GREEN);
+
+
+        BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", 0, Tile.YELLOW);
+        BarChartItem nextGenDisplaysGoal = new BarChartItem("Next Gen Displays Goal", 100, Tile.YELLOW);
+
+
+        //---------------------------------Creating the Bar Chart Items for Retail-----------------------------------
         BarChartItem kittingData = new BarChartItem("Kitting", 30, Tile.RED);
         BarChartItem printersData = new BarChartItem("Printers", 200, Tile.BLUE);
         BarChartItem retailDisplaysData = new BarChartItem("Retail Displays", 40, Tile.GREEN);
         BarChartItem tabletData = new BarChartItem("Tablets", 15, Tile.YELLOW);
 
+        //---------------------------------Creating the Bar Chart for POS-----------------------------------
+        pos = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Point of Sales Build")
+                .roundedCorners(false)
+                .prefSize(384, 640)
+                .barChartItems(p1x30Data, p1x30DataGoal, p1x35Data, p1x35DataGoal, p132Data, p132DataGoal, p1520Data, p1520DataGoal)
+                .decimals(0)
+                .build();
 
+        Gauge posGauge = GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+                //.skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .prefSize(384, 270)
+                .valueColor(Tile.FOREGROUND)
+                .titleColor(Tile.FOREGROUND)
+                .unitColor(Tile.FOREGROUND)
+                .value(100)
+                .unit("POS")
+                .maxValue(1000)
+                .animated(true)
+                .decimals(0)
+                .barColor(Tile.RED)
+                .needleColor(Tile.FOREGROUND)
+                .barBackgroundColor(Tile.BACKGROUND.darker())
+                .tickLabelColor(Tile.FOREGROUND)
+                .majorTickMarkColor(Tile.FOREGROUND)
+                .minorTickMarkColor(Tile.FOREGROUND)
+                .mediumTickMarkColor(Tile.FOREGROUND)
+                .build();
+
+        Tile posPercent = TileBuilder.create()
+                .prefSize(384,440 )
+                .roundedCorners(false)
+                .skinType(Tile.SkinType.CUSTOM)
+                .text("Percentage to Goal")
+                .graphic(posGauge)
+                .build();
+
+
+        //---------------------------------Creating the Bar Chart Items for Servers-----------------------------------
+        servers = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Build")
+                .roundedCorners(false)
+                .prefSize(384, 640)
+                .barChartItems(serverData, serverGoal, mediaPlayer, mediaGoal, t1000Data, t1000Goal, questData, questGoal)
+                .decimals(0)
+                .build();
+
+        Gauge serversGauge = GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .prefSize(384, 270)
+                .valueColor(Tile.FOREGROUND)
+                .titleColor(Tile.FOREGROUND)
+                .unitColor(Tile.FOREGROUND)
+                .value(100)
+                .unit("Servers")
+                .maxValue(1000)
+                .animated(true)
+                .decimals(0)
+                .barColor(Tile.RED)
+                .needleColor(Tile.FOREGROUND)
+                .barBackgroundColor(Tile.BACKGROUND.darker())
+                .tickLabelColor(Tile.FOREGROUND)
+                .majorTickMarkColor(Tile.FOREGROUND)
+                .minorTickMarkColor(Tile.FOREGROUND)
+                .mediumTickMarkColor(Tile.FOREGROUND)
+                .build();
+
+        Tile serversPercent = TileBuilder.create()
+                .prefSize(384,440 )
+                .skinType(Tile.SkinType.CUSTOM)
+                .roundedCorners(false)
+                .text("Percentage to Goal")
+                .graphic(serversGauge)
+                .build();
+
+
+        //---------------------------------Creating the Bar Chart for Peripherals-----------------------------------
+        peripherals = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Build")
+                .roundedCorners(false)
+                .prefSize(384, 640)
+                .barChartItems(kiwi4Data, kiwi4Goal, kiwi25Data,kiwi25Goal, bumpBarData, bumpBarGoal, pantherEPC4Data,pantherEPC4Goal)
+                .decimals(0)
+                .build();
+
+        Gauge periphGauge = GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .prefSize(384, 270)
+                .valueColor(Tile.FOREGROUND)
+                .titleColor(Tile.FOREGROUND)
+                .unitColor(Tile.FOREGROUND)
+                .value(100)
+                .unit("Peripherals")
+                .maxValue(1000)
+                .animated(true)
+                .decimals(0)
+                .barColor(Tile.RED)
+                .needleColor(Tile.FOREGROUND)
+                .barBackgroundColor(Tile.BACKGROUND.darker())
+                .tickLabelColor(Tile.FOREGROUND)
+                .majorTickMarkColor(Tile.FOREGROUND)
+                .minorTickMarkColor(Tile.FOREGROUND)
+                .mediumTickMarkColor(Tile.FOREGROUND)
+                .build();
+
+        Tile periphPercent = TileBuilder.create()
+                .prefSize(384,440 )
+                .roundedCorners(false)
+                .skinType(Tile.SkinType.CUSTOM)
+                .text("Percentage to Goal")
+                .graphic(periphGauge)
+                .build();
+
+
+        //---------------------------------Creating the Bar Chart for Optic-----------------------------------
+        optic = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Optic Build")
+                .roundedCorners(false)
+                .prefSize(384, 640)
+                .barChartItems(optic5Data, optic5Goal, optic12Data, optic12Goal, opticPrinters, opticPrintersGoal, cubs, cubsGoal)
+                .decimals(0)
+                .build();
+
+        Gauge opticGauge = GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .prefSize(384, 270)
+                .valueColor(Tile.FOREGROUND)
+                .titleColor(Tile.FOREGROUND)
+                .unitColor(Tile.FOREGROUND)
+                .value(100)
+                .unit("Optic")
+                .maxValue(1000)
+                .animated(true)
+                .decimals(0)
+                .barColor(Tile.RED)
+                .needleColor(Tile.FOREGROUND)
+                .barBackgroundColor(Tile.BACKGROUND.darker())
+                .tickLabelColor(Tile.FOREGROUND)
+                .majorTickMarkColor(Tile.FOREGROUND)
+                .minorTickMarkColor(Tile.FOREGROUND)
+                .mediumTickMarkColor(Tile.FOREGROUND)
+                .build();
+
+        Tile opticPercent = TileBuilder.create()
+                .prefSize(384,440 )
+                .roundedCorners(false)
+                .skinType(Tile.SkinType.CUSTOM)
+                .text("Percentage to Goal")
+                .graphic(opticGauge)
+                .build();
+
+
+        //---------------------------------Creating the Bar Chart Items for Retail-----------------------------------
+        retail = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .roundedCorners(false)
+                .title("Retail Build")
+                .prefSize(384, 640)
+                .barChartItems(xr5Data, xr5DataGoal, xr7Data,xr7DataGoal, xr7PlusData, xr7PlusDataGoal, nextGenDisplays, nextGenDisplaysGoal)
+                .decimals(0)
+                .build();
+
+        Gauge retailGauge = GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .prefSize(384, 270)
+                .valueColor(Tile.FOREGROUND)
+                .titleColor(Tile.FOREGROUND)
+                .unitColor(Tile.FOREGROUND)
+                .value(100)
+                .unit("Retail")
+                .maxValue(1000)
+                .animated(true)
+                .decimals(0)
+                .barColor(Tile.RED)
+                .needleColor(Tile.FOREGROUND)
+                .barBackgroundColor(Tile.BACKGROUND.darker())
+                .tickLabelColor(Tile.FOREGROUND)
+                .majorTickMarkColor(Tile.FOREGROUND)
+                .minorTickMarkColor(Tile.FOREGROUND)
+                .mediumTickMarkColor(Tile.FOREGROUND)
+                .build();
+
+        Tile retailPercent = TileBuilder.create()
+                .prefSize(384,440 )
+                .roundedCorners(false)
+                .skinType(Tile.SkinType.CUSTOM)
+                .text("Percentage to Goal")
+                .graphic(retailGauge)
+                .build();
+
+
+        //---------------------------------Creating the Bar Chart Items for Misc.-----------------------------------
+        misc = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Kitting/Printers/Displays/Tablets")
+                .text("Today's Production")
+                .prefSize(480, 270)
+                .barChartItems(kittingData, printersData, retailDisplaysData, tabletData)
+                .decimals(0)
+                .build();
+
+
+        //---------------------------------Creating Animations for Graphs------------------------------------------
+        pos.setAnimated(true);
+        pos.setAnimationDuration(2);
+        servers.setAnimated(true);
+        servers.setAnimationDuration(2);
+        retail.setAnimated(true);
+        retail.setAnimationDuration(2);
+        peripherals.setAnimated(true);
+        peripherals.setAnimationDuration(2);
+        optic.setAnimated(true);
+        optic.setAnimationDuration(2);
+        misc.setAnimated(true);
+        misc.setAnimationDuration(2);
+
+        //---------------------------------------------------------------------------------------------------------
+
+        flowPane.getChildren().addAll(pos, retail, servers, peripherals, optic, posPercent, retailPercent,serversPercent,periphPercent,opticPercent);
+
+        Scene scene = new Scene(flowPane);
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.F5)
+                {
+                    primaryStage.setFullScreen(true);
+                }
+            }
+        });
+
+
+        primaryStage.setMaximized(true);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+
+        /*
         radialChart = TileBuilder.create().skinType(Tile.SkinType.RADIAL_CHART)
                 //.prefSize(250,250)
                 .title("BarChart")
@@ -133,88 +522,10 @@ public class Main extends Application
                 .build();
 
         mccChart.setAnimated(true);
-        mccChart.setAnimationDuration(2);
+        mccChart.setAnimationDuration(2);*/
 
-        /************
-        *
-        *  BarCharts
-        *
-        *************/
 
-        pos = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales")
-                .text("Today's Production")
-                //.prefSize(320, 270)
-                //--- .maxValue(50) ---//
-                .minValue(1)
-                .barChartItems(p1x30Data, p1x35Data, p132Data, p1520Data)
-                .decimals(0)
-                .build();
 
-        servers = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Servers")
-                .text("Today's Production")
-                .prefSize(320, 270)
-                .barChartItems(serverData, mediaPlayer, t1000Data, questData)
-                .decimals(0)
-                .build();
-
-        peripherals = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Peripherals")
-                .text("Today's Production")
-                .prefSize(320, 270)
-                .barChartItems(kiwi4Data, kiwi25Data, bumpBarData, pantherEPC4Data)
-                .decimals(0)
-                .build();
-
-        optic = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Optic")
-                .text("Today's Production")
-                .prefSize(320, 270)
-                .barChartItems(optic5Data, optic12Data, opticPrinters, cubs)
-                .decimals(0)
-                .build();
-
-        retail = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Retail")
-                .text("Today's Production")
-                .prefSize(320, 270)
-                .barChartItems(xr5Data, xr7Data, xr7PlusData, nextGenDisplays)
-                .decimals(0)
-                .build();
-
-        misc = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title("Kitting/Printers/Displays/Tablets")
-                .text("Today's Production")
-                .prefSize(320, 270)
-                .barChartItems(kittingData, printersData, retailDisplaysData, tabletData)
-                .decimals(0)
-                .build();
-
-        pos.setAnimated(true);
-        pos.setAnimationDuration(2);
-        servers.setAnimated(true);
-        servers.setAnimationDuration(2);
-        retail.setAnimated(true);
-        retail.setAnimationDuration(2);
-        peripherals.setAnimated(true);
-        peripherals.setAnimationDuration(2);
-        optic.setAnimated(true);
-        optic.setAnimationDuration(2);
-        misc.setAnimated(true);
-        misc.setAnimationDuration(2);
-
-        /************
-         *
-         *  end BarCharts
-         *
-         *************/
 
         /*Tile stockTile;
 
@@ -230,7 +541,7 @@ public class Main extends Application
                 .build();
 
         stockTile.setAnimated(true);
-        stockTile.setAnimationDuration(2);*/
+        stockTile.setAnimationDuration(2);
 
         Gauge pastDueGauge = GaugeBuilder.create()
                 .skinType(Gauge.SkinType.SLIM)
@@ -342,14 +653,7 @@ public class Main extends Application
                 .title("Medusa Slim")
                 .text("Past Dues")
                 .graphic(slimGauge)
-                .build();
+                .build();*/
 
 
-        flowPane.getChildren().addAll(pos, retail, servers, peripherals, optic, misc, donutChart, slimTile, medusaDashboard, slimClockTile, safetyDashboard, radialChart, quoteTile, mccChart, assignedJobs);
-
-        primaryStage.setMaximized(true);
-
-        primaryStage.setScene(new Scene(flowPane));
-        primaryStage.show();
-    }
-}
+//flowPane.getChildren().addAll(pos, retail, servers, peripherals, optic, misc, donutChart, slimTile, medusaDashboard, slimClockTile, safetyDashboard, radialChart, quoteTile, mccChart, assignedJobs);

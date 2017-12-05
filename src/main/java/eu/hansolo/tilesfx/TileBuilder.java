@@ -931,6 +931,7 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 case SMOOTHED_CHART:
                     break;
                 case BAR_CHART:
+                    //CONTROL.setAutoScale(true);
                     break;
                 case DOUBLE_CHART:
                     break;
