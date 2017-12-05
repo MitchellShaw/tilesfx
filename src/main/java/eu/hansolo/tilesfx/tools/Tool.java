@@ -1,4 +1,4 @@
-package eu.hansolo.tilesfx;
+package eu.hansolo.tilesfx.tools;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 /**
  * Created by Mitchell on 12/4/2017.
- * NOTE TO ME DO NOT FORGET TO CATCH THE NULL CASES AND SET ALL TO ZERO IF NULL
  */
 public class Tool {
 
@@ -30,7 +29,7 @@ public class Tool {
     ArrayList<HashMap<String,Integer>> returnList;
 
 
-    public ArrayList<HashMap<String,Integer>> documentReader(String hosp, String retail, String servers, String periph, String optic) throws IOException, SAXException, ParserConfigurationException
+    public ArrayList<HashMap<String,Integer>> documentReader() throws IOException, SAXException, ParserConfigurationException
     {
         //--------------------------------Variables for Maps------------------------------------------------
         hospMap = new HashMap<>();
@@ -62,7 +61,7 @@ public class Tool {
         //---------------------------------Retail Reader----------------------------------------------------
         NodeList retailNodeList = document.getElementsByTagName("retail");
 
-        for (int x = 0, size = hospNodeList.getLength(); x < size; x++)
+        for (int x = 0, size = retailNodeList.getLength(); x < size; x++)
         {
             String retailProduct = retailNodeList.item(x).getAttributes().getNamedItem("model").getNodeValue();
             String retailGoal = retailNodeList.item(x).getAttributes().getNamedItem("goal").getNodeValue();
@@ -71,7 +70,7 @@ public class Tool {
         }
 
         //---------------------------------Server Reader----------------------------------------------------
-        NodeList serverNodeList = document.getElementsByTagName("servers");
+        NodeList serverNodeList = document.getElementsByTagName("server");
 
         for (int x = 0, size = serverNodeList.getLength(); x < size; x++)
         {
@@ -104,6 +103,7 @@ public class Tool {
         }
 
         //---------------------------------Add Maps to Return List----------------------------------------------------
+
         returnList.add(hospMap);
         returnList.add(serversMap);
         returnList.add(opticMap);
@@ -112,9 +112,6 @@ public class Tool {
 
         return returnList;
     }
-
-
-
 
     //---------------------------------Database Queries----------------------------------------------------------------
 
@@ -160,11 +157,11 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("In try block");
+            System.out.println("Connection established.");
+
             if (!resultSet.next()) {
                 //do something
                 System.out.println("Nothing to see here.");
-                strings = null;
 
             } else {
                 String model = resultSet.getString("ItemID");
@@ -184,7 +181,7 @@ public class Tool {
             }
         }finally{
             try{
-                System.out.println("closing connection");
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e){
@@ -192,12 +189,22 @@ public class Tool {
             }
         }
 
-        for(int i = 0;i<strings.size();i++)
+        if(strings.isEmpty())
         {
-            String tempString = strings.get(i);
-            int tempValue = Collections.frequency(strings,strings.get(i));
-            strings.removeAll(Collections.singleton(strings.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7745",0);
+            returnMap.put("7734",0);
+            returnMap.put("7743",0);
+            returnMap.put("7761",0);
+            returnMap.put("7791",0);
+            returnMap.put("7744",0);
+        }else {
+            for (int i = 0; i < strings.size(); i++) {
+                String tempString = strings.get(i);
+                int tempValue = Collections.frequency(strings, strings.get(i));
+                strings.removeAll(Collections.singleton(strings.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
 
@@ -265,6 +272,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -274,14 +282,23 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7745",0);
+            returnMap.put("7734",0);
+            returnMap.put("7743",0);
+            returnMap.put("7761",0);
+            returnMap.put("7791",0);
+            returnMap.put("7744",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
-
 
         return returnMap;
     }
@@ -347,6 +364,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -356,12 +374,22 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7745",0);
+            returnMap.put("7734",0);
+            returnMap.put("7743",0);
+            returnMap.put("7761",0);
+            returnMap.put("7791",0);
+            returnMap.put("7744",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -411,11 +439,11 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("In try block");
+            System.out.println("Connection established.");
+
             if (!resultSet.next()) {
                 //do something
                 System.out.println("Nothing to see here.");
-                strings = null;
 
             } else {
                 String model = resultSet.getString("ItemID");
@@ -434,7 +462,7 @@ public class Tool {
             }
         }finally{
             try{
-                System.out.println("closing connection");
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e){
@@ -442,14 +470,22 @@ public class Tool {
             }
         }
 
-        for(int i = 0;i<strings.size();i++)
+        if(strings.isEmpty())
         {
-            String tempString = strings.get(i);
-            int tempValue = Collections.frequency(strings,strings.get(i));
-            strings.removeAll(Collections.singleton(strings.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7701",0);
+            returnMap.put("7702",0);
+            returnMap.put("7703",0);
+            returnMap.put("5968",0);
+            returnMap.put("5985",0);
+        }else {
+            for (int i = 0; i < strings.size(); i++) {
+                String tempString = strings.get(i);
+                int tempValue = Collections.frequency(strings, strings.get(i));
+                strings.removeAll(Collections.singleton(strings.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
-
 
         return returnMap;
     }
@@ -510,6 +546,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -519,12 +556,21 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7701",0);
+            returnMap.put("7702",0);
+            returnMap.put("7703",0);
+            returnMap.put("5968",0);
+            returnMap.put("5985",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -587,6 +633,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -596,12 +643,22 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("7701",0);
+            returnMap.put("7702",0);
+            returnMap.put("7703",0);
+            returnMap.put("5968",0);
+            returnMap.put("5985",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -660,11 +717,11 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("In try block");
+            System.out.println("Connection established.");
+
             if (!resultSet.next()) {
                 //do something
                 System.out.println("Nothing to see here.");
-                strings = null;
 
             } else {
                 String model = resultSet.getString("ItemID");
@@ -683,7 +740,7 @@ public class Tool {
             }
         }finally{
             try{
-                System.out.println("closing connection");
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e){
@@ -691,14 +748,32 @@ public class Tool {
             }
         }
 
-        for(int i = 0;i<strings.size();i++)
+        if(strings.isEmpty())
         {
-            String tempString = strings.get(i);
-            int tempValue = Collections.frequency(strings,strings.get(i));
-            strings.removeAll(Collections.singleton(strings.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("5931",0);
+            returnMap.put("5933",0);
+            returnMap.put("5934",0);
+            returnMap.put("5937",0);
+            returnMap.put("5938",0);
+            returnMap.put("5943",0);
+            returnMap.put("5967",0);
+            returnMap.put("1635",0);
+            returnMap.put("1640",0);
+            returnMap.put("1641",0);
+            returnMap.put("1642",0);
+            returnMap.put("1924",0);
+            returnMap.put("1646",0);
+            returnMap.put("1650",0);
+            returnMap.put("1651",0);
+        }else {
+            for (int i = 0; i < strings.size(); i++) {
+                String tempString = strings.get(i);
+                int tempValue = Collections.frequency(strings, strings.get(i));
+                strings.removeAll(Collections.singleton(strings.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
-
 
         return returnMap;
     }
@@ -782,6 +857,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -791,12 +867,31 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("5931",0);
+            returnMap.put("5933",0);
+            returnMap.put("5934",0);
+            returnMap.put("5937",0);
+            returnMap.put("5938",0);
+            returnMap.put("5943",0);
+            returnMap.put("5967",0);
+            returnMap.put("1635",0);
+            returnMap.put("1640",0);
+            returnMap.put("1641",0);
+            returnMap.put("1642",0);
+            returnMap.put("1924",0);
+            returnMap.put("1646",0);
+            returnMap.put("1650",0);
+            returnMap.put("1651",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -881,6 +976,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -890,13 +986,33 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("5931",0);
+            returnMap.put("5933",0);
+            returnMap.put("5934",0);
+            returnMap.put("5937",0);
+            returnMap.put("5938",0);
+            returnMap.put("5943",0);
+            returnMap.put("5967",0);
+            returnMap.put("1635",0);
+            returnMap.put("1640",0);
+            returnMap.put("1641",0);
+            returnMap.put("1642",0);
+            returnMap.put("1924",0);
+            returnMap.put("1646",0);
+            returnMap.put("1650",0);
+            returnMap.put("1651",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
+
 
         return returnMap;
     }
@@ -926,7 +1042,7 @@ public class Tool {
                 "                --and (Item.ItemID like '77%-0000' \n" +
                 "                --or Item.ItemID like '7743-8037-8801') \n" +
                 "                 \n" +
-                "                ORDER BY ItemID,CreateTime ASC";
+                "                ORDER BY ItemID ASC";
 
 
         Connection conn = null;
@@ -935,8 +1051,6 @@ public class Tool {
         ResultSet resultSet = null;
 
 
-        int counter = 0;
-        int currentIndexofStringKey = 0;
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -948,11 +1062,11 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("In try block");
+            System.out.println("Connection established.");
+
             if (!resultSet.next()) {
                 //do something
                 System.out.println("Nothing to see here.");
-                strings = null;
 
             } else {
                 String model = resultSet.getString("ItemID");
@@ -971,7 +1085,7 @@ public class Tool {
             }
         }finally{
             try{
-                System.out.println("closing connection");
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e){
@@ -979,12 +1093,21 @@ public class Tool {
             }
         }
 
-        for(int i = 0;i<strings.size();i++)
+        if(strings.isEmpty())
         {
-            String tempString = strings.get(i);
-            int tempValue = Collections.frequency(strings,strings.get(i));
-            strings.removeAll(Collections.singleton(strings.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("1656",0);
+            returnMap.put("1930",0);
+            returnMap.put("1657",0);
+            returnMap.put("1611",0);
+            returnMap.put("1612",0);
+        }else {
+            for (int i = 0; i < strings.size(); i++) {
+                String tempString = strings.get(i);
+                int tempValue = Collections.frequency(strings, strings.get(i));
+                strings.removeAll(Collections.singleton(strings.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
 
@@ -1050,6 +1173,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -1059,12 +1183,21 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("1656",0);
+            returnMap.put("1930",0);
+            returnMap.put("1657",0);
+            returnMap.put("1611",0);
+            returnMap.put("1612",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -1128,6 +1261,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -1137,13 +1271,23 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("1656",0);
+            returnMap.put("1930",0);
+            returnMap.put("1657",0);
+            returnMap.put("1611",0);
+            returnMap.put("1612",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
+
 
         return returnMap;
     }
@@ -1185,9 +1329,6 @@ public class Tool {
         ResultSet resultSet = null;
 
 
-        int counter = 0;
-        int currentIndexofStringKey = 0;
-
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
@@ -1198,11 +1339,11 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("In try block");
+            System.out.println("Connection established.");
+
             if (!resultSet.next()) {
                 //do something
                 System.out.println("Nothing to see here.");
-                strings = null;
 
             } else {
                 String model = resultSet.getString("ItemID");
@@ -1221,7 +1362,7 @@ public class Tool {
             }
         }finally{
             try{
-                System.out.println("closing connection");
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e){
@@ -1229,12 +1370,19 @@ public class Tool {
             }
         }
 
-        for(int i = 0;i<strings.size();i++)
+        if(strings.isEmpty())
         {
-            String tempString = strings.get(i);
-            int tempValue = Collections.frequency(strings,strings.get(i));
-            strings.removeAll(Collections.singleton(strings.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return Map is Empty.");
+            returnMap.put("6001",0);
+            returnMap.put("6002",0);
+            returnMap.put("6003",0);
+        }else {
+            for (int i = 0; i < strings.size(); i++) {
+                String tempString = strings.get(i);
+                int tempValue = Collections.frequency(strings, strings.get(i));
+                strings.removeAll(Collections.singleton(strings.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
@@ -1296,6 +1444,7 @@ public class Tool {
         {
             try
             {
+                System.out.println("Closing connection");
                 conn.close();
             }
             catch(SQLException e)
@@ -1305,12 +1454,19 @@ public class Tool {
 
         }
 
-        for(int i = 0;i<readMe.size();i++)
+        if(readMe.isEmpty())
         {
-            String tempString = readMe.get(i);
-            int tempValue = Collections.frequency(readMe, readMe.get(i));
-            readMe.removeAll(Collections.singleton(readMe.get(i)));
-            returnMap.put(tempString,tempValue);
+            System.out.println("Return map is empty.");
+            returnMap.put("6001",0);
+            returnMap.put("6002",0);
+            returnMap.put("6003",0);
+        }else {
+            for (int i = 0; i < readMe.size(); i++) {
+                String tempString = readMe.get(i);
+                int tempValue = Collections.frequency(readMe, readMe.get(i));
+                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                returnMap.put(tempString, tempValue);
+            }
         }
 
         return returnMap;
