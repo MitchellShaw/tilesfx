@@ -1,8 +1,8 @@
 package eu.hansolo.tilesfx;
 
-import eu.hansolo.medusa.*;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.MapTool;
+import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,8 +48,6 @@ public class Main extends Application
     double p1532GoalBuild;
     double t1000sCurrentBuild;
     double t1000sGoalBuild;
-    double questsCurrentBuild;
-    double questsGoalBuild;
 
 
     double p1x30CurrentTest;
@@ -131,7 +131,7 @@ public class Main extends Application
 
     //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
     double kiwi4sCurrentBuild;
-    double kiwi4sGoalBuildBuild;
+    double kiwi4sGoalBuild;
     double kiwi2XsCurrentBuild;
     double kiwi2XsGoalBuild;
     double bumpBarsCurrentBuild;
@@ -140,7 +140,7 @@ public class Main extends Application
     double pantherEPC4sGoalBuild;
 
     double kiwi4sCurrentTest;
-    double kiwi4sGoalBuildTest;
+    double kiwi4sGoalTest;
     double kiwi2XsCurrentTest;
     double kiwi2XsGoalTest;
     double bumpBarsCurrentTest;
@@ -149,7 +149,7 @@ public class Main extends Application
     double pantherEPC4sGoalTest;
 
     double kiwi4sCurrentStage;
-    double kiwi4sGoalBuildStage;
+    double kiwi4sGoalStage;
     double kiwi2XsCurrentStage;
     double kiwi2XsGoalStage;
     double bumpBarsCurrentStage;
@@ -179,6 +179,14 @@ public class Main extends Application
     double kitsGoalTest;
     double printerCurrentTest;
     double printerGoalTest;
+
+    //---------------------------------Variables for Percentages --------------------------------------------------
+    GoalTool goalTool;
+    double posPercentTotal;
+    double retailPercentTotal;
+    double opticPercentTotal;
+    double serversPercentTotal;
+    double periphPercentTotal;
 
     //---------------------------------Variables for Map Creation for POS Database Call----------------------------
     HashMap<String,Integer> posBuildMap;
@@ -222,11 +230,42 @@ public class Main extends Application
     {
         //---------------------------------Variables for Tiles----------------------------------------------------
         FlowPane flowPane = new FlowPane();
+        percentageTool = new GoalTool();
 
 
         //---------------------------------Scheduled Executors for Updating Variables---------------------------------
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(24);
         Tool dataBaseTool = new Tool();
+
+        //---------------------------------Creating the Tools for the graphs------------------------------------------
+        MapTool mapTool = new MapTool();
+
+        //---------------------------------List Storage Area for Running Group Values --------------------------------
+        ArrayList<String> p1x35ProdList = new ArrayList<>();
+        p1x35ProdList.add("7745");
+        p1x35ProdList.add("7761");
+
+        ArrayList<String> kiwi2XsProdList = new ArrayList<>();
+        kiwi2XsProdList.add("1640");
+        kiwi2XsProdList.add("1642");
+
+        ArrayList<String> pantherEPC4sProdList = new ArrayList<>();
+        pantherEPC4sProdList.add("1646");
+        pantherEPC4sProdList.add("1651");
+
+        ArrayList<String> nextGenProdList = new ArrayList<>();
+        nextGenProdList.add("5968");
+        nextGenProdList.add("5985");
+
+        ArrayList<String> s500ProdList = new ArrayList<>();
+        s500ProdList.add("1611");
+        s500ProdList.add("1612");
+
+        ArrayList<String> mediaPlayerProdList = new ArrayList<>();
+        mediaPlayerProdList.add("1656");
+        mediaPlayerProdList.add("1930");
+
+
 
 
         //---------------------------------Scheduled Executors for Build Variables-------------------------------------
@@ -238,11 +277,44 @@ public class Main extends Application
             try
             {
                 System.out.println("Running Build Block.\n");
+
+                //---------------------------------Hosp Build-----------------------------------------------------------------------
                 posBuildMap = dataBaseTool.hospBuildDataBase();
+
+                p1532CurrentBuild = mapTool.getCurrentSingleValue("7734",posBuildMap);
+                p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743",posBuildMap);
+                p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
+                t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744",posBuildMap);
+
+                //---------------------------------Retail Build-----------------------------------------------------------------------
                 retailBuildMap = dataBaseTool.retailBuildDataBase();
+
+                xr7CurrentBuild = mapTool.getCurrentSingleValue("7702",retailBuildMap);
+                xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703",retailBuildMap);
+                xr5CurrentBuild = mapTool.getCurrentSingleValue("7701",retailBuildMap);
+                nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
+
+                //---------------------------------Servers Build-----------------------------------------------------------------------
                 serversBuildMap = dataBaseTool.serversBuildDataBase();
+
+                mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
+                n3000CurrentBuild = mapTool.getCurrentSingleValue("1657",serversBuildMap);
+                s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
+
+                //---------------------------------Periph Build-----------------------------------------------------------------------
                 periphBuildMap = dataBaseTool.periphBuildDataBase();
+
+                kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924",periphBuildMap);
+                kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
+                bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635",periphBuildMap);
+                pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
+
+                //---------------------------------Optic Build----------------------------------------------------------------------
                 opticBuildMap = dataBaseTool.opticBuildDataBase();
+                optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
+                optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
+                kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
+
                 buildLatch.countDown();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -265,11 +337,47 @@ public class Main extends Application
             try
             {
                 System.out.println("Running Test Block.\n");
+                //---------------------------------Hosp Test-----------------------------------------------------------------------
                 posTestMap = dataBaseTool.hospTestDataBase();
+
+                p1532CurrentTest = mapTool.getCurrentSingleValue("7734", posTestMap);
+                p1x30CurrentTest = mapTool.getCurrentSingleValue("7743", posTestMap);
+                p1x35CurrentTest = mapTool.getCurrentGroupValue(p1x35ProdList, posTestMap);
+                t1000sCurrentTest = mapTool.getCurrentSingleValue("7744", posTestMap);
+
+                //---------------------------------Retail Test-----------------------------------------------------------------------
                 retailTestMap = dataBaseTool.retailTestDataBase();
+
+                xr7CurrentTest = mapTool.getCurrentSingleValue("7702", retailTestMap);
+                xr7PlusCurrentTest = mapTool.getCurrentSingleValue("7703", retailTestMap);
+                xr5CurrentTest = mapTool.getCurrentSingleValue("7701", retailTestMap);
+                nextGenDisplayCurrentTest = mapTool.getCurrentGroupValue(nextGenProdList, retailTestMap);
+
+                //---------------------------------Server Test-----------------------------------------------------------------------
                 serversTestMap = dataBaseTool.serversTestDataBase();
+
+
+                mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversTestMap);
+                n3000CurrentTest = mapTool.getCurrentSingleValue("1657", serversTestMap);
+                s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList, serversTestMap);
+
+                //---------------------------------Periph Test-----------------------------------------------------------------------
                 periphTestMap = dataBaseTool.periphTestDataBase();
+
+
+                kiwi4sCurrentTest = mapTool.getCurrentSingleValue("1924", periphTestMap);
+                kiwi2XsCurrentTest = mapTool.getCurrentGroupValue(kiwi2XsProdList, periphTestMap);
+                bumpBarsCurrentTest = mapTool.getCurrentSingleValue("1635", periphTestMap);
+                pantherEPC4sCurrentTest = mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphTestMap);
+
+                //---------------------------------Optic Test----------------------------------------------------------------------
                 opticTestMap = dataBaseTool.opticTestDataBase();
+
+
+                optic5sCurrentTest = mapTool.getCurrentSingleValue("6001", opticTestMap);
+                optic12sCurrentTest = mapTool.getCurrentSingleValue("6002", opticTestMap);
+                kitsCurrentTest = mapTool.getCurrentSingleValue("6003", opticTestMap);
+
                 testLatch.countDown();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -289,10 +397,39 @@ public class Main extends Application
             try
             {
                 System.out.println("Running Stage Block.\n");
+
+                //---------------------------------Hosp Staging-----------------------------------------------------------------------
                 posStageMap = dataBaseTool.hospStageDataBase();
+
+                p1532CurrentStage = mapTool.getCurrentSingleValue("7734", posStageMap);
+                p1x30CurrentStage = mapTool.getCurrentSingleValue("7743", posStageMap);
+                p1x35CurrentStage = mapTool.getCurrentGroupValue(p1x35ProdList, posStageMap);
+                t1000sCurrentStage = mapTool.getCurrentSingleValue("7744", posStageMap);
+
+                //---------------------------------Retail Stage-----------------------------------------------------------------------
                 retailStageMap = dataBaseTool.retailStageDataBase();
+
+                xr7CurrentStage = mapTool.getCurrentSingleValue("7702", retailBuildMap);
+                xr7PlusCurrentStage = mapTool.getCurrentSingleValue("7703", retailBuildMap);
+                xr5CurrentStage = mapTool.getCurrentSingleValue("7701", retailBuildMap);
+                nextGenDisplayCurrentStage = mapTool.getCurrentGroupValue(nextGenProdList, retailStageMap);
+
+                //---------------------------------Servers Stage-----------------------------------------------------------------------
                 serversStageMap = dataBaseTool.serversStageDataBase();
+
+                mediaPlayerCurrentStage = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversStageMap);
+                n3000CurrentStage = mapTool.getCurrentSingleValue("1657", serversStageMap);
+                s500CurrentStage = mapTool.getCurrentGroupValue(s500ProdList, serversStageMap);
+
+                //---------------------------------Periph Stage-----------------------------------------------------------------------
                 periphStageMap = dataBaseTool.periphStageDataBase();
+
+                kiwi4sCurrentStage = mapTool.getCurrentSingleValue("1924",periphStageMap);
+                kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphStageMap);
+                bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635",periphStageMap);
+                pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphStageMap);
+
+
                 stageLatch.countDown();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -312,6 +449,67 @@ public class Main extends Application
             try {
                 System.out.println("Running Doc Block.\n");
                 mapList = dataBaseTool.documentReader();
+
+                //---------------------------------Goal Set-------------------------------------------------------------------------
+
+                //---------------------------------Hosp Build-----------------------------------------------------------------------
+
+                p1532GoalBuild = goalTool.getGoal(mapList.get(0),"7734");
+                p1x30GoalBuild = goalTool.getGoal(mapList.get(0),"7743");
+                //p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
+                t1000sGoalBuild = goalTool.getGoal(mapList.get(0),"7744");
+
+                //---------------------------------Retail Build-----------------------------------------------------------------------
+                xr7GoalBuild = goalTool.getGoal(mapList.get(1),"7702");
+                xr7PlusGoalBuild = goalTool.getGoal(mapList.get(1),"7703");
+                xr5GoalBuild = goalTool.getGoal(mapList.get(1),"7701");
+                //nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
+
+                //---------------------------------Servers Build-----------------------------------------------------------------------
+                ///mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
+                n3000GoalBuild = goalTool.getGoal(mapList.get(2),"1657");
+                // s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
+
+                //---------------------------------Periph Build-----------------------------------------------------------------------
+                kiwi4sGoalBuild = goalTool.getGoal(mapList.get(3),"1924");
+                //kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
+                bumpBarsGoalBuild = goalTool.getGoal(mapList.get(3),"1635");
+                //pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
+
+                //---------------------------------Optic Build----------------------------------------------------------------------
+                optic5sGoalBuild = goalTool.getGoal(mapList.get(4),"6001");
+                optic12sGoalBuild = goalTool.getGoal(mapList.get(4),"6002");
+                kitsGoalBuild = goalTool.getGoal(mapList.get(4),"6003");
+
+                //---------------------------------Hosp Test-----------------------------------------------------------------------
+
+                p1532GoalTest = goalTool.getGoal(mapList.get(0),"7734");
+                p1x30GoalTest = goalTool.getGoal(mapList.get(0),"7743");
+                //p1x35CurrentTest = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
+                t1000sGoalTest = goalTool.getGoal(mapList.get(0),"7744");
+
+                //---------------------------------Retail Test-----------------------------------------------------------------------
+                xr7GoalTest = goalTool.getGoal(mapList.get(1),"7702");
+                xr7PlusGoalTest = goalTool.getGoal(mapList.get(1),"7703");
+                xr5GoalTest = goalTool.getGoal(mapList.get(1),"7701");
+                //nextGenDisplayCurrentTest = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
+
+                //---------------------------------Servers Test-----------------------------------------------------------------------
+                ///mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
+                n3000GoalTest = goalTool.getGoal(mapList.get(2),"1657");
+                // s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
+
+                //---------------------------------Periph Test-----------------------------------------------------------------------
+                kiwi4sGoalTest = goalTool.getGoal(mapList.get(3),"1924");
+                //kiwi2XsCurrentTest = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
+                bumpBarsGoalTest = goalTool.getGoal(mapList.get(3),"1635");
+                //pantherEPC4sCurrentTest = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
+
+                //---------------------------------Optic Test----------------------------------------------------------------------
+                optic5sGoalTest = goalTool.getGoal(mapList.get(4),"6001");
+                optic12sGoalTest = goalTool.getGoal(mapList.get(4),"6002");
+                kitsGoalTest = goalTool.getGoal(mapList.get(4),"6003");
+
                 documentLatch.countDown();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -324,135 +522,16 @@ public class Main extends Application
         }, 0, 30, TimeUnit.SECONDS);
         documentLatch.await();
 
-        //---------------------------------Creating the Chart Data for the graphs-------------------------------------
-
-
-        //---------------------------------Creating the Tools for the graphs------------------------------------------
-        MapTool mapTool = new MapTool();
-
-        //---------------------------------Using the Tools for the graphs---------------------------------------------
-
-        //---------------------------------Optic Build----------------------------------------------------------------------
-        optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
-        optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
-        kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
-
-        //---------------------------------Optic Test----------------------------------------------------------------------
-        optic5sCurrentTest =  mapTool.getCurrentSingleValue("6001",opticTestMap);
-        optic12sCurrentTest = mapTool.getCurrentSingleValue("6002",opticTestMap);
-        kitsCurrentTest = mapTool.getCurrentSingleValue("6003",opticTestMap);
-
-        //---------------------------------Hosp Build-----------------------------------------------------------------------
-        p1532CurrentBuild = mapTool.getCurrentSingleValue("7734",posBuildMap);
-        p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743",posBuildMap);
-
-        ArrayList<String> p1x35ProdList = new ArrayList<>();
-        p1x35ProdList.add("7745");
-        p1x35ProdList.add("7761");
-
-        p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
-
-        questsCurrentBuild = mapTool.getCurrentSingleValue("7791",posBuildMap);
-        t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744",posBuildMap);
-
-        //---------------------------------Hosp Test-----------------------------------------------------------------------
-        p1532CurrentTest = mapTool.getCurrentSingleValue("7734",posTestMap);
-        p1x30CurrentTest = mapTool.getCurrentSingleValue("7743",posTestMap);
-        p1x35CurrentTest = mapTool.getCurrentGroupValue(p1x35ProdList,posTestMap);
-        questsCurrentTest = mapTool.getCurrentSingleValue("7791",posTestMap);
-        t1000sCurrentTest = mapTool.getCurrentSingleValue("7744",posTestMap);
-
-        //---------------------------------Hosp Staging-----------------------------------------------------------------------
-        p1532CurrentStage = mapTool.getCurrentSingleValue("7734",posStageMap);
-        p1x30CurrentStage = mapTool.getCurrentSingleValue("7743",posStageMap);
-        p1x35CurrentStage = mapTool.getCurrentGroupValue(p1x35ProdList,posStageMap);
-        questsCurrentStage = mapTool.getCurrentSingleValue("7791",posStageMap);
-        t1000sCurrentStage = mapTool.getCurrentSingleValue("7744",posStageMap);
-
-        //---------------------------------Periph Build-----------------------------------------------------------------------
-        kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924",periphBuildMap);
-
-        ArrayList<String> kiwi2XsProdList = new ArrayList<>();
-        kiwi2XsProdList.add("1640");
-        kiwi2XsProdList.add("1642");
-
-        kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
-        bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635",periphBuildMap);
-
-        ArrayList<String> pantherEPC4sProdList = new ArrayList<>();
-        pantherEPC4sProdList.add("1646");
-        pantherEPC4sProdList.add("1651");
-
-        pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
-
-        //---------------------------------Periph Test-----------------------------------------------------------------------
-        kiwi4sCurrentTest = mapTool.getCurrentSingleValue("1924",periphTestMap);
-        kiwi2XsCurrentTest = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphTestMap);
-        bumpBarsCurrentTest = mapTool.getCurrentSingleValue("1635",periphTestMap);
-        pantherEPC4sCurrentTest = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphTestMap);
-
-        //---------------------------------Periph Stage-----------------------------------------------------------------------
-        kiwi4sCurrentStage = mapTool.getCurrentSingleValue("1924",periphStageMap);
-        kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphStageMap);
-        bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635",periphStageMap);
-        pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphStageMap);
-
-        //---------------------------------Retail Build-----------------------------------------------------------------------
-        xr7CurrentBuild = mapTool.getCurrentSingleValue("7702",retailBuildMap);
-        xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703",retailBuildMap);
-        xr5CurrentBuild = mapTool.getCurrentSingleValue("7701",retailBuildMap);
-
-        ArrayList<String> nextGenProdList = new ArrayList<>();
-        nextGenProdList.add("5968");
-        nextGenProdList.add("5985");
-
-        nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
-
-        //---------------------------------Retail Test-----------------------------------------------------------------------
-        xr7CurrentTest = mapTool.getCurrentSingleValue("7702",retailBuildMap);
-        xr7PlusCurrentTest = mapTool.getCurrentSingleValue("7703",retailBuildMap);
-        xr5CurrentTest = mapTool.getCurrentSingleValue("7701",retailBuildMap);
-        nextGenDisplayCurrentTest = mapTool.getCurrentGroupValue(nextGenProdList,retailStageMap);
-
-        //---------------------------------Retail Stage-----------------------------------------------------------------------
-        xr7CurrentStage = mapTool.getCurrentSingleValue("7702",retailBuildMap);
-        xr7PlusCurrentStage = mapTool.getCurrentSingleValue("7703",retailBuildMap);
-        xr5CurrentStage = mapTool.getCurrentSingleValue("7701",retailBuildMap);
-        nextGenDisplayCurrentStage = mapTool.getCurrentGroupValue(nextGenProdList,retailStageMap);
-
-        //---------------------------------Servers Build-----------------------------------------------------------------------
-        ArrayList<String> s500ProdList = new ArrayList<>();
-        s500ProdList.add("1611");
-        s500ProdList.add("1612");
-
-
-        ArrayList<String> mediaPlayerProdList = new ArrayList<>();
-        mediaPlayerProdList.add("1656");
-        mediaPlayerProdList.add("1930");
-
-        mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
-        n3000CurrentBuild = mapTool.getCurrentSingleValue("1657",serversBuildMap);
-        s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
-
-        mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversTestMap);
-        n3000CurrentTest = mapTool.getCurrentSingleValue("1657",serversTestMap);
-        s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList,serversTestMap);
-
-        mediaPlayerCurrentStage = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversStageMap);
-        n3000CurrentStage = mapTool.getCurrentSingleValue("1657",serversStageMap);
-        s500CurrentStage = mapTool.getCurrentGroupValue(s500ProdList,serversStageMap);
-
-
         //---------------------------------Creating the Bar Chart Items for POS---------------------------------------
         BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, Tile.RED);
         BarChartItem p1x35DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem p132Data = new BarChartItem("P1532", p1532CurrentBuild, Tile.BLUE);
+        BarChartItem p132Data = new BarChartItem("P1532", p1532CurrentBuild, Tile.GREEN);
         BarChartItem p132DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, Tile.GREEN);
+        BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, Tile.BLUE);
         BarChartItem p1x30DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
@@ -464,23 +543,23 @@ public class Main extends Application
         BarChartItem n3000Data = new BarChartItem("N3000", n3000CurrentBuild, Tile.RED);
         BarChartItem n3000Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
-        BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, Tile.GREEN);
+        BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, Tile.BLUE);
         BarChartItem s500Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, Tile.BLUE);
+        BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, Tile.GREEN);
         BarChartItem mediaGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
         //---------------------------------Creating the Bar Chart Items for Peripherals-----------------------------
-        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, Tile.RED);
+        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, Tile.BLUE);
         BarChartItem kiwi4Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", kiwi2XsCurrentBuild, Tile.GREEN);
+        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2.5", kiwi2XsCurrentBuild, Tile.RED);
         BarChartItem kiwi25Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, Tile.BLUE);
+        BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, Tile.GREEN);
         BarChartItem bumpBarGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
@@ -492,24 +571,24 @@ public class Main extends Application
         BarChartItem optic12Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
-        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, Tile.GREEN);
+        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, Tile.BLUE);
         BarChartItem optic5Goal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
-        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, Tile.BLUE);
+        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, Tile.GREEN);
         BarChartItem opticKitsGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         //---------------------------------Creating the Bar Chart Items for Retail-----------------------------------
+        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild, Tile.BLUE);
+        BarChartItem xr5DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
+
+
         BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, Tile.RED);
         BarChartItem xr7DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, Tile.GREEN);
         BarChartItem xr7PlusDataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
-
-
-        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild, Tile.BLUE);
-        BarChartItem xr5DataGoal = new BarChartItem("Goal", 100, Tile.BACKGROUND);
 
 
         BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, Tile.YELLOW);
@@ -523,35 +602,17 @@ public class Main extends Application
                 .prefSize(384, 640)
                 .barChartItems(p1x30Data, p1x30DataGoal, p1x35Data, p1x35DataGoal, p132Data, p132DataGoal, t1000Data,t1000Goal)
                 .decimals(0)
-                .build();
-
-        Gauge posGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-                //.skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(100)
-                .unit("POS")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
+                .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         Tile posPercent = TileBuilder.create()
-                .prefSize(384,440 )
-                .roundedCorners(true)
-                .skinType(Tile.SkinType.CUSTOM)
+                .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .graphic(posGauge)
+                .unit("\u0025")
+                .animated(true)
+                .value(50.0)
                 .build();
 
 
@@ -563,35 +624,17 @@ public class Main extends Application
                 .prefSize(384, 640)
                 .barChartItems(s500Data, s500Goal, n3000Data, n3000Goal, mediaPlayer, mediaGoal)
                 .decimals(0)
-                .build();
-
-        Gauge serversGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(100)
-                .unit("Servers")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
+                .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         Tile serversPercent = TileBuilder.create()
-                .prefSize(384,440 )
-                .skinType(Tile.SkinType.CUSTOM)
-                .roundedCorners(true)
+                .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .graphic(serversGauge)
+                .unit("\u0025")
+                .animated(true)
+                .value(50.0)
                 .build();
 
 
@@ -603,35 +646,17 @@ public class Main extends Application
                 .prefSize(384, 640)
                 .barChartItems(kiwi4Data, kiwi4Goal, kiwi25Data,kiwi25Goal, bumpBarData, bumpBarGoal, pantherEPC4Data,pantherEPC4Goal)
                 .decimals(0)
-                .build();
-
-        Gauge periphGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(100)
-                .unit("Peripherals")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
+                .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         Tile periphPercent = TileBuilder.create()
-                .prefSize(384,440 )
-                .roundedCorners(true)
-                .skinType(Tile.SkinType.CUSTOM)
+                .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .graphic(periphGauge)
+                .unit("\u0025")
+                .animated(true)
+                .value(50.0)
                 .build();
 
 
@@ -643,35 +668,17 @@ public class Main extends Application
                 .prefSize(384, 640)
                 .barChartItems(optic5Data, optic5Goal, optic12Data, optic12Goal, opticKitsData,opticKitsGoal)
                 .decimals(0)
-                .build();
-
-        Gauge opticGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(100)
-                .unit("Optic")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
+                .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         Tile opticPercent = TileBuilder.create()
-                .prefSize(384,440 )
-                .roundedCorners(true)
-                .skinType(Tile.SkinType.CUSTOM)
+                .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .graphic(opticGauge)
+                .unit("\u0025")
+                .animated(true)
+                .value(50.0)
                 .build();
 
 
@@ -683,35 +690,17 @@ public class Main extends Application
                 .prefSize(384, 640)
                 .barChartItems(xr5Data, xr5DataGoal, xr7Data,xr7DataGoal, xr7PlusData, xr7PlusDataGoal, nextGenDisplays, nextGenDisplaysGoal)
                 .decimals(0)
-                .build();
-
-        Gauge retailGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(100)
-                .unit("Retail")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
+                .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         Tile retailPercent = TileBuilder.create()
-                .prefSize(384,440 )
-                .roundedCorners(true)
-                .skinType(Tile.SkinType.CUSTOM)
+                .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .graphic(retailGauge)
+                .unit("\u0025")
+                .animated(true)
+                .value(50.0)
                 .build();
 
         //---------------------------------Creating Animations for Graphs------------------------------------------
@@ -725,6 +714,22 @@ public class Main extends Application
         peripherals.setAnimationDuration(2);
         optic.setAnimated(true);
         optic.setAnimationDuration(2);
+
+        posPercent.setAnimated(true);
+        posPercent.setAnimationDuration(2);
+        serversPercent.setAnimated(true);
+        serversPercent.setAnimationDuration(2);
+        retailPercent.setAnimated(true);
+        retailPercent.setAnimationDuration(2);
+        periphPercent.setAnimated(true);
+        periphPercent.setAnimationDuration(2);
+        opticPercent.setAnimated(true);
+        opticPercent.setAnimationDuration(2);
+
+        //---------------------------------Creating Color Changes for Percentage Goals----------------------------------
+
+
+
 
         //---------------------------------------------------------------------------------------------------------
 
@@ -749,6 +754,13 @@ public class Main extends Application
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                System.exit(0);
+            }
+        });
     }
 }
 
