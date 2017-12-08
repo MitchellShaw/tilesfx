@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
  */
 public class Wan implements TileColor {
     public static Color RED           = Color.web("#d57565");
+    public static Color WHITE         = Color.web("#FFFFFF");
+    public static Color GOLD          = Color.web("#D4AF37");
     public static Color ORANGE_RED    = Color.web("#d59a65");
     public static Color ORANGE        = Color.web("#d5b065");
     public static Color YELLOW_ORANGE = Color.web("#d5c765");

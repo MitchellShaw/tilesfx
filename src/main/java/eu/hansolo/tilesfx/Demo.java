@@ -215,10 +215,10 @@ public class Demo extends Application {
         //darkSky.update();
 
         // BarChart Items
-        barChartItem1 = new BarChartItem("Gerrit", 47, Tile.BLUE);
-        barChartItem2 = new BarChartItem("Sandra", 43, Tile.RED);
-        barChartItem3 = new BarChartItem("Lilli", 12, Tile.GREEN);
-        barChartItem4 = new BarChartItem("Anton", 8, Tile.ORANGE);
+       // barChartItem1 = new BarChartItem("Gerrit", 47, Tile.BLUE);
+       // barChartItem2 = new BarChartItem("Sandra", 43, Tile.RED);
+       // barChartItem3 = new BarChartItem("Lilli", 12, Tile.GREEN);
+      // barChartItem4 = new BarChartItem("Anton", 8, Tile.ORANGE);
 
         barChartItem1.setFormatString("%.1f kWh");
 

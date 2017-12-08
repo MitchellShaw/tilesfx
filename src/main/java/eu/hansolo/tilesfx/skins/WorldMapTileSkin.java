@@ -198,7 +198,7 @@ public class WorldMapTileSkin extends TileSkin {
         super.registerListeners();
         countryPaths.forEach((name , pathList) -> {
             Country country = Country.valueOf(name);
-            EventHandler<MouseEvent> clickHandler = e -> tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, new ChartData(country.getName(), country.getValue(), country.getColor())));
+            EventHandler<MouseEvent> clickHandler = e -> tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, new ChartData(country.getName(), country.getValue(),0, country.getColor())));
             pathList.forEach(path -> {
                 handlerMap.put(path, clickHandler);
                 path.addEventHandler(MouseEvent.MOUSE_PRESSED, clickHandler);

@@ -44,7 +44,7 @@ public class Tool {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
-        Document document = db.parse(new File("\\\\SUSMID8000\\D\\Metrics Dashboard\\info.xml"));
+        Document document = db.parse(new File("\\\\SUSMID8000\\D\\Metrics Dashboard\\info2.xml"));
 
 
         //---------------------------------Hosp Reader----------------------------------------------------

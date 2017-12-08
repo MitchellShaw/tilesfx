@@ -605,7 +605,7 @@ public class SunburstChart extends Region {
             List<TreeNode> treeNodeList = levelMap.get(level);
             treeNodeList.stream()
                         .filter(node -> node.getChildren().isEmpty())
-                        .forEach(node ->node.addNode(new TreeNode(new ChartData("", 0, Color.TRANSPARENT), node)));
+                        .forEach(node ->node.addNode(new TreeNode(new ChartData("", 0, 0, Color.TRANSPARENT), node)));
         }
     }
 

@@ -72,7 +72,7 @@ public class BarChartTileSkin extends TileSkin {
             EventHandler<MouseEvent> clickHandler = e -> tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, item.getChartData()));
             handlerMap.put(item, clickHandler);
             item.addEventHandler(MouseEvent.MOUSE_PRESSED, clickHandler);
-            item.setMaxValue(tile.getMaxValue());
+            item.setMaxValue(item.getMaxValue());
             if (null == item.getFormatString() || item.getFormatString().isEmpty()) {
                 item.setFormatString(formatString);
             }
@@ -153,13 +153,12 @@ public class BarChartTileSkin extends TileSkin {
             List<BarChartItem> items     = tile.getBarChartItems();
             int                noOfItems = items.size();
             if (noOfItems == 0) return;
-            double maxValue = tile.getMaxValue();
             double maxY     = height - size * 0.25;
             for (int i = 0 ; i < noOfItems ; i++) {
                 BarChartItem item = items.get(i);
-                double y = i * 0.175 * size; //size * 0.18 + i * 0.175 * size;
+                double maxValue = item.getMaxValue();
+                double y = i * 0.24 * size; //size * 0.18 + i * 0.175 * size;
                 if (y < maxY) {
-                    item.setMaxValue(maxValue);
                     item.setManaged(true);
                     item.setVisible(true);
                     item.relocate(0, y);
@@ -221,6 +220,7 @@ public class BarChartTileSkin extends TileSkin {
         tile.getBarChartItems().forEach(item -> {
             item.setNameColor(tile.getTextColor());
             item.setValueColor(tile.getValueColor());
+            item.setMaxValueColor(tile.getValueColor());
         });
 
         resizeDynamicText();
