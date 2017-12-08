@@ -252,6 +252,8 @@ public class Tile extends Control {
     private              ObjectProperty<Pos>                           descriptionAlignment;
     private              String                                        _unit;
     private              StringProperty                                unit;
+    private              String                                        _subText;
+    private              StringProperty                                subText;
     private              String                                        oldFlipText;
     private              String                                        _flipText;
     private              StringProperty                                flipText;
@@ -1152,6 +1154,29 @@ public class Tile extends Control {
         }
         return unit;
     }
+    public String getSubText(){return null == subText ? _subText : subText.get();}
+
+    public void setSubText(final String SUB_TEXT) {
+        if (null == subText) {
+            _subText = SUB_TEXT;
+            fireTileEvent(VISIBILITY_EVENT);
+            fireTileEvent(REDRAW_EVENT);
+        } else {
+            subText.set(SUB_TEXT);
+        }
+    }
+    public StringProperty subTextProperty() {
+        if (null == subText) {
+            subText  = new StringPropertyBase(_subText) {
+                @Override protected void invalidated() { fireTileEvent(VISIBILITY_EVENT); }
+                @Override public Object getBean() { return Tile.this; }
+                @Override public String getName() { return "subText"; }
+            };
+            _subText = null;
+        }
+        return subText;
+    }
+
 
     /**
      * Returns the text that will be used to visualized the FlipTileSkin

@@ -137,7 +137,7 @@ public class Tool {
                 "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
                 "\n" +
                 "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "AND (Item.ItemID Like '7734-8___-0000' or Item.ItemID LIKE '774[3-5]-8___-0000' or Item.ItemID Like '7761-8___-0000' or Item.ItemID Like '7791-8___-0000')\n" +
+                "AND (Item.ItemID Like '7734%' or Item.ItemID LIKE '774[3-5]%' or Item.ItemID Like '7761%' or Item.ItemID Like '7791%')\n" +
                 "\n" +
                 "\tORDER BY ItemID";
 
@@ -685,8 +685,8 @@ public class Tool {
                 "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
                 "\n" +
                 "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "                and (Item.ItemID like '5938-8___-0000' or Item.ItemID like '5943-8___-0000' or Item.ItemID like '5967-8___-0000' or Item.ItemID like '1635-8___-0000' or Item.ItemID like '1640-8___-0000' or Item.ItemID like '1641-8___-0000' \n" +
-                "                or Item.ItemID like '1642-8___-0000' or Item.ItemID like '1924-8___-0000' or childitem.ItemID = '497-0510398') \n" +
+                "                and (Item.ItemID like '5938%' or Item.ItemID like '5943%' or Item.ItemID like '5967%' or Item.ItemID like '1635%' or Item.ItemID like '1640%' or Item.ItemID like '1641%' \n" +
+                "                or Item.ItemID like '1642%' or Item.ItemID like '1924%' or childitem.ItemID = '497-0510398') \n" +
                 "\n" +
                 "\t\t\t\t--case \n" +
                 "\t\t\t\t--when ItemID like '7752%' or ItemID like '7753%' or ItemID like '7754%' or ItemID like '7756%' \n" +

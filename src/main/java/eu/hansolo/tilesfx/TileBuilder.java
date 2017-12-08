@@ -156,6 +156,11 @@ public class TileBuilder<B extends TileBuilder<B>> {
         return (B)this;
     }
 
+    public final B subText(final String SUBTEXT) {
+        properties.put("subText", new SimpleStringProperty(SUBTEXT));
+        return (B)this;
+    }
+
     public final B duration(final LocalTime DURATION) {
         properties.put("duration", new SimpleObjectProperty(DURATION));
         return (B)this;
@@ -931,7 +936,6 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 case SMOOTHED_CHART:
                     break;
                 case BAR_CHART:
-                    CONTROL.setAutoScale(true);
                     break;
                 case DOUBLE_CHART:
                     break;
@@ -1206,6 +1210,8 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 CONTROL.setDescriptionAlignment(((ObjectProperty<Pos>) properties.get(key)).get());
             } else if("unit".equals(key)) {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
+            } else if("subText".equals(key)) {
+                CONTROL.setSubText(((StringProperty) properties.get(key)).get());
             } else if ("selected".equals(key)) {
                 CONTROL.setActive(((BooleanProperty) properties.get(key)).get());
             } else if("averagingEnabled".equals(key)) {

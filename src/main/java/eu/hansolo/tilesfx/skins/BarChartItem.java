@@ -177,7 +177,7 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
     public void setName(final String NAME) { chartData.setName(NAME); }
 
     public double getValue() { return chartData.getValue(); }
-    public void setValue(final double VALUE) { chartData.setValue(VALUE); }
+    public void setValue(final double VALUE) { updateBar(VALUE,maxValue);chartData.setValue(VALUE); }
 
     public Color getNameColor() { return nameColor.get(); }
     public void setNameColor(final Color COLOR) { nameColor.set(COLOR); }
@@ -244,7 +244,6 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
         valueText.setX((parentWidth - size * 0.05) - valueText.getLayoutBounds().getWidth());
         maxValueText.setText(String.format(locale, formatString, MAX_VALUE));
         maxValueText.setX((parentWidth - size * 0.05) - maxValueText.getLayoutBounds().getWidth());
-        bar.setWidth(clamp(0, (parentWidth - size * 0.15), VALUE));
         bar.setFill(getBarColor());
     }
 
