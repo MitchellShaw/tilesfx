@@ -5,18 +5,28 @@ import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.MapTool;
 import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Tool;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -24,6 +34,8 @@ import javafx.util.Duration;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -290,7 +302,7 @@ public class Main extends Application
         //---------------------------------Variables for Tiles----------------------------------------------------------
         FlowPane flowPane = new FlowPane();
         FlowPane flowPaneTest = new FlowPane();
-         goalTool = new GoalTool();
+        goalTool = new GoalTool();
 
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
         Tool dataBaseTool = new Tool();
@@ -321,14 +333,7 @@ public class Main extends Application
         mediaPlayerProdList.add("1656");
         mediaPlayerProdList.add("1930");
 
-        //---------------------------------Scheduled Executors for Test Variables---------------------------------------
-
-        //---------------------------------Scheduled Executors for Stage Variables--------------------------------------
-
-        //---------------------------------Scheduled Executors for Document Variables and Goal Set----------------------
-
-
-        //---------------------------------Creating the Bar Chart Items for POS-----------------------------------------
+        //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
         BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
@@ -411,9 +416,7 @@ public class Main extends Application
         BarChartItem nextGenDisplaysTest = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
         BarChartItem nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
 
-        //---------------------------------Scheduled Service for Updating Bars------------------------------------------
-        //---------------------------------Scheduled Executors for Build Variables--------------------------------------
-
+        //---------------------------------Scheduled Service for All Updates--------------------------------------------
         ScheduledService buildVariables = new ScheduledService() {
             @Override
             protected Task createTask() {
@@ -910,7 +913,7 @@ public class Main extends Application
                 };
             }
         };
-        //---------------------------------Creating the Tiles for POS---------------------------------------------------
+        //---------------------------------Creating the Tiles-----------------------------------------------------------
         pos = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Point of Sales Build")
@@ -1128,7 +1131,7 @@ public class Main extends Application
                 .build();
 
         //---------------------------------Creating Animations for Graphs-----------------------------------------------
-         pos.setAnimated(true);
+        pos.setAnimated(true);
         pos.setAnimationDuration(3000);
         servers.setAnimated(true);
         servers.setAnimationDuration(3000);
@@ -1172,9 +1175,6 @@ public class Main extends Application
         opticPercentTest.setAnimated(true);
         opticPercentTest.setAnimationDuration(3000);
 
-        //---------------------------------Scheduled Executor for Build & Percent Change--------------------------------
-
-
         //---------------------------------Platform Creation------------------------------------------------------------
         buildVariables.setPeriod(Duration.seconds(10));
 
@@ -1183,7 +1183,7 @@ public class Main extends Application
 
 
 
-        buildVariables.start();
+        //buildVariables.start();
 
 
         ArrayList<Tile> tileList = new ArrayList<>();
@@ -1209,6 +1209,10 @@ public class Main extends Application
         tileList.add(opticTest);
         tileList.add(opticPercentTest);
 
+        ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+
+        Bounds allScreenBounds = computeAllScreenBounds();
+
         for(int i =0;i<tileList.size();i++)
         {
             Tile temp = tileList.get(i);
@@ -1220,11 +1224,50 @@ public class Main extends Application
 
                 }
             });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    idle.setOnFinished(e ->
+                    {
+                        temp.setCursor(Cursor.NONE);
+                        temp.setBorderColor(Color.TRANSPARENT);
+                    });
+                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        temp.setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        temp.setBorderColor(Tile.GRAY);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Color.TRANSPARENT);
+                }
+            });
+            tileList.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    
+
+                }
+            });
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     temp.getScene().getWindow().setX(event.getScreenX() - x);
                     temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
                 }
             });
         }
@@ -1236,8 +1279,10 @@ public class Main extends Application
         flowPane.setPrefSize(1920,1080);
         flowPaneTest.setStyle("-fx-background-color: rgb(42, 42, 42)");
         flowPaneTest.setPrefSize(1920,1080);
+
         Scene scene = new Scene(flowPane);
         Scene scene1 = new Scene (flowPaneTest);
+
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -1246,55 +1291,39 @@ public class Main extends Application
                 {
                     primaryStage.setIconified(true);
                 }
-                if(event.getCode() == KeyCode.F5)
-                {
-                    primaryStage.setMaximized(true);
-                    primaryStage.setFullScreenExitHint("");
-                }
-                if(event.getCode() == KeyCode.RIGHT)
-                {
-                    if(primaryStage.isMaximized())
+                if(event.getCode() == KeyCode.F5) {
+                    if(screens.size() == 1)
                     {
-                        flag = true;
+                        primaryStage.setX(allScreenBounds.getMinX());
+                        primaryStage.setY(allScreenBounds.getMinY());
                     }
-                    else{
-                        flag = false;
-                    }
-                    primaryStage.setScene(scene1);
+                    if (screens.size() == 2) {
 
-                    if(flag = true)
+                        if (primaryStage.getX() < 0) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        } else {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    } else
                     {
-                        primaryStage.setMaximized(true);
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX()+(primaryStage.getWidth()/2))
+                        {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if(primaryStage.getX() > allScreenBounds.getMinX()+(primaryStage.getWidth()/2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5*(primaryStage.getWidth())))
+                        {
+                            primaryStage.setX(allScreenBounds.getMinX()+primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if(primaryStage.getX() > (allScreenBounds.getMaxX()-(primaryStage.getWidth()/2)-(primaryStage.getWidth())))
+                        {
+                            primaryStage.setX(allScreenBounds.getMaxX()-primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
                     }
-                }
-            }
-        });
-        scene1.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.F4)
-                {
-                    primaryStage.setIconified(true);
-                }
-                if(event.getCode() == KeyCode.F5)
-                {
-                    primaryStage.setMaximized(true);
-                }
-                if(event.getCode() == KeyCode.LEFT)
-                {
-                    if(primaryStage.isMaximized())
-                    {
-                        flag = true;
-                    }
-                    else{
-                        flag = false;
-                    }
-                    primaryStage.setScene(scene);
-                    if(flag = true)
-                    {
-                        primaryStage.setMaximized(true);
-                    }
-
                 }
             }
         });
@@ -1309,6 +1338,29 @@ public class Main extends Application
             }
         });
 
+    }
+
+    private Bounds computeAllScreenBounds() {
+        double minX = Double.POSITIVE_INFINITY ;
+        double minY = Double.POSITIVE_INFINITY ;
+        double maxX = Double.NEGATIVE_INFINITY ;
+        double maxY = Double.NEGATIVE_INFINITY ;
+        for (Screen screen : Screen.getScreens()) {
+            Rectangle2D screenBounds = screen.getBounds();
+            if (screenBounds.getMinX() < minX) {
+                minX = screenBounds.getMinX();
+            }
+            if (screenBounds.getMinY() < minY) {
+                minY = screenBounds.getMinY() ;
+            }
+            if (screenBounds.getMaxX() > maxX) {
+                maxX = screenBounds.getMaxX();
+            }
+            if (screenBounds.getMaxY() > maxY) {
+                maxY = screenBounds.getMaxY() ;
+            }
+        }
+        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
     }
 }
 
