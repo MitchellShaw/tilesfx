@@ -7,6 +7,8 @@ import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -322,134 +324,125 @@ public class Main extends Application
         mediaPlayerProdList.add("1930");
 
         //---------------------------------Scheduled Executors for Build Variables--------------------------------------
-        final CountDownLatch buildLatch = new CountDownLatch(1);
-
         System.out.println("Begin Build Queries.\n");
-        executorService.scheduleAtFixedRate(() ->
-        {
-            try
-            {
-                System.out.println("Running Build Block.\n");
 
-                //---------------------------------Hosp Build-----------------------------------------------------------------------
-                posBuildMap = dataBaseTool.hospBuildDataBase();
+        ScheduledService buildVariables = new ScheduledService() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        System.out.println("Running Build Block.\n");
 
-                p1532CurrentBuild = mapTool.getCurrentSingleValue("7734",posBuildMap);
-                p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743",posBuildMap);
-                p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
-                t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744",posBuildMap);
+                        //---------------------------------Hosp Build---------------------------------------------------
+                        posBuildMap = dataBaseTool.hospBuildDataBase();
 
-                //---------------------------------Retail Build-----------------------------------------------------------------------
-                retailBuildMap = dataBaseTool.retailBuildDataBase();
+                        p1532CurrentBuild = mapTool.getCurrentSingleValue("7734",posBuildMap);
+                        p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743",posBuildMap);
+                        p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
+                        t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744",posBuildMap);
 
-                xr7CurrentBuild = mapTool.getCurrentSingleValue("7702",retailBuildMap);
-                xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703",retailBuildMap);
-                xr5CurrentBuild = mapTool.getCurrentSingleValue("7701",retailBuildMap);
-                nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
+                        //---------------------------------Retail Build-------------------------------------------------
+                        retailBuildMap = dataBaseTool.retailBuildDataBase();
 
-                //---------------------------------Servers Build-----------------------------------------------------------------------
-                serversBuildMap = dataBaseTool.serversBuildDataBase();
+                        xr7CurrentBuild = mapTool.getCurrentSingleValue("7702",retailBuildMap);
+                        xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703",retailBuildMap);
+                        xr5CurrentBuild = mapTool.getCurrentSingleValue("7701",retailBuildMap);
+                        nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
 
-                mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
-                n3000CurrentBuild = mapTool.getCurrentSingleValue("1657",serversBuildMap);
-                s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
+                        //---------------------------------Servers Build------------------------------------------------
+                        serversBuildMap = dataBaseTool.serversBuildDataBase();
 
-                //---------------------------------Periph Build-----------------------------------------------------------------------
-                periphBuildMap = dataBaseTool.periphBuildDataBase();
+                        mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
+                        n3000CurrentBuild = mapTool.getCurrentSingleValue("1657",serversBuildMap);
+                        s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
 
-                kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924",periphBuildMap);
-                kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
-                bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635",periphBuildMap);
-                pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
+                        //---------------------------------Periph Build-------------------------------------------------
+                        periphBuildMap = dataBaseTool.periphBuildDataBase();
 
-                //---------------------------------Optic Build----------------------------------------------------------------------
-                opticBuildMap = dataBaseTool.opticBuildDataBase();
-                optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
-                optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
-                kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
+                        kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924",periphBuildMap);
+                        kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
+                        bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635",periphBuildMap);
+                        pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
 
-                buildLatch.countDown();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                        //---------------------------------Optic Build--------------------------------------------------
+                        opticBuildMap = dataBaseTool.opticBuildDataBase();
+                        optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
+                        optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
+                        kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
+                        return null;
+                    }
+                };
             }
-        }, 0, 30, TimeUnit.SECONDS);
-        buildLatch.await();
+        };
 
         //---------------------------------Scheduled Executors for Test Variables---------------------------------------
-        final CountDownLatch testLatch = new CountDownLatch(1);
-
         System.out.println("\nBegin Test Queries.\n");
-        executorService.scheduleAtFixedRate(() ->
-        {
-            try
-            {
-                System.out.println("Running Test Block.\n");
-                //---------------------------------Hosp Test-----------------------------------------------------------------------
-                posTestMap = dataBaseTool.hospTestDataBase();
 
-                p1532CurrentTest = mapTool.getCurrentSingleValue("7734", posTestMap);
-                p1x30CurrentTest = mapTool.getCurrentSingleValue("7743", posTestMap);
-                p1x35CurrentTest = mapTool.getCurrentGroupValue(p1x35ProdList, posTestMap);
-                t1000sCurrentTest = mapTool.getCurrentSingleValue("7744", posTestMap);
+        ScheduledService testVariables = new ScheduledService() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        System.out.println("Running Test Block.\n");
+                        //---------------------------------Hosp Test-----------------------------------------------------------------------
+                        posTestMap = dataBaseTool.hospTestDataBase();
 
-                //---------------------------------Retail Test-----------------------------------------------------------------------
-                retailTestMap = dataBaseTool.retailTestDataBase();
+                        p1532CurrentTest = mapTool.getCurrentSingleValue("7734", posTestMap);
+                        p1x30CurrentTest = mapTool.getCurrentSingleValue("7743", posTestMap);
+                        p1x35CurrentTest = mapTool.getCurrentGroupValue(p1x35ProdList, posTestMap);
+                        t1000sCurrentTest = mapTool.getCurrentSingleValue("7744", posTestMap);
 
-                xr7CurrentTest = mapTool.getCurrentSingleValue("7702", retailTestMap);
-                xr7PlusCurrentTest = mapTool.getCurrentSingleValue("7703", retailTestMap);
-                xr5CurrentTest = mapTool.getCurrentSingleValue("7701", retailTestMap);
-                nextGenDisplayCurrentTest = mapTool.getCurrentGroupValue(nextGenProdList, retailTestMap);
+                        //---------------------------------Retail Test-----------------------------------------------------------------------
+                        retailTestMap = dataBaseTool.retailTestDataBase();
 
-                //---------------------------------Server Test-----------------------------------------------------------------------
-                serversTestMap = dataBaseTool.serversTestDataBase();
+                        xr7CurrentTest = mapTool.getCurrentSingleValue("7702", retailTestMap);
+                        xr7PlusCurrentTest = mapTool.getCurrentSingleValue("7703", retailTestMap);
+                        xr5CurrentTest = mapTool.getCurrentSingleValue("7701", retailTestMap);
+                        nextGenDisplayCurrentTest = mapTool.getCurrentGroupValue(nextGenProdList, retailTestMap);
 
-
-                mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversTestMap);
-                n3000CurrentTest = mapTool.getCurrentSingleValue("1657", serversTestMap);
-                s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList, serversTestMap);
-
-                //---------------------------------Periph Test-----------------------------------------------------------------------
-                periphTestMap = dataBaseTool.periphTestDataBase();
+                        //---------------------------------Server Test-----------------------------------------------------------------------
+                        serversTestMap = dataBaseTool.serversTestDataBase();
 
 
-                kiwi4sCurrentTest = mapTool.getCurrentSingleValue("1924", periphTestMap);
-                kiwi2XsCurrentTest = mapTool.getCurrentGroupValue(kiwi2XsProdList, periphTestMap);
-                bumpBarsCurrentTest = mapTool.getCurrentSingleValue("1635", periphTestMap);
-                pantherEPC4sCurrentTest = mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphTestMap);
+                        mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversTestMap);
+                        n3000CurrentTest = mapTool.getCurrentSingleValue("1657", serversTestMap);
+                        s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList, serversTestMap);
 
-                //---------------------------------Optic Test----------------------------------------------------------------------
-                opticTestMap = dataBaseTool.opticTestDataBase();
+                        //---------------------------------Periph Test-----------------------------------------------------------------------
+                        periphTestMap = dataBaseTool.periphTestDataBase();
 
 
-                optic5sCurrentTest = mapTool.getCurrentSingleValue("6001", opticTestMap);
-                optic12sCurrentTest = mapTool.getCurrentSingleValue("6002", opticTestMap);
-                kitsCurrentTest = mapTool.getCurrentSingleValue("6003", opticTestMap);
+                        kiwi4sCurrentTest = mapTool.getCurrentSingleValue("1924", periphTestMap);
+                        kiwi2XsCurrentTest = mapTool.getCurrentGroupValue(kiwi2XsProdList, periphTestMap);
+                        bumpBarsCurrentTest = mapTool.getCurrentSingleValue("1635", periphTestMap);
+                        pantherEPC4sCurrentTest = mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphTestMap);
 
-                testLatch.countDown();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                        //---------------------------------Optic Test----------------------------------------------------------------------
+                        opticTestMap = dataBaseTool.opticTestDataBase();
+
+
+                        optic5sCurrentTest = mapTool.getCurrentSingleValue("6001", opticTestMap);
+                        optic12sCurrentTest = mapTool.getCurrentSingleValue("6002", opticTestMap);
+                        kitsCurrentTest = mapTool.getCurrentSingleValue("6003", opticTestMap);
+                        return null;
+                    }
+                };
             }
+        };
 
-        }, 0, 30, TimeUnit.SECONDS);
-        testLatch.await();
+        //---------------------------------Scheduled Executors for Stage Variables--------------------------------------
 
-//      //---------------------------------Scheduled Executors for Stage Variables--------------------------------------
-//      final CountDownLatch stageLatch = new CountDownLatch(1);
-//
-//        System.out.println("\nBegin Stage Queries.\n");
-//        executorService.scheduleAtFixedRate(() ->
-//        {
-//            try
-//            {
-//                System.out.println("Running Stage Block.\n");
+        System.out.println("\nBegin Stage Queries.\n");
+
+        ScheduledService stageVariables = new ScheduledService() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        System.out.println("Running Stage Block.\n");
 //
 //                //---------------------------------Hosp Staging-----------------------------------------------------------------------
 //                posStageMap = dataBaseTool.hospStageDataBase();
@@ -481,131 +474,120 @@ public class Main extends Application
 //                kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphStageMap);
 //                bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635",periphStageMap);
 //                pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphStageMap);
-//
-//
-//                stageLatch.countDown();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }, 0, 300, TimeUnit.SECONDS);
-//        stageLatch.await();
+                        return null;
+                    }
+                };
+            }
+        };
 
         //---------------------------------Scheduled Executors for Document Variables and Goal Set----------------------
-        final CountDownLatch documentLatch = new CountDownLatch(1);
-
         System.out.println("\nBegin Document Read.\n");
-        executorService.scheduleAtFixedRate(() ->
-        {
-            try {
-                System.out.println("Running Doc Block.\n");
-                mapList = dataBaseTool.documentReader();
 
-                p1532GoalBuild = goalTool.getGoal(mapList.get(0),"7734");
-                p1x30GoalBuild = goalTool.getGoal(mapList.get(0),"7743");
-                p1x35GoalBuild = goalTool.getListGoal(mapList.get(0),p1x35ProdList);
-                t1000sGoalBuild = goalTool.getGoal(mapList.get(0),"7744");
+        ScheduledService docReader = new ScheduledService() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        System.out.println("Running Doc Block.\n");
+                        mapList = dataBaseTool.documentReader();
 
-                //---------------------------------Percent Calculation and Update for POS-------------------------------
-                posTotalGoalBuild = p1532GoalBuild + p1x30GoalBuild + p1x35GoalBuild + t1000sGoalBuild;
-                posTotalCurrentBuild = p1532CurrentBuild + p1x35CurrentBuild + p1x30CurrentBuild + t1000sCurrentBuild;
+                        p1532GoalBuild = goalTool.getGoal(mapList.get(0),"7734");
+                        p1x30GoalBuild = goalTool.getGoal(mapList.get(0),"7743");
+                        p1x35GoalBuild = goalTool.getListGoal(mapList.get(0),p1x35ProdList);
+                        t1000sGoalBuild = goalTool.getGoal(mapList.get(0),"7744");
 
-                posTotalCurrentTest = p1532CurrentTest+ p1x35CurrentTest + p1x30CurrentTest + t1000sCurrentTest;
+                        //---------------------------------Percent Calculation and Update for POS-------------------------------
+                        posTotalGoalBuild = p1532GoalBuild + p1x30GoalBuild + p1x35GoalBuild + t1000sGoalBuild;
+                        posTotalCurrentBuild = p1532CurrentBuild + p1x35CurrentBuild + p1x30CurrentBuild + t1000sCurrentBuild;
 
-                posTotalGoalStage = p1532GoalStage + p1x30GoalStage + p1x35GoalStage + t1000sGoalStage;
-                posTotalCurrentStage = p1532CurrentStage + p1x35CurrentStage + p1x30CurrentStage + t1000sCurrentStage;
+                        posTotalCurrentTest = p1532CurrentTest+ p1x35CurrentTest + p1x30CurrentTest + t1000sCurrentTest;
 
-                posPercentTotalBuild = goalTool.getPercentTotal(posTotalCurrentBuild,posTotalGoalBuild);
-                posPercentTotalTest = goalTool.getPercentTotal(posTotalCurrentTest,posTotalGoalBuild);
-                posPercentTotalStage = goalTool.getPercentTotal(posTotalCurrentStage ,posTotalGoalStage );
+                        posTotalGoalStage = p1532GoalStage + p1x30GoalStage + p1x35GoalStage + t1000sGoalStage;
+                        posTotalCurrentStage = p1532CurrentStage + p1x35CurrentStage + p1x30CurrentStage + t1000sCurrentStage;
 
-                //---------------------------------Retail Build---------------------------------------------------------
-                xr7GoalBuild = goalTool.getGoal(mapList.get(4),"7702");
-                xr7PlusGoalBuild = goalTool.getGoal(mapList.get(4),"7703");
-                xr5GoalBuild = goalTool.getGoal(mapList.get(4),"7701");
-                nextGenDisplayGoalsBuild = goalTool.getListGoal(mapList.get(4),nextGenProdList);
+                        posPercentTotalBuild = goalTool.getPercentTotal(posTotalCurrentBuild,posTotalGoalBuild);
+                        posPercentTotalTest = goalTool.getPercentTotal(posTotalCurrentTest,posTotalGoalBuild);
+                        posPercentTotalStage = goalTool.getPercentTotal(posTotalCurrentStage ,posTotalGoalStage );
 
-                //---------------------------------Percent Calculation and Update for Retail----------------------------
-                retailTotalGoalBuild = xr7GoalBuild + xr7PlusGoalBuild + xr5GoalBuild + nextGenDisplayGoalsBuild;
-                retailTotalCurrentBuild = xr7CurrentBuild + xr7PlusCurrentBuild + xr5CurrentBuild + nextGenDisplayCurrentBuild;
+                        //---------------------------------Retail Build---------------------------------------------------------
+                        xr7GoalBuild = goalTool.getGoal(mapList.get(4),"7702");
+                        xr7PlusGoalBuild = goalTool.getGoal(mapList.get(4),"7703");
+                        xr5GoalBuild = goalTool.getGoal(mapList.get(4),"7701");
+                        nextGenDisplayGoalsBuild = goalTool.getListGoal(mapList.get(4),nextGenProdList);
 
-                retailTotalCurrentTest = xr7CurrentTest+ xr7PlusCurrentTest + xr5CurrentTest + nextGenDisplayCurrentTest;
+                        //---------------------------------Percent Calculation and Update for Retail----------------------------
+                        retailTotalGoalBuild = xr7GoalBuild + xr7PlusGoalBuild + xr5GoalBuild + nextGenDisplayGoalsBuild;
+                        retailTotalCurrentBuild = xr7CurrentBuild + xr7PlusCurrentBuild + xr5CurrentBuild + nextGenDisplayCurrentBuild;
 
-                retailTotalGoalStage = xr7GoalStage + xr7PlusGoalStage + xr5GoalStage + nextGenDisplayGoalsStage;
-                retailTotalCurrentStage = xr7CurrentStage + xr7PlusCurrentStage + xr5CurrentStage + nextGenDisplayCurrentStage;
+                        retailTotalCurrentTest = xr7CurrentTest+ xr7PlusCurrentTest + xr5CurrentTest + nextGenDisplayCurrentTest;
 
-                retailPercentTotalBuild = goalTool.getPercentTotal(retailTotalCurrentBuild,retailTotalGoalBuild);
-                retailPercentTotalTest = goalTool.getPercentTotal(retailTotalCurrentTest,retailTotalGoalBuild);
-                retailPercentTotalStage = goalTool.getPercentTotal(retailTotalCurrentStage,retailTotalGoalStage);
+                        retailTotalGoalStage = xr7GoalStage + xr7PlusGoalStage + xr5GoalStage + nextGenDisplayGoalsStage;
+                        retailTotalCurrentStage = xr7CurrentStage + xr7PlusCurrentStage + xr5CurrentStage + nextGenDisplayCurrentStage;
 
-                //---------------------------------Servers Build--------------------------------------------------------
-                mediaPlayerGoalBuild = goalTool.getListGoal(mapList.get(1),mediaPlayerProdList);
-                n3000GoalBuild = goalTool.getGoal(mapList.get(1),"1657");
-                s500GoalBuild = goalTool.getGoal(mapList.get(1),"1611");
+                        retailPercentTotalBuild = goalTool.getPercentTotal(retailTotalCurrentBuild,retailTotalGoalBuild);
+                        retailPercentTotalTest = goalTool.getPercentTotal(retailTotalCurrentTest,retailTotalGoalBuild);
+                        retailPercentTotalStage = goalTool.getPercentTotal(retailTotalCurrentStage,retailTotalGoalStage);
 
-                //---------------------------------Percent Calculation and Update for Servers---------------------------
-                serverGoalTotalBuild = mediaPlayerGoalBuild + n3000GoalBuild + s500GoalBuild;
-                serverCurrentBuild = mediaPlayerCurrentBuild + n3000CurrentBuild + s500CurrentBuild;
+                        //---------------------------------Servers Build--------------------------------------------------------
+                        mediaPlayerGoalBuild = goalTool.getListGoal(mapList.get(1),mediaPlayerProdList);
+                        n3000GoalBuild = goalTool.getGoal(mapList.get(1),"1657");
+                        s500GoalBuild = goalTool.getGoal(mapList.get(1),"1611");
 
-                serverCurrentTest = mediaPlayerCurrentTest + n3000CurrentTest + s500CurrentTest;
+                        //---------------------------------Percent Calculation and Update for Servers---------------------------
+                        serverGoalTotalBuild = mediaPlayerGoalBuild + n3000GoalBuild + s500GoalBuild;
+                        serverCurrentBuild = mediaPlayerCurrentBuild + n3000CurrentBuild + s500CurrentBuild;
 
-                serverGoalTotalStage = mediaPlayerGoalStage + n3000GoalStage + s500GoalStage;
-                serverCurrentStage = mediaPlayerCurrentStage + n3000CurrentStage + s500CurrentStage;
+                        serverCurrentTest = mediaPlayerCurrentTest + n3000CurrentTest + s500CurrentTest;
 
-
-                serversPercentTotalBuild = goalTool.getPercentTotal(serverCurrentBuild,serverGoalTotalBuild);
-                serversPercentTotalTest = goalTool.getPercentTotal(serverCurrentTest,serverGoalTotalBuild);
-                serversPercentTotalStage = goalTool.getPercentTotal(serverCurrentStage,serverGoalTotalStage);
-
-                //---------------------------------Periph Build---------------------------------------------------------
-                kiwi4sGoalBuild = goalTool.getGoal(mapList.get(3),"1924");
-                kiwi2XsGoalBuild = goalTool.getListGoal(mapList.get(3),kiwi2XsProdList);
-                bumpBarsGoalBuild = goalTool.getGoal(mapList.get(3),"1635");
-                pantherEPC4sGoalBuild = goalTool.getListGoal(mapList.get(3),pantherEPC4sProdList);
-
-                //---------------------------------Percent Calculation and Update for Periph----------------------------
-                periphGoalTotalBuild = kiwi4sGoalBuild + kiwi2XsGoalBuild + bumpBarsGoalBuild + pantherEPC4sGoalBuild;
-                periphCurrentTotalBuild = kiwi4sCurrentBuild + kiwi2XsCurrentBuild + bumpBarsCurrentBuild + pantherEPC4sCurrentBuild;
-
-                periphCurrentTotalTest = kiwi4sCurrentTest + kiwi2XsCurrentTest + bumpBarsCurrentTest + pantherEPC4sCurrentTest;
-
-                periphGoalTotalStage = kiwi4sGoalStage  + kiwi2XsGoalStage  + bumpBarsGoalStage  + pantherEPC4sGoalStage ;
-                periphCurrentTotalStage  = kiwi4sCurrentStage  + kiwi2XsCurrentStage  + bumpBarsCurrentStage  + pantherEPC4sCurrentStage ;
+                        serverGoalTotalStage = mediaPlayerGoalStage + n3000GoalStage + s500GoalStage;
+                        serverCurrentStage = mediaPlayerCurrentStage + n3000CurrentStage + s500CurrentStage;
 
 
-                periphPercentTotalBuild = goalTool.getPercentTotal(periphCurrentTotalBuild,periphGoalTotalBuild);
-                periphPercentTotalTest = goalTool.getPercentTotal(periphCurrentTotalTest,periphGoalTotalBuild);
-                periphPercentTotalStage = goalTool.getPercentTotal(periphCurrentTotalStage,periphGoalTotalStage);
+                        serversPercentTotalBuild = goalTool.getPercentTotal(serverCurrentBuild,serverGoalTotalBuild);
+                        serversPercentTotalTest = goalTool.getPercentTotal(serverCurrentTest,serverGoalTotalBuild);
+                        serversPercentTotalStage = goalTool.getPercentTotal(serverCurrentStage,serverGoalTotalStage);
 
-                //---------------------------------Optic Build----------------------------------------------------------
-                optic5sGoalBuild = goalTool.getGoal(mapList.get(2),"6001");
-                optic12sGoalBuild = goalTool.getGoal(mapList.get(2),"6002");
-                kitsGoalBuild = goalTool.getGoal(mapList.get(2),"6003");
+                        //---------------------------------Periph Build---------------------------------------------------------
+                        kiwi4sGoalBuild = goalTool.getGoal(mapList.get(3),"1924");
+                        kiwi2XsGoalBuild = goalTool.getListGoal(mapList.get(3),kiwi2XsProdList);
+                        bumpBarsGoalBuild = goalTool.getGoal(mapList.get(3),"1635");
+                        pantherEPC4sGoalBuild = goalTool.getListGoal(mapList.get(3),pantherEPC4sProdList);
 
-                //---------------------------------Percent Calculation and Update for Optic-----------------------------
-                opticGoalTotalBuild = optic5sGoalBuild + optic12sGoalBuild + kitsGoalBuild;
-                opticCurrentTotalBuild = optic5sCurrentBuild + optic12sCurrentBuild + kitsCurrentBuild;
+                        //---------------------------------Percent Calculation and Update for Periph----------------------------
+                        periphGoalTotalBuild = kiwi4sGoalBuild + kiwi2XsGoalBuild + bumpBarsGoalBuild + pantherEPC4sGoalBuild;
+                        periphCurrentTotalBuild = kiwi4sCurrentBuild + kiwi2XsCurrentBuild + bumpBarsCurrentBuild + pantherEPC4sCurrentBuild;
 
-                opticCurrentTotalTest = optic5sCurrentTest + optic12sCurrentTest + kitsCurrentTest;
+                        periphCurrentTotalTest = kiwi4sCurrentTest + kiwi2XsCurrentTest + bumpBarsCurrentTest + pantherEPC4sCurrentTest;
+
+                        periphGoalTotalStage = kiwi4sGoalStage  + kiwi2XsGoalStage  + bumpBarsGoalStage  + pantherEPC4sGoalStage ;
+                        periphCurrentTotalStage  = kiwi4sCurrentStage  + kiwi2XsCurrentStage  + bumpBarsCurrentStage  + pantherEPC4sCurrentStage ;
 
 
-                opticPercentTotalBuild = goalTool.getPercentTotal(opticCurrentTotalBuild,opticGoalTotalBuild);
-                opticPercentTotalTest = goalTool.getPercentTotal(opticCurrentTotalTest,opticGoalTotalBuild);
+                        periphPercentTotalBuild = goalTool.getPercentTotal(periphCurrentTotalBuild,periphGoalTotalBuild);
+                        periphPercentTotalTest = goalTool.getPercentTotal(periphCurrentTotalTest,periphGoalTotalBuild);
+                        periphPercentTotalStage = goalTool.getPercentTotal(periphCurrentTotalStage,periphGoalTotalStage);
 
-                documentLatch.countDown();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
+                        //---------------------------------Optic Build----------------------------------------------------------
+                        optic5sGoalBuild = goalTool.getGoal(mapList.get(2),"6001");
+                        optic12sGoalBuild = goalTool.getGoal(mapList.get(2),"6002");
+                        kitsGoalBuild = goalTool.getGoal(mapList.get(2),"6003");
+
+                        //---------------------------------Percent Calculation and Update for Optic-----------------------------
+                        opticGoalTotalBuild = optic5sGoalBuild + optic12sGoalBuild + kitsGoalBuild;
+                        opticCurrentTotalBuild = optic5sCurrentBuild + optic12sCurrentBuild + kitsCurrentBuild;
+
+                        opticCurrentTotalTest = optic5sCurrentTest + optic12sCurrentTest + kitsCurrentTest;
+
+
+                        opticPercentTotalBuild = goalTool.getPercentTotal(opticCurrentTotalBuild,opticGoalTotalBuild);
+                        opticPercentTotalTest = goalTool.getPercentTotal(opticCurrentTotalTest,opticGoalTotalBuild);
+                        return null;
+                    }
+                };
             }
-
-        }, 0, 12, TimeUnit.SECONDS);
-        documentLatch.await();
-
+        };
+        
         //---------------------------------Creating the Bar Chart Items for POS-----------------------------------------
                 BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
