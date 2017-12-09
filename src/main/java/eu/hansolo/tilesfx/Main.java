@@ -20,6 +20,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -291,11 +292,8 @@ public class Main extends Application
         FlowPane flowPaneTest = new FlowPane();
          goalTool = new GoalTool();
 
-        //---------------------------------Scheduled Executors for Updating Variables-----------------------------------
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
-        Tool dataBaseTool = new Tool();
-
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
+        Tool dataBaseTool = new Tool();
         MapTool mapTool = new MapTool();
 
         //---------------------------------List Storage Area for Running Group Values ----------------------------------
@@ -323,8 +321,98 @@ public class Main extends Application
         mediaPlayerProdList.add("1656");
         mediaPlayerProdList.add("1930");
 
+        //---------------------------------Scheduled Executors for Test Variables---------------------------------------
+
+        //---------------------------------Scheduled Executors for Stage Variables--------------------------------------
+
+        //---------------------------------Scheduled Executors for Document Variables and Goal Set----------------------
+
+
+        //---------------------------------Creating the Bar Chart Items for POS-----------------------------------------
+        BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
+        BarChartItem p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
+        BarChartItem p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
+
+
+        BarChartItem p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
+        BarChartItem p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
+        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalBuild,  Tile.GREEN);
+
+
+        BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
+        BarChartItem p1x30DataTest = new BarChartItem("P1X30", p1x30CurrentTest, p1x30GoalBuild, Tile.BLUE);
+        BarChartItem p1x30DataStage = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
+
+
+        BarChartItem t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, t1000sGoalBuild, Tile.YELLOW);
+        BarChartItem t1000DataTest = new BarChartItem("T1000", t1000sCurrentTest, t1000sGoalBuild, Tile.YELLOW);
+        BarChartItem t1000DataStage = new BarChartItem("T1000", t1000sCurrentStage, t1000sGoalStage, Tile.YELLOW);
+
+        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        BarChartItem n3000Data = new BarChartItem("N3000", n3000CurrentBuild, n3000GoalBuild, Tile.RED);
+        BarChartItem n3000Test = new BarChartItem("N3000", n3000CurrentTest, n3000GoalBuild, Tile.RED);
+        BarChartItem n3000Stage = new BarChartItem("N3000", n3000CurrentStage, n3000GoalStage, Tile.RED);
+
+        BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, s500GoalBuild, Tile.BLUE);
+        BarChartItem s500DataTest = new BarChartItem("S500", s500CurrentTest, s500GoalBuild, Tile.BLUE);
+        BarChartItem s500DataStage = new BarChartItem("S500", s500CurrentStage, s500GoalStage, Tile.BLUE);
+
+
+        BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, mediaPlayerGoalBuild, Tile.GREEN);
+        BarChartItem mediaPlayerTest = new BarChartItem("Media Player", mediaPlayerCurrentTest, mediaPlayerGoalBuild, Tile.GREEN);
+        BarChartItem mediaPlayerStage = new BarChartItem("Media Player", mediaPlayerCurrentStage, mediaPlayerGoalStage, Tile.GREEN);
+
+        //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
+        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
+        BarChartItem kiwi4DataTest = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
+        BarChartItem kiwi4DataStage = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
+
+
+        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
+        BarChartItem kiwi25DataTest = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
+        BarChartItem kiwi25DataStage = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
+
+
+        BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
+        BarChartItem bumpBarDataTest = new BarChartItem("Bumpbar", bumpBarsCurrentTest, bumpBarsGoalBuild, Tile.GREEN);
+        BarChartItem bumpBarDataStage = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalBuild, Tile.GREEN);
+
+
+        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
+        BarChartItem pantherEPC4Test = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
+        BarChartItem pantherEPC4Stage = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
+
+        //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
+        BarChartItem optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
+        BarChartItem optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
+
+
+        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
+        BarChartItem optic5DataTest = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
+
+        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
+        BarChartItem opticKitsDataTest = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
+
+        //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
+        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
+        BarChartItem xr5DataTest = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
+        BarChartItem xr5DataStage = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
+
+        BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
+        BarChartItem xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
+        BarChartItem xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
+
+        BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
+        BarChartItem xr7PlusDataTest = new BarChartItem("7703", xr7PlusCurrentTest, xr7PlusGoalBuild, Tile.GREEN);
+        BarChartItem xr7PlusDataStage = new BarChartItem("7703", xr7PlusCurrentStage, xr7PlusGoalStage, Tile.GREEN);
+
+
+        BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        BarChartItem nextGenDisplaysTest = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        BarChartItem nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
+
+        //---------------------------------Scheduled Service for Updating Bars------------------------------------------
         //---------------------------------Scheduled Executors for Build Variables--------------------------------------
-        System.out.println("Begin Build Queries.\n");
 
         ScheduledService buildVariables = new ScheduledService() {
             @Override
@@ -332,6 +420,7 @@ public class Main extends Application
                 return new Task() {
                     @Override
                     protected Object call() throws Exception {
+
                         System.out.println("Running Build Block.\n");
 
                         //---------------------------------Hosp Build---------------------------------------------------
@@ -370,21 +459,7 @@ public class Main extends Application
                         optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
                         optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
                         kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
-                        return null;
-                    }
-                };
-            }
-        };
 
-        //---------------------------------Scheduled Executors for Test Variables---------------------------------------
-        System.out.println("\nBegin Test Queries.\n");
-
-        ScheduledService testVariables = new ScheduledService() {
-            @Override
-            protected Task createTask() {
-                return new Task() {
-                    @Override
-                    protected Object call() throws Exception {
                         System.out.println("Running Test Block.\n");
                         //---------------------------------Hosp Test-----------------------------------------------------------------------
                         posTestMap = dataBaseTool.hospTestDataBase();
@@ -426,22 +501,7 @@ public class Main extends Application
                         optic5sCurrentTest = mapTool.getCurrentSingleValue("6001", opticTestMap);
                         optic12sCurrentTest = mapTool.getCurrentSingleValue("6002", opticTestMap);
                         kitsCurrentTest = mapTool.getCurrentSingleValue("6003", opticTestMap);
-                        return null;
-                    }
-                };
-            }
-        };
 
-        //---------------------------------Scheduled Executors for Stage Variables--------------------------------------
-
-        System.out.println("\nBegin Stage Queries.\n");
-
-        ScheduledService stageVariables = new ScheduledService() {
-            @Override
-            protected Task createTask() {
-                return new Task() {
-                    @Override
-                    protected Object call() throws Exception {
                         System.out.println("Running Stage Block.\n");
 //
 //                //---------------------------------Hosp Staging-----------------------------------------------------------------------
@@ -474,21 +534,7 @@ public class Main extends Application
 //                kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphStageMap);
 //                bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635",periphStageMap);
 //                pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphStageMap);
-                        return null;
-                    }
-                };
-            }
-        };
 
-        //---------------------------------Scheduled Executors for Document Variables and Goal Set----------------------
-        System.out.println("\nBegin Document Read.\n");
-
-        ScheduledService docReader = new ScheduledService() {
-            @Override
-            protected Task createTask() {
-                return new Task() {
-                    @Override
-                    protected Object call() throws Exception {
                         System.out.println("Running Doc Block.\n");
                         mapList = dataBaseTool.documentReader();
 
@@ -582,164 +628,288 @@ public class Main extends Application
 
                         opticPercentTotalBuild = goalTool.getPercentTotal(opticCurrentTotalBuild,opticGoalTotalBuild);
                         opticPercentTotalTest = goalTool.getPercentTotal(opticCurrentTotalTest,opticGoalTotalBuild);
+
+                        p1x35Data.setValue(p1x35CurrentBuild);
+                        p1x35Data.setMaxValue(p1x35GoalBuild);
+                        p1x35DataTest.setValue(p1x35CurrentTest);
+                        p1x35DataTest.setMaxValue(p1x35GoalBuild);
+
+                        p1532Data.setValue(p1532CurrentBuild);
+                        p1532Data.setMaxValue(p1532GoalBuild);
+                        p1532DataTest.setValue(p1532CurrentTest);
+                        p1532DataTest.setMaxValue(p1532GoalBuild);
+
+                        p1x30Data.setValue(p1x30CurrentBuild);
+                        p1x30Data.setMaxValue(p1x30GoalBuild);
+                        p1x30DataTest.setValue(p1x30CurrentTest);
+                        p1x30DataTest.setMaxValue(p1x30GoalBuild);
+
+                        t1000Data.setValue(t1000sCurrentBuild);
+                        t1000Data.setMaxValue(t1000sGoalBuild);
+                        t1000DataTest.setValue(t1000sCurrentTest);
+                        t1000DataTest.setMaxValue(t1000sGoalBuild);
+
+                        //---------------------------------Update the Server Units------------------------------------------
+                        n3000Data.setValue(n3000CurrentBuild);
+                        n3000Data.setMaxValue(n3000GoalBuild);
+                        n3000Test.setValue(n3000CurrentTest);
+                        n3000Test.setMaxValue(n3000GoalBuild);
+
+                        s500Data.setValue(s500CurrentBuild);
+                        s500Data.setMaxValue(s500GoalBuild);
+                        s500DataTest.setValue(s500CurrentTest);
+                        s500DataTest.setMaxValue(s500GoalBuild);
+
+                        mediaPlayer.setValue(mediaPlayerCurrentBuild);
+                        mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
+                        mediaPlayerTest.setValue(mediaPlayerCurrentTest);
+                        mediaPlayerTest.setMaxValue(mediaPlayerGoalBuild);
+
+                        //---------------------------------Updating the Peripheral Units------------------------------------
+                        kiwi4Data.setValue(kiwi4sCurrentBuild);
+                        kiwi4Data.setMaxValue(kiwi4sGoalBuild);
+                        kiwi4DataTest.setValue(kiwi4sCurrentTest);
+                        kiwi4DataTest.setMaxValue(kiwi4sGoalBuild);
+
+                        kiwi25Data.setValue(kiwi2XsCurrentBuild);
+                        kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
+                        kiwi25DataTest.setValue(kiwi2XsCurrentTest);
+                        kiwi25DataTest.setMaxValue(kiwi2XsGoalBuild);
+
+                        bumpBarData.setValue(bumpBarsCurrentBuild);
+                        bumpBarData.setMaxValue(bumpBarsGoalBuild);
+                        bumpBarDataTest.setValue(bumpBarsCurrentTest);
+                        bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
+
+                        pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
+                        pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
+                        pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
+                        pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
+
+                        //---------------------------------Updating the Optic Units------------------------------------------
+                        optic5Data.setValue(optic5sCurrentBuild);
+                        optic5Data.setMaxValue(optic5sGoalBuild);
+                        optic5DataTest.setValue(optic5sCurrentTest);
+                        optic5DataTest.setMaxValue(optic5sGoalBuild);
+
+                        optic12Data.setValue(optic12sCurrentBuild);
+                        optic12Data.setMaxValue(optic12sGoalBuild);
+                        optic12DataTest.setValue(optic12sCurrentTest);
+                        optic12DataTest.setMaxValue(optic12sGoalBuild);
+
+                        opticKitsData.setValue(kitsCurrentBuild);
+                        opticKitsData.setMaxValue(kitsGoalBuild);
+                        opticKitsDataTest.setValue(kitsCurrentTest);
+                        opticKitsDataTest.setMaxValue(kitsGoalBuild);
+
+                        //---------------------------------Updating the Retail Units----------------------------------------
+                        xr5Data.setValue(xr5CurrentBuild);
+                        xr5Data.setMaxValue(xr5GoalBuild);
+                        xr5DataTest.setValue(xr5CurrentTest);
+                        xr5DataTest.setMaxValue(xr5GoalBuild);
+
+                        xr7Data.setValue(xr7CurrentBuild);
+                        xr7Data.setMaxValue(xr7GoalBuild);
+                        xr7DataTest.setValue(xr7CurrentTest);
+                        xr7DataTest.setMaxValue(xr7GoalBuild);
+
+                        xr7PlusData.setValue(xr7PlusCurrentBuild);
+                        xr7PlusData.setMaxValue(xr7PlusGoalBuild);
+                        xr7PlusDataTest.setValue(xr7PlusCurrentTest);
+                        xr7PlusDataTest.setMaxValue(xr7PlusGoalBuild);
+
+                        nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
+                        nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
+                        nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
+                        nextGenDisplaysTest.setMaxValue(nextGenDisplayGoalsBuild);
+
+                        //---------------------------------Creating Color Changes for POS Dial------------------------------------------
+                        posPercent.setValue(posPercentTotalBuild);
+                        posPercentTest.setValue(posPercentTotalTest);
+
+
+                        if(Double.compare(posPercentTotalBuild,60) < 0)
+                        {
+                            posPercent.setBarColor(Tile.RED);
+                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                        }
+                        if(Double.compare(posPercentTotalBuild,90) < 0 && Double.compare(posPercentTotalBuild ,60) > 0)
+                        {
+                            posPercent.setBarColor(Tile.YELLOW);
+                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                        }
+                        if(Double.compare(posPercentTotalBuild,90) > 0)
+                        {
+                            posPercent.setBarColor(Tile.GREEN);
+                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                        }
+
+
+                        if(Double.compare(posPercentTotalTest,60) < 0)
+                        {
+                            posPercentTest.setBarColor(Tile.RED);
+                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
+                        }
+                        if(Double.compare(posPercentTotalTest,90) < 0 && Double.compare(posPercentTotalTest ,60) > 0)
+                        {
+                            posPercentTest.setBarColor(Tile.YELLOW);
+                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
+                        }
+                        if(Double.compare(posPercentTotalTest,90) > 0)
+                        {
+                            posPercentTest.setBarColor(Tile.GREEN);
+                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
+                        }
+
+                        //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
+                        serversPercent.setValue(serversPercentTotalBuild);
+                        serversPercentTest.setValue(serversPercentTotalTest);
+
+                        if(Double.compare(serversPercentTotalBuild,60) < 0)
+                        {
+                            serversPercent.setBarColor(Tile.RED);
+                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+                        if(Double.compare(serversPercentTotalBuild,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
+                        {
+                            serversPercent.setBarColor(Tile.YELLOW);
+                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+                        if(Double.compare(serversPercentTotalBuild,90) > 0)
+                        {
+                            serversPercent.setBarColor(Tile.GREEN);
+                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+
+                        if(Double.compare(serversPercentTotalTest,60) < 0)
+                        {
+                            serversPercentTest.setBarColor(Tile.RED);
+                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+                        if(Double.compare(serversPercentTotalTest,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
+                        {
+                            serversPercentTest.setBarColor(Tile.YELLOW);
+                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+                        if(Double.compare(serversPercentTotalTest,90) > 0)
+                        {
+                            serversPercentTest.setBarColor(Tile.GREEN);
+                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                        }
+
+                        //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
+                        periphPercent.setValue(periphPercentTotalBuild);
+                        periphPercentTest.setValue(periphPercentTotalTest);
+
+                        if(Double.compare(periphPercentTotalBuild,60) < 0)
+                        {
+                            periphPercent.setBarColor(Tile.RED);
+                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+                        if(Double.compare(periphPercentTotalBuild,90) < 0 && Double.compare(periphPercentTotalBuild ,60) > 0)
+                        {
+                            periphPercent.setBarColor(Tile.YELLOW);
+                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+                        if(Double.compare(periphPercentTotalBuild,90) > 0)
+                        {
+                            periphPercent.setBarColor(Tile.GREEN);
+                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+
+                        if(Double.compare(periphPercentTotalTest,60) < 0)
+                        {
+                            periphPercentTest.setBarColor(Tile.RED);
+                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+                        if(Double.compare(periphPercentTotalTest,90) < 0 && Double.compare(periphPercentTotalTest ,60) > 0)
+                        {
+                            periphPercentTest.setBarColor(Tile.YELLOW);
+                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+                        if(Double.compare(periphPercentTotalTest,90) > 0)
+                        {
+                            periphPercentTest.setBarColor(Tile.GREEN);
+                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                        }
+
+                        //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
+                        opticPercent.setValue(opticPercentTotalBuild);
+                        opticPercentTest.setValue(opticPercentTotalTest);
+
+                        if(Double.compare(opticPercentTotalBuild,60) < 0)
+                        {
+                            opticPercent.setBarColor(Tile.RED);
+                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+                        if(Double.compare(opticPercentTotalBuild,90) < 0 && Double.compare(opticPercentTotalBuild ,60) > 0)
+                        {
+                            opticPercent.setBarColor(Tile.YELLOW);
+                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+                        if(Double.compare(opticPercentTotalBuild,90) > 0)
+                        {
+                            opticPercent.setBarColor(Tile.GREEN);
+                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+
+
+                        if(Double.compare(opticPercentTotalTest,60) < 0)
+                        {
+                            opticPercentTest.setBarColor(Tile.RED);
+                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+                        if(Double.compare(opticPercentTotalTest,90) < 0 && Double.compare(opticPercentTotalTest ,60) > 0)
+                        {
+                            opticPercentTest.setBarColor(Tile.YELLOW);
+                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+                        if(Double.compare(opticPercentTotalTest,90) > 0)
+                        {
+                            opticPercentTest.setBarColor(Tile.GREEN);
+                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                        }
+
+                        //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
+                        retailPercent.setValue(retailPercentTotalBuild);
+                        retailPercentTest.setValue(retailPercentTotalTest);
+
+                        if(Double.compare(retailPercentTotalBuild,60) < 0)
+                        {
+                            retailPercent.setBarColor(Tile.RED);
+                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                        }
+                        if(Double.compare(retailPercentTotalBuild,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
+                        {
+                            retailPercent.setBarColor(Tile.YELLOW);
+                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                        }
+                        if(Double.compare(retailPercentTotalBuild,90) > 0)
+                        {
+                            retailPercent.setBarColor(Tile.GREEN);
+                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                        }
+
+
+                        if(Double.compare(retailPercentTotalTest,60) < 0)
+                        {
+                            retailPercentTest.setBarColor(Tile.RED);
+                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
+                        }
+                        if(Double.compare(retailPercentTotalTest,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
+                        {
+                            retailPercentTest.setBarColor(Tile.YELLOW);
+                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
+                        }
+                        if(Double.compare(retailPercentTotalTest,90) > 0) {
+                            retailPercentTest.setBarColor(Tile.GREEN);
+                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild));
+                        }
                         return null;
                     }
                 };
             }
         };
-        
-        //---------------------------------Creating the Bar Chart Items for POS-----------------------------------------
-                BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
-        BarChartItem p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
-        BarChartItem p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
-
-
-        BarChartItem p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalBuild,  Tile.GREEN);
-
-
-        BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
-        BarChartItem p1x30DataTest = new BarChartItem("P1X30", p1x30CurrentTest, p1x30GoalBuild, Tile.BLUE);
-        BarChartItem p1x30DataStage = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
-
-
-        BarChartItem t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, t1000sGoalBuild, Tile.YELLOW);
-        BarChartItem t1000DataTest = new BarChartItem("T1000", t1000sCurrentTest, t1000sGoalBuild, Tile.YELLOW);
-        BarChartItem t1000DataStage = new BarChartItem("T1000", t1000sCurrentStage, t1000sGoalStage, Tile.YELLOW);
-
-        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        BarChartItem n3000Data = new BarChartItem("N3000", n3000CurrentBuild, n3000GoalBuild, Tile.RED);
-        BarChartItem n3000Test = new BarChartItem("N3000", n3000CurrentTest, n3000GoalBuild, Tile.RED);
-        BarChartItem n3000Stage = new BarChartItem("N3000", n3000CurrentStage, n3000GoalStage, Tile.RED);
-
-        BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, s500GoalBuild, Tile.BLUE);
-        BarChartItem s500DataTest = new BarChartItem("S500", s500CurrentTest, s500GoalBuild, Tile.BLUE);
-        BarChartItem s500DataStage = new BarChartItem("S500", s500CurrentStage, s500GoalStage, Tile.BLUE);
-
-
-        BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, mediaPlayerGoalBuild, Tile.GREEN);
-        BarChartItem mediaPlayerTest = new BarChartItem("Media Player", mediaPlayerCurrentTest, mediaPlayerGoalBuild, Tile.GREEN);
-        BarChartItem mediaPlayerStage = new BarChartItem("Media Player", mediaPlayerCurrentStage, mediaPlayerGoalStage, Tile.GREEN);
-
-        //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
-        BarChartItem kiwi4DataTest = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
-        BarChartItem kiwi4DataStage = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
-
-
-        BarChartItem kiwi25Data = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
-        BarChartItem kiwi25DataTest = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
-        BarChartItem kiwi25DataStage = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
-
-
-        BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
-        BarChartItem bumpBarDataTest = new BarChartItem("Bumpbar", bumpBarsCurrentTest, bumpBarsGoalBuild, Tile.GREEN);
-        BarChartItem bumpBarDataStage = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalBuild, Tile.GREEN);
-
-
-        BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
-        BarChartItem pantherEPC4Test = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
-        BarChartItem pantherEPC4Stage = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
-
-        //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
-        BarChartItem optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
-        BarChartItem optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
-
-
-        BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
-        BarChartItem optic5DataTest = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
-
-        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
-        BarChartItem opticKitsDataTest = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
-
-        //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataTest = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataStage = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
-
-        BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
-
-        BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
-        BarChartItem xr7PlusDataTest = new BarChartItem("7703", xr7PlusCurrentTest, xr7PlusGoalBuild, Tile.GREEN);
-        BarChartItem xr7PlusDataStage = new BarChartItem("7703", xr7PlusCurrentStage, xr7PlusGoalStage, Tile.GREEN);
-
-
-        BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
-        BarChartItem nextGenDisplaysTest = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
-        BarChartItem nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
-
-        //---------------------------------Scheduled Service for Updating Bars------------------------------------------
-        final CountDownLatch updateLatch = new CountDownLatch(1);
-        executorService.scheduleAtFixedRate(() ->
-                {
-                    //---------------------------------Update the POS Units---------------------------------------------
-                    p1x35Data.setValue(p1x35CurrentBuild);
-                    p1x35Data.setMaxValue(p1x35GoalBuild);
-
-                    p1532Data.setValue(p1532CurrentBuild);
-                    p1532Data.setMaxValue(p1532GoalBuild);
-
-                    p1x30Data.setValue(p1x30CurrentBuild);
-                    p1x30Data.setMaxValue(p1x30GoalBuild);
-
-                    t1000Data.setValue(t1000sCurrentBuild);
-                    t1000Data.setMaxValue(t1000sGoalBuild);
-
-
-                    //---------------------------------Update the Server Units------------------------------------------
-                    n3000Data.setValue(n3000CurrentBuild);
-                    n3000Data.setMaxValue(n3000GoalBuild);
-
-                    s500Data.setValue(s500CurrentBuild);
-                    s500Data.setMaxValue(s500GoalBuild);
-
-                    mediaPlayer.setValue(mediaPlayerCurrentBuild);
-                    mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
-
-                    //---------------------------------Updating the Peripheral Units------------------------------------
-                    kiwi4Data.setValue(kiwi4sCurrentBuild);
-                    kiwi4Data.setMaxValue(kiwi4sGoalBuild);
-
-                    kiwi25Data.setValue(kiwi2XsCurrentBuild);
-                    kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
-
-                    bumpBarData.setValue(bumpBarsCurrentBuild);
-                    bumpBarData.setMaxValue(bumpBarsGoalBuild);
-
-                    pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
-                    pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
-
-                    //---------------------------------Updating the Optic Units------------------------------------------
-                    optic5Data.setValue(optic5sCurrentBuild);
-                    optic5Data.setMaxValue(optic5sGoalBuild);
-
-                    optic12Data.setValue(optic12sCurrentBuild);
-                    optic12Data.setMaxValue(optic12sGoalBuild);
-
-                    opticKitsData.setValue(kitsCurrentBuild);
-                    opticKitsData.setMaxValue(kitsGoalBuild);
-
-                    //---------------------------------Updating the Retail Units----------------------------------------
-                    xr5Data.setValue(xr5CurrentBuild);
-                    xr5Data.setMaxValue(xr5GoalBuild);
-
-                    xr7Data.setValue(xr7CurrentBuild);
-                    xr7Data.setMaxValue(xr7GoalBuild);
-
-                    xr7PlusData.setValue(xr7PlusCurrentBuild);
-                    xr7PlusData.setMaxValue(xr7PlusGoalBuild);
-
-                    nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
-                    nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
-
-                    updateLatch.countDown();
-                }, 0, 10, TimeUnit.SECONDS);
-
-        updateLatch.await();
-
         //---------------------------------Creating the Tiles for POS---------------------------------------------------
         pos = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -1003,256 +1173,19 @@ public class Main extends Application
         opticPercentTest.setAnimationDuration(3000);
 
         //---------------------------------Scheduled Executor for Build & Percent Change--------------------------------
-        final CountDownLatch percentLatch = new CountDownLatch(1);
-        executorService.scheduleAtFixedRate( () ->
-                {
-        p1x35Data.setValue(p1x35CurrentBuild);
-        p1x35DataTest.setValue(p1x35CurrentTest);
 
-        p1532Data.setValue(p1532CurrentBuild);
-        p1532DataTest.setValue(p1532CurrentTest);
-
-        p1x30Data.setValue(p1x30CurrentBuild);
-        p1x30DataTest.setValue(p1x30CurrentTest);
-
-        t1000Data.setValue(t1000sCurrentBuild);
-        t1000DataTest.setValue(t1000sCurrentTest);
-
-        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        n3000Data.setValue(n3000CurrentBuild);
-        n3000Test.setValue(n3000CurrentTest);
-
-        s500Data.setValue(s500CurrentBuild);
-        s500DataTest.setValue(s500CurrentTest);
-
-        mediaPlayer.setValue(mediaPlayerCurrentBuild);
-        mediaPlayerTest.setValue(mediaPlayerCurrentTest);
-
-        //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        kiwi4Data.setValue(kiwi4sCurrentBuild);
-        kiwi4DataTest.setValue(kiwi4sCurrentTest);
-
-        kiwi25Data.setValue(kiwi2XsCurrentBuild);
-        kiwi25DataTest.setValue(kiwi2XsCurrentTest);
-
-        bumpBarData.setValue(bumpBarsCurrentBuild);
-        bumpBarDataTest.setValue(bumpBarsCurrentTest);
-
-        pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
-        pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
-
-        //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
-        optic12Data.setValue(optic12sCurrentBuild);
-        optic12DataTest.setValue(optic12sCurrentTest);
-
-        optic5Data.setValue(optic5sCurrentBuild);
-        optic5DataTest.setValue(optic5sCurrentTest);
-
-        opticKitsData.setValue(kitsCurrentBuild);
-        opticKitsDataTest.setValue(kitsCurrentTest);
-
-        //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        xr5Data.setValue(xr5CurrentBuild);
-        xr5DataTest.setValue(xr5CurrentTest);
-
-        xr7Data.setValue(xr7CurrentBuild);
-        xr7DataTest.setValue(xr7CurrentTest);
-
-        xr7PlusData.setValue(xr7PlusCurrentBuild);
-        xr7PlusDataTest.setValue(xr7PlusCurrentTest);
-
-        nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
-        nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
-
-        //---------------------------------Creating Color Changes for POS Dial------------------------------------------
-        posPercent.setValue(posPercentTotalBuild);
-        posPercentTest.setValue(posPercentTotalTest);
-
-
-        if(Double.compare(posPercentTotalBuild,60) < 0)
-        {
-            posPercent.setBarColor(Tile.RED);
-            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-        }
-        if(Double.compare(posPercentTotalBuild,90) < 0 && Double.compare(posPercentTotalBuild ,60) > 0)
-        {
-            posPercent.setBarColor(Tile.YELLOW);
-            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-        }
-        if(Double.compare(posPercentTotalBuild,90) > 0)
-        {
-            posPercent.setBarColor(Tile.GREEN);
-            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-        }
-
-
-        if(Double.compare(posPercentTotalTest,60) < 0)
-        {
-            posPercentTest.setBarColor(Tile.RED);
-            posPercentTest.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
-        }
-        if(Double.compare(posPercentTotalTest,90) < 0 && Double.compare(posPercentTotalTest ,60) > 0)
-        {
-            posPercentTest.setBarColor(Tile.YELLOW);
-            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-        }
-        if(Double.compare(posPercentTotalTest,90) > 0)
-        {
-            posPercentTest.setBarColor(Tile.GREEN);
-            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-        }
-
-        //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
-        serversPercent.setValue(serversPercentTotalBuild);
-        serversPercentTest.setValue(serversPercentTotalTest);
-
-        if(Double.compare(serversPercentTotalBuild,60) < 0)
-        {
-            serversPercent.setBarColor(Tile.RED);
-            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-        if(Double.compare(serversPercentTotalBuild,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
-        {
-            serversPercent.setBarColor(Tile.YELLOW);
-            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-        if(Double.compare(serversPercentTotalBuild,90) > 0)
-        {
-            serversPercent.setBarColor(Tile.GREEN);
-            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-
-        if(Double.compare(serversPercentTotalTest,60) < 0)
-        {
-            serversPercentTest.setBarColor(Tile.RED);
-            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-        if(Double.compare(serversPercentTotalTest,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
-        {
-            serversPercentTest.setBarColor(Tile.YELLOW);
-            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-        if(Double.compare(serversPercentTotalTest,90) > 0)
-        {
-            serversPercentTest.setBarColor(Tile.GREEN);
-            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-        }
-
-        //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
-        periphPercent.setValue(periphPercentTotalBuild);
-        periphPercentTest.setValue(periphPercentTotalTest);
-
-        if(Double.compare(periphPercentTotalBuild,60) < 0)
-        {
-            periphPercent.setBarColor(Tile.RED);
-            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-        if(Double.compare(periphPercentTotalBuild,90) < 0 && Double.compare(periphPercentTotalBuild ,60) > 0)
-        {
-            periphPercent.setBarColor(Tile.YELLOW);
-            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-        if(Double.compare(periphPercentTotalBuild,90) > 0)
-        {
-            periphPercent.setBarColor(Tile.GREEN);
-            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-
-        if(Double.compare(periphPercentTotalTest,60) < 0)
-        {
-            periphPercentTest.setBarColor(Tile.RED);
-            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-        if(Double.compare(periphPercentTotalTest,90) < 0 && Double.compare(periphPercentTotalTest ,60) > 0)
-        {
-            periphPercentTest.setBarColor(Tile.YELLOW);
-            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-        if(Double.compare(periphPercentTotalTest,90) > 0)
-        {
-            periphPercentTest.setBarColor(Tile.GREEN);
-            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-        }
-
-        //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
-        opticPercent.setValue(opticPercentTotalBuild);
-        opticPercentTest.setValue(opticPercentTotalTest);
-
-        if(Double.compare(opticPercentTotalBuild,60) < 0)
-        {
-            opticPercent.setBarColor(Tile.RED);
-            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-        if(Double.compare(opticPercentTotalBuild,90) < 0 && Double.compare(opticPercentTotalBuild ,60) > 0)
-        {
-            opticPercent.setBarColor(Tile.YELLOW);
-            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-        if(Double.compare(opticPercentTotalBuild,90) > 0)
-        {
-            opticPercent.setBarColor(Tile.GREEN);
-            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-
-
-        if(Double.compare(opticPercentTotalTest,60) < 0)
-        {
-            opticPercentTest.setBarColor(Tile.RED);
-            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-        if(Double.compare(opticPercentTotalTest,90) < 0 && Double.compare(opticPercentTotalTest ,60) > 0)
-        {
-            opticPercentTest.setBarColor(Tile.YELLOW);
-            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-        if(Double.compare(opticPercentTotalTest,90) > 0)
-        {
-            opticPercentTest.setBarColor(Tile.GREEN);
-            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-        }
-
-        //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
-        retailPercent.setValue(retailPercentTotalBuild);
-        retailPercentTest.setValue(retailPercentTotalTest);
-
-         if(Double.compare(retailPercentTotalBuild,60) < 0)
-        {
-            retailPercent.setBarColor(Tile.RED);
-            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-        if(Double.compare(retailPercentTotalBuild,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
-        {
-            retailPercent.setBarColor(Tile.YELLOW);
-            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-        if(Double.compare(retailPercentTotalBuild,90) > 0)
-        {
-            retailPercent.setBarColor(Tile.GREEN);
-            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-
-
-        if(Double.compare(retailPercentTotalTest,60) < 0)
-        {
-            retailPercentTest.setBarColor(Tile.RED);
-            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-        if(Double.compare(retailPercentTotalTest,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
-        {
-            retailPercentTest.setBarColor(Tile.YELLOW);
-            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-        if(Double.compare(retailPercentTotalTest,90) > 0)
-        {
-            retailPercentTest.setBarColor(Tile.GREEN);
-            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-        }
-
-        percentLatch.countDown();
-        },0,12, TimeUnit.SECONDS);
-        percentLatch.await();
 
         //---------------------------------Platform Creation------------------------------------------------------------
+        buildVariables.setPeriod(Duration.seconds(10));
+
+
+        buildVariables.setRestartOnFailure(true);
+
+
+
+        buildVariables.start();
+
+
         ArrayList<Tile> tileList = new ArrayList<>();
         tileList.add(pos);
         tileList.add(posPercent);
