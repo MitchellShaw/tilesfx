@@ -79,13 +79,35 @@ public class Main extends Application
     Tile posStage;
     Tile serversStage;
     Tile peripheralsStage;
-    Tile opticStage;
     Tile retailStage;
     Tile posPercentStage;
     Tile serversPercentStage;
     Tile periphPercentStage;
-    Tile opticPercentStage;
     Tile retailPercentStage;
+
+    Tile posBuildFocused;
+    Tile posTestFocused;
+    Tile serverBuildFocused;
+    Tile serverTestFocused;
+    Tile periphBuildFocused;
+    Tile periphTestFocused;
+    Tile retailBuildFocused;
+    Tile retailTestFocused;
+    Tile opticBuildFocused;
+    Tile opticTestFocused;
+
+    Tile posPercentFocused;
+    Tile serversPercentFocused;
+    Tile periphPercentFocused;
+    Tile opticPercentFocused;
+    Tile retailPercentFocused;
+    Tile posPercentTestFocused;
+    Tile serversPercentTestFocused;
+    Tile periphPercentTestFocused;
+    Tile opticPercentTestFocused;
+    Tile retailPercentTestFocused;
+
+
 
     double x = 0;
     double y = 0;
@@ -294,14 +316,14 @@ public class Main extends Application
     //---------------------------------Variables for Map Creation for Document Reader---------------------------------
     ArrayList<HashMap<String,Integer>> mapList;
 
-    public static void main(String[] args) { launch(args); }
-
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         //---------------------------------Variables for Tiles----------------------------------------------------------
         FlowPane flowPane = new FlowPane();
         FlowPane flowPaneTest = new FlowPane();
+        FlowPane flowPaneStage = new FlowPane();
+        FlowPane flowPanePOSBuildOrTestFocus = new FlowPane();
         goalTool = new GoalTool();
 
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
@@ -335,86 +357,136 @@ public class Main extends Application
 
         //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
         BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
+        BarChartItem p1x35DataFocused = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
+        BarChartItem p1x35DataTestFocused = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
+        BarChartItem p1x35DataStageFocused = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
 
 
         BarChartItem p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
+        BarChartItem p1532DataFocused = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
         BarChartItem p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalBuild,  Tile.GREEN);
-
+        BarChartItem p1532DataTestFocused = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
+        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage,  Tile.GREEN);
+        BarChartItem p1532DataStageFocused = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage,  Tile.GREEN);
 
         BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
+        BarChartItem p1x30DataFocused = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
         BarChartItem p1x30DataTest = new BarChartItem("P1X30", p1x30CurrentTest, p1x30GoalBuild, Tile.BLUE);
+        BarChartItem p1x30DataTestFocused = new BarChartItem("P1X30", p1x30CurrentTest, p1x30GoalBuild, Tile.BLUE);
         BarChartItem p1x30DataStage = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
+        BarChartItem p1x30DataStageFocused = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
 
 
         BarChartItem t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, t1000sGoalBuild, Tile.YELLOW);
+        BarChartItem t1000DataFocused = new BarChartItem("T1000", t1000sCurrentBuild, t1000sGoalBuild, Tile.YELLOW);
         BarChartItem t1000DataTest = new BarChartItem("T1000", t1000sCurrentTest, t1000sGoalBuild, Tile.YELLOW);
+        BarChartItem t1000DataTestFocused = new BarChartItem("T1000", t1000sCurrentTest, t1000sGoalBuild, Tile.YELLOW);
         BarChartItem t1000DataStage = new BarChartItem("T1000", t1000sCurrentStage, t1000sGoalStage, Tile.YELLOW);
+        BarChartItem t1000DataStageFocused = new BarChartItem("T1000", t1000sCurrentStage, t1000sGoalStage, Tile.YELLOW);
 
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         BarChartItem n3000Data = new BarChartItem("N3000", n3000CurrentBuild, n3000GoalBuild, Tile.RED);
+        BarChartItem n3000DataFocused = new BarChartItem("N3000", n3000CurrentBuild, n3000GoalBuild, Tile.RED);
         BarChartItem n3000Test = new BarChartItem("N3000", n3000CurrentTest, n3000GoalBuild, Tile.RED);
+        BarChartItem n3000TestFocused = new BarChartItem("N3000", n3000CurrentTest, n3000GoalBuild, Tile.RED);
         BarChartItem n3000Stage = new BarChartItem("N3000", n3000CurrentStage, n3000GoalStage, Tile.RED);
+        BarChartItem n3000StageFocused = new BarChartItem("N3000", n3000CurrentStage, n3000GoalStage, Tile.RED);
 
         BarChartItem s500Data = new BarChartItem("S500", s500CurrentBuild, s500GoalBuild, Tile.BLUE);
+        BarChartItem s500DataFocused = new BarChartItem("S500", s500CurrentBuild, s500GoalBuild, Tile.BLUE);
         BarChartItem s500DataTest = new BarChartItem("S500", s500CurrentTest, s500GoalBuild, Tile.BLUE);
+        BarChartItem s500DataTestFocused = new BarChartItem("S500", s500CurrentTest, s500GoalBuild, Tile.BLUE);
         BarChartItem s500DataStage = new BarChartItem("S500", s500CurrentStage, s500GoalStage, Tile.BLUE);
+        BarChartItem s500DataStageFocused = new BarChartItem("S500", s500CurrentStage, s500GoalStage, Tile.BLUE);
 
 
         BarChartItem mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, mediaPlayerGoalBuild, Tile.GREEN);
+        BarChartItem mediaPlayerFocused = new BarChartItem("Media Player", mediaPlayerCurrentBuild, mediaPlayerGoalBuild, Tile.GREEN);
         BarChartItem mediaPlayerTest = new BarChartItem("Media Player", mediaPlayerCurrentTest, mediaPlayerGoalBuild, Tile.GREEN);
+        BarChartItem mediaPlayerTestFocused = new BarChartItem("Media Player", mediaPlayerCurrentTest, mediaPlayerGoalBuild, Tile.GREEN);
         BarChartItem mediaPlayerStage = new BarChartItem("Media Player", mediaPlayerCurrentStage, mediaPlayerGoalStage, Tile.GREEN);
+        BarChartItem mediaPlayerStageFocused = new BarChartItem("Media Player", mediaPlayerCurrentStage, mediaPlayerGoalStage, Tile.GREEN);
 
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
         BarChartItem kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
+        BarChartItem kiwi4DataFocused = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
         BarChartItem kiwi4DataTest = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
+        BarChartItem kiwi4DataTestFocused = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
         BarChartItem kiwi4DataStage = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
+        BarChartItem kiwi4DataStageFocused = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
 
 
         BarChartItem kiwi25Data = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
+        BarChartItem kiwi25DataFocused = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
         BarChartItem kiwi25DataTest = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
+        BarChartItem kiwi25DataTestFocused = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
         BarChartItem kiwi25DataStage = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
+        BarChartItem kiwi25DataStageFocused = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
 
 
         BarChartItem bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
+        BarChartItem bumpBarDataFocused = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
         BarChartItem bumpBarDataTest = new BarChartItem("Bumpbar", bumpBarsCurrentTest, bumpBarsGoalBuild, Tile.GREEN);
+        BarChartItem bumpBarDataTestFocused = new BarChartItem("Bumpbar", bumpBarsCurrentTest, bumpBarsGoalBuild, Tile.GREEN);
         BarChartItem bumpBarDataStage = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalBuild, Tile.GREEN);
+        BarChartItem bumpBarDataStageFocused = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalBuild, Tile.GREEN);
 
 
         BarChartItem pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
+        BarChartItem pantherEPC4DataFocused = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
         BarChartItem pantherEPC4Test = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
+        BarChartItem pantherEPC4TestFocused = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
         BarChartItem pantherEPC4Stage = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
+        BarChartItem pantherEPC4StageFocused = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
 
         //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
         BarChartItem optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
+        BarChartItem optic12DataFocused = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
         BarChartItem optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
+        BarChartItem optic12DataTestFocused = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
 
 
         BarChartItem optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
+        BarChartItem optic5DataFocused = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
         BarChartItem optic5DataTest = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
+        BarChartItem optic5DataTestFocused = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
 
         BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
+        BarChartItem opticKitsDataFocused = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
         BarChartItem opticKitsDataTest = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
+        BarChartItem opticKitsDataTestFocused = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
 
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
+        BarChartItem xr5DataFocused = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
         BarChartItem xr5DataTest = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
+        BarChartItem xr5DataTestFocused = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
         BarChartItem xr5DataStage = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
+        BarChartItem xr5DataStageFocused = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
 
         BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
+        BarChartItem xr7DataFocused = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
         BarChartItem xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
+        BarChartItem xr7DataTestFocused = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
         BarChartItem xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
+        BarChartItem xr7DataStageFocused = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
 
         BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
+        BarChartItem xr7PlusDataFocused = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
         BarChartItem xr7PlusDataTest = new BarChartItem("7703", xr7PlusCurrentTest, xr7PlusGoalBuild, Tile.GREEN);
+        BarChartItem xr7PlusDataTestFocused = new BarChartItem("7703", xr7PlusCurrentTest, xr7PlusGoalBuild, Tile.GREEN);
         BarChartItem xr7PlusDataStage = new BarChartItem("7703", xr7PlusCurrentStage, xr7PlusGoalStage, Tile.GREEN);
+        BarChartItem xr7PlusDataStageFocused = new BarChartItem("7703", xr7PlusCurrentStage, xr7PlusGoalStage, Tile.GREEN);
 
 
         BarChartItem nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        BarChartItem nextGenDisplaysFocused = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
         BarChartItem nextGenDisplaysTest = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        BarChartItem nextGenDisplaysTestFocused = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
         BarChartItem nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
+        BarChartItem nextGenDisplaysStageFocused = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
 
         //---------------------------------Scheduled Service for All Updates--------------------------------------------
         ScheduledService buildVariables = new ScheduledService() {
@@ -634,117 +706,197 @@ public class Main extends Application
 
                         p1x35Data.setValue(p1x35CurrentBuild);
                         p1x35Data.setMaxValue(p1x35GoalBuild);
+                        p1x35DataFocused.setValue(p1x35CurrentBuild);
+                        p1x35DataFocused.setMaxValue(p1x35GoalBuild);
                         p1x35DataTest.setValue(p1x35CurrentTest);
                         p1x35DataTest.setMaxValue(p1x35GoalBuild);
+                        p1x35DataTestFocused.setValue(p1x35CurrentTest);
+                        p1x35DataTestFocused.setMaxValue(p1x35GoalBuild);
 
                         p1532Data.setValue(p1532CurrentBuild);
                         p1532Data.setMaxValue(p1532GoalBuild);
                         p1532DataTest.setValue(p1532CurrentTest);
                         p1532DataTest.setMaxValue(p1532GoalBuild);
+                        p1532DataFocused.setValue(p1532CurrentBuild);
+                        p1532DataFocused.setMaxValue(p1532GoalBuild);
+                        p1532DataTestFocused.setValue(p1532CurrentTest);
+                        p1532DataTestFocused.setMaxValue(p1532GoalBuild);
 
                         p1x30Data.setValue(p1x30CurrentBuild);
                         p1x30Data.setMaxValue(p1x30GoalBuild);
                         p1x30DataTest.setValue(p1x30CurrentTest);
                         p1x30DataTest.setMaxValue(p1x30GoalBuild);
+                        p1x30DataFocused.setValue(p1x30CurrentBuild);
+                        p1x30DataFocused.setMaxValue(p1x30GoalBuild);
+                        p1x30DataTestFocused.setValue(p1x30CurrentTest);
+                        p1x30DataTestFocused.setMaxValue(p1x30GoalBuild);
 
                         t1000Data.setValue(t1000sCurrentBuild);
                         t1000Data.setMaxValue(t1000sGoalBuild);
                         t1000DataTest.setValue(t1000sCurrentTest);
                         t1000DataTest.setMaxValue(t1000sGoalBuild);
+                        t1000DataFocused.setValue(t1000sCurrentBuild);
+                        t1000DataFocused.setMaxValue(t1000sGoalBuild);
+                        t1000DataTestFocused.setValue(t1000sCurrentTest);
+                        t1000DataTestFocused.setMaxValue(t1000sGoalBuild);
 
                         //---------------------------------Update the Server Units------------------------------------------
                         n3000Data.setValue(n3000CurrentBuild);
                         n3000Data.setMaxValue(n3000GoalBuild);
                         n3000Test.setValue(n3000CurrentTest);
                         n3000Test.setMaxValue(n3000GoalBuild);
+                        n3000DataFocused.setValue(n3000CurrentBuild);
+                        n3000DataFocused.setMaxValue(n3000GoalBuild);
+                        n3000TestFocused.setValue(n3000CurrentTest);
+                        n3000TestFocused.setMaxValue(n3000GoalBuild);
 
                         s500Data.setValue(s500CurrentBuild);
                         s500Data.setMaxValue(s500GoalBuild);
                         s500DataTest.setValue(s500CurrentTest);
                         s500DataTest.setMaxValue(s500GoalBuild);
+                        s500DataFocused.setValue(s500CurrentBuild);
+                        s500DataFocused.setMaxValue(s500GoalBuild);
+                        s500DataTestFocused.setValue(s500CurrentTest);
+                        s500DataTestFocused.setMaxValue(s500GoalBuild);
 
                         mediaPlayer.setValue(mediaPlayerCurrentBuild);
                         mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
                         mediaPlayerTest.setValue(mediaPlayerCurrentTest);
                         mediaPlayerTest.setMaxValue(mediaPlayerGoalBuild);
+                        mediaPlayerFocused.setValue(mediaPlayerCurrentBuild);
+                        mediaPlayerFocused.setMaxValue(mediaPlayerGoalBuild);
+                        mediaPlayerTestFocused.setValue(mediaPlayerCurrentTest);
+                        mediaPlayerTestFocused.setMaxValue(mediaPlayerGoalBuild);
 
                         //---------------------------------Updating the Peripheral Units------------------------------------
                         kiwi4Data.setValue(kiwi4sCurrentBuild);
                         kiwi4Data.setMaxValue(kiwi4sGoalBuild);
                         kiwi4DataTest.setValue(kiwi4sCurrentTest);
                         kiwi4DataTest.setMaxValue(kiwi4sGoalBuild);
+                        kiwi4DataFocused.setValue(kiwi4sCurrentBuild);
+                        kiwi4DataFocused.setMaxValue(kiwi4sGoalBuild);
+                        kiwi4DataTestFocused.setValue(kiwi4sCurrentTest);
+                        kiwi4DataTestFocused.setMaxValue(kiwi4sGoalBuild);
 
                         kiwi25Data.setValue(kiwi2XsCurrentBuild);
                         kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
                         kiwi25DataTest.setValue(kiwi2XsCurrentTest);
                         kiwi25DataTest.setMaxValue(kiwi2XsGoalBuild);
+                        kiwi25DataFocused.setValue(kiwi2XsCurrentBuild);
+                        kiwi25DataFocused.setMaxValue(kiwi2XsGoalBuild);
+                        kiwi25DataTestFocused.setValue(kiwi2XsCurrentTest);
+                        kiwi25DataTestFocused.setMaxValue(kiwi2XsGoalBuild);
 
                         bumpBarData.setValue(bumpBarsCurrentBuild);
                         bumpBarData.setMaxValue(bumpBarsGoalBuild);
                         bumpBarDataTest.setValue(bumpBarsCurrentTest);
                         bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
+                        bumpBarDataFocused.setValue(bumpBarsCurrentBuild);
+                        bumpBarDataFocused.setMaxValue(bumpBarsGoalBuild);
+                        bumpBarDataTestFocused.setValue(bumpBarsCurrentTest);
+                        bumpBarDataTestFocused.setMaxValue(bumpBarsGoalBuild);
 
                         pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
                         pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
                         pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
                         pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
+                        pantherEPC4DataFocused.setValue(pantherEPC4sCurrentBuild);
+                        pantherEPC4DataFocused.setMaxValue(pantherEPC4sGoalBuild);
+                        pantherEPC4TestFocused.setValue(pantherEPC4sCurrentTest);
+                        pantherEPC4TestFocused.setMaxValue(pantherEPC4sGoalBuild);
 
                         //---------------------------------Updating the Optic Units------------------------------------------
                         optic5Data.setValue(optic5sCurrentBuild);
                         optic5Data.setMaxValue(optic5sGoalBuild);
                         optic5DataTest.setValue(optic5sCurrentTest);
                         optic5DataTest.setMaxValue(optic5sGoalBuild);
+                        optic5DataFocused.setValue(optic5sCurrentBuild);
+                        optic5DataFocused.setMaxValue(optic5sGoalBuild);
+                        optic5DataTestFocused.setValue(optic5sCurrentTest);
+                        optic5DataTestFocused.setMaxValue(optic5sGoalBuild);
 
                         optic12Data.setValue(optic12sCurrentBuild);
                         optic12Data.setMaxValue(optic12sGoalBuild);
                         optic12DataTest.setValue(optic12sCurrentTest);
                         optic12DataTest.setMaxValue(optic12sGoalBuild);
+                        optic12DataFocused.setValue(optic12sCurrentBuild);
+                        optic12DataFocused.setMaxValue(optic12sGoalBuild);
+                        optic12DataTestFocused.setValue(optic12sCurrentTest);
+                        optic12DataTestFocused.setMaxValue(optic12sGoalBuild);
 
                         opticKitsData.setValue(kitsCurrentBuild);
                         opticKitsData.setMaxValue(kitsGoalBuild);
                         opticKitsDataTest.setValue(kitsCurrentTest);
                         opticKitsDataTest.setMaxValue(kitsGoalBuild);
+                        opticKitsDataFocused.setValue(kitsCurrentBuild);
+                        opticKitsDataFocused.setMaxValue(kitsGoalBuild);
+                        opticKitsDataTestFocused.setValue(kitsCurrentTest);
+                        opticKitsDataTestFocused.setMaxValue(kitsGoalBuild);
 
                         //---------------------------------Updating the Retail Units----------------------------------------
                         xr5Data.setValue(xr5CurrentBuild);
                         xr5Data.setMaxValue(xr5GoalBuild);
                         xr5DataTest.setValue(xr5CurrentTest);
                         xr5DataTest.setMaxValue(xr5GoalBuild);
+                        xr5DataFocused.setValue(xr5CurrentBuild);
+                        xr5DataFocused.setMaxValue(xr5GoalBuild);
+                        xr5DataTestFocused.setValue(xr5CurrentTest);
+                        xr5DataTestFocused.setMaxValue(xr5GoalBuild);
 
                         xr7Data.setValue(xr7CurrentBuild);
                         xr7Data.setMaxValue(xr7GoalBuild);
                         xr7DataTest.setValue(xr7CurrentTest);
                         xr7DataTest.setMaxValue(xr7GoalBuild);
+                        xr7DataFocused.setValue(xr7CurrentBuild);
+                        xr7DataFocused.setMaxValue(xr7GoalBuild);
+                        xr7DataTestFocused.setValue(xr7CurrentTest);
+                        xr7DataTestFocused.setMaxValue(xr7GoalBuild);
 
                         xr7PlusData.setValue(xr7PlusCurrentBuild);
                         xr7PlusData.setMaxValue(xr7PlusGoalBuild);
                         xr7PlusDataTest.setValue(xr7PlusCurrentTest);
                         xr7PlusDataTest.setMaxValue(xr7PlusGoalBuild);
+                        xr7PlusDataFocused.setValue(xr7PlusCurrentBuild);
+                        xr7PlusDataFocused.setMaxValue(xr7PlusGoalBuild);
+                        xr7PlusDataTestFocused.setValue(xr7PlusCurrentTest);
+                        xr7PlusDataTestFocused.setMaxValue(xr7PlusGoalBuild);
 
                         nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
                         nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
                         nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
                         nextGenDisplaysTest.setMaxValue(nextGenDisplayGoalsBuild);
+                        nextGenDisplaysFocused.setValue(nextGenDisplayCurrentBuild);
+                        nextGenDisplaysFocused.setMaxValue(nextGenDisplayGoalsBuild);
+                        nextGenDisplaysTestFocused.setValue(nextGenDisplayCurrentTest);
+                        nextGenDisplaysTestFocused.setMaxValue(nextGenDisplayGoalsBuild);
 
                         //---------------------------------Creating Color Changes for POS Dial------------------------------------------
                         posPercent.setValue(posPercentTotalBuild);
                         posPercentTest.setValue(posPercentTotalTest);
+                        posPercentFocused.setValue(posPercentTotalBuild);
+                        posPercentTestFocused.setValue(posPercentTotalTest);
 
 
                         if(Double.compare(posPercentTotalBuild,60) < 0)
                         {
                             posPercent.setBarColor(Tile.RED);
                             posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                            posPercentFocused.setBarColor(Tile.RED);
+                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
                         }
                         if(Double.compare(posPercentTotalBuild,90) < 0 && Double.compare(posPercentTotalBuild ,60) > 0)
                         {
                             posPercent.setBarColor(Tile.YELLOW);
                             posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                            posPercentFocused.setBarColor(Tile.YELLOW);
+                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
                         }
                         if(Double.compare(posPercentTotalBuild,90) > 0)
                         {
                             posPercent.setBarColor(Tile.GREEN);
                             posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
+                            posPercentFocused.setBarColor(Tile.GREEN);
+                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
                         }
 
 
@@ -752,108 +904,150 @@ public class Main extends Application
                         {
                             posPercentTest.setBarColor(Tile.RED);
                             posPercentTest.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
+                            posPercentTestFocused.setBarColor(Tile.RED);
+                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
                         }
                         if(Double.compare(posPercentTotalTest,90) < 0 && Double.compare(posPercentTotalTest ,60) > 0)
                         {
                             posPercentTest.setBarColor(Tile.YELLOW);
                             posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
+                            posPercentTestFocused.setBarColor(Tile.YELLOW);
+                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
                         }
                         if(Double.compare(posPercentTotalTest,90) > 0)
                         {
                             posPercentTest.setBarColor(Tile.GREEN);
                             posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
+                            posPercentTestFocused.setBarColor(Tile.GREEN);
+                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
                         }
 
                         //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
                         serversPercent.setValue(serversPercentTotalBuild);
                         serversPercentTest.setValue(serversPercentTotalTest);
+                        serversPercentFocused.setValue(serversPercentTotalBuild);
+                        serversPercentTestFocused.setValue(serversPercentTotalTest);
 
                         if(Double.compare(serversPercentTotalBuild,60) < 0)
                         {
                             serversPercent.setBarColor(Tile.RED);
                             serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentFocused.setBarColor(Tile.RED);
+                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
                         if(Double.compare(serversPercentTotalBuild,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
                         {
                             serversPercent.setBarColor(Tile.YELLOW);
                             serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentFocused.setBarColor(Tile.YELLOW);
+                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
                         if(Double.compare(serversPercentTotalBuild,90) > 0)
                         {
                             serversPercent.setBarColor(Tile.GREEN);
                             serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentFocused.setBarColor(Tile.GREEN);
+                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
 
                         if(Double.compare(serversPercentTotalTest,60) < 0)
                         {
                             serversPercentTest.setBarColor(Tile.RED);
                             serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentTestFocused.setBarColor(Tile.RED);
+                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
                         if(Double.compare(serversPercentTotalTest,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
                         {
                             serversPercentTest.setBarColor(Tile.YELLOW);
                             serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentTestFocused.setBarColor(Tile.YELLOW);
+                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
                         if(Double.compare(serversPercentTotalTest,90) > 0)
                         {
                             serversPercentTest.setBarColor(Tile.GREEN);
                             serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
+                            serversPercentTestFocused.setBarColor(Tile.GREEN);
+                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
                         }
 
                         //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
                         periphPercent.setValue(periphPercentTotalBuild);
                         periphPercentTest.setValue(periphPercentTotalTest);
+                        periphPercentFocused.setValue(periphPercentTotalBuild);
+                        periphPercentTestFocused.setValue(periphPercentTotalTest);
 
                         if(Double.compare(periphPercentTotalBuild,60) < 0)
                         {
                             periphPercent.setBarColor(Tile.RED);
                             periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentFocused.setBarColor(Tile.RED);
+                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
                         }
                         if(Double.compare(periphPercentTotalBuild,90) < 0 && Double.compare(periphPercentTotalBuild ,60) > 0)
                         {
                             periphPercent.setBarColor(Tile.YELLOW);
                             periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentFocused.setBarColor(Tile.YELLOW);
+                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
                         }
                         if(Double.compare(periphPercentTotalBuild,90) > 0)
                         {
                             periphPercent.setBarColor(Tile.GREEN);
                             periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentFocused.setBarColor(Tile.GREEN);
+                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
                         }
 
                         if(Double.compare(periphPercentTotalTest,60) < 0)
                         {
                             periphPercentTest.setBarColor(Tile.RED);
                             periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentTestFocused.setBarColor(Tile.RED);
+                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
                         }
                         if(Double.compare(periphPercentTotalTest,90) < 0 && Double.compare(periphPercentTotalTest ,60) > 0)
                         {
                             periphPercentTest.setBarColor(Tile.YELLOW);
                             periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentTestFocused.setBarColor(Tile.YELLOW);
+                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
                         }
                         if(Double.compare(periphPercentTotalTest,90) > 0)
                         {
                             periphPercentTest.setBarColor(Tile.GREEN);
                             periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
+                            periphPercentTestFocused.setBarColor(Tile.GREEN);
+                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
                         }
 
                         //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
                         opticPercent.setValue(opticPercentTotalBuild);
                         opticPercentTest.setValue(opticPercentTotalTest);
+                        opticPercentFocused.setValue(opticPercentTotalBuild);
+                        opticPercentTestFocused.setValue(opticPercentTotalTest);
 
                         if(Double.compare(opticPercentTotalBuild,60) < 0)
                         {
                             opticPercent.setBarColor(Tile.RED);
                             opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentFocused.setBarColor(Tile.RED);
+                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
                         }
                         if(Double.compare(opticPercentTotalBuild,90) < 0 && Double.compare(opticPercentTotalBuild ,60) > 0)
                         {
                             opticPercent.setBarColor(Tile.YELLOW);
                             opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentFocused.setBarColor(Tile.YELLOW);
+                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
                         }
                         if(Double.compare(opticPercentTotalBuild,90) > 0)
                         {
                             opticPercent.setBarColor(Tile.GREEN);
                             opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentFocused.setBarColor(Tile.GREEN);
+                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
                         }
 
 
@@ -861,58 +1055,78 @@ public class Main extends Application
                         {
                             opticPercentTest.setBarColor(Tile.RED);
                             opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentTestFocused.setBarColor(Tile.RED);
+                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
                         }
                         if(Double.compare(opticPercentTotalTest,90) < 0 && Double.compare(opticPercentTotalTest ,60) > 0)
                         {
                             opticPercentTest.setBarColor(Tile.YELLOW);
                             opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentTestFocused.setBarColor(Tile.YELLOW);
+                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
                         }
                         if(Double.compare(opticPercentTotalTest,90) > 0)
                         {
                             opticPercentTest.setBarColor(Tile.GREEN);
                             opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
+                            opticPercentTestFocused.setBarColor(Tile.GREEN);
+                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
                         }
 
                         //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
                         retailPercent.setValue(retailPercentTotalBuild);
                         retailPercentTest.setValue(retailPercentTotalTest);
+                        retailPercentFocused.setValue(retailPercentTotalBuild);
+                        retailPercentTestFocused.setValue(retailPercentTotalTest);
 
                         if(Double.compare(retailPercentTotalBuild,60) < 0)
                         {
                             retailPercent.setBarColor(Tile.RED);
                             retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                            retailPercentFocused.setBarColor(Tile.RED);
+                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
                         }
                         if(Double.compare(retailPercentTotalBuild,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
                         {
                             retailPercent.setBarColor(Tile.YELLOW);
                             retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                            retailPercentFocused.setBarColor(Tile.YELLOW);
+                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
                         }
                         if(Double.compare(retailPercentTotalBuild,90) > 0)
                         {
                             retailPercent.setBarColor(Tile.GREEN);
                             retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
+                            retailPercentFocused.setBarColor(Tile.GREEN);
+                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
                         }
-
-
                         if(Double.compare(retailPercentTotalTest,60) < 0)
                         {
                             retailPercentTest.setBarColor(Tile.RED);
                             retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
+                            retailPercentTestFocused.setBarColor(Tile.RED);
+                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
                         }
                         if(Double.compare(retailPercentTotalTest,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
                         {
                             retailPercentTest.setBarColor(Tile.YELLOW);
                             retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
+                            retailPercentTestFocused.setBarColor(Tile.YELLOW);
+                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
                         }
-                        if(Double.compare(retailPercentTotalTest,90) > 0) {
+                        if(Double.compare(retailPercentTotalTest,90) > 0)
+                        {
                             retailPercentTest.setBarColor(Tile.GREEN);
                             retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild));
+                            retailPercentTestFocused.setBarColor(Tile.GREEN);
+                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild));
                         }
                         return null;
                     }
                 };
             }
         };
+
         //---------------------------------Creating the Tiles-----------------------------------------------------------
         pos = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -955,6 +1169,72 @@ public class Main extends Application
                 .subText(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
                 .value(posPercentTotalTest)
                 .build();
+
+        posStage = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Point of Sales Stage")
+                .roundedCorners(true)
+                .prefSize(480, 640)
+                .barChartItems(p1x30DataStage, p1x35DataStage, p1532DataStage, t1000DataStage)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        posPercentStage = TileBuilder.create()
+                .prefSize(480,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .animated(true)
+                .subText(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .value(posPercentTotalStage)
+                .build();
+
+        posBuildFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Point of Sales Build")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(p1x30DataFocused, p1x35DataFocused, p1532DataFocused, t1000DataFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        posTestFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Point of Sales Test")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(p1x30DataTestFocused, p1x35DataTestFocused, p1532DataTestFocused, t1000DataTestFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        posPercentFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .animated(true)
+                .subText(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .value(posPercentTotalBuild)
+                .build();
+
+        posPercentTestFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .animated(true)
+                .subText(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .value(posPercentTotalTest)
+                .build();
+
+
+
 
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
         servers = TileBuilder.create()
@@ -999,6 +1279,27 @@ public class Main extends Application
                 .value(serversPercentTotalTest)
                 .build();
 
+        serversStage = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Stage")
+                .roundedCorners(true)
+                .prefSize(480, 200)
+                .barChartItems(s500DataStage, n3000Stage, mediaPlayerStage)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        serversPercentStage = TileBuilder.create()
+                .prefSize(480,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .animated(true)
+                .subText(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .value(serversPercentTotalStage)
+                .build();
+
         //---------------------------------Creating the Tiles for Peripherals-------------------------------------------
         peripherals = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -1040,6 +1341,27 @@ public class Main extends Application
                 .subText(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
                 .animated(true)
                 .value(periphPercentTotalTest)
+                .build();
+
+        peripheralsStage = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Stage")
+                .roundedCorners(true)
+                .prefSize(480, 640)
+                .barChartItems(kiwi4DataStage, kiwi25DataStage, bumpBarDataStage, pantherEPC4Stage)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        periphPercentStage = TileBuilder.create()
+                .prefSize(480,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
+                .subText(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
+                .animated(true)
+                .value(periphPercentTotalStage)
                 .build();
 
         //---------------------------------Creating the Tiles for Optic-------------------------------------------------
@@ -1130,6 +1452,27 @@ public class Main extends Application
                 .value(retailPercentTotalTest)
                 .build();
 
+        retailStage = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .roundedCorners(true)
+                .title("Retail Stage")
+                .prefSize(480, 640)
+                .barChartItems(xr5DataStage,xr7DataStage, xr7PlusDataStage, nextGenDisplaysStage)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        retailPercentStage = TileBuilder.create()
+                .prefSize(480,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
+                .subText(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
+                .animated(true)
+                .value(retailPercentTotalStage)
+                .build();
+
         //---------------------------------Creating Animations for Graphs-----------------------------------------------
         pos.setAnimated(true);
         pos.setAnimationDuration(3000);
@@ -1175,18 +1518,19 @@ public class Main extends Application
         opticPercentTest.setAnimated(true);
         opticPercentTest.setAnimationDuration(3000);
 
-        //---------------------------------Platform Creation------------------------------------------------------------
-        buildVariables.setPeriod(Duration.seconds(10));
+        //--------------------------------Scheduled State Params--------------------------------------------------------
+        ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+        Bounds allScreenBounds = computeAllScreenBounds();
 
+        buildVariables.setPeriod(Duration.seconds(10));
 
         buildVariables.setRestartOnFailure(true);
 
-
-
         //buildVariables.start();
 
-
+        //---------------------------------General Tile Handlers--------------------------------------------------------
         ArrayList<Tile> tileList = new ArrayList<>();
+
         tileList.add(pos);
         tileList.add(posPercent);
         tileList.add(retail);
@@ -1197,6 +1541,12 @@ public class Main extends Application
         tileList.add(periphPercent);
         tileList.add(optic);
         tileList.add(opticPercent);
+
+        tileList.add(posBuildFocused);
+        tileList.add(posPercentFocused);
+        tileList.add(posTestFocused);
+        tileList.add(posPercentTestFocused);
+
 
         tileList.add(posTest);
         tileList.add(posPercentTest);
@@ -1209,13 +1559,20 @@ public class Main extends Application
         tileList.add(opticTest);
         tileList.add(opticPercentTest);
 
-        ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
 
-        Bounds allScreenBounds = computeAllScreenBounds();
+        tileList.add(posStage);
+        tileList.add(posPercentStage);
+        tileList.add(retailStage);
+        tileList.add(retailPercentStage);
+        tileList.add(serversStage);
+        tileList.add(serversPercentStage);
+        tileList.add(peripheralsStage);
+        tileList.add(periphPercentStage);
 
         for(int i =0;i<tileList.size();i++)
         {
             Tile temp = tileList.get(i);
+            System.out.println(i);
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -1247,13 +1604,6 @@ public class Main extends Application
                     temp.setBorderColor(Color.TRANSPARENT);
                 }
             });
-            tileList.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    
-
-                }
-            });
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -1272,28 +1622,130 @@ public class Main extends Application
             });
         }
 
+        //---------------------------------Unique Tile Handlers---------------------------------------------------------
+
+
+        //---------------------------------Scene and Pane Creation------------------------------------------------------
         flowPane.getChildren().addAll(pos,retail, servers, peripherals, optic, posPercent, retailPercent,serversPercent, periphPercent,opticPercent);
         flowPaneTest.getChildren().addAll(posTest,retailTest, serversTest, peripheralsTest, opticTest, posPercentTest, retailPercentTest,serversPercentTest, periphPercentTest,opticPercentTest);
+        flowPaneStage.getChildren().addAll(posStage,retailStage, serversStage, peripheralsStage, posPercentStage, retailPercentStage,serversPercentStage, periphPercentStage);
+        flowPanePOSBuildOrTestFocus.getChildren().addAll(posBuildFocused,posTestFocused,posPercentFocused,posPercentTestFocused);
 
-        flowPane.setStyle("-fx-background-color: rgb(42, 42, 42)");
-        flowPane.setPrefSize(1920,1080);
-        flowPaneTest.setStyle("-fx-background-color: rgb(42, 42, 42)");
-        flowPaneTest.setPrefSize(1920,1080);
+        ArrayList<FlowPane> flowList = new ArrayList<>();
 
-        Scene scene = new Scene(flowPane);
-        Scene scene1 = new Scene (flowPaneTest);
+        flowList.add(flowPane);
+        flowList.add(flowPaneTest);
+        flowList.add(flowPaneStage);
+        flowList.add(flowPanePOSBuildOrTestFocus);
 
+        for(int i = 0; i < flowList.size();i++)
+        {
+            flowList.get(i).setStyle("-fx-background-color: rgb(42, 42, 42)");
+            flowList.get(i).setPrefSize(1920, 1080);
+        }
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.F4)
-                {
-                    primaryStage.setIconified(true);
-                }
-                if(event.getCode() == KeyCode.F5) {
-                    if(screens.size() == 1)
+        Scene buildScene = new Scene(flowPane);
+        Scene testScene = new Scene (flowPaneTest);
+        Scene stageScene = new Scene (flowPaneStage);
+        Scene posBuildOrTestScene = new Scene(flowPanePOSBuildOrTestFocus);
+
+        final Scene[] previousScene = new Scene[1];
+
+        ArrayList<Scene> sceneList = new ArrayList<>();
+        sceneList.add(buildScene);
+        sceneList.add(testScene);
+        sceneList.add(stageScene);
+
+        //---------------------------------General Scene Handlers-------------------------------------------------------
+        int previous = 0;
+        int next = 0;
+        for(int i = 0; i<sceneList.size();i++)
+        {
+            if(i != 0 && (i+1) < sceneList.size())
+            {
+                previous = i-1;
+                next = i + 1;
+            }
+            if(i == 0 && (i+1) <sceneList.size())
+            {
+                next = i + 1;
+            }
+            if(i == sceneList.size()-1)
+            {
+                previous = i-1;
+            }
+            int finalPrevious = previous;
+            int finalNext = next;
+            sceneList.get(i).setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if(event.getCode() == KeyCode.LEFT)
                     {
+                        primaryStage.setScene(sceneList.get(finalPrevious));
+                    }
+                    if(event.getCode() == KeyCode.RIGHT)
+                    {
+                        primaryStage.setScene(sceneList.get(finalNext));
+                    }
+                    if (event.getCode() == KeyCode.F4) {
+                        primaryStage.setIconified(true);
+                    }
+                    if (event.getCode() == KeyCode.F5) {
+                        if (screens.size() == 1) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (screens.size() == 2) {
+
+                            if (primaryStage.getX() < 0) {
+                                primaryStage.setX(allScreenBounds.getMinX());
+                                primaryStage.setY(allScreenBounds.getMinY());
+                            } else {
+                                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                                primaryStage.setY(allScreenBounds.getMinY());
+                            }
+                        } else {
+                            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                                primaryStage.setX(allScreenBounds.getMinX());
+                                primaryStage.setY(allScreenBounds.getMinY());
+                            }
+                            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                                primaryStage.setY(allScreenBounds.getMinY());
+                            }
+                            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                                primaryStage.setY(allScreenBounds.getMinY());
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        //---------------------------------Unique Scene Handlers--------------------------------------------------------
+        pos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = buildScene;
+                primaryStage.setScene(posBuildOrTestScene);
+            }
+        });
+        posTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = testScene;
+                primaryStage.setScene(posBuildOrTestScene);
+            }
+        });
+        posBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    if (screens.size() == 1) {
                         primaryStage.setX(allScreenBounds.getMinX());
                         primaryStage.setY(allScreenBounds.getMinY());
                     }
@@ -1306,29 +1758,34 @@ public class Main extends Application
                             primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
                             primaryStage.setY(allScreenBounds.getMinY());
                         }
-                    } else
-                    {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX()+(primaryStage.getWidth()/2))
-                        {
+                    } else {
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
                             primaryStage.setX(allScreenBounds.getMinX());
                             primaryStage.setY(allScreenBounds.getMinY());
                         }
-                        if(primaryStage.getX() > allScreenBounds.getMinX()+(primaryStage.getWidth()/2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5*(primaryStage.getWidth())))
-                        {
-                            primaryStage.setX(allScreenBounds.getMinX()+primaryStage.getWidth());
+                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
                             primaryStage.setY(allScreenBounds.getMinY());
                         }
-                        if(primaryStage.getX() > (allScreenBounds.getMaxX()-(primaryStage.getWidth()/2)-(primaryStage.getWidth())))
-                        {
-                            primaryStage.setX(allScreenBounds.getMaxX()-primaryStage.getWidth());
+                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
                             primaryStage.setY(allScreenBounds.getMinY());
                         }
                     }
                 }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+
             }
         });
+
+
+
+        //---------------------------------Stage Handlers and Show------------------------------------------------------
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(buildScene);
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -1339,6 +1796,8 @@ public class Main extends Application
         });
 
     }
+
+    public static void main(String[] args) { launch(args); }
 
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY ;
@@ -1363,6 +1822,7 @@ public class Main extends Application
         return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
     }
 }
+//Commented Stuff
 
         //---------------------------------Commented Tiles--------------------------------------------------------------
          /*
