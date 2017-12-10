@@ -87,8 +87,8 @@ public class Main extends Application
 
     Tile posBuildFocused;
     Tile posTestFocused;
-    Tile serverBuildFocused;
-    Tile serverTestFocused;
+    Tile serversBuildFocused;
+    Tile serversTestFocused;
     Tile periphBuildFocused;
     Tile periphTestFocused;
     Tile retailBuildFocused;
@@ -324,6 +324,10 @@ public class Main extends Application
         FlowPane flowPaneTest = new FlowPane();
         FlowPane flowPaneStage = new FlowPane();
         FlowPane flowPanePOSBuildOrTestFocus = new FlowPane();
+        FlowPane flowPaneRetailBuildOrTestFocus = new FlowPane();
+        FlowPane flowPaneServersBuildOrTestFocus = new FlowPane();
+        FlowPane flowPanePeriphBuildOrTestFocus = new FlowPane();
+        FlowPane flowPaneOpticBuildOrTestFocus = new FlowPane();
         goalTool = new GoalTool();
 
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
@@ -1300,6 +1304,50 @@ public class Main extends Application
                 .value(serversPercentTotalStage)
                 .build();
 
+        serversBuildFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Build")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(s500DataFocused, n3000DataFocused, mediaPlayerFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        serversPercentFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .animated(true)
+                .subText(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .value(serversPercentTotalBuild)
+                .build();
+
+        serversTestFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Test")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(s500DataTestFocused, n3000TestFocused, mediaPlayerTestFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        serversPercentTestFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .animated(true)
+                .subText(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .value(serversPercentTotalTest)
+                .build();
+
+
+
         //---------------------------------Creating the Tiles for Peripherals-------------------------------------------
         peripherals = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -1364,6 +1412,48 @@ public class Main extends Application
                 .value(periphPercentTotalStage)
                 .build();
 
+        periphBuildFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Build")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(kiwi4DataFocused, kiwi25DataFocused, bumpBarDataFocused, pantherEPC4DataFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        periphPercentFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
+                .animated(true)
+                .value(periphPercentTotalBuild)
+                .build();
+
+        periphTestFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Test")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(kiwi4DataTestFocused, kiwi25DataTestFocused, bumpBarDataTestFocused, pantherEPC4TestFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        periphPercentTestFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
+                .animated(true)
+                .value(periphPercentTotalTest)
+                .build();
+
         //---------------------------------Creating the Tiles for Optic-------------------------------------------------
         optic = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -1400,6 +1490,50 @@ public class Main extends Application
 
         opticPercentTest = TileBuilder.create()
                 .prefSize(384,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild))
+                .subText(Double.toString(opticCurrentTotalBuild))
+                .animated(true)
+                .value(opticPercentTotalTest)
+                .build();
+
+        opticBuildFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Optic Build")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(optic5DataFocused, optic12DataFocused, opticKitsDataFocused)
+                .maxValue(opticGoalTotalBuild)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        opticPercentFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild))
+                .subText(Double.toString(opticCurrentTotalBuild))
+                .animated(true)
+                .value(opticPercentTotalBuild)
+                .build();
+
+        opticTestFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Optic Test")
+                .roundedCorners(true)
+                .prefSize(960, 640)
+                .barChartItems(optic5DataTestFocused, optic12DataTestFocused, opticKitsDataTestFocused)
+                .maxValue(opticGoalTotalBuild)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        opticPercentTestFocused = TileBuilder.create()
+                .prefSize(960,440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -1471,6 +1605,48 @@ public class Main extends Application
                 .subText(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
                 .animated(true)
                 .value(retailPercentTotalStage)
+                .build();
+
+        retailBuildFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .roundedCorners(true)
+                .title("Retail Build")
+                .prefSize(960, 640)
+                .barChartItems(xr5DataFocused,xr7DataFocused, xr7PlusDataFocused, nextGenDisplaysFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        retailPercentFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild))
+                .subText(Double.toString(retailTotalCurrentBuild))
+                .animated(true)
+                .value(retailPercentTotalBuild)
+                .build();
+
+        retailTestFocused = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .roundedCorners(true)
+                .title("Retail Test")
+                .prefSize(960, 640)
+                .barChartItems(xr5DataTestFocused,xr7DataTestFocused, xr7PlusDataTestFocused, nextGenDisplaysTestFocused)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
+
+        retailPercentTestFocused = TileBuilder.create()
+                .prefSize(960,440)
+                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
+                .textAlignment(TextAlignment.CENTER)
+                .text("Percentage to Goal")
+                .unit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
+                .subText(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
+                .animated(true)
+                .value(retailPercentTotalTest)
                 .build();
 
         //---------------------------------Creating Animations for Graphs-----------------------------------------------
@@ -1546,6 +1722,14 @@ public class Main extends Application
         tileList.add(posPercentFocused);
         tileList.add(posTestFocused);
         tileList.add(posPercentTestFocused);
+        tileList.add(retailBuildFocused);
+        tileList.add(retailPercentFocused);
+        tileList.add(serversBuildFocused);
+        tileList.add(serversPercentFocused);
+        tileList.add(periphBuildFocused);
+        tileList.add(periphPercentFocused);
+        tileList.add(opticBuildFocused);
+        tileList.add(opticPercentFocused);
 
 
         tileList.add(posTest);
@@ -1572,7 +1756,6 @@ public class Main extends Application
         for(int i =0;i<tileList.size();i++)
         {
             Tile temp = tileList.get(i);
-            System.out.println(i);
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -1630,6 +1813,12 @@ public class Main extends Application
         flowPaneTest.getChildren().addAll(posTest,retailTest, serversTest, peripheralsTest, opticTest, posPercentTest, retailPercentTest,serversPercentTest, periphPercentTest,opticPercentTest);
         flowPaneStage.getChildren().addAll(posStage,retailStage, serversStage, peripheralsStage, posPercentStage, retailPercentStage,serversPercentStage, periphPercentStage);
         flowPanePOSBuildOrTestFocus.getChildren().addAll(posBuildFocused,posTestFocused,posPercentFocused,posPercentTestFocused);
+        flowPaneRetailBuildOrTestFocus.getChildren().addAll(retailBuildFocused,retailTestFocused,retailPercentFocused,retailPercentTestFocused);
+        flowPaneServersBuildOrTestFocus.getChildren().addAll(serversBuildFocused,serversTestFocused,serversPercentFocused,serversPercentTestFocused);
+        flowPanePeriphBuildOrTestFocus.getChildren().addAll(periphBuildFocused,periphTestFocused,periphPercentFocused,periphPercentTestFocused);
+        flowPaneOpticBuildOrTestFocus.getChildren().addAll(opticBuildFocused,opticTestFocused,opticPercentFocused,opticPercentTestFocused);
+
+
 
         ArrayList<FlowPane> flowList = new ArrayList<>();
 
@@ -1637,6 +1826,10 @@ public class Main extends Application
         flowList.add(flowPaneTest);
         flowList.add(flowPaneStage);
         flowList.add(flowPanePOSBuildOrTestFocus);
+        flowList.add(flowPaneRetailBuildOrTestFocus);
+        flowList.add(flowPaneServersBuildOrTestFocus);
+        flowList.add(flowPanePeriphBuildOrTestFocus);
+        flowList.add(flowPaneOpticBuildOrTestFocus);
 
         for(int i = 0; i < flowList.size();i++)
         {
@@ -1648,6 +1841,10 @@ public class Main extends Application
         Scene testScene = new Scene (flowPaneTest);
         Scene stageScene = new Scene (flowPaneStage);
         Scene posBuildOrTestScene = new Scene(flowPanePOSBuildOrTestFocus);
+        Scene retailBuildOrTestScene = new Scene(flowPaneRetailBuildOrTestFocus);
+        Scene serversBuildOrTestScene = new Scene(flowPaneServersBuildOrTestFocus);
+        Scene periphBuildOrTestScene = new Scene(flowPanePeriphBuildOrTestFocus);
+        Scene opticBuildOrTestScene = new Scene(flowPaneOpticBuildOrTestFocus);
 
         final Scene[] previousScene = new Scene[1];
 
@@ -1780,6 +1977,236 @@ public class Main extends Application
 
             }
         });
+
+        retail.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = buildScene;
+                primaryStage.setScene(retailBuildOrTestScene);
+            }
+        });
+        retailTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = testScene;
+                primaryStage.setScene(retailBuildOrTestScene);
+            }
+        });
+        retailBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    if (screens.size() == 1) {
+                        primaryStage.setX(allScreenBounds.getMinX());
+                        primaryStage.setY(allScreenBounds.getMinY());
+                    }
+                    if (screens.size() == 2) {
+
+                        if (primaryStage.getX() < 0) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        } else {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    } else {
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    }
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+
+            }
+        });
+
+        servers.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = buildScene;
+                primaryStage.setScene(serversBuildOrTestScene);
+            }
+        });
+        serversTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = testScene;
+                primaryStage.setScene(serversBuildOrTestScene);
+            }
+        });
+        serversBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    if (screens.size() == 1) {
+                        primaryStage.setX(allScreenBounds.getMinX());
+                        primaryStage.setY(allScreenBounds.getMinY());
+                    }
+                    if (screens.size() == 2) {
+
+                        if (primaryStage.getX() < 0) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        } else {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    } else {
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    }
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+
+            }
+        });
+
+        peripherals.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = buildScene;
+                primaryStage.setScene(periphBuildOrTestScene);
+            }
+        });
+        peripheralsTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = testScene;
+                primaryStage.setScene(periphBuildOrTestScene);
+            }
+        });
+        periphBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    if (screens.size() == 1) {
+                        primaryStage.setX(allScreenBounds.getMinX());
+                        primaryStage.setY(allScreenBounds.getMinY());
+                    }
+                    if (screens.size() == 2) {
+
+                        if (primaryStage.getX() < 0) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        } else {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    } else {
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    }
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+
+            }
+        });
+
+        optic.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = buildScene;
+                primaryStage.setScene(opticBuildOrTestScene);
+            }
+        });
+        opticTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                previousScene[0] = testScene;
+                primaryStage.setScene(opticBuildOrTestScene);
+            }
+        });
+        opticBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    if (screens.size() == 1) {
+                        primaryStage.setX(allScreenBounds.getMinX());
+                        primaryStage.setY(allScreenBounds.getMinY());
+                    }
+                    if (screens.size() == 2) {
+
+                        if (primaryStage.getX() < 0) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        } else {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    } else {
+                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                            primaryStage.setX(allScreenBounds.getMinX());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                            primaryStage.setY(allScreenBounds.getMinY());
+                        }
+                    }
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+
+            }
+        });
+
+
 
 
 
