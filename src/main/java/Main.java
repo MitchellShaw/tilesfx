@@ -360,7 +360,6 @@ public class Main extends Application {
         FlowPane flowPaneRetailStageFocus = new FlowPane();
         FlowPane flowPaneServersStageFocus = new FlowPane();
         FlowPane flowPanePeriphStageFocus = new FlowPane();
-        FlowPane flowPaneClockOrQuality = new FlowPane();
         FlowGridPane posGridPane = new FlowGridPane(4,5);
         FlowGridPane retailGridPane = new FlowGridPane(4,5);
         FlowGridPane serversGridPane = new FlowGridPane(4,5);
@@ -1056,6 +1055,7 @@ public class Main extends Application {
                         changePercent(retailPercentTest,retailPercentTestFocused,retailTotalCurrentTest,retailTotalGoalBuild,retailPercentTotalTest);
                         changePercent(retailPercentStage,retailPercentStageFocused,retailTotalCurrentStage,retailTotalGoalStage,retailPercentTotalStage);
 
+                        //---------------------------------This is some hacky shit-------------------------------------------
                         System.out.println("\n***********Dynamic Creation Block***********\n");
 
                         Tile posClock = TileBuilder.create()
@@ -1110,9 +1110,9 @@ public class Main extends Application {
                                 .textAlignment(TextAlignment.CENTER)
                                 .build();
 
-                        ImageView logoView = new ImageView();
-                        Image logoImage = new Image("NCR Brand Block Logo JPG.jpg");
-                        logoView.setImage(logoImage);
+                        final ImageView logoView = new ImageView();
+                        final Image logoImage = new Image("NCR Brand Block Logo JPG.jpg");
+                        final logoView.setImage(logoImage);
                         logoView.setFitHeight(270);
                         logoView.setFitWidth(480);
                         logoView.setPreserveRatio(true);
@@ -1272,7 +1272,7 @@ public class Main extends Application {
                                 .title("User Goal")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) posTotalGoalStage))
+                                .description(Integer.toString( (int)retailTotalGoalStage))
                                 .build();
 
                         Tile serversGoalTile = TileBuilder.create()
@@ -1282,7 +1282,7 @@ public class Main extends Application {
                                 .title("User Goal")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) posTotalGoalStage))
+                                .description(Integer.toString((int) serverGoalTotalStage))
                                 .build();
 
                         Tile periphGoalTile = TileBuilder.create()
@@ -1292,21 +1292,17 @@ public class Main extends Application {
                                 .title("User Goal")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) posTotalGoalStage))
+                                .description(Integer.toString((int) periphGoalTotalStage))
                                 .build();
 
 
                         ArrayList<Tile> posTiles = new ArrayList<>();
-                        posTiles.clear();
 
                         ArrayList<Tile> retailTiles = new ArrayList<>();
-                        retailTiles.clear();
 
                         ArrayList<Tile> serversTiles = new ArrayList<>();
-                        serversTiles.clear();
 
                         ArrayList<Tile> periphTiles = new ArrayList<>();
-                        periphTiles.clear();
 
                         System.out.println("1");
                         posTiles = getCharTiles(posUserStageMap,480,270);
@@ -1318,13 +1314,40 @@ public class Main extends Application {
                         periphTiles = getCharTiles(periphUserStageMap,480,270);
                         System.out.println("1");
 
+                        for(int i = posTiles.size(); i < 15;i++)
+                        {
+                            Tile tile = new Tile();
+                            tile.setVisible(false);
+                            posTiles.add(tile);
+                        }
+                        for(int i = retailTiles.size(); i < 15;i++)
+                        {
+                            Tile tile = new Tile();
+                            tile.setVisible(false);
+                            retailTiles.add(tile);
+                        }
+                        for(int i = serversTiles.size(); i < 15;i++)
+                        {
+                            Tile tile = new Tile();
+                            tile.setVisible(false);
+                            serversTiles.add(tile);
+                        }
+                        for(int i = periphTiles.size(); i < 15;i++)
+                        {
+                            Tile tile = new Tile();
+                            tile.setVisible(false);
+                            periphTiles.add(tile);
+                        }
+
+                        int retailSize = retailTiles.size();
+                        int serversSize = serversTiles.size();
+                        int periphSize = periphTiles.size();
+
                         posTiles.add(0,posLogo);
                         posTiles.add(4,posClock);
                         posTiles.add(8,posGoalTile);
                         posTiles.add(12,posStopLight);
                         posTiles.add(16,posQuality);
-
-                        System.out.println("POS COMP");
 
                         retailTiles.add(0,retailLogo);
                         retailTiles.add(4,retailClock);
@@ -1332,26 +1355,19 @@ public class Main extends Application {
                         retailTiles.add(12,retailStopLight);
                         retailTiles.add(16,retailQuality);
 
-                        System.out.println("RET COMP");
-
                         serversTiles.add(0,serversLogo);
                         serversTiles.add(4,serversClock);
                         serversTiles.add(8,serversGoalTile);
                         serversTiles.add(12,serversStopLight);
                         serversTiles.add(16,serversQuality);
 
-                        System.out.println("SER COMP");
 
                         periphTiles.add(0,periphLogo);
                         periphTiles.add(4,periphClock);
                         periphTiles.add(8,periphGoalTile);
                         periphTiles.add(12,periphStopLight);
                         periphTiles.add(16,periphQuality);
-
-                        System.out.println("PER COMP");
-
-
-
+                        
                         Platform.runLater(()->posGridPane.getChildren().clear());
                         ArrayList<Tile> finalPosTiles = posTiles;
                         Platform.runLater(()->posGridPane.getChildren().addAll(finalPosTiles));
