@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import sun.util.resources.cldr.om.CurrencyNames_om;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -1112,7 +1113,7 @@ public class Main extends Application {
 
                         final ImageView logoView = new ImageView();
                         final Image logoImage = new Image("NCR Brand Block Logo JPG.jpg");
-                        final logoView.setImage(logoImage);
+                        logoView.setImage(logoImage);
                         logoView.setFitHeight(270);
                         logoView.setFitWidth(480);
                         logoView.setPreserveRatio(true);
@@ -1154,12 +1155,34 @@ public class Main extends Application {
                                 .graphic(hbox)
                                 .build();
 
-                        ImageView stopView = new ImageView();
-                        Image redImage = new Image("NCR Brand Block Logo JPG.jpg");
-                        Image yellowImage = new Image("NCR Brand Block Logo JPG.jpg");
-                        Image greenImage = new Image("NCR Brand Block Logo JPG.jpg");
+                        String date = dataBaseTool.incidentReader();
 
-                        stopView.setImage(logoImage);
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate incidentDate = LocalDate.parse(date);
+
+                        long daysBetween = DAYS.between(incidentDate, currentDate);
+
+                        int counter = Math.toIntExact(daysBetween);
+
+                        String useDate = Integer.toString(counter);
+
+                        ImageView stopView = new ImageView();
+                        final Image redImage = new Image("Red Light.PNG");
+                        final Image yellowImage = new Image("Yellow Light.PNG");
+                        final Image greenImage = new Image("Green Light.PNG");
+
+                        if(counter <30)
+                        {
+                            stopView.setImage(redImage);
+                        }
+                        if(counter > 30 && counter <60)
+                        {
+                            stopView.setImage(yellowImage);
+                        }
+                        if(counter >= 60)
+                        {
+                            stopView.setImage(greenImage);
+                        }
                         stopView.setFitHeight(270);
                         stopView.setFitWidth(480);
                         stopView.setPreserveRatio(true);
@@ -1201,18 +1224,6 @@ public class Main extends Application {
                                 .roundedCorners(false)
                                 .graphic(myBox)
                                 .build();
-
-                        String date = dataBaseTool.incidentReader();
-
-                        LocalDate currentDate = LocalDate.now();
-                        LocalDate incidentDate = LocalDate.parse(date);
-
-                        long daysBetween = DAYS.between(incidentDate, currentDate);
-
-                        int counter = Math.toIntExact(daysBetween);
-
-                        String useDate = Integer.toString(counter);
-
 
                         Tile posQuality = TileBuilder.create()
                                 .skinType(Tile.SkinType.CHARACTER)
@@ -1259,40 +1270,40 @@ public class Main extends Application {
                                 .skinType(Tile.SkinType.CHARACTER)
                                 .prefSize(480,270)
                                 .backgroundColor(Color.valueOf("#54B948"))
-                                .title("User Goal")
+                                .title("Department")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) posTotalGoalStage))
+                                .description("POS")
                                 .build();
 
                         Tile retailGoalTile = TileBuilder.create()
                                 .skinType(Tile.SkinType.CHARACTER)
                                 .prefSize(480,270)
                                 .backgroundColor(Color.valueOf("#54B948"))
-                                .title("User Goal")
+                                .title("Department")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString( (int)retailTotalGoalStage))
+                                .description("Retail")
                                 .build();
 
                         Tile serversGoalTile = TileBuilder.create()
                                 .skinType(Tile.SkinType.CHARACTER)
                                 .prefSize(480,270)
                                 .backgroundColor(Color.valueOf("#54B948"))
-                                .title("User Goal")
+                                .title("Department")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) serverGoalTotalStage))
+                                .description("Servers")
                                 .build();
 
                         Tile periphGoalTile = TileBuilder.create()
                                 .skinType(Tile.SkinType.CHARACTER)
                                 .prefSize(480,270)
                                 .backgroundColor(Color.valueOf("#54B948"))
-                                .title("User Goal")
+                                .title("Department")
                                 .titleAlignment(TextAlignment.CENTER)
                                 .roundedCorners(false)
-                                .description(Integer.toString((int) periphGoalTotalStage))
+                                .description("Periph")
                                 .build();
 
 
@@ -1304,15 +1315,21 @@ public class Main extends Application {
 
                         ArrayList<Tile> periphTiles = new ArrayList<>();
 
-                        System.out.println("1");
+
                         posTiles = getCharTiles(posUserStageMap,480,270);
-                        System.out.println("1");
                         retailTiles = getCharTiles(retailUserStageMap,480,270);
-                        System.out.println("1");
                         serversTiles = getCharTiles(serversUserStageMap,480,270);
-                        System.out.println("1");
                         periphTiles = getCharTiles(periphUserStageMap,480,270);
-                        System.out.println("1");
+
+                        posTiles.sort(Comparator.comparing(Tile::getDescription));
+                        retailTiles.sort(Comparator.comparing(Tile::getDescription));
+                        serversTiles.sort(Comparator.comparing(Tile::getDescription));
+                        periphTiles.sort(Comparator.comparing(Tile::getDescription));
+
+                        Collections.reverse(posTiles);
+                        Collections.reverse(retailTiles);
+                        Collections.reverse(serversTiles);
+                        Collections.reverse(periphTiles);
 
                         for(int i = posTiles.size(); i < 15;i++)
                         {
@@ -1367,7 +1384,7 @@ public class Main extends Application {
                         periphTiles.add(8,periphGoalTile);
                         periphTiles.add(12,periphStopLight);
                         periphTiles.add(16,periphQuality);
-                        
+
                         Platform.runLater(()->posGridPane.getChildren().clear());
                         ArrayList<Tile> finalPosTiles = posTiles;
                         Platform.runLater(()->posGridPane.getChildren().addAll(finalPosTiles));
@@ -2261,6 +2278,7 @@ public class Main extends Application {
             {
                 previousScene[0] = stageScene;
                 primaryStage.setScene(posUserScene);
+                posUserScene.setCursor(Cursor.NONE);
             }
         });
         posBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2339,6 +2357,7 @@ public class Main extends Application {
             {
                 previousScene[0] = stageScene;
                 primaryStage.setScene(retailUserScene);
+                retailUserScene.setCursor(Cursor.NONE);
             }
         });
         retailBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2418,6 +2437,7 @@ public class Main extends Application {
             {
                 previousScene[0] = stageScene;
                 primaryStage.setScene(serversUserScene);
+                serversUserScene.setCursor(Cursor.NONE);
             }
         });
         serversBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2497,6 +2517,7 @@ public class Main extends Application {
             {
                 previousScene[0] = stageScene;
                 primaryStage.setScene(periphUserScene);
+                periphUserScene.setCursor(Cursor.NONE);
             }
         });
         periphBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2641,12 +2662,14 @@ public class Main extends Application {
             String user = entry.getKey();
             int total = entry.getValue();
 
+            String formatted = String.format("%02d",total);
+
             Tile characterTile = TileBuilder.create()
                     .skinType(Tile.SkinType.CHARACTER)
                     .prefSize(width, height)
                     .title(user)
                     .titleAlignment(TextAlignment.CENTER)
-                    .description(Integer.toString(total))
+                    .description(formatted)
                     .build();
 
             tiles.add(characterTile);

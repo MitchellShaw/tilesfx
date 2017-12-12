@@ -1351,7 +1351,7 @@ public class Tool {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("Connection established. THIS IS THE NEW ONE");
+            System.out.println("Connection established.");
 
             while (resultSet.next()) {
                 String staging = resultSet.getString("ItemID");
