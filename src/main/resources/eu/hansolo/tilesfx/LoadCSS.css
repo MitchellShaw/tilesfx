@@ -1,0 +1,14 @@
+
+
+.pane-grid{
+    -fx-background-color: #54B948;
+}
+.progress-indicator{
+    -fx-progress-color: WHITE;
+
+}
+.label{
+    -fx-font-size: 55px;
+    -fx-text-fill: WHITE;
+    -fx-font-family: OpenSans;
+}

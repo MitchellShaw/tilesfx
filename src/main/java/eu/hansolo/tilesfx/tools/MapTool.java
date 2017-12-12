@@ -18,7 +18,6 @@ public class MapTool {
             int index = keyList.indexOf(product);
             toReturn = valueList.get(index);
         }else{
-            System.out.println("Error: Product ' "+product+" ' not found.");
             toReturn = 0;
         }
 
@@ -39,11 +38,6 @@ public class MapTool {
             {
                 int index = keyList.indexOf(productList.get(i));
                 toReturn = toReturn + valueList.get(index);
-            }else
-            {
-                System.out.println("Error: Product ' "+productList.get(i)+" ' not found in list.");
-                toReturn = 0;
-                break;
             }
         }
 

@@ -25,8 +25,27 @@ public class Tool {
     HashMap<String,Integer> serversMap;
     HashMap<String,Integer> periphMap;
     HashMap<String,Integer> opticMap;
+    HashMap<String,Integer> hospStageMap;
+    HashMap<String,Integer> retailStageMap;
+    HashMap<String,Integer> serversStageMap;
+    HashMap<String,Integer> periphStageMap;
+    HashMap<String,Integer> opticStageMap;
 
     ArrayList<HashMap<String,Integer>> returnList;
+    ArrayList<HashMap<String,Integer>> returnStageList;
+
+    public String incidentReader() throws IOException, SAXException, ParserConfigurationException
+    {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        //\\\\SUSMID8000\D\Metrics Dashboard\info.xml
+        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        NodeList nodeList = document.getElementsByTagName("safety");
+
+        String product = nodeList.item(0).getAttributes().getNamedItem("incident").getNodeValue();
+
+        return product;
+    }
 
 
     public ArrayList<HashMap<String,Integer>> documentReader() throws IOException, SAXException, ParserConfigurationException
@@ -44,7 +63,7 @@ public class Tool {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
-        Document document = db.parse(new File("C:/Users/ms185594/Documents/info2.xml"));
+        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
 
 
         //---------------------------------Hosp Reader----------------------------------------------------
@@ -112,6 +131,78 @@ public class Tool {
 
         return returnList;
     }
+
+    public ArrayList<HashMap<String,Integer>> stageDocumentReader() throws IOException, SAXException, ParserConfigurationException
+    {
+        //--------------------------------Variables for Maps------------------------------------------------
+        hospStageMap = new HashMap<>();
+        retailStageMap = new HashMap<>();
+        serversStageMap = new HashMap<>();
+        periphStageMap = new HashMap<>();
+
+        returnStageList = new ArrayList<>();
+
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+
+        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+
+
+        //---------------------------------Hosp Reader----------------------------------------------------
+        NodeList hospNodeList = document.getElementsByTagName("hospStage");
+
+        for (int x = 0, size = hospNodeList.getLength(); x < size; x++)
+        {
+            String hospProduct = hospNodeList.item(x).getAttributes().getNamedItem("model").getNodeValue();
+            String hospGoal = hospNodeList.item(x).getAttributes().getNamedItem("goal").getNodeValue();
+
+            hospStageMap.put(hospProduct,Integer.parseInt(hospGoal));
+        }
+
+        //---------------------------------Retail Reader----------------------------------------------------
+        NodeList retailNodeList = document.getElementsByTagName("retailStage");
+
+        for (int x = 0, size = retailNodeList.getLength(); x < size; x++)
+        {
+            String retailProduct = retailNodeList.item(x).getAttributes().getNamedItem("model").getNodeValue();
+            String retailGoal = retailNodeList.item(x).getAttributes().getNamedItem("goal").getNodeValue();
+
+            retailStageMap.put(retailProduct,Integer.parseInt(retailGoal));
+        }
+
+        //---------------------------------Server Reader----------------------------------------------------
+        NodeList serverNodeList = document.getElementsByTagName("serverStage");
+
+        for (int x = 0, size = serverNodeList.getLength(); x < size; x++)
+        {
+            String serverProduct = serverNodeList.item(x).getAttributes().getNamedItem("model").getNodeValue();
+            String serverGoal = serverNodeList.item(x).getAttributes().getNamedItem("goal").getNodeValue();
+
+            serversStageMap.put(serverProduct,Integer.parseInt(serverGoal));
+        }
+
+        //---------------------------------Periph Reader----------------------------------------------------
+        NodeList periphNodeList = document.getElementsByTagName("periphStage");
+
+        for (int x = 0, size = periphNodeList.getLength(); x < size; x++)
+        {
+            String periphProduct = periphNodeList.item(x).getAttributes().getNamedItem("model").getNodeValue();
+            String periphGoal = periphNodeList.item(x).getAttributes().getNamedItem("goal").getNodeValue();
+
+            periphStageMap.put(periphProduct,Integer.parseInt(periphGoal));
+        }
+
+        //---------------------------------Add Maps to Return List----------------------------------------------------
+
+        returnStageList.add(hospStageMap);
+        returnStageList.add(serversStageMap);
+        returnStageList.add(periphStageMap);
+        returnStageList.add(retailStageMap);
+
+        return returnStageList;
+    }
+
 
     //---------------------------------Database Queries----------------------------------------------------------------
 
@@ -191,7 +282,6 @@ public class Tool {
 
         if(strings.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7745",0);
             returnMap.put("7734",0);
             returnMap.put("7743",0);
@@ -200,9 +290,9 @@ public class Tool {
             returnMap.put("7744",0);
         }else {
             for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(i);
-                int tempValue = Collections.frequency(strings, strings.get(i));
-                strings.removeAll(Collections.singleton(strings.get(i)));
+                String tempString = strings.get(0);
+                int tempValue = Collections.frequency(strings, strings.get(0));
+                strings.removeAll(Collections.singleton(strings.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -219,13 +309,11 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                 \n" +
-                "                  WHERE CompletedQuantity = '1' \n" +
-                "                 \n" +
-                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                 \n" +
                 "                  AND (ut.[Assembly] LIKE '7745MC[0-9]%' \n" +
                 "                 \n" +
@@ -284,7 +372,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7745",0);
             returnMap.put("7734",0);
             returnMap.put("7743",0);
@@ -293,9 +380,9 @@ public class Tool {
             returnMap.put("7744",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -376,7 +463,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7745",0);
             returnMap.put("7734",0);
             returnMap.put("7743",0);
@@ -385,13 +471,117 @@ public class Tool {
             returnMap.put("7744",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
 
+        return returnMap;
+    }
+
+    public HashMap<String,Integer> hospStageDataBaseUsers() throws ClassNotFoundException, SQLException
+    {
+        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
+        HashMap<String, Integer> returnMap = new HashMap<>();
+
+        ////EDIT COLUMN
+
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
+                "\t\t\t\tdatepart(HH, TestDate)+1 AS TestDate\n" +
+                "FROM UnitTest AS ut\n" +
+                "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
+                "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
+                "                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID\n" +
+                "                JOIN Location AS f ON f.RQSID = l.FacilityRQSID\n" +
+                "                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID\n" +
+                "                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)\n" +
+                "\t\t\t\t--Remove Second Shift:\n" +
+                "                --where cast(ut.TestDate as smalldatetime) \n" +
+                "\t\t\t\t--between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))\n" +
+                "\t\t\t\t--and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))\n" +
+                "\t\t\t\t--where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)\n" +
+                "                AND f.LocationID = 'MIDLAND'\n" +
+                "                AND ut.Type = 'Checkout'\n" +
+                "\t\t\t\tAND ut.IsPass = '1'\n" +
+                "        AND (i.ItemID LIKE '7745-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7734-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7743-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7761-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7791-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7744-%')\n" +
+                "\n" +
+                "\t\t\t\tORDER BY UserID,ItemID";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+            String User = "rqs_read_only";
+            String Pass = "rqsr3qadonly";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next()) {
+                String staging = resultSet.getString("ItemID");
+
+                String user = resultSet.getString("UserID");
+
+                String sub = staging.substring(0, staging.indexOf('-'));
+
+                if (dummyMap.isEmpty()) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = dummyMap.get(user);
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (!dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+            }
+        } finally {
+            try {
+                System.out.println("Closing connection");
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (dummyMap.isEmpty()) {
+            returnMap.put("", 0);
+        } else {
+            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
+
+            for (int i = 0; i < users.size(); i++) {
+                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+
+                int tempValue = 0;
+
+                for (int x = 0; x < tempList.size(); x++) {
+                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+                }
+                returnMap.put(users.get(i), tempValue);
+            }
+        }
         return returnMap;
     }
 
@@ -472,7 +662,6 @@ public class Tool {
 
         if(strings.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7701",0);
             returnMap.put("7702",0);
             returnMap.put("7703",0);
@@ -480,9 +669,9 @@ public class Tool {
             returnMap.put("5985",0);
         }else {
             for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(i);
-                int tempValue = Collections.frequency(strings, strings.get(i));
-                strings.removeAll(Collections.singleton(strings.get(i)));
+                String tempString = strings.get(0);
+                int tempValue = Collections.frequency(strings, strings.get(0));
+                strings.removeAll(Collections.singleton(strings.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -499,13 +688,11 @@ public class Tool {
 
         ////EDIT COLUMN
 
-        String query = "SELECT [Assembly] ,[CompletionDate]\n" +
+        String query = "SELECT [Assembly] ,[MfgPassDate]\n" +
                 "\n" +
                 "  FROM [ERP].[dbo].[MidlandERP] AS ut\n" +
                 "\n" +
-                "  WHERE CompletedQuantity = '1'\n" +
-                "\n" +
-                "  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
+                "  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
                 "\n" +
                 "  AND (ut.[Assembly] LIKE '770[0-9]MC%'\n" +
                 "\n" +
@@ -558,7 +745,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7701",0);
             returnMap.put("7702",0);
             returnMap.put("7703",0);
@@ -566,9 +752,9 @@ public class Tool {
             returnMap.put("5985",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -580,27 +766,30 @@ public class Tool {
     //---------------------------------Retail Stage Query----------------------------------------------------------------
     public HashMap<String,Integer> retailStageDataBase() throws ClassNotFoundException, SQLException
     {
-
         ArrayList<String> readMe = new ArrayList<>();
         HashMap<String,Integer> returnMap = new HashMap<>();
 
-        ////EDIT COLUMN
+        ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[CompletionDate]\n" +
+        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+                "                 \n" +
+                "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
+                "                 \n" +
+                "                  WHERE CompletedQuantity = '1' \n" +
+                "                 \n" +
+                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                 \n" +
+                "                  AND (ut.[Assembly] LIKE '7701MC[0-9]%' \n" +
+                "                 \n" +
+                "                  OR ut.[Assembly] LIKE '7702MC[0-9]%' \n" +
                 "\n" +
-                "  FROM [ERP].[dbo].[MidlandERP] AS ut\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7703MC[0-9]%' \n" +
                 "\n" +
-                "  WHERE CompletedQuantity = '1'\n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5968MC[0-9]%' \n" +
                 "\n" +
-                "  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
-                "\n" +
-                "  AND (ut.[Assembly] LIKE '770[0-9]MC%'\n" +
-                "\n" +
-                "  OR ut.[Assembly] LIKE '5968MC[0-9]%'\n" +
-                "\n" +
-                "  OR ut.[Assembly] LIKE '5985MC[0-9]%')\n" +
-                "\n" +
-                "  ORDER BY [Assembly] ASC";
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5985MC[0-9]%') \n" +
+                "                 \n" +
+                "                  ORDER BY [Assembly] ASC";
 
         Connection conn = null;
 
@@ -627,6 +816,7 @@ public class Tool {
                 String sub = staging.substring(0, staging.indexOf('M'));
 
 
+
                 readMe.add(sub);
             }
         }finally
@@ -643,10 +833,8 @@ public class Tool {
 
         }
 
-
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("7701",0);
             returnMap.put("7702",0);
             returnMap.put("7703",0);
@@ -654,15 +842,117 @@ public class Tool {
             returnMap.put("5985",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
 
         return returnMap;
+    }
 
+    //---------------------------------Retail User Stage Query----------------------------------------------------------------
+    public HashMap<String,Integer> retailStageDataBaseUsers() throws ClassNotFoundException, SQLException
+    {
+        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
+        HashMap<String, Integer> returnMap = new HashMap<>();
+
+        ////EDIT COLUMN
+
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
+                "                                datepart(HH, TestDate)+1 AS TestDate  \n" +
+                "                                FROM UnitTest AS ut  \n" +
+                "                                                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID  \n" +
+                "                                                JOIN Item AS i ON i.RQSID = unit.ItemRQSID  \n" +
+                "                                                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID  \n" +
+                "                                                JOIN Location AS f ON f.RQSID = l.FacilityRQSID  \n" +
+                "                                                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID  \n" +
+                "                                                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)  \n" +
+                "                                --Remove Second Shift:  \n" +
+                "                                                --where cast(ut.TestDate as smalldatetime)   \n" +
+                "                                --between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))  \n" +
+                "                                --and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))  \n" +
+                "                                --where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)  \n" +
+                "                                                AND f.LocationID = 'MIDLAND'  \n" +
+                "                                                AND ut.Type = 'Checkout'  \n" +
+                "                                AND ut.IsPass = '1'  \n" +
+                "                                        AND (i.ItemID LIKE '7701-%'  \n" +
+                "                                OR i.ItemID LIKE '7702-%'  \n" +
+                "                                OR i.ItemID LIKE '7703-%')-- Next Gen  \n" +
+                "                                  \n" +
+                "                                ORDER BY UserID,ItemID";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+            String User = "rqs_read_only";
+            String Pass = "rqsr3qadonly";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next()) {
+                String staging = resultSet.getString("ItemID");
+
+                String user = resultSet.getString("UserID");
+
+                String sub = staging.substring(0, staging.indexOf('-'));
+
+                if (dummyMap.isEmpty()) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = dummyMap.get(user);
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (!dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+            }
+        } finally {
+            try {
+                System.out.println("Closing connection");
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if (dummyMap.isEmpty()) {
+            returnMap.put("", 0);
+        } else {
+            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
+
+            for (int i = 0; i < users.size(); i++) {
+                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+
+                int tempValue = 0;
+
+                for (int x = 0; x < tempList.size(); x++) {
+                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+                }
+                returnMap.put(users.get(i), tempValue);
+            }
+        }
+        return returnMap;
     }
 
 
@@ -750,7 +1040,6 @@ public class Tool {
 
         if(strings.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("5931",0);
             returnMap.put("5933",0);
             returnMap.put("5934",0);
@@ -768,9 +1057,9 @@ public class Tool {
             returnMap.put("1651",0);
         }else {
             for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(i);
-                int tempValue = Collections.frequency(strings, strings.get(i));
-                strings.removeAll(Collections.singleton(strings.get(i)));
+                String tempString = strings.get(0);
+                int tempValue = Collections.frequency(strings, strings.get(0));
+                strings.removeAll(Collections.singleton(strings.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -786,13 +1075,10 @@ public class Tool {
         HashMap<String,Integer> returnMap = new HashMap<>();
 
 
-        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
-                "                 \n" +
-                "                  WHERE CompletedQuantity = '1' \n" +
-                "                 \n" +
-                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                 \n" +
                 "                  AND (ut.[Assembly] LIKE '5931MC[0-9]%' \n" +
                 "                 \n" +
@@ -869,7 +1155,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("5931",0);
             returnMap.put("5933",0);
             returnMap.put("5934",0);
@@ -887,9 +1172,9 @@ public class Tool {
             returnMap.put("1651",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -988,7 +1273,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("5931",0);
             returnMap.put("5933",0);
             returnMap.put("5934",0);
@@ -1006,14 +1290,120 @@ public class Tool {
             returnMap.put("1651",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
 
 
+        return returnMap;
+    }
+
+    public HashMap<String,Integer> periphStageDataBaseUsers() throws ClassNotFoundException, SQLException
+    {
+        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
+        HashMap<String, Integer> returnMap = new HashMap<>();
+
+        ////EDIT COLUMN
+
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID,TestDate\n" +
+                "                FROM UnitTest AS ut \n" +
+                "\n" +
+                "                                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID \n" +
+                "                                JOIN Item AS i ON i.RQSID = unit.ItemRQSID \n" +
+                "                                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID \n" +
+                "                                JOIN Location AS f ON f.RQSID = l.FacilityRQSID \n" +
+                "                                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID \n" +
+                "                                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE) \n" +
+                "                                AND f.LocationID = 'MIDLAND' \n" +
+                "                                AND ut.Type = 'Checkout' \n" +
+                "\n" +
+                "\n" +
+                "                AND ut.IsPass = '1' \n" +
+                "                AND (i.ItemID LIKE '5943-%' \n" +
+                "                OR i.ItemID LIKE '5967-%' \n" +
+                "                OR i.ItemID LIKE '1635-%' \n" +
+                "                OR i.ItemID LIKE '1640-%' \n" +
+                "                OR i.ItemID LIKE '1641-%' \n" +
+                "                OR i.ItemID LIKE '1642-%' \n" +
+                "                OR i.ItemID LIKE '1924-%' \n" +
+                "                OR i.ItemID LIKE '1646-%' \n" +
+                "                OR i.ItemID LIKE '1650-%' \n" +
+                "                OR i.ItemID LIKE '1651-%')\n" +
+                "                 \n" +
+                "                ORDER BY UserID,ItemID";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+            String User = "rqs_read_only";
+            String Pass = "rqsr3qadonly";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established. THIS IS THE NEW ONE");
+
+            while (resultSet.next()) {
+                String staging = resultSet.getString("ItemID");
+
+                String user = resultSet.getString("UserID");
+
+                String sub = staging.substring(0, staging.indexOf('-'));
+
+                if (dummyMap.isEmpty()) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = dummyMap.get(user);
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (!dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+            }
+        } finally {
+            try {
+                System.out.println("Closing connection");
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if (dummyMap.isEmpty()) {
+            returnMap.put("", 0);
+        } else {
+            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
+
+            for (int i = 0; i < users.size(); i++) {
+                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+
+                int tempValue = 0;
+
+                for (int x = 0; x < tempList.size(); x++) {
+                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+                }
+                returnMap.put(users.get(i), tempValue);
+            }
+        }
         return returnMap;
     }
 
@@ -1095,7 +1485,6 @@ public class Tool {
 
         if(strings.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("1656",0);
             returnMap.put("1930",0);
             returnMap.put("1657",0);
@@ -1103,9 +1492,9 @@ public class Tool {
             returnMap.put("1612",0);
         }else {
             for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(i);
-                int tempValue = Collections.frequency(strings, strings.get(i));
-                strings.removeAll(Collections.singleton(strings.get(i)));
+                String tempString = strings.get(0);
+                int tempValue = Collections.frequency(strings, strings.get(0));
+                strings.removeAll(Collections.singleton(strings.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -1122,13 +1511,10 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
-                "                 \n" +
-                "                  WHERE CompletedQuantity = '1' \n" +
-                "                 \n" +
-                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
+                "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
                 "\t\t\t\t  \n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
@@ -1185,7 +1571,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("1656",0);
             returnMap.put("1930",0);
             returnMap.put("1657",0);
@@ -1193,9 +1578,9 @@ public class Tool {
             returnMap.put("1612",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -1273,7 +1658,6 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("1656",0);
             returnMap.put("1930",0);
             returnMap.put("1657",0);
@@ -1281,9 +1665,9 @@ public class Tool {
             returnMap.put("1612",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -1291,6 +1675,111 @@ public class Tool {
 
         return returnMap;
     }
+
+    public HashMap<String,Integer> serverStageDataBaseUsers() throws ClassNotFoundException, SQLException
+    {
+        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
+        HashMap<String, Integer> returnMap = new HashMap<>();
+
+        ////EDIT COLUMN
+
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
+                "\t\t\t\tdatepart(HH, TestDate)+1 AS TestDate\n" +
+                "FROM UnitTest AS ut\n" +
+                "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
+                "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
+                "                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID\n" +
+                "                JOIN Location AS f ON f.RQSID = l.FacilityRQSID\n" +
+                "                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID\n" +
+                "                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)\n" +
+                "\t\t\t\t--Remove Second Shift:\n" +
+                "                --where cast(ut.TestDate as smalldatetime) \n" +
+                "\t\t\t\t--between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))\n" +
+                "\t\t\t\t--and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))\n" +
+                "\t\t\t\t--where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)\n" +
+                "                AND f.LocationID = 'MIDLAND'\n" +
+                "                AND ut.Type = 'Checkout'\n" +
+                "\t\t\t\tAND ut.IsPass = '1'\n" +
+                "\t\t\t\tAND (i.ItemID LIKE '1656-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1930-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1657-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1611-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1612-%')\n" +
+                "\n" +
+                "\t\t\t\tORDER BY UserID,ItemID";
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+            String User = "rqs_read_only";
+            String Pass = "rqsr3qadonly";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            System.out.println("Connection established.");
+
+            while (resultSet.next()) {
+                String staging = resultSet.getString("ItemID");
+
+                String user = resultSet.getString("UserID");
+
+                String sub = staging.substring(0, staging.indexOf('-'));
+
+                if (dummyMap.isEmpty()) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = dummyMap.get(user);
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (!dummyMap.containsKey(user)) {
+                    ArrayList<String> temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+            }
+        } finally {
+            try {
+                System.out.println("Closing connection");
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if (dummyMap.isEmpty()) {
+            returnMap.put("", 0);
+        } else {
+            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
+
+            for (int i = 0; i < users.size(); i++) {
+                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+
+                int tempValue = 0;
+
+                for (int x = 0; x < tempList.size(); x++) {
+                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+                }
+                returnMap.put(users.get(i), tempValue);
+            }
+        }
+        return returnMap;
+    }
+
     //---------------------------------Optic Build Query----------------------------------------------------------------
     public HashMap<String,Integer> opticBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
@@ -1317,7 +1806,9 @@ public class Tool {
                 "--Optic 5\n" +
                 "AND (Item.ItemID LIKE '6001%' \n" +
                 "--Optic 12\n" +
-                "OR Item.ItemID LIKE '6002%')\n" +
+                "OR Item.ItemID LIKE '6002%'" +
+                "" +
+                "OR Item.ItemID LIKE '6003%')\n" +
                 "                 \n" +
                 "                \n" +
                 "ORDER BY ItemID ASC";
@@ -1372,15 +1863,14 @@ public class Tool {
 
         if(strings.isEmpty())
         {
-            System.out.println("Return Map is Empty.");
             returnMap.put("6001",0);
             returnMap.put("6002",0);
             returnMap.put("6003",0);
         }else {
             for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(i);
-                int tempValue = Collections.frequency(strings, strings.get(i));
-                strings.removeAll(Collections.singleton(strings.get(i)));
+                String tempString = strings.get(0);
+                int tempValue = Collections.frequency(strings, strings.get(0));
+                strings.removeAll(Collections.singleton(strings.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }
@@ -1396,16 +1886,13 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[CompletionDate] \n" +
+        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                 \n" +
-                "                  WHERE CompletedQuantity = '1' \n" +
-                "                 \n" +
-                "                  AND Cast(CompletionDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
-                "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
+                "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '6001MC[0-9]%' \n" +
+                "\t\t\t\t  AND (ut.[Assembly] LIKE '6001MC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '6002MC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
@@ -1456,15 +1943,14 @@ public class Tool {
 
         if(readMe.isEmpty())
         {
-            System.out.println("Return map is empty.");
             returnMap.put("6001",0);
             returnMap.put("6002",0);
             returnMap.put("6003",0);
         }else {
             for (int i = 0; i < readMe.size(); i++) {
-                String tempString = readMe.get(i);
-                int tempValue = Collections.frequency(readMe, readMe.get(i));
-                readMe.removeAll(Collections.singleton(readMe.get(i)));
+                String tempString = readMe.get(0);
+                int tempValue = Collections.frequency(readMe, readMe.get(0));
+                readMe.removeAll(Collections.singleton(readMe.get(0)));
                 returnMap.put(tempString, tempValue);
             }
         }

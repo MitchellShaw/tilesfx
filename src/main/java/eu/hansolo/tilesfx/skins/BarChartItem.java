@@ -309,7 +309,7 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
         });
     }
 
-    private void redraw() {
+    public void redraw() {
         nameText.setFill(getNameColor());
         valueText.setFill(getValueColor());
         maxValueText.setFill(getMaxValueColor());

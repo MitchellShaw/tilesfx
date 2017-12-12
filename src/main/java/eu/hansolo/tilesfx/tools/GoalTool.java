@@ -11,14 +11,9 @@ public class GoalTool {
     {
         double toReturn = 0.0;
 
-        if(total != 0 && quantity !=0)
-        {
+        if(total != 0 && quantity !=0) {
             toReturn = total / quantity;
         }
-        else{
-            System.out.println("Divided by zero, returning zero.");
-        }
-
         return toReturn *100;
     }
 
@@ -30,8 +25,6 @@ public class GoalTool {
         if(productList.contains(product))
         {
             toReturn = inputMap.get(product);
-        }else{
-            System.out.println("Did not find ' "+product+" ' in info file. Returning zero.");
         }
 
         return toReturn;

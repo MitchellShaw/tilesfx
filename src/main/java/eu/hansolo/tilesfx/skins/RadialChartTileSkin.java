@@ -192,7 +192,7 @@ public class RadialChartTileSkin extends TileSkin {
 
             // Name
             chartCtx.setTextAlign(TextAlignment.RIGHT);
-            chartCtx.fillText(data.getName(), nameX, barXY, nameWidth);
+            chartCtx.fillText(data.getName(), nameX , barXY, nameWidth);
 
             // Value
             chartCtx.setTextAlign(TextAlignment.CENTER);

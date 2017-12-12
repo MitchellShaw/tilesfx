@@ -1,52 +1,48 @@
-package eu.hansolo.tilesfx;
-
+import eu.hansolo.tilesfx.Tile;
+import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartData;
+import eu.hansolo.tilesfx.fonts.Fonts;
 import eu.hansolo.tilesfx.skins.BarChartItem;
+import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.MapTool;
 import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.event.Event;
+import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.chart.BarChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import javafx.util.StringConverter;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.concurrent.*;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 
 /**
@@ -54,8 +50,7 @@ import java.util.concurrent.TimeUnit;
  * Framework by hansolo
  * 2017-11-22.
  */
-public class Main extends Application
-{
+public class Main extends Application {
     //------------------------------------Variables Block---------------------------------------------------------------
     Tile pos;
     Tile servers;
@@ -121,6 +116,7 @@ public class Main extends Application
     Tile posPercentStageFocused;
 
 
+    boolean firstTime;
 
     double x = 0;
     double y = 0;
@@ -200,7 +196,6 @@ public class Main extends Application
     double n3000GoalBuild;
     double s500CurrentBuild;
     double s500GoalBuild;
-
 
 
     double mediaPlayerCurrentTest;
@@ -303,35 +298,55 @@ public class Main extends Application
 
 
     //---------------------------------Variables for Map Creation for POS Database Call----------------------------
-    HashMap<String,Integer> posBuildMap;
-    HashMap<String,Integer> posTestMap;
-    HashMap<String,Integer> posStageMap;
+    HashMap<String, Integer> posBuildMap;
+    HashMap<String, Integer> posTestMap;
+    HashMap<String, Integer> posStageMap;
+    HashMap<String, Integer> posUserStageMap;
 
     //---------------------------------Variables for Map Creation for Retail Database Call-------------------------
-    HashMap<String,Integer> retailBuildMap;
-    HashMap<String,Integer> retailTestMap;
-    HashMap<String,Integer> retailStageMap;
+    HashMap<String, Integer> retailBuildMap;
+    HashMap<String, Integer> retailTestMap;
+    HashMap<String, Integer> retailStageMap;
+    HashMap<String, Integer> retailUserStageMap;
 
     //---------------------------------Variables for Map Creation for Servers Database Call------------------------
-    HashMap<String,Integer> serversBuildMap;
-    HashMap<String,Integer> serversTestMap;
-    HashMap<String,Integer> serversStageMap;
+    HashMap<String, Integer> serversBuildMap;
+    HashMap<String, Integer> serversTestMap;
+    HashMap<String, Integer> serversStageMap;
+    HashMap<String, Integer> serversUserStageMap;
 
     //---------------------------------Variables for Map Creation for Peripherals Database Call--------------------
-    HashMap<String,Integer> periphBuildMap;
-    HashMap<String,Integer> periphTestMap;
-    HashMap<String,Integer> periphStageMap;
+    HashMap<String, Integer> periphBuildMap;
+    HashMap<String, Integer> periphTestMap;
+    HashMap<String, Integer> periphStageMap;
+    HashMap<String, Integer> periphUserStageMap;
 
     //---------------------------------Variables for Map Creation for Optic Database Call----------------------------
-    HashMap<String,Integer> opticBuildMap;
-    HashMap<String,Integer> opticTestMap;
+    HashMap<String, Integer> opticBuildMap;
+    HashMap<String, Integer> opticTestMap;
 
     //---------------------------------Variables for Map Creation for Document Reader---------------------------------
-    ArrayList<HashMap<String,Integer>> mapList;
+    ArrayList<HashMap<String, Integer>> mapList;
+    ArrayList<HashMap<String, Integer>> stageMapList;
 
     @Override
-    public void start(Stage primaryStage) throws Exception
-    {
+    public void start(Stage primaryStage) throws Exception {
+        //---------------------------------Stage Handlers and Show------------------------------------------------------
+
+//        Stage tempStage = new Stage();
+//        FXMLLoader root = new FXMLLoader(getClass().getResource("LoadingScreen.fxml"));
+//
+//        LoadingController loadingController = new LoadingController();
+//        root.setController(loadingController);
+//
+//        GridPane loadPane = root.load();
+//        Scene loadScene = new Scene(loadPane, 1920, 1080);
+//
+//        tempStage.initStyle(StageStyle.UNDECORATED);
+//        tempStage.setScene(loadScene);
+        //---------------------------------Special Tiles----------------------------------------------------------------
+        final CountDownLatch myLatch = new CountDownLatch(1);
+
         //---------------------------------Variables for Tiles----------------------------------------------------------
         FlowPane flowPane = new FlowPane();
         FlowPane flowPaneTest = new FlowPane();
@@ -345,6 +360,12 @@ public class Main extends Application
         FlowPane flowPaneRetailStageFocus = new FlowPane();
         FlowPane flowPaneServersStageFocus = new FlowPane();
         FlowPane flowPanePeriphStageFocus = new FlowPane();
+        FlowPane flowPaneClockOrQuality = new FlowPane();
+        FlowGridPane posGridPane = new FlowGridPane(4,5);
+        FlowGridPane retailGridPane = new FlowGridPane(4,5);
+        FlowGridPane serversGridPane = new FlowGridPane(4,5);
+        FlowGridPane periphGridPane = new FlowGridPane(4,5);
+
         goalTool = new GoalTool();
 
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
@@ -372,10 +393,6 @@ public class Main extends Application
         s500ProdList.add("1611");
         s500ProdList.add("1612");
 
-        ArrayList<String> mediaPlayerProdList = new ArrayList<>();
-        mediaPlayerProdList.add("1656");
-        mediaPlayerProdList.add("1930");
-
         //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
         BarChartItem p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
         BarChartItem p1x35DataFocused = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
@@ -385,12 +402,12 @@ public class Main extends Application
         BarChartItem p1x35DataStageFocused = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
 
 
-        BarChartItem p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataFocused = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataTestFocused = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild,  Tile.GREEN);
-        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage,  Tile.GREEN);
-        BarChartItem p1532DataStageFocused = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage,  Tile.GREEN);
+        BarChartItem p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild, Tile.GREEN);
+        BarChartItem p1532DataFocused = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild, Tile.GREEN);
+        BarChartItem p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild, Tile.GREEN);
+        BarChartItem p1532DataTestFocused = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild, Tile.GREEN);
+        BarChartItem p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage, Tile.GREEN);
+        BarChartItem p1532DataStageFocused = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage, Tile.GREEN);
 
         BarChartItem p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
         BarChartItem p1x30DataFocused = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
@@ -474,25 +491,20 @@ public class Main extends Application
         BarChartItem optic5DataTest = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
         BarChartItem optic5DataTestFocused = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
 
-        BarChartItem opticKitsData = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
-        BarChartItem opticKitsDataFocused = new BarChartItem("Optic Kits", kitsCurrentBuild, kitsGoalBuild, Tile.GREEN);
-        BarChartItem opticKitsDataTest = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
-        BarChartItem opticKitsDataTestFocused = new BarChartItem("Optic Kits", kitsCurrentTest, kitsGoalBuild, Tile.GREEN);
-
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataFocused = new BarChartItem("7701", xr5CurrentBuild,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataTest = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataTestFocused = new BarChartItem("7701", xr5CurrentTest,xr5GoalBuild,Tile.BLUE);
-        BarChartItem xr5DataStage = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
-        BarChartItem xr5DataStageFocused = new BarChartItem("7701", xr5CurrentStage,xr5GoalStage,Tile.BLUE);
+        BarChartItem xr5Data = new BarChartItem("7701", xr5CurrentBuild, xr5GoalBuild, Tile.BLUE);
+        BarChartItem xr5DataFocused = new BarChartItem("7701", xr5CurrentBuild, xr5GoalBuild, Tile.BLUE);
+        BarChartItem xr5DataTest = new BarChartItem("7701", xr5CurrentTest, xr5GoalBuild, Tile.BLUE);
+        BarChartItem xr5DataTestFocused = new BarChartItem("7701", xr5CurrentTest, xr5GoalBuild, Tile.BLUE);
+        BarChartItem xr5DataStage = new BarChartItem("7701", xr5CurrentStage, xr5GoalStage, Tile.BLUE);
+        BarChartItem xr5DataStageFocused = new BarChartItem("7701", xr5CurrentStage, xr5GoalStage, Tile.BLUE);
 
-        BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataFocused = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataTestFocused = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild,Tile.RED);
-        BarChartItem xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
-        BarChartItem xr7DataStageFocused = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage,Tile.RED);
+        BarChartItem xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild, Tile.RED);
+        BarChartItem xr7DataFocused = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild, Tile.RED);
+        BarChartItem xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild, Tile.RED);
+        BarChartItem xr7DataTestFocused = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild, Tile.RED);
+        BarChartItem xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage, Tile.RED);
+        BarChartItem xr7DataStageFocused = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage, Tile.RED);
 
         BarChartItem xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
         BarChartItem xr7PlusDataFocused = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
@@ -509,6 +521,18 @@ public class Main extends Application
         BarChartItem nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
         BarChartItem nextGenDisplaysStageFocused = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
 
+        posGridPane.setStyle("-fx-background-color: rgb(42, 42, 42)");
+        posGridPane.setPrefSize(1920, 1080);
+
+        retailGridPane.setStyle("-fx-background-color: rgb(42, 42, 42)");
+        retailGridPane.setPrefSize(1920, 1080);
+
+        serversGridPane.setStyle("-fx-background-color: rgb(42, 42, 42)");
+        serversGridPane.setPrefSize(1920, 1080);
+
+        periphGridPane.setStyle("-fx-background-color: rgb(42, 42, 42)");
+        periphGridPane.setPrefSize(1920, 1080);
+
         //---------------------------------Scheduled Service for All Updates--------------------------------------------
         ScheduledService buildVariables = new ScheduledService() {
             @Override
@@ -517,46 +541,46 @@ public class Main extends Application
                     @Override
                     protected Object call() throws Exception {
 
-                        System.out.println("Running Build Block.\n");
+                        System.out.println("\n***********Running Build Block.***********\n");
 
                         //---------------------------------Hosp Build---------------------------------------------------
                         posBuildMap = dataBaseTool.hospBuildDataBase();
 
-                        p1532CurrentBuild = mapTool.getCurrentSingleValue("7734",posBuildMap);
-                        p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743",posBuildMap);
-                        p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList,posBuildMap);
-                        t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744",posBuildMap);
+                        p1532CurrentBuild = mapTool.getCurrentSingleValue("7734", posBuildMap);
+                        p1x30CurrentBuild = mapTool.getCurrentSingleValue("7743", posBuildMap);
+                        p1x35CurrentBuild = mapTool.getCurrentGroupValue(p1x35ProdList, posBuildMap);
+                        t1000sCurrentBuild = mapTool.getCurrentSingleValue("7744", posBuildMap);
 
                         //---------------------------------Retail Build-------------------------------------------------
                         retailBuildMap = dataBaseTool.retailBuildDataBase();
 
-                        xr7CurrentBuild = mapTool.getCurrentSingleValue("7702",retailBuildMap);
-                        xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703",retailBuildMap);
-                        xr5CurrentBuild = mapTool.getCurrentSingleValue("7701",retailBuildMap);
-                        nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList,retailBuildMap);
+                        xr7CurrentBuild = mapTool.getCurrentSingleValue("7702", retailBuildMap);
+                        xr7PlusCurrentBuild = mapTool.getCurrentSingleValue("7703", retailBuildMap);
+                        xr5CurrentBuild = mapTool.getCurrentSingleValue("7701", retailBuildMap);
+                        nextGenDisplayCurrentBuild = mapTool.getCurrentGroupValue(nextGenProdList, retailBuildMap);
 
                         //---------------------------------Servers Build------------------------------------------------
                         serversBuildMap = dataBaseTool.serversBuildDataBase();
 
-                        mediaPlayerCurrentBuild = mapTool.getCurrentGroupValue(mediaPlayerProdList,serversBuildMap);
-                        n3000CurrentBuild = mapTool.getCurrentSingleValue("1657",serversBuildMap);
-                        s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList,serversBuildMap);
+                        mediaPlayerCurrentBuild = mapTool.getCurrentSingleValue("1656", serversBuildMap);
+                        n3000CurrentBuild = mapTool.getCurrentSingleValue("1657", serversBuildMap);
+                        s500CurrentBuild = mapTool.getCurrentGroupValue(s500ProdList, serversBuildMap);
 
                         //---------------------------------Periph Build-------------------------------------------------
                         periphBuildMap = dataBaseTool.periphBuildDataBase();
 
-                        kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924",periphBuildMap);
-                        kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphBuildMap);
-                        bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635",periphBuildMap);
-                        pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphBuildMap);
+                        kiwi4sCurrentBuild = mapTool.getCurrentSingleValue("1924", periphBuildMap);
+                        kiwi2XsCurrentBuild = mapTool.getCurrentGroupValue(kiwi2XsProdList, periphBuildMap);
+                        bumpBarsCurrentBuild = mapTool.getCurrentSingleValue("1635", periphBuildMap);
+                        pantherEPC4sCurrentBuild = mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphBuildMap);
 
                         //---------------------------------Optic Build--------------------------------------------------
                         opticBuildMap = dataBaseTool.opticBuildDataBase();
-                        optic5sCurrentBuild =  mapTool.getCurrentSingleValue("6001",opticBuildMap);
-                        optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002",opticBuildMap);
-                        kitsCurrentBuild = mapTool.getCurrentSingleValue("6003",opticBuildMap);
+                        optic5sCurrentBuild = mapTool.getCurrentSingleValue("6001", opticBuildMap);
+                        optic12sCurrentBuild = mapTool.getCurrentSingleValue("6002", opticBuildMap);
+                        kitsCurrentBuild = mapTool.getCurrentSingleValue("6003", opticBuildMap);
 
-                        System.out.println("Running Test Block.\n");
+                        System.out.println("\n***********Running Test Block.***********\n");
                         //---------------------------------Hosp Test-----------------------------------------------------------------------
                         posTestMap = dataBaseTool.hospTestDataBase();
 
@@ -577,7 +601,7 @@ public class Main extends Application
                         serversTestMap = dataBaseTool.serversTestDataBase();
 
 
-                        mediaPlayerCurrentTest = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversTestMap);
+                        mediaPlayerCurrentTest = mapTool.getCurrentSingleValue("1656", serversTestMap);
                         n3000CurrentTest = mapTool.getCurrentSingleValue("1657", serversTestMap);
                         s500CurrentTest = mapTool.getCurrentGroupValue(s500ProdList, serversTestMap);
 
@@ -598,82 +622,110 @@ public class Main extends Application
                         optic12sCurrentTest = mapTool.getCurrentSingleValue("6002", opticTestMap);
                         kitsCurrentTest = mapTool.getCurrentSingleValue("6003", opticTestMap);
 
-                        System.out.println("Running Stage Block.\n");
+                        System.out.println("\n***********Running Stage Block.***********\n");
 
                         //---------------------------------Hosp Staging-----------------------------------------------------------------------
                         posStageMap = dataBaseTool.hospStageDataBase();
+
+                        posUserStageMap = dataBaseTool.hospStageDataBaseUsers();
 
                         p1532CurrentStage = mapTool.getCurrentSingleValue("7734", posStageMap);
                         p1x30CurrentStage = mapTool.getCurrentSingleValue("7743", posStageMap);
                         p1x35CurrentStage = mapTool.getCurrentGroupValue(p1x35ProdList, posStageMap);
                         t1000sCurrentStage = mapTool.getCurrentSingleValue("7744", posStageMap);
 
-                       //---------------------------------Retail Stage-----------------------------------------------------------------------
+                        //---------------------------------Retail Stage-----------------------------------------------------------------------
                         retailStageMap = dataBaseTool.retailStageDataBase();
-                        xr7CurrentStage = mapTool.getCurrentSingleValue("7702", retailBuildMap);
-                        xr7PlusCurrentStage = mapTool.getCurrentSingleValue("7703", retailBuildMap);
-                        xr5CurrentStage = mapTool.getCurrentSingleValue("7701", retailBuildMap);
+                        retailUserStageMap = dataBaseTool.retailStageDataBaseUsers();
+
+
+                        xr7CurrentStage = mapTool.getCurrentSingleValue("7702", retailStageMap);
+                        xr7PlusCurrentStage = mapTool.getCurrentSingleValue("7703", retailStageMap);
+                        xr5CurrentStage = mapTool.getCurrentSingleValue("7701", retailStageMap);
                         nextGenDisplayCurrentStage = mapTool.getCurrentGroupValue(nextGenProdList, retailStageMap);
 
                         //---------------------------------Servers Stage-----------------------------------------------------------------------
                         serversStageMap = dataBaseTool.serversStageDataBase();
 
-                        mediaPlayerCurrentStage = mapTool.getCurrentGroupValue(mediaPlayerProdList, serversStageMap);
+                        serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
+
+
+                        mediaPlayerCurrentStage = mapTool.getCurrentSingleValue("1656", serversStageMap);
                         n3000CurrentStage = mapTool.getCurrentSingleValue("1657", serversStageMap);
                         s500CurrentStage = mapTool.getCurrentGroupValue(s500ProdList, serversStageMap);
 
                         //---------------------------------Periph Stage-----------------------------------------------------------------------
                         periphStageMap = dataBaseTool.periphStageDataBase();
 
-                        kiwi4sCurrentStage = mapTool.getCurrentSingleValue("1924",periphStageMap);
-                        kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList,periphStageMap);
-                        bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635",periphStageMap);
-                        pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList,periphStageMap);
+                        periphUserStageMap = dataBaseTool.periphStageDataBaseUsers();
 
-                        System.out.println("Running Doc Block.\n");
+                        kiwi4sCurrentStage = mapTool.getCurrentSingleValue("1924", periphStageMap);
+                        kiwi2XsCurrentStage = mapTool.getCurrentGroupValue(kiwi2XsProdList, periphStageMap);
+                        bumpBarsCurrentStage = mapTool.getCurrentSingleValue("1635", periphStageMap);
+                        pantherEPC4sCurrentStage = mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphStageMap);
+
+                        System.out.println("\n***********Running Doc Block.***********\n");
                         mapList = dataBaseTool.documentReader();
+                        stageMapList = dataBaseTool.stageDocumentReader();
 
-                        p1532GoalBuild = goalTool.getGoal(mapList.get(0),"7734");
-                        p1x30GoalBuild = goalTool.getGoal(mapList.get(0),"7743");
-                        p1x35GoalBuild = goalTool.getListGoal(mapList.get(0),p1x35ProdList);
-                        t1000sGoalBuild = goalTool.getGoal(mapList.get(0),"7744");
+
+
+                        p1532GoalBuild = goalTool.getGoal(mapList.get(0), "7734");
+                        p1x30GoalBuild = goalTool.getGoal(mapList.get(0), "7743");
+                        p1x35GoalBuild = goalTool.getListGoal(mapList.get(0), p1x35ProdList);
+                        t1000sGoalBuild = goalTool.getGoal(mapList.get(0), "7744");
+
+                        p1532GoalStage = goalTool.getGoal(stageMapList.get(0), "7734");
+                        p1x30GoalStage = goalTool.getGoal(stageMapList.get(0), "7743");
+                        p1x35GoalStage = goalTool.getListGoal(stageMapList.get(0), p1x35ProdList);
+                        t1000sGoalStage = goalTool.getGoal(stageMapList.get(0), "7744");
+
 
                         //---------------------------------Percent Calculation and Update for POS-------------------------------
                         posTotalGoalBuild = p1532GoalBuild + p1x30GoalBuild + p1x35GoalBuild + t1000sGoalBuild;
                         posTotalCurrentBuild = p1532CurrentBuild + p1x35CurrentBuild + p1x30CurrentBuild + t1000sCurrentBuild;
 
-                        posTotalCurrentTest = p1532CurrentTest+ p1x35CurrentTest + p1x30CurrentTest + t1000sCurrentTest;
+                        posTotalCurrentTest = p1532CurrentTest + p1x35CurrentTest + p1x30CurrentTest + t1000sCurrentTest;
 
                         posTotalGoalStage = p1532GoalStage + p1x30GoalStage + p1x35GoalStage + t1000sGoalStage;
                         posTotalCurrentStage = p1532CurrentStage + p1x35CurrentStage + p1x30CurrentStage + t1000sCurrentStage;
 
-                        posPercentTotalBuild = goalTool.getPercentTotal(posTotalCurrentBuild,posTotalGoalBuild);
-                        posPercentTotalTest = goalTool.getPercentTotal(posTotalCurrentTest,posTotalGoalBuild);
-                        posPercentTotalStage = goalTool.getPercentTotal(posTotalCurrentStage ,posTotalGoalStage );
+                        posPercentTotalBuild = goalTool.getPercentTotal(posTotalCurrentBuild, posTotalGoalBuild);
+                        posPercentTotalTest = goalTool.getPercentTotal(posTotalCurrentTest, posTotalGoalBuild);
+                        posPercentTotalStage = goalTool.getPercentTotal(posTotalCurrentStage, posTotalGoalStage);
 
                         //---------------------------------Retail Build---------------------------------------------------------
-                        xr7GoalBuild = goalTool.getGoal(mapList.get(4),"7702");
-                        xr7PlusGoalBuild = goalTool.getGoal(mapList.get(4),"7703");
-                        xr5GoalBuild = goalTool.getGoal(mapList.get(4),"7701");
-                        nextGenDisplayGoalsBuild = goalTool.getListGoal(mapList.get(4),nextGenProdList);
+                        xr7GoalBuild = goalTool.getGoal(mapList.get(4), "7702");
+                        xr7PlusGoalBuild = goalTool.getGoal(mapList.get(4), "7703");
+                        xr5GoalBuild = goalTool.getGoal(mapList.get(4), "7701");
+                        nextGenDisplayGoalsBuild = goalTool.getListGoal(mapList.get(4), nextGenProdList);
+
+                        xr7GoalStage = goalTool.getGoal(stageMapList.get(3), "7702");
+                        xr7PlusGoalStage = goalTool.getGoal(stageMapList.get(3), "7703");
+                        xr5GoalStage = goalTool.getGoal(stageMapList.get(3), "7701");
+                        nextGenDisplayGoalsStage = goalTool.getListGoal(stageMapList.get(3), nextGenProdList);
 
                         //---------------------------------Percent Calculation and Update for Retail----------------------------
                         retailTotalGoalBuild = xr7GoalBuild + xr7PlusGoalBuild + xr5GoalBuild + nextGenDisplayGoalsBuild;
                         retailTotalCurrentBuild = xr7CurrentBuild + xr7PlusCurrentBuild + xr5CurrentBuild + nextGenDisplayCurrentBuild;
 
-                        retailTotalCurrentTest = xr7CurrentTest+ xr7PlusCurrentTest + xr5CurrentTest + nextGenDisplayCurrentTest;
+                        retailTotalCurrentTest = xr7CurrentTest + xr7PlusCurrentTest + xr5CurrentTest + nextGenDisplayCurrentTest;
 
                         retailTotalGoalStage = xr7GoalStage + xr7PlusGoalStage + xr5GoalStage + nextGenDisplayGoalsStage;
                         retailTotalCurrentStage = xr7CurrentStage + xr7PlusCurrentStage + xr5CurrentStage + nextGenDisplayCurrentStage;
 
-                        retailPercentTotalBuild = goalTool.getPercentTotal(retailTotalCurrentBuild,retailTotalGoalBuild);
-                        retailPercentTotalTest = goalTool.getPercentTotal(retailTotalCurrentTest,retailTotalGoalBuild);
-                        retailPercentTotalStage = goalTool.getPercentTotal(retailTotalCurrentStage,retailTotalGoalStage);
+                        retailPercentTotalBuild = goalTool.getPercentTotal(retailTotalCurrentBuild, retailTotalGoalBuild);
+                        retailPercentTotalTest = goalTool.getPercentTotal(retailTotalCurrentTest, retailTotalGoalBuild);
+                        retailPercentTotalStage = goalTool.getPercentTotal(retailTotalCurrentStage, retailTotalGoalStage);
 
                         //---------------------------------Servers Build--------------------------------------------------------
-                        mediaPlayerGoalBuild = goalTool.getListGoal(mapList.get(1),mediaPlayerProdList);
-                        n3000GoalBuild = goalTool.getGoal(mapList.get(1),"1657");
-                        s500GoalBuild = goalTool.getGoal(mapList.get(1),"1611");
+                        mediaPlayerGoalBuild = goalTool.getGoal(mapList.get(1), "1656");
+                        n3000GoalBuild = goalTool.getGoal(mapList.get(1), "1657");
+                        s500GoalBuild = goalTool.getGoal(mapList.get(1), "1611");
+
+                        mediaPlayerGoalStage = goalTool.getGoal(stageMapList.get(1), "1656");
+                        n3000GoalStage= goalTool.getGoal(stageMapList.get(1), "1657");
+                        s500GoalStage = goalTool.getGoal(stageMapList.get(1), "1611");
 
                         //---------------------------------Percent Calculation and Update for Servers---------------------------
                         serverGoalTotalBuild = mediaPlayerGoalBuild + n3000GoalBuild + s500GoalBuild;
@@ -685,15 +737,20 @@ public class Main extends Application
                         serverCurrentStage = mediaPlayerCurrentStage + n3000CurrentStage + s500CurrentStage;
 
 
-                        serversPercentTotalBuild = goalTool.getPercentTotal(serverCurrentBuild,serverGoalTotalBuild);
-                        serversPercentTotalTest = goalTool.getPercentTotal(serverCurrentTest,serverGoalTotalBuild);
-                        serversPercentTotalStage = goalTool.getPercentTotal(serverCurrentStage,serverGoalTotalStage);
+                        serversPercentTotalBuild = goalTool.getPercentTotal(serverCurrentBuild, serverGoalTotalBuild);
+                        serversPercentTotalTest = goalTool.getPercentTotal(serverCurrentTest, serverGoalTotalBuild);
+                        serversPercentTotalStage = goalTool.getPercentTotal(serverCurrentStage, serverGoalTotalStage);
 
                         //---------------------------------Periph Build---------------------------------------------------------
-                        kiwi4sGoalBuild = goalTool.getGoal(mapList.get(3),"1924");
-                        kiwi2XsGoalBuild = goalTool.getListGoal(mapList.get(3),kiwi2XsProdList);
-                        bumpBarsGoalBuild = goalTool.getGoal(mapList.get(3),"1635");
-                        pantherEPC4sGoalBuild = goalTool.getListGoal(mapList.get(3),pantherEPC4sProdList);
+                        kiwi4sGoalBuild = goalTool.getGoal(mapList.get(3), "1924");
+                        kiwi2XsGoalBuild = goalTool.getListGoal(mapList.get(3), kiwi2XsProdList);
+                        bumpBarsGoalBuild = goalTool.getGoal(mapList.get(3), "1635");
+                        pantherEPC4sGoalBuild = goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList);
+
+                        kiwi4sGoalStage = goalTool.getGoal(stageMapList.get(2), "1924");
+                        kiwi2XsGoalStage = goalTool.getListGoal(stageMapList.get(2), kiwi2XsProdList);
+                        bumpBarsGoalStage = goalTool.getGoal(stageMapList.get(2), "1635");
+                        pantherEPC4sGoalStage = goalTool.getListGoal(stageMapList.get(2), pantherEPC4sProdList);
 
                         //---------------------------------Percent Calculation and Update for Periph----------------------------
                         periphGoalTotalBuild = kiwi4sGoalBuild + kiwi2XsGoalBuild + bumpBarsGoalBuild + pantherEPC4sGoalBuild;
@@ -701,18 +758,18 @@ public class Main extends Application
 
                         periphCurrentTotalTest = kiwi4sCurrentTest + kiwi2XsCurrentTest + bumpBarsCurrentTest + pantherEPC4sCurrentTest;
 
-                        periphGoalTotalStage = kiwi4sGoalStage  + kiwi2XsGoalStage  + bumpBarsGoalStage  + pantherEPC4sGoalStage ;
-                        periphCurrentTotalStage  = kiwi4sCurrentStage  + kiwi2XsCurrentStage  + bumpBarsCurrentStage  + pantherEPC4sCurrentStage ;
+                        periphGoalTotalStage = kiwi4sGoalStage + kiwi2XsGoalStage + bumpBarsGoalStage + pantherEPC4sGoalStage;
+                        periphCurrentTotalStage = kiwi4sCurrentStage + kiwi2XsCurrentStage + bumpBarsCurrentStage + pantherEPC4sCurrentStage;
 
 
-                        periphPercentTotalBuild = goalTool.getPercentTotal(periphCurrentTotalBuild,periphGoalTotalBuild);
-                        periphPercentTotalTest = goalTool.getPercentTotal(periphCurrentTotalTest,periphGoalTotalBuild);
-                        periphPercentTotalStage = goalTool.getPercentTotal(periphCurrentTotalStage,periphGoalTotalStage);
+                        periphPercentTotalBuild = goalTool.getPercentTotal(periphCurrentTotalBuild, periphGoalTotalBuild);
+                        periphPercentTotalTest = goalTool.getPercentTotal(periphCurrentTotalTest, periphGoalTotalBuild);
+                        periphPercentTotalStage = goalTool.getPercentTotal(periphCurrentTotalStage, periphGoalTotalStage);
 
                         //---------------------------------Optic Build----------------------------------------------------------
-                        optic5sGoalBuild = goalTool.getGoal(mapList.get(2),"6001");
-                        optic12sGoalBuild = goalTool.getGoal(mapList.get(2),"6002");
-                        kitsGoalBuild = goalTool.getGoal(mapList.get(2),"6003");
+                        optic5sGoalBuild = goalTool.getGoal(mapList.get(2), "6001");
+                        optic12sGoalBuild = goalTool.getGoal(mapList.get(2), "6002");
+                        kitsGoalBuild = goalTool.getGoal(mapList.get(2), "6003");
 
                         //---------------------------------Percent Calculation and Update for Optic-----------------------------
                         opticGoalTotalBuild = optic5sGoalBuild + optic12sGoalBuild + kitsGoalBuild;
@@ -721,9 +778,10 @@ public class Main extends Application
                         opticCurrentTotalTest = optic5sCurrentTest + optic12sCurrentTest + kitsCurrentTest;
 
 
-                        opticPercentTotalBuild = goalTool.getPercentTotal(opticCurrentTotalBuild,opticGoalTotalBuild);
-                        opticPercentTotalTest = goalTool.getPercentTotal(opticCurrentTotalTest,opticGoalTotalBuild);
+                        opticPercentTotalBuild = goalTool.getPercentTotal(opticCurrentTotalBuild, opticGoalTotalBuild);
+                        opticPercentTotalTest = goalTool.getPercentTotal(opticCurrentTotalTest, opticGoalTotalBuild);
 
+                        //---------------------------------Update Bar Values--------------------------------------------
                         p1x35Data.setValue(p1x35CurrentBuild);
                         p1x35Data.setMaxValue(p1x35GoalBuild);
                         p1x35DataFocused.setValue(p1x35CurrentBuild);
@@ -888,15 +946,6 @@ public class Main extends Application
                         optic12DataTestFocused.setValue(optic12sCurrentTest);
                         optic12DataTestFocused.setMaxValue(optic12sGoalBuild);
 
-                        opticKitsData.setValue(kitsCurrentBuild);
-                        opticKitsData.setMaxValue(kitsGoalBuild);
-                        opticKitsDataTest.setValue(kitsCurrentTest);
-                        opticKitsDataTest.setMaxValue(kitsGoalBuild);
-                        opticKitsDataFocused.setValue(kitsCurrentBuild);
-                        opticKitsDataFocused.setMaxValue(kitsGoalBuild);
-                        opticKitsDataTestFocused.setValue(kitsCurrentTest);
-                        opticKitsDataTestFocused.setMaxValue(kitsGoalBuild);
-
                         //---------------------------------Updating the Retail Units----------------------------------------
                         xr5Data.setValue(xr5CurrentBuild);
                         xr5Data.setMaxValue(xr5GoalBuild);
@@ -947,6 +996,8 @@ public class Main extends Application
                         nextGenDisplaysTestFocused.setMaxValue(nextGenDisplayGoalsBuild);
                         nextGenDisplaysStage.setValue(nextGenDisplayCurrentStage);
                         nextGenDisplaysStage.setMaxValue(nextGenDisplayGoalsStage);
+                        nextGenDisplaysStageFocused.setValue(nextGenDisplayCurrentStage);
+                        nextGenDisplaysStageFocused.setMaxValue(nextGenDisplayGoalsStage);
 
                         //---------------------------------Creating Color Changes for POS Dial------------------------------------------
                         posPercent.setValue(posPercentTotalBuild);
@@ -956,73 +1007,9 @@ public class Main extends Application
                         posPercentTestFocused.setValue(posPercentTotalTest);
                         posPercentStageFocused.setValue(posPercentTotalStage);
 
-
-                        if(Double.compare(posPercentTotalBuild,60) < 0)
-                        {
-                            posPercent.setBarColor(Tile.RED);
-                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                            posPercentFocused.setBarColor(Tile.RED);
-                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                        }
-                        if(Double.compare(posPercentTotalBuild,90) < 0 && Double.compare(posPercentTotalBuild ,60) > 0)
-                        {
-                            posPercent.setBarColor(Tile.YELLOW);
-                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                            posPercentFocused.setBarColor(Tile.YELLOW);
-                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                        }
-                        if(Double.compare(posPercentTotalBuild,90) > 0)
-                        {
-                            posPercent.setBarColor(Tile.GREEN);
-                            posPercent.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                            posPercentFocused.setBarColor(Tile.GREEN);
-                            posPercentFocused.setUnit((Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild)));
-                        }
-
-
-                        if(Double.compare(posPercentTotalTest,60) < 0)
-                        {
-                            posPercentTest.setBarColor(Tile.RED);
-                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
-                            posPercentTestFocused.setBarColor(Tile.RED);
-                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild)));
-                        }
-                        if(Double.compare(posPercentTotalTest,90) < 0 && Double.compare(posPercentTotalTest ,60) > 0)
-                        {
-                            posPercentTest.setBarColor(Tile.YELLOW);
-                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-                            posPercentTestFocused.setBarColor(Tile.YELLOW);
-                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-                        }
-                        if(Double.compare(posPercentTotalTest,90) > 0)
-                        {
-                            posPercentTest.setBarColor(Tile.GREEN);
-                            posPercentTest.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-                            posPercentTestFocused.setBarColor(Tile.GREEN);
-                            posPercentTestFocused.setUnit((Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild)));
-                        }
-
-                        if(Double.compare(posPercentTotalStage,60) < 0)
-                        {
-                            posPercentStage.setBarColor(Tile.RED);
-                            posPercentStage.setUnit((Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage)));
-                            posPercentStageFocused.setBarColor(Tile.RED);
-                            posPercentStageFocused.setUnit((Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage)));
-                        }
-                        if(Double.compare(posPercentTotalStage,90) < 0 && Double.compare(posPercentTotalStage ,60) > 0)
-                        {
-                            posPercentStage.setBarColor(Tile.YELLOW);
-                            posPercentStage.setUnit((Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage)));
-                            posPercentStageFocused.setBarColor(Tile.YELLOW);
-                            posPercentStageFocused.setUnit((Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage)));
-                        }
-                        if(Double.compare(posPercentTotalStage,90) > 0)
-                        {
-                            posPercentStage.setBarColor(Tile.GREEN);
-                            posPercentStage.setUnit((Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage)));
-                            posPercentStageFocused.setBarColor(Tile.GREEN);
-                            posPercentStageFocused.setUnit((Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage)));
-                        }
+                        changePercent(posPercent,posPercentFocused,posTotalCurrentBuild,posTotalGoalBuild,posPercentTotalBuild);
+                        changePercent(posPercentTest,posPercentTestFocused,posTotalCurrentTest,posTotalGoalBuild,posPercentTotalTest);
+                        changePercent(posPercentStage,posPercentStageFocused,posTotalCurrentStage,posTotalGoalStage,posPercentTotalStage);
 
                         //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
                         serversPercent.setValue(serversPercentTotalBuild);
@@ -1032,71 +1019,9 @@ public class Main extends Application
                         serversPercentStage.setValue(serversPercentTotalStage);
                         serversPercentStageFocused.setValue(serversPercentTotalStage);
 
-                        if(Double.compare(serversPercentTotalBuild,60) < 0)
-                        {
-                            serversPercent.setBarColor(Tile.RED);
-                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentFocused.setBarColor(Tile.RED);
-                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-                        if(Double.compare(serversPercentTotalBuild,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
-                        {
-                            serversPercent.setBarColor(Tile.YELLOW);
-                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentFocused.setBarColor(Tile.YELLOW);
-                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-                        if(Double.compare(serversPercentTotalBuild,90) > 0)
-                        {
-                            serversPercent.setBarColor(Tile.GREEN);
-                            serversPercent.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentFocused.setBarColor(Tile.GREEN);
-                            serversPercentFocused.setUnit((Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-
-                        if(Double.compare(serversPercentTotalTest,60) < 0)
-                        {
-                            serversPercentTest.setBarColor(Tile.RED);
-                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentTestFocused.setBarColor(Tile.RED);
-                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-                        if(Double.compare(serversPercentTotalTest,90) < 0 && Double.compare(serversPercentTotalBuild ,60) > 0)
-                        {
-                            serversPercentTest.setBarColor(Tile.YELLOW);
-                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentTestFocused.setBarColor(Tile.YELLOW);
-                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-                        if(Double.compare(serversPercentTotalTest,90) > 0)
-                        {
-                            serversPercentTest.setBarColor(Tile.GREEN);
-                            serversPercentTest.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                            serversPercentTestFocused.setBarColor(Tile.GREEN);
-                            serversPercentTestFocused.setUnit((Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild)));
-                        }
-
-                        if(Double.compare(serversPercentTotalStage,60) < 0)
-                        {
-                            serversPercentStage.setBarColor(Tile.RED);
-                            serversPercentStage.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                            serversPercentStageFocused.setBarColor(Tile.RED);
-                            serversPercentStageFocused.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                        }
-                        if(Double.compare(serversPercentTotalStage,90) < 0 && Double.compare(serversPercentTotalStage ,60) > 0)
-                        {
-                            serversPercentStage.setBarColor(Tile.YELLOW);
-                            serversPercentStage.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                            serversPercentStageFocused.setBarColor(Tile.YELLOW);
-                            serversPercentStageFocused.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                        }
-                        if(Double.compare(serversPercentTotalStage,90) > 0)
-                        {
-                            serversPercentStage.setBarColor(Tile.GREEN);
-                            serversPercentStage.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                            serversPercentStageFocused.setBarColor(Tile.GREEN);
-                            serversPercentStageFocused.setUnit((Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage)));
-                        }
+                        changePercent(serversPercent,serversPercentFocused,serverCurrentBuild,serverGoalTotalBuild,serversPercentTotalBuild);
+                        changePercent(serversPercentTest,serversPercentTestFocused,serverCurrentTest,serverGoalTotalBuild,serversPercentTotalTest);
+                        changePercent(serversPercentStage,serversPercentStageFocused,serverCurrentStage,serverGoalTotalStage,serversPercentTotalStage);
 
                         //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
                         periphPercent.setValue(periphPercentTotalBuild);
@@ -1106,71 +1031,9 @@ public class Main extends Application
                         periphPercentStage.setValue(periphPercentTotalStage);
                         periphPercentStageFocused.setValue(periphPercentTotalStage);
 
-                        if(Double.compare(periphPercentTotalBuild,60) < 0)
-                        {
-                            periphPercent.setBarColor(Tile.RED);
-                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentFocused.setBarColor(Tile.RED);
-                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-                        if(Double.compare(periphPercentTotalBuild,90) < 0 && Double.compare(periphPercentTotalBuild ,60) > 0)
-                        {
-                            periphPercent.setBarColor(Tile.YELLOW);
-                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentFocused.setBarColor(Tile.YELLOW);
-                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-                        if(Double.compare(periphPercentTotalBuild,90) > 0)
-                        {
-                            periphPercent.setBarColor(Tile.GREEN);
-                            periphPercent.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentFocused.setBarColor(Tile.GREEN);
-                            periphPercentFocused.setUnit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-
-                        if(Double.compare(periphPercentTotalTest,60) < 0)
-                        {
-                            periphPercentTest.setBarColor(Tile.RED);
-                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentTestFocused.setBarColor(Tile.RED);
-                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-                        if(Double.compare(periphPercentTotalTest,90) < 0 && Double.compare(periphPercentTotalTest ,60) > 0)
-                        {
-                            periphPercentTest.setBarColor(Tile.YELLOW);
-                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentTestFocused.setBarColor(Tile.YELLOW);
-                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-                        if(Double.compare(periphPercentTotalTest,90) > 0)
-                        {
-                            periphPercentTest.setBarColor(Tile.GREEN);
-                            periphPercentTest.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                            periphPercentTestFocused.setBarColor(Tile.GREEN);
-                            periphPercentTestFocused.setUnit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild));
-                        }
-
-                        if(Double.compare(periphPercentTotalStage,60) < 0)
-                        {
-                            periphPercentStage.setBarColor(Tile.RED);
-                            periphPercentStage.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                            periphPercentStageFocused.setBarColor(Tile.RED);
-                            periphPercentStageFocused.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                        }
-                        if(Double.compare(periphPercentTotalStage,90) < 0 && Double.compare(periphPercentTotalStage,60) > 0)
-                        {
-                            periphPercentStage.setBarColor(Tile.YELLOW);
-                            periphPercentStage.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                            periphPercentStageFocused.setBarColor(Tile.YELLOW);
-                            periphPercentStageFocused.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                        }
-                        if(Double.compare(periphPercentTotalStage,90) > 0)
-                        {
-                            periphPercentStage.setBarColor(Tile.GREEN);
-                            periphPercentStage.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                            periphPercentStageFocused.setBarColor(Tile.GREEN);
-                            periphPercentStageFocused.setUnit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage));
-                        }
+                        changePercent(periphPercent,periphPercentFocused,periphCurrentTotalBuild,periphGoalTotalBuild,periphPercentTotalBuild);
+                        changePercent(periphPercentTest,periphPercentFocused,periphCurrentTotalTest,periphGoalTotalBuild,periphPercentTotalTest);
+                        changePercent(periphPercentStage,periphPercentStageFocused,periphCurrentTotalStage,periphGoalTotalStage,periphPercentTotalStage);
 
                         //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
                         opticPercent.setValue(opticPercentTotalBuild);
@@ -1178,50 +1041,8 @@ public class Main extends Application
                         opticPercentFocused.setValue(opticPercentTotalBuild);
                         opticPercentTestFocused.setValue(opticPercentTotalTest);
 
-                        if(Double.compare(opticPercentTotalBuild,60) < 0)
-                        {
-                            opticPercent.setBarColor(Tile.RED);
-                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentFocused.setBarColor(Tile.RED);
-                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
-                        if(Double.compare(opticPercentTotalBuild,90) < 0 && Double.compare(opticPercentTotalBuild ,60) > 0)
-                        {
-                            opticPercent.setBarColor(Tile.YELLOW);
-                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentFocused.setBarColor(Tile.YELLOW);
-                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
-                        if(Double.compare(opticPercentTotalBuild,90) > 0)
-                        {
-                            opticPercent.setBarColor(Tile.GREEN);
-                            opticPercent.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentFocused.setBarColor(Tile.GREEN);
-                            opticPercentFocused.setUnit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
-
-
-                        if(Double.compare(opticPercentTotalTest,60) < 0)
-                        {
-                            opticPercentTest.setBarColor(Tile.RED);
-                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentTestFocused.setBarColor(Tile.RED);
-                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
-                        if(Double.compare(opticPercentTotalTest,90) < 0 && Double.compare(opticPercentTotalTest ,60) > 0)
-                        {
-                            opticPercentTest.setBarColor(Tile.YELLOW);
-                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentTestFocused.setBarColor(Tile.YELLOW);
-                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
-                        if(Double.compare(opticPercentTotalTest,90) > 0)
-                        {
-                            opticPercentTest.setBarColor(Tile.GREEN);
-                            opticPercentTest.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                            opticPercentTestFocused.setBarColor(Tile.GREEN);
-                            opticPercentTestFocused.setUnit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild));
-                        }
+                        changePercent(opticPercent,opticPercentFocused,opticCurrentTotalBuild,opticGoalTotalBuild,opticPercentTotalBuild);
+                        changePercent(opticPercentTest,opticPercentTestFocused,opticCurrentTotalTest,opticGoalTotalBuild,opticPercentTotalTest);
 
                         //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
                         retailPercent.setValue(retailPercentTotalBuild);
@@ -1231,70 +1052,326 @@ public class Main extends Application
                         retailPercentStage.setValue(retailPercentTotalStage);
                         retailPercentStageFocused.setValue(retailPercentTotalStage);
 
-                        if(Double.compare(retailPercentTotalBuild,60) < 0)
-                        {
-                            retailPercent.setBarColor(Tile.RED);
-                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                            retailPercentFocused.setBarColor(Tile.RED);
-                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                        }
-                        if(Double.compare(retailPercentTotalBuild,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
-                        {
-                            retailPercent.setBarColor(Tile.YELLOW);
-                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                            retailPercentFocused.setBarColor(Tile.YELLOW);
-                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                        }
-                        if(Double.compare(retailPercentTotalBuild,90) > 0)
-                        {
-                            retailPercent.setBarColor(Tile.GREEN);
-                            retailPercent.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                            retailPercentFocused.setBarColor(Tile.GREEN);
-                            retailPercentFocused.setUnit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild));
-                        }
-                        if(Double.compare(retailPercentTotalTest,60) < 0)
-                        {
-                            retailPercentTest.setBarColor(Tile.RED);
-                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-                            retailPercentTestFocused.setBarColor(Tile.RED);
-                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-                        }
-                        if(Double.compare(retailPercentTotalTest,90) < 0 && Double.compare(retailPercentTotalBuild ,60) > 0)
-                        {
-                            retailPercentTest.setBarColor(Tile.YELLOW);
-                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-                            retailPercentTestFocused.setBarColor(Tile.YELLOW);
-                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild));
-                        }
-                        if(Double.compare(retailPercentTotalTest,90) > 0)
-                        {
-                            retailPercentTest.setBarColor(Tile.GREEN);
-                            retailPercentTest.setUnit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild));
-                            retailPercentTestFocused.setBarColor(Tile.GREEN);
-                            retailPercentTestFocused.setUnit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild));
-                        }
+                        changePercent(retailPercent,retailPercentFocused,retailTotalCurrentBuild,retailTotalGoalBuild,retailPercentTotalBuild);
+                        changePercent(retailPercentTest,retailPercentTestFocused,retailTotalCurrentTest,retailTotalGoalBuild,retailPercentTotalTest);
+                        changePercent(retailPercentStage,retailPercentStageFocused,retailTotalCurrentStage,retailTotalGoalStage,retailPercentTotalStage);
 
-                        if(Double.compare(retailPercentTotalStage,60) < 0)
-                        {
-                            retailPercentStage.setBarColor(Tile.RED);
-                            retailPercentStage.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                            retailPercentStageFocused.setBarColor(Tile.RED);
-                            retailPercentStageFocused.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                        }
-                        if(Double.compare(retailPercentTotalStage,90) < 0 && Double.compare(retailPercentTotalStage ,60) > 0)
-                        {
-                            retailPercentStage.setBarColor(Tile.YELLOW);
-                            retailPercentStage.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                            retailPercentStageFocused.setBarColor(Tile.YELLOW);
-                            retailPercentStageFocused.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                        }
-                        if(Double.compare(retailPercentTotalStage,90) > 0)
-                        {
-                            retailPercentStage.setBarColor(Tile.GREEN);
-                            retailPercentStage.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                            retailPercentStageFocused.setBarColor(Tile.GREEN);
-                            retailPercentStageFocused.setUnit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage));
-                        }
+                        System.out.println("\n***********Dynamic Creation Block***********\n");
+
+                        Tile posClock = TileBuilder.create()
+                                .skinType(Tile.SkinType.CLOCK)
+                                .prefSize(480, 270)
+                                .title("Current Time")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .locale(Locale.US)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .running(true)
+                                .dateVisible(false)
+                                .roundedCorners(false)
+                                .textAlignment(TextAlignment.CENTER)
+                                .build();
+
+                        Tile retailClock = TileBuilder.create()
+                                .skinType(Tile.SkinType.CLOCK)
+                                .prefSize(480, 270)
+                                .title("Current Time")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .locale(Locale.US)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .running(true)
+                                .dateVisible(false)
+                                .roundedCorners(false)
+                                .textAlignment(TextAlignment.CENTER)
+                                .build();
+
+                        Tile serversClock = TileBuilder.create()
+                                .skinType(Tile.SkinType.CLOCK)
+                                .prefSize(480, 270)
+                                .title("Current Time")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .locale(Locale.US)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .running(true)
+                                .dateVisible(false)
+                                .roundedCorners(false)
+                                .textAlignment(TextAlignment.CENTER)
+                                .build();
+
+                        Tile periphClock = TileBuilder.create()
+                                .skinType(Tile.SkinType.CLOCK)
+                                .prefSize(480, 270)
+                                .title("Current Time")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .locale(Locale.US)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .running(true)
+                                .dateVisible(false)
+                                .roundedCorners(false)
+                                .textAlignment(TextAlignment.CENTER)
+                                .build();
+
+                        ImageView logoView = new ImageView();
+                        Image logoImage = new Image("NCR Brand Block Logo JPG.jpg");
+                        logoView.setImage(logoImage);
+                        logoView.setFitHeight(270);
+                        logoView.setFitWidth(480);
+                        logoView.setPreserveRatio(true);
+
+                        HBox hbox = new HBox(logoView);
+                        hbox.setPrefWidth(480);
+                        hbox.setPrefHeight(270);
+                        hbox.setAlignment(Pos.CENTER);
+                        hbox.setStyle("-fx-background-color:#54B948");
+
+
+                        Tile posLogo  = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(hbox)
+                                .build();
+
+                        Tile retailLogo  = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(hbox)
+                                .build();
+                        Tile serversLogo  = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(hbox)
+                                .build();
+                        Tile periphLogo  = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(hbox)
+                                .build();
+
+                        ImageView stopView = new ImageView();
+                        Image redImage = new Image("NCR Brand Block Logo JPG.jpg");
+                        Image yellowImage = new Image("NCR Brand Block Logo JPG.jpg");
+                        Image greenImage = new Image("NCR Brand Block Logo JPG.jpg");
+
+                        stopView.setImage(logoImage);
+                        stopView.setFitHeight(270);
+                        stopView.setFitWidth(480);
+                        stopView.setPreserveRatio(true);
+
+                        HBox myBox = new HBox(stopView);
+                        myBox.setPrefWidth(480);
+                        myBox.setPrefHeight(270);
+                        myBox.setAlignment(Pos.CENTER);
+                        myBox.setStyle("-fx-background-color:#54B948");
+
+                        Tile posStopLight = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(myBox)
+                                .build();
+
+                        Tile retailStopLight = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(myBox)
+                                .build();
+
+                        Tile serversStopLight = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(myBox)
+                                .build();
+
+                        Tile periphStopLight = TileBuilder.create()
+                                .skinType(Tile.SkinType.CUSTOM)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .prefSize(480,270)
+                                .roundedCorners(false)
+                                .graphic(myBox)
+                                .build();
+
+                        String date = dataBaseTool.incidentReader();
+
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate incidentDate = LocalDate.parse(date);
+
+                        long daysBetween = DAYS.between(incidentDate, currentDate);
+
+                        int counter = Math.toIntExact(daysBetween);
+
+                        String useDate = Integer.toString(counter);
+
+
+                        Tile posQuality = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480, 270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("Days Since Last Safety Incident")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(useDate)
+                                .build();
+
+                        Tile retailQuality = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480, 270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("Days Since Last Safety Incident")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(useDate)
+                                .build();
+
+                        Tile serversQuality = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480, 270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("Days Since Last Safety Incident")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(useDate)
+                                .build();
+
+                        Tile periphQuality = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480, 270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("Days Since Last Safety Incident")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(useDate)
+                                .build();
+
+
+                        Tile posGoalTile = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480,270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("User Goal")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(Integer.toString((int) posTotalGoalStage))
+                                .build();
+
+                        Tile retailGoalTile = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480,270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("User Goal")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(Integer.toString((int) posTotalGoalStage))
+                                .build();
+
+                        Tile serversGoalTile = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480,270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("User Goal")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(Integer.toString((int) posTotalGoalStage))
+                                .build();
+
+                        Tile periphGoalTile = TileBuilder.create()
+                                .skinType(Tile.SkinType.CHARACTER)
+                                .prefSize(480,270)
+                                .backgroundColor(Color.valueOf("#54B948"))
+                                .title("User Goal")
+                                .titleAlignment(TextAlignment.CENTER)
+                                .roundedCorners(false)
+                                .description(Integer.toString((int) posTotalGoalStage))
+                                .build();
+
+
+                        ArrayList<Tile> posTiles = new ArrayList<>();
+                        posTiles.clear();
+
+                        ArrayList<Tile> retailTiles = new ArrayList<>();
+                        retailTiles.clear();
+
+                        ArrayList<Tile> serversTiles = new ArrayList<>();
+                        serversTiles.clear();
+
+                        ArrayList<Tile> periphTiles = new ArrayList<>();
+                        periphTiles.clear();
+
+                        System.out.println("1");
+                        posTiles = getCharTiles(posUserStageMap,480,270);
+                        System.out.println("1");
+                        retailTiles = getCharTiles(retailUserStageMap,480,270);
+                        System.out.println("1");
+                        serversTiles = getCharTiles(serversUserStageMap,480,270);
+                        System.out.println("1");
+                        periphTiles = getCharTiles(periphUserStageMap,480,270);
+                        System.out.println("1");
+
+                        posTiles.add(0,posLogo);
+                        posTiles.add(4,posClock);
+                        posTiles.add(8,posGoalTile);
+                        posTiles.add(12,posStopLight);
+                        posTiles.add(16,posQuality);
+
+                        System.out.println("POS COMP");
+
+                        retailTiles.add(0,retailLogo);
+                        retailTiles.add(4,retailClock);
+                        retailTiles.add(8,retailGoalTile);
+                        retailTiles.add(12,retailStopLight);
+                        retailTiles.add(16,retailQuality);
+
+                        System.out.println("RET COMP");
+
+                        serversTiles.add(0,serversLogo);
+                        serversTiles.add(4,serversClock);
+                        serversTiles.add(8,serversGoalTile);
+                        serversTiles.add(12,serversStopLight);
+                        serversTiles.add(16,serversQuality);
+
+                        System.out.println("SER COMP");
+
+                        periphTiles.add(0,periphLogo);
+                        periphTiles.add(4,periphClock);
+                        periphTiles.add(8,periphGoalTile);
+                        periphTiles.add(12,periphStopLight);
+                        periphTiles.add(16,periphQuality);
+
+                        System.out.println("PER COMP");
+
+
+
+                        Platform.runLater(()->posGridPane.getChildren().clear());
+                        ArrayList<Tile> finalPosTiles = posTiles;
+                        Platform.runLater(()->posGridPane.getChildren().addAll(finalPosTiles));
+
+                        Platform.runLater(()->retailGridPane.getChildren().clear());
+                        ArrayList<Tile> finalRetailTiles = retailTiles;
+                        Platform.runLater(()->retailGridPane.getChildren().addAll(finalRetailTiles));
+
+                        Platform.runLater(()->serversGridPane.getChildren().clear());
+                        ArrayList<Tile> finalServersTiles = serversTiles;
+                        Platform.runLater(()->serversGridPane.getChildren().addAll(finalServersTiles));
+
+                        Platform.runLater(()->periphGridPane.getChildren().clear());
+                        ArrayList<Tile> finalPeriphTiles = periphTiles;
+                        Platform.runLater(()->periphGridPane.getChildren().addAll(finalPeriphTiles));
+
+                        int fuckchris = 0;
+
+
+                        myLatch.countDown();
                         return null;
                     }
                 };
@@ -1304,7 +1381,7 @@ public class Main extends Application
         //---------------------------------Creating the Tiles-----------------------------------------------------------
         pos = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Build")
+                .title("POS Build")
                 .roundedCorners(true)
                 .prefSize(384, 640)
                 .barChartItems(p1x30Data, p1x35Data, p1532Data, t1000Data)
@@ -1313,19 +1390,19 @@ public class Main extends Application
                 .build();
 
         posPercent = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .unit(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .subText(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
                 .value(posPercentTotalBuild)
                 .build();
 
         posTest = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Test")
+                .title("POS Test")
                 .roundedCorners(true)
                 .prefSize(384, 640)
                 .barChartItems(p1x30DataTest, p1x35DataTest, p1532DataTest, t1000DataTest)
@@ -1334,19 +1411,19 @@ public class Main extends Application
                 .build();
 
         posPercentTest = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .unit(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
                 .value(posPercentTotalTest)
                 .build();
 
         posStage = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Stage")
+                .title("POS Stage")
                 .roundedCorners(true)
                 .prefSize(480, 640)
                 .barChartItems(p1x30DataStage, p1x35DataStage, p1532DataStage, t1000DataStage)
@@ -1355,19 +1432,19 @@ public class Main extends Application
                 .build();
 
         posPercentStage = TileBuilder.create()
-                .prefSize(480,440)
+                .prefSize(480, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .unit(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .subText(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .value(posPercentTotalStage)
                 .build();
 
         posBuildFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Build")
+                .title("POS Build")
                 .roundedCorners(true)
                 .prefSize(960, 640)
                 .barChartItems(p1x30DataFocused, p1x35DataFocused, p1532DataFocused, t1000DataFocused)
@@ -1377,7 +1454,7 @@ public class Main extends Application
 
         posTestFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Test")
+                .title("POS Test")
                 .roundedCorners(true)
                 .prefSize(960, 640)
                 .barChartItems(p1x30DataTestFocused, p1x35DataTestFocused, p1532DataTestFocused, t1000DataTestFocused)
@@ -1387,7 +1464,7 @@ public class Main extends Application
 
         posStageFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Point of Sales Stage")
+                .title("POS Stage")
                 .roundedCorners(true)
                 .prefSize(960, 640)
                 .barChartItems(p1x30DataStageFocused, p1x35DataStageFocused, p1532DataStageFocused, t1000DataStageFocused)
@@ -1396,60 +1473,58 @@ public class Main extends Application
                 .build();
 
         posPercentFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .unit(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentBuild)+"/"+Double.toString(posTotalGoalBuild))
+                .subText(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
                 .value(posPercentTotalBuild)
                 .build();
 
         posPercentTestFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .unit(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentTest)+"/"+Double.toString(posTotalGoalBuild))
+                .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
                 .value(posPercentTotalTest)
                 .build();
 
         posPercentStageFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .unit(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .animated(true)
-                .subText(Double.toString(posTotalCurrentStage)+"/"+Double.toString(posTotalGoalStage))
+                .subText(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .value(posPercentTotalStage)
                 .build();
 
 
-
-
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
         servers = TileBuilder.create()
-            .skinType(Tile.SkinType.BAR_CHART)
-            .title("Servers Build")
-            .roundedCorners(true)
-            .prefSize(384, 200)
-            .barChartItems(s500Data, n3000Data, mediaPlayer)
-            .decimals(0)
-            .titleAlignment(TextAlignment.CENTER)
-            .build();
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Build")
+                .roundedCorners(true)
+                .prefSize(384, 200)
+                .barChartItems(s500Data, n3000Data, mediaPlayer)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
 
         serversPercent = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .unit(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
                 .animated(true)
-                .subText(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .subText(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
                 .value(serversPercentTotalBuild)
                 .build();
 
@@ -1464,13 +1539,13 @@ public class Main extends Application
                 .build();
 
         serversPercentTest = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .unit(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
                 .animated(true)
-                .subText(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .subText(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
                 .value(serversPercentTotalTest)
                 .build();
 
@@ -1485,13 +1560,13 @@ public class Main extends Application
                 .build();
 
         serversPercentStage = TileBuilder.create()
-                .prefSize(480,440)
+                .prefSize(480, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .unit(Double.toString(serverCurrentStage) + "/" + Double.toString(serverGoalTotalStage))
                 .animated(true)
-                .subText(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .subText(Double.toString(serverCurrentStage) + "/" + Double.toString(serverGoalTotalStage))
                 .value(serversPercentTotalStage)
                 .build();
 
@@ -1506,13 +1581,13 @@ public class Main extends Application
                 .build();
 
         serversPercentFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .unit(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
                 .animated(true)
-                .subText(Double.toString(serverCurrentBuild)+"/"+Double.toString(serverGoalTotalBuild))
+                .subText(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
                 .value(serversPercentTotalBuild)
                 .build();
 
@@ -1527,19 +1602,19 @@ public class Main extends Application
                 .build();
 
         serversPercentTestFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .unit(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
                 .animated(true)
-                .subText(Double.toString(serverCurrentTest)+"/"+Double.toString(serverGoalTotalBuild))
+                .subText(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
                 .value(serversPercentTotalTest)
                 .build();
 
         serversStageFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Servers Stage")
+                .title("Servers Stage (ERP Data)")
                 .roundedCorners(true)
                 .prefSize(960, 640)
                 .barChartItems(s500DataStageFocused, n3000StageFocused, mediaPlayerStageFocused)
@@ -1548,16 +1623,15 @@ public class Main extends Application
                 .build();
 
         serversPercentStageFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .unit(Double.toString(serverCurrentStage) + "/" + Double.toString(serverGoalTotalStage))
                 .animated(true)
-                .subText(Double.toString(serverCurrentStage)+"/"+Double.toString(serverGoalTotalStage))
+                .subText(Double.toString(serverCurrentStage) + "/" + Double.toString(serverGoalTotalStage))
                 .value(serversPercentTotalStage)
                 .build();
-
 
 
         //---------------------------------Creating the Tiles for Peripherals-------------------------------------------
@@ -1572,12 +1646,12 @@ public class Main extends Application
                 .build();
 
         periphPercent = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
+                .unit(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
                 .animated(true)
                 .value(periphPercentTotalBuild)
                 .build();
@@ -1593,12 +1667,12 @@ public class Main extends Application
                 .build();
 
         periphPercentTest = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
+                .unit(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
                 .animated(true)
                 .value(periphPercentTotalTest)
                 .build();
@@ -1614,12 +1688,12 @@ public class Main extends Application
                 .build();
 
         periphPercentStage = TileBuilder.create()
-                .prefSize(480,440)
+                .prefSize(480, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
-                .subText(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
+                .unit(Double.toString(periphCurrentTotalStage) + "/" + Double.toString(periphGoalTotalStage))
+                .subText(Double.toString(periphCurrentTotalStage) + "/" + Double.toString(periphGoalTotalStage))
                 .animated(true)
                 .value(periphPercentTotalStage)
                 .build();
@@ -1635,12 +1709,12 @@ public class Main extends Application
                 .build();
 
         periphPercentFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalBuild)+"/"+Double.toString(periphGoalTotalBuild))
+                .unit(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
                 .animated(true)
                 .value(periphPercentTotalBuild)
                 .build();
@@ -1656,19 +1730,19 @@ public class Main extends Application
                 .build();
 
         periphPercentTestFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalTest)+"/"+Double.toString(periphGoalTotalBuild))
+                .unit(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
                 .animated(true)
                 .value(periphPercentTotalTest)
                 .build();
 
         periphStageFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
-                .title("Peripherals Stage")
+                .title("Peripherals Stage (ERP Data)")
                 .roundedCorners(true)
                 .prefSize(960, 640)
                 .barChartItems(kiwi4DataStageFocused, kiwi25DataStageFocused, bumpBarDataStageFocused, pantherEPC4StageFocused)
@@ -1677,12 +1751,12 @@ public class Main extends Application
                 .build();
 
         periphPercentStageFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
-                .subText(Double.toString(periphCurrentTotalStage)+"/"+Double.toString(periphGoalTotalStage))
+                .unit(Double.toString(periphCurrentTotalStage) + "/" + Double.toString(periphGoalTotalStage))
+                .subText(Double.toString(periphCurrentTotalStage) + "/" + Double.toString(periphGoalTotalStage))
                 .animated(true)
                 .value(periphPercentTotalTest)
                 .build();
@@ -1693,18 +1767,18 @@ public class Main extends Application
                 .title("Optic Build")
                 .roundedCorners(true)
                 .prefSize(384, 640)
-                .barChartItems(optic5Data, optic12Data, opticKitsData)
+                .barChartItems(optic5Data, optic12Data)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         opticPercent = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild))
+                .unit(Double.toString(opticCurrentTotalBuild) + "/" + Double.toString(opticGoalTotalBuild))
                 .subText(Double.toString(opticCurrentTotalBuild))
                 .animated(true)
                 .value(opticPercentTotalBuild)
@@ -1715,18 +1789,18 @@ public class Main extends Application
                 .title("Optic Test")
                 .roundedCorners(true)
                 .prefSize(384, 640)
-                .barChartItems(optic5DataTest, optic12DataTest, opticKitsDataTest)
+                .barChartItems(optic5DataTest, optic12DataTest)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         opticPercentTest = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild))
+                .unit(Double.toString(opticCurrentTotalTest) + "/" + Double.toString(opticGoalTotalBuild))
                 .subText(Double.toString(opticCurrentTotalBuild))
                 .animated(true)
                 .value(opticPercentTotalTest)
@@ -1737,18 +1811,18 @@ public class Main extends Application
                 .title("Optic Build")
                 .roundedCorners(true)
                 .prefSize(960, 640)
-                .barChartItems(optic5DataFocused, optic12DataFocused, opticKitsDataFocused)
+                .barChartItems(optic5DataFocused, optic12DataFocused)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         opticPercentFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalBuild)+"/"+Double.toString(opticGoalTotalBuild))
+                .unit(Double.toString(opticCurrentTotalBuild) + "/" + Double.toString(opticGoalTotalBuild))
                 .subText(Double.toString(opticCurrentTotalBuild))
                 .animated(true)
                 .value(opticPercentTotalBuild)
@@ -1759,18 +1833,18 @@ public class Main extends Application
                 .title("Optic Test")
                 .roundedCorners(true)
                 .prefSize(960, 640)
-                .barChartItems(optic5DataTestFocused, optic12DataTestFocused, opticKitsDataTestFocused)
+                .barChartItems(optic5DataTestFocused, optic12DataTestFocused)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         opticPercentTestFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalTest)+"/"+Double.toString(opticGoalTotalBuild))
+                .unit(Double.toString(opticCurrentTotalTest) + "/" + Double.toString(opticGoalTotalBuild))
                 .subText(Double.toString(opticCurrentTotalBuild))
                 .animated(true)
                 .value(opticPercentTotalTest)
@@ -1782,17 +1856,17 @@ public class Main extends Application
                 .roundedCorners(true)
                 .title("Retail Build")
                 .prefSize(384, 640)
-                .barChartItems(xr5Data,xr7Data, xr7PlusData, nextGenDisplays)
+                .barChartItems(xr5Data, xr7Data, xr7PlusData, nextGenDisplays)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercent = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild))
+                .unit(Double.toString(retailTotalCurrentBuild) + "/" + Double.toString(retailTotalGoalBuild))
                 .subText(Double.toString(retailTotalCurrentBuild))
                 .animated(true)
                 .value(retailPercentTotalBuild)
@@ -1803,18 +1877,18 @@ public class Main extends Application
                 .roundedCorners(true)
                 .title("Retail Test")
                 .prefSize(384, 640)
-                .barChartItems(xr5DataTest,xr7DataTest, xr7PlusDataTest, nextGenDisplaysTest)
+                .barChartItems(xr5DataTest, xr7DataTest, xr7PlusDataTest, nextGenDisplaysTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercentTest = TileBuilder.create()
-                .prefSize(384,440)
+                .prefSize(384, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
-                .subText(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
+                .unit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
+                .subText(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
                 .animated(true)
                 .value(retailPercentTotalTest)
                 .build();
@@ -1824,18 +1898,18 @@ public class Main extends Application
                 .roundedCorners(true)
                 .title("Retail Stage")
                 .prefSize(480, 640)
-                .barChartItems(xr5DataStage,xr7DataStage, xr7PlusDataStage, nextGenDisplaysStage)
+                .barChartItems(xr5DataStage, xr7DataStage, xr7PlusDataStage, nextGenDisplaysStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercentStage = TileBuilder.create()
-                .prefSize(480,440)
+                .prefSize(480, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
-                .subText(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
+                .unit(Double.toString(retailTotalCurrentStage) + "/" + Double.toString(retailTotalGoalStage))
+                .subText(Double.toString(retailTotalCurrentStage) + "/" + Double.toString(retailTotalGoalStage))
                 .animated(true)
                 .value(retailPercentTotalStage)
                 .build();
@@ -1845,17 +1919,17 @@ public class Main extends Application
                 .roundedCorners(true)
                 .title("Retail Build")
                 .prefSize(960, 640)
-                .barChartItems(xr5DataFocused,xr7DataFocused, xr7PlusDataFocused, nextGenDisplaysFocused)
+                .barChartItems(xr5DataFocused, xr7DataFocused, xr7PlusDataFocused, nextGenDisplaysFocused)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercentFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentBuild)+"/"+Double.toString(retailTotalGoalBuild))
+                .unit(Double.toString(retailTotalCurrentBuild) + "/" + Double.toString(retailTotalGoalBuild))
                 .subText(Double.toString(retailTotalCurrentBuild))
                 .animated(true)
                 .value(retailPercentTotalBuild)
@@ -1866,18 +1940,18 @@ public class Main extends Application
                 .roundedCorners(true)
                 .title("Retail Test")
                 .prefSize(960, 640)
-                .barChartItems(xr5DataTestFocused,xr7DataTestFocused, xr7PlusDataTestFocused, nextGenDisplaysTestFocused)
+                .barChartItems(xr5DataTestFocused, xr7DataTestFocused, xr7PlusDataTestFocused, nextGenDisplaysTestFocused)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercentTestFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
-                .subText(Double.toString(retailTotalCurrentTest)+"/"+Double.toString(retailTotalGoalBuild))
+                .unit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
+                .subText(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
                 .animated(true)
                 .value(retailPercentTotalTest)
                 .build();
@@ -1885,140 +1959,25 @@ public class Main extends Application
         retailStageFocused = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .roundedCorners(true)
-                .title("Retail Stage")
+                .title("Retail Stage (ERP Data)")
                 .prefSize(960, 640)
-                .barChartItems(xr5DataStageFocused,xr7DataStageFocused, xr7PlusDataStageFocused, nextGenDisplaysStageFocused)
+                .barChartItems(xr5DataStageFocused, xr7DataStageFocused, xr7PlusDataStageFocused, nextGenDisplaysStageFocused)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailPercentStageFocused = TileBuilder.create()
-                .prefSize(960,440)
+                .prefSize(960, 440)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
-                .subText(Double.toString(retailTotalCurrentStage)+"/"+Double.toString(retailTotalGoalStage))
+                .unit(Double.toString(retailTotalCurrentStage) + "/" + Double.toString(retailTotalGoalStage))
+                .subText(Double.toString(retailTotalCurrentStage) + "/" + Double.toString(retailTotalGoalStage))
                 .animated(true)
                 .value(retailPercentTotalStage)
                 .build();
-
         //---------------------------------Creating Animations for Graphs-----------------------------------------------
-        pos.setAnimated(true);
-        pos.setAnimationDuration(3000);
-        servers.setAnimated(true);
-        servers.setAnimationDuration(3000);
-        retail.setAnimated(true);
-        retail.setAnimationDuration(3000);
-        peripherals.setAnimated(true);
-        peripherals.setAnimationDuration(3000);
-        optic.setAnimated(true);
-        optic.setAnimationDuration(3000);
 
-        posBuildFocused.setAnimated(true);
-        posBuildFocused.setAnimationDuration(3000);
-        serversBuildFocused.setAnimated(true);
-        serversBuildFocused.setAnimationDuration(3000);
-        retailBuildFocused.setAnimated(true);
-        retailBuildFocused.setAnimationDuration(3000);
-        periphBuildFocused.setAnimated(true);
-        periphBuildFocused.setAnimationDuration(3000);
-        opticBuildFocused.setAnimated(true);
-        opticBuildFocused.setAnimationDuration(3000);
-
-        posPercent.setAnimated(true);
-        posPercent.setAnimationDuration(3000);
-        serversPercent.setAnimated(true);
-        serversPercent.setAnimationDuration(3000);
-        retailPercent.setAnimated(true);
-        retailPercent.setAnimationDuration(3000);
-        periphPercent.setAnimated(true);
-        periphPercent.setAnimationDuration(3000);
-        opticPercent.setAnimated(true);
-        opticPercent.setAnimationDuration(3000);
-
-        posPercentFocused.setAnimated(true);
-        posPercentFocused.setAnimationDuration(3000);
-        serversPercentFocused.setAnimated(true);
-        serversPercentFocused.setAnimationDuration(3000);
-        retailPercentFocused.setAnimated(true);
-        retailPercentFocused.setAnimationDuration(3000);
-        periphPercentFocused.setAnimated(true);
-        periphPercentFocused.setAnimationDuration(3000);
-        opticPercentFocused.setAnimated(true);
-        opticPercentFocused.setAnimationDuration(3000);
-
-        posTest.setAnimated(true);
-        posTest.setAnimationDuration(3000);
-        serversTest.setAnimated(true);
-        serversTest.setAnimationDuration(3000);
-        retailTest.setAnimated(true);
-        retailTest.setAnimationDuration(3000);
-        peripheralsTest.setAnimated(true);
-        peripheralsTest.setAnimationDuration(3000);
-        opticTest.setAnimated(true);
-        opticTest.setAnimationDuration(3000);
-
-        posStage.setAnimated(true);
-        posStage.setAnimationDuration(3000);
-        serversStage.setAnimated(true);
-        serversStage.setAnimationDuration(3000);
-        retailStage.setAnimated(true);
-        retailStage.setAnimationDuration(3000);
-        peripheralsStage.setAnimated(true);
-        peripheralsStage.setAnimationDuration(3000);
-
-        posTestFocused.setAnimated(true);
-        posTestFocused.setAnimationDuration(3000);
-        serversTestFocused.setAnimated(true);
-        serversTestFocused.setAnimationDuration(3000);
-        retailTestFocused.setAnimated(true);
-        retailTestFocused.setAnimationDuration(3000);
-        periphTestFocused.setAnimated(true);
-        periphTestFocused.setAnimationDuration(3000);
-        opticTestFocused.setAnimated(true);
-        opticTestFocused.setAnimationDuration(3000);
-
-        posStageFocused.setAnimated(true);
-        posStageFocused.setAnimationDuration(3000);
-        serversStageFocused.setAnimated(true);
-        serversStageFocused.setAnimationDuration(3000);
-        retailStageFocused.setAnimated(true);
-        retailStageFocused.setAnimationDuration(3000);
-        periphStageFocused.setAnimated(true);
-        periphStageFocused.setAnimationDuration(3000);
-
-
-        posPercentTest.setAnimated(true);
-        posPercentTest.setAnimationDuration(3000);
-        serversPercentTest.setAnimated(true);
-        serversPercentTest.setAnimationDuration(3000);
-        retailPercentTest.setAnimated(true);
-        retailPercentTest.setAnimationDuration(3000);
-        periphPercentTest.setAnimated(true);
-        periphPercentTest.setAnimationDuration(3000);
-        opticPercentTest.setAnimated(true);
-        opticPercentTest.setAnimationDuration(3000);
-
-        posPercentTestFocused.setAnimated(true);
-        posPercentTestFocused.setAnimationDuration(3000);
-        serversPercentTestFocused.setAnimated(true);
-        serversPercentTestFocused.setAnimationDuration(3000);
-        retailPercentTestFocused.setAnimated(true);
-        retailPercentTestFocused.setAnimationDuration(3000);
-        periphPercentTestFocused.setAnimated(true);
-        periphPercentTestFocused.setAnimationDuration(3000);
-        opticPercentTestFocused.setAnimated(true);
-        opticPercentTestFocused.setAnimationDuration(3000);
-
-        posPercentStageFocused.setAnimated(true);
-        posPercentStageFocused.setAnimationDuration(3000);
-        serversPercentStageFocused.setAnimated(true);
-        serversPercentStageFocused.setAnimationDuration(3000);
-        retailPercentStageFocused.setAnimated(true);
-        retailPercentStageFocused.setAnimationDuration(3000);
-        periphPercentStageFocused.setAnimated(true);
-        periphPercentStageFocused.setAnimationDuration(3000);
 
         //--------------------------------Scheduled State Params--------------------------------------------------------
         ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
@@ -2029,6 +1988,7 @@ public class Main extends Application
         buildVariables.setRestartOnFailure(true);
 
         buildVariables.start();
+        myLatch.await();
 
         //---------------------------------General Tile Handlers--------------------------------------------------------
         ArrayList<Tile> tileList = new ArrayList<>();
@@ -2099,9 +2059,14 @@ public class Main extends Application
         tileList.add(periphStageFocused);
         tileList.add(periphPercentStageFocused);
 
+
         for(int i =0;i<tileList.size();i++)
         {
             Tile temp = tileList.get(i);
+
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -2115,15 +2080,15 @@ public class Main extends Application
                 public void handle(MouseEvent event) {
                     temp.setBorderColor(Tile.GRAY);
                     PauseTransition idle = new PauseTransition(Duration.millis(1000));
-                    idle.setOnFinished(e ->
-                    {
-                        temp.setCursor(Cursor.NONE);
-                        temp.setBorderColor(Color.TRANSPARENT);
-                    });
                     temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
                         temp.setCursor(Cursor.HAND);
                         idle.playFromStart();
                         temp.setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        temp.setCursor(Cursor.NONE);
+                        temp.setBorderColor(Color.TRANSPARENT);
                     });
                 }
             });
@@ -2163,10 +2128,10 @@ public class Main extends Application
         flowPaneServersBuildOrTestFocus.getChildren().addAll(serversBuildFocused,serversTestFocused,serversPercentFocused,serversPercentTestFocused);
         flowPanePeriphBuildOrTestFocus.getChildren().addAll(periphBuildFocused,periphTestFocused,periphPercentFocused,periphPercentTestFocused);
         flowPaneOpticBuildOrTestFocus.getChildren().addAll(opticBuildFocused,opticTestFocused,opticPercentFocused,opticPercentTestFocused);
-        flowPanePOSStageFocus.getChildren().addAll(posStageFocused,posPercentStageFocused);
-        flowPaneRetailStageFocus.getChildren().addAll(retailStageFocused,retailPercentStageFocused);
-        flowPaneServersStageFocus.getChildren().addAll(serversStageFocused,serversPercentStageFocused);
-        flowPanePeriphStageFocus.getChildren().addAll(periphStageFocused,periphPercentStageFocused);
+        flowPanePOSStageFocus.getChildren().addAll(posStageFocused);
+        flowPaneRetailStageFocus.getChildren().addAll(retailStageFocused);
+        flowPaneServersStageFocus.getChildren().addAll(serversStageFocused);
+        flowPanePeriphStageFocus.getChildren().addAll(periphStageFocused);
 
 
 
@@ -2203,6 +2168,10 @@ public class Main extends Application
         Scene retailStageScene = new Scene(flowPaneRetailStageFocus);
         Scene serversStageScene = new Scene(flowPaneServersStageFocus);
         Scene periphStageScene = new Scene(flowPanePeriphStageFocus);
+        Scene posUserScene = new Scene(posGridPane);
+        Scene retailUserScene = new Scene(retailGridPane);
+        Scene serversUserScene = new Scene(serversGridPane);
+        Scene periphUserScene = new Scene(periphGridPane);
 
         final Scene[] previousScene = new Scene[1];
 
@@ -2210,6 +2179,7 @@ public class Main extends Application
         sceneList.add(buildScene);
         sceneList.add(testScene);
         sceneList.add(stageScene);
+        //sceneList.add(clockOrQualityScene);
 
         //---------------------------------General Scene Handlers-------------------------------------------------------
         int previous = 0;
@@ -2246,33 +2216,7 @@ public class Main extends Application
                         primaryStage.setIconified(true);
                     }
                     if (event.getCode() == KeyCode.F5) {
-                        if (screens.size() == 1) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (screens.size() == 2) {
-
-                            if (primaryStage.getX() < 0) {
-                                primaryStage.setX(allScreenBounds.getMinX());
-                                primaryStage.setY(allScreenBounds.getMinY());
-                            } else {
-                                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                                primaryStage.setY(allScreenBounds.getMinY());
-                            }
-                        } else {
-                            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                                primaryStage.setX(allScreenBounds.getMinX());
-                                primaryStage.setY(allScreenBounds.getMinY());
-                            }
-                            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                                primaryStage.setY(allScreenBounds.getMinY());
-                            }
-                            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                                primaryStage.setY(allScreenBounds.getMinY());
-                            }
-                        }
+                        screenMove(primaryStage,allScreenBounds,screens);
                     }
                 }
             });
@@ -2300,7 +2244,7 @@ public class Main extends Application
             public void handle(MouseEvent event)
             {
                 previousScene[0] = stageScene;
-                primaryStage.setScene(posStageScene);
+                primaryStage.setScene(posUserScene);
             }
         });
         posBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2308,33 +2252,24 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    primaryStage.setIconified(true);
+                }
+            }
+        });
+        posStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2347,38 +2282,12 @@ public class Main extends Application
 
             }
         });
-        posStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        posUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2413,7 +2322,7 @@ public class Main extends Application
             public void handle(MouseEvent event)
             {
                 previousScene[0] = stageScene;
-                primaryStage.setScene(retailStageScene);
+                primaryStage.setScene(retailUserScene);
             }
         });
         retailBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2421,33 +2330,7 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2465,33 +2348,25 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
+                    screenMove(primaryStage,allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    primaryStage.setIconified(true);
+                }
 
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+            }
+        });
+        retailUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2526,7 +2401,7 @@ public class Main extends Application
             public void handle(MouseEvent event)
             {
                 previousScene[0] = stageScene;
-                primaryStage.setScene(serversStageScene);
+                primaryStage.setScene(serversUserScene);
             }
         });
         serversBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2534,33 +2409,7 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2578,33 +2427,25 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
+                    screenMove(primaryStage,allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    primaryStage.setIconified(true);
+                }
 
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+            }
+        });
+        serversUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2639,7 +2480,7 @@ public class Main extends Application
             public void handle(MouseEvent event)
             {
                 previousScene[0] = stageScene;
-                primaryStage.setScene(periphStageScene);
+                primaryStage.setScene(periphUserScene);
             }
         });
         periphBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -2647,33 +2488,7 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2691,33 +2506,25 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
+                    screenMove(primaryStage,allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    primaryStage.setScene(previousScene[0]);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    primaryStage.setIconified(true);
+                }
 
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+            }
+        });
+        periphUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                if (event.getCode() == KeyCode.F5) {
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2752,33 +2559,7 @@ public class Main extends Application
             public void handle(KeyEvent event)
             {
                 if (event.getCode() == KeyCode.F5) {
-                    if (screens.size() == 1) {
-                        primaryStage.setX(allScreenBounds.getMinX());
-                        primaryStage.setY(allScreenBounds.getMinY());
-                    }
-                    if (screens.size() == 2) {
-
-                        if (primaryStage.getX() < 0) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        } else {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    } else {
-                        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                            primaryStage.setX(allScreenBounds.getMinX());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                            primaryStage.setY(allScreenBounds.getMinY());
-                        }
-                    }
+                    screenMove(primaryStage,allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
@@ -2793,20 +2574,17 @@ public class Main extends Application
         });
 
 
-
-
-
-        //---------------------------------Stage Handlers and Show------------------------------------------------------
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(buildScene);
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
-            public void handle(WindowEvent t) {
+            public void handle(WindowEvent event) {
                 System.exit(0);
             }
         });
+
 
     }
 
@@ -2835,251 +2613,90 @@ public class Main extends Application
         return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
     }
 
-    private Tile getUsersTileBarChart(HashMap<String,Integer> userMap, int goal, String title, double width, double height)
+    private ArrayList<Tile> getCharTiles (HashMap<String,Integer> userMap, double width, double height)
     {
-        ArrayList<BarChartItem> chartItems = new ArrayList<>();
+        ArrayList<Tile> tiles = new ArrayList<>();
+
+        ArrayList<ChartData> chartItems = new ArrayList<>();
+
         int i = 1;
         for(Map.Entry<String,Integer> entry : userMap.entrySet())
         {
-            Boolean killswitch = false;
             String user = entry.getKey();
             int total = entry.getValue();
-            if(i == 1)
-            {
-                BarChartItem temp = new BarChartItem(user, total, goal,Tile.BLUE);
-                chartItems.add(temp);
-                killswitch = true;
+
+            Tile characterTile = TileBuilder.create()
+                    .skinType(Tile.SkinType.CHARACTER)
+                    .prefSize(width, height)
+                    .title(user)
+                    .titleAlignment(TextAlignment.CENTER)
+                    .description(Integer.toString(total))
+                    .build();
+
+            tiles.add(characterTile);
+        }
+
+        return tiles;
+    }
+
+
+
+
+
+    private void changePercent(Tile main, Tile focused, double current, double goal, double total)
+    {
+        if (Double.compare(total, 60) < 0) {
+            main.setBarColor(Tile.RED);
+            main.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+            focused.setBarColor(Tile.RED);
+            focused.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+        }
+        if (Double.compare(total, 90) < 0 && Double.compare(total, 60) > 0) {
+            main.setBarColor(Tile.YELLOW);
+            main.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+            focused.setBarColor(Tile.YELLOW);
+            focused.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+        }
+        if (Double.compare(total, 90) > 0) {
+            main.setBarColor(Tile.GREEN);
+            main.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+            focused.setBarColor(Tile.GREEN);
+            focused.setUnit(Double.toString(current) + "/" + Double.toString(goal));
+        }
+    }
+
+
+
+
+
+    public void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
             }
-            if(i == 2)
-            {
-                BarChartItem temp = new BarChartItem(user, total, goal,Tile.RED);
-                chartItems.add(temp);
-                killswitch = true;
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
             }
-            if(i == 3)
-            {
-                BarChartItem temp = new BarChartItem(user, total, goal,Tile.GREEN);
-                chartItems.add(temp);
-                killswitch = true;
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
             }
-            if(i == 4)
-            {
-                BarChartItem temp = new BarChartItem(user, total, goal,Tile.YELLOW);
-                chartItems.add(temp);
-                i = 1;
-            }
-            if(killswitch= true)
-            {
-                i++;
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
             }
         }
-        Tile tile = TileBuilder.create()
-                .skinType(Tile.SkinType.BAR_CHART)
-                .title(title)
-                .roundedCorners(true)
-                .prefSize(width, height)
-                .maxValue(goal)
-                .barChartItems(chartItems)
-                .decimals(0)
-                .titleAlignment(TextAlignment.CENTER)
-                .build();
-
-        return tile;
     }
 }
-//Commented Stuff
-
-        //---------------------------------Commented Tiles--------------------------------------------------------------
-         /*
-        radialChart = TileBuilder.create().skinType(Tile.SkinType.RADIAL_CHART)
-                //.prefSize(250,250)
-                .title("BarChart")
-                .text("Production")
-                .prefSize(384,270)
-                .chartData(hospitalityData, retailData, pcrData, peripheralsData)
-                .decimals(0)
-                .build();
-
-        radialChart.setAnimated(true);
-        radialChart.setAnimationDuration(2);
-
-        donutChart = TileBuilder.create().skinType(Tile.SkinType.DONUT_CHART)
-                //.prefSize(250,250)
-                .title("BarChart")
-                .text("Production")
-                .prefSize(384,270)
-                .chartData(hospitalityData, retailData, pcrData, peripheralsData)
-                .decimals(0)
-                .maxValue(700)
-                .minValue(120)
-                .build();
-
-
-  ScheduledService myService = new ScheduledService() {
-            @Override
-            protected Task createTask() {
-                return new Task() {
-                    @Override
-                    protected Object call() throws Exception {
-                        readMe myReader = new readMe(sessionFactory);
-                        try {
-                            System.out.println("Starting read.");
-                            myReader.reader();
-                            System.out.println("Parsed.");
-                            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                            System.out.println(timeStamp);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                };
-            }
-        };
-        donutChart.setAnimated(true);
-        donutChart.setAnimationDuration(2);
-
-        mccChart = TileBuilder.create()
-                .skinType(Tile.SkinType.RADIAL_CHART)
-                .title("MCC Production")
-                .prefSize(384, 270)
-                .chartData(mccOpen, mccTested, mccClosed)
-                .maxValue(400)
-                .minValue(100)
-                .decimals(0)
-                .text("Today's Production")
-                .build();
-
-        mccChart.setAnimated(true);
-        mccChart.setAnimationDuration(2);*/
-
-
-
-
-        /*Tile stockTile;
-
-        stockTile = TileBuilder.create()
-                .skinType(Tile.SkinType.STOCK)
-                .prefSize(384,270)
-                .title("NCR Stock")
-                .minValue(20)
-                .maxValue(40)
-                .value(30)
-                .unit("$")
-                .averagingPeriod(100)
-                .build();
-
-        stockTile.setAnimated(true);
-        stockTile.setAnimationDuration(2);
-
-        Gauge pastDueGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(700)
-                .unit("MCC's")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Tile.RED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
-                .build();
-
-        //slimGauge.setSections(new Section(1,250, "UA" ,Tile.BLUE), new Section(251,500,"A", Tile.RED));
-
-        Tile medusaDashboard = TileBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Tile.SkinType.CUSTOM)
-                .title("Raw Material")
-                .text("MCC's Older than 30 days")
-                .graphic(pastDueGauge)
-                .build();
-
-        Tile safetyDashboard = TileBuilder.create().skinType(Tile.SkinType.NUMBER)
-                .prefSize(384,270)
-                .title("Safety")
-                .description("\n# of days since last incident")
-                .textVisible(true)
-                .maxValue(200)
-                .decimals(0)
-                .value(150)
-                .text("Safety Safety Safety")
-                .build();
-
-        Tile assignedJobs = TileBuilder.create()
-                .skinType(Tile.SkinType.NUMBER)
-                .prefSize(384,270)
-                .title("Unassigned Jobs")
-                .description("jobs not assigned to an order")
-                .textVisible(true)
-                .value(50)
-                .maxValue(2000)
-                .decimals(0)
-                .text("Alert scheduling if number greater than 0")
-                .build();
-
-        Clock slimClock = ClockBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Clock.ClockSkinType.SLIM)
-                .secondColor(Tile.FOREGROUND)
-                .minuteColor(Tile.BLUE)
-                .hourColor(Tile.FOREGROUND)
-                .dateColor(Tile.FOREGROUND)
-                .running(true)
-                .build();
-
-        Tile slimClockTile = TileBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Tile.SkinType.CUSTOM)
-                .title("Time")
-                .graphic(slimClock)
-                .textVisible(false)
-                .build();
-
-        Tile quoteTile = TileBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Tile.SkinType.TEXT)
-                .title("Quote of the Week")
-                .description("\nI see only my objective,\n\nall obstacles must give way")
-                .text("Napoleon Bonaparte")
-                .textVisible(true)
-                .build();
-
-        Gauge slimGauge = GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SLIM)
-//                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .prefSize(384, 270)
-                .valueColor(Tile.FOREGROUND)
-                .titleColor(Tile.FOREGROUND)
-                .unitColor(Tile.FOREGROUND)
-                .value(250)
-                .unit("past dues")
-                .maxValue(1000)
-                .animated(true)
-                .decimals(0)
-                .barColor(Color.DARKRED)
-                .needleColor(Tile.FOREGROUND)
-                .barBackgroundColor(Tile.BACKGROUND.darker())
-                .tickLabelColor(Tile.FOREGROUND)
-                .majorTickMarkColor(Tile.FOREGROUND)
-                .minorTickMarkColor(Tile.FOREGROUND)
-                .mediumTickMarkColor(Tile.FOREGROUND)
-                .build();
-
-        //slimGauge.setSections(new Section(1,250, "UA" ,Tile.BLUE), new Section(251,500,"A", Tile.RED));
-
-        Tile slimTile = TileBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Tile.SkinType.CUSTOM)
-                .title("Medusa Slim")
-                .text("Past Dues")
-                .graphic(slimGauge)
-                .build();*/

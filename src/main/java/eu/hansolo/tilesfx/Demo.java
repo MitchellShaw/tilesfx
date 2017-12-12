@@ -220,7 +220,7 @@ public class Demo extends Application {
        // barChartItem3 = new BarChartItem("Lilli", 12, Tile.GREEN);
       // barChartItem4 = new BarChartItem("Anton", 8, Tile.ORANGE);
 
-        barChartItem1.setFormatString("%.1f kWh");
+    //    barChartItem1.setFormatString("%.1f kWh");
 
         // LeaderBoard Items
         leaderBoardItem1 = new LeaderBoardItem("Gerrit", 47);
@@ -255,14 +255,14 @@ public class Demo extends Application {
                                     .build();
 
         clockTile = TileBuilder.create()
-                               .skinType(SkinType.CLOCK)
-                               .prefSize(TILE_WIDTH, TILE_HEIGHT)
-                               .title("Clock Tile")
-                               .text("Whatever text")
-                               .dateVisible(true)
-                               .locale(Locale.US)
-                               .running(true)
-                               .build();
+                .skinType(SkinType.CLOCK)
+                .prefSize(TILE_WIDTH, TILE_HEIGHT)
+                .title("Clock Tile")
+                .text("Whatever text")
+                .dateVisible(true)
+                .locale(Locale.US)
+                .running(true)
+                .build();
 
         gaugeTile = TileBuilder.create()
                                .skinType(SkinType.GAUGE)
@@ -470,14 +470,14 @@ public class Demo extends Application {
                                      .chartData(chartData1, chartData2, chartData3, chartData4)
                                      .build();
 
-        circularProgressTile = TileBuilder.create()
-                                          .skinType(SkinType.CIRCULAR_PROGRESS)
-                                          .prefSize(TILE_WIDTH, TILE_HEIGHT)
-                                          .title("CircularProgress")
-                                          .text("Some text")
-                                          .unit("\u0025")
-                                          //.graphic(new WeatherSymbol(ConditionAndIcon.CLEAR_DAY, 48, Color.WHITE))
-                                          .build();
+//        circularProgressTile = TileBuilder.create()
+//                                          .skinType(SkinType.CIRCULAR_PROGRESS)
+//                                          .prefSize(TILE_WIDTH, TILE_HEIGHT)
+//                                          .title("CircularProgress")
+//                                          .text("Some text")
+//                                          .unit("\u0025")
+//                                          //.graphic(new WeatherSymbol(ConditionAndIcon.CLEAR_DAY, 48, Color.WHITE))
+//                                          .build();
 
         stockTile = TileBuilder.create()
                                .skinType(SkinType.STOCK)
@@ -731,7 +731,7 @@ public class Demo extends Application {
 
                     leaderBoardTile.getLeaderBoardItems().get(RND.nextInt(3)).setValue(RND.nextDouble() * 80);
 
-                    circularProgressTile.setValue(RND.nextDouble() * 120);
+                   // circularProgressTile.setValue(RND.nextDouble() * 120);
 
                     stockTile.setValue(RND.nextDouble() * 50 + 500);
 
@@ -762,7 +762,7 @@ public class Demo extends Application {
                                              lineChartTile, timerControlTile, numberTile, textTile,
                                              highLowTile, plusMinusTile, sliderTile, switchTile, timeTile,
                                              barChartTile, customTile, leaderBoardTile, worldTile, mapTile,
-                                             radialChartTile, donutChartTile, circularProgressTile, stockTile,
+                                             radialChartTile, donutChartTile, stockTile,
                                              gaugeSparkLineTile, radarChartTile1, radarChartTile2,
                                              smoothAreaChartTile, countryTile, ephemerisTile, characterTile,
                                              flipTile, switchSliderTile, dateTile, calendarTile, sunburstTile,
