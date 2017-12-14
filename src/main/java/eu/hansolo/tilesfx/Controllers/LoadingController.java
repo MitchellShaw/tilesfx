@@ -1,3 +1,5 @@
+package eu.hansolo.tilesfx.Controllers;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressIndicator;

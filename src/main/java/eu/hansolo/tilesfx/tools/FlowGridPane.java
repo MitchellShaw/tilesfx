@@ -76,7 +76,8 @@ public class FlowGridPane extends GridPane {
                 ObservableList<RowConstraints> constraints = getRowConstraints();
                 constraints.clear();
                 int rows = get();
-                for (int i=0; i < rows; ++i) {
+                for (int i=0; i < rows; ++i)
+                {
                     RowConstraints r = new RowConstraints();
                     r.setValignment(VPos.CENTER);
                     r.setVgrow(Priority.ALWAYS);
@@ -96,7 +97,8 @@ public class FlowGridPane extends GridPane {
         if (null != NODES) { getChildren().setAll(NODES); }
     }
 
-    private void registerListeners() {
+    private void registerListeners()
+    {
         widthProperty().addListener(o -> checkAspectRatio());
         heightProperty().addListener(o -> checkAspectRatio());
     }

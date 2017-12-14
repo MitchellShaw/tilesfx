@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="pane-grid" stylesheets="@../eu/hansolo/tilesfx/LoadCSS.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="763.999951171875" minHeight="10.0" prefHeight="763.999951171875" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="558.3999999999999" minHeight="10.0" prefHeight="315.20004882812486" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <VBox alignment="CENTER" prefHeight="864.0" prefWidth="1920.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="760.0" fitWidth="853.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../NCR%20Brand%20Block%20Logo%20JPG.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Label stylesheets="@../eu/hansolo/tilesfx/LoadCSS.css" text="Trusted, Innovative, Vibrant, Agile">
+               <font>
+                  <Font name="Open Sans" size="64.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="120.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <ProgressIndicator prefHeight="316.0" prefWidth="156.0" />
+         </children>
+      </HBox>
+   </children>
+</GridPane>
