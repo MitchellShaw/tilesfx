@@ -35,7 +35,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import sun.util.resources.cldr.om.CurrencyNames_om;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -126,6 +125,7 @@ public class Main extends Application {
 
         LoadingController loadingController = new LoadingController();
         NavigationController navigationController = new NavigationController();
+        TimeLineController timeLineController = new TimeLineController();
         MainBuildController buildController = new MainBuildController();
         MainTestController testController = new MainTestController();
         MainStageController stageController = new MainStageController();
@@ -135,8 +135,9 @@ public class Main extends Application {
         PeriphBuildController periphBuildController = new PeriphBuildController();
         OpticBuildController opticBuildController = new OpticBuildController();
 
-        messenger = new Messenger(loadingController,navigationController,buildController,testController,stageController,posBuildController,retailBuildController,serversBuildController,periphBuildController,opticBuildController,primaryStage);
+        messenger = new Messenger(loadingController,navigationController,timeLineController, buildController,testController,stageController,posBuildController,retailBuildController,serversBuildController,periphBuildController,opticBuildController,primaryStage);
 
+        timeLineController.setMessenger(messenger);
         navigationController.setMessenger(messenger);
         buildController.setMessenger(messenger);
         testController.setMessenger(messenger);
@@ -178,12 +179,6 @@ public class Main extends Application {
         primaryStage.setScene(loadingScene);
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                System.exit(0);
-            }
-        });
 
         //---------------------------------Scheduled Service for All Updates--------------------------------------------
         ScheduledService buildVariables = new ScheduledService() {
@@ -343,6 +338,7 @@ public class Main extends Application {
                         buildController.setPosTotalCurrentBuild(buildController.getP1532CurrentBuild() + buildController.getP1x35CurrentBuild() + buildController.getP1x30CurrentBuild() + buildController.getT1000sCurrentBuild());
 
                         testController.setPosTotalCurrentTest(testController.getP1532CurrentTest() + testController.getP1x35CurrentTest() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest());
+                        testController.setPosTotalGoalBuild(buildController.getPosTotalGoalBuild());
 
                         stageController.setPosTotalGoalStage(stageController.getP1532GoalStage() + stageController.getP1x30GoalStage() + stageController.getP1x35GoalStage() + stageController.getT1000sGoalStage());
                         stageController.setPosTotalCurrentStage(stageController.getP1532CurrentStage() + stageController.getP1x35CurrentStage() + stageController.getP1x30CurrentStage() + stageController.getT1000sCurrentStage());
@@ -353,9 +349,13 @@ public class Main extends Application {
 
                         //---------------------------------Retail Build---------------------------------------------------------
                         buildController.setXr7GoalBuild(goalTool.getGoal(mapList.get(4), "7702"));
+                        testController.setXr7GoalBuild(goalTool.getGoal(mapList.get(4), "7702"));
                         buildController.setXr7PlusGoalBuild(goalTool.getGoal(mapList.get(4), "7703"));
+                        testController.setXr7PlusGoalBuild(goalTool.getGoal(mapList.get(4), "7703"));
                         buildController.setXr5GoalBuild(goalTool.getGoal(mapList.get(4), "7701"));
+                        testController.setXr5GoalBuild(goalTool.getGoal(mapList.get(4), "7701"));
                         buildController.setNextGenDisplayGoalsBuild(goalTool.getListGoal(mapList.get(4), nextGenProdList));
+                        testController.setNextGenDisplayGoalsBuild(goalTool.getListGoal(mapList.get(4), nextGenProdList));
 
                         stageController.setXr7GoalStage(goalTool.getGoal(stageMapList.get(3), "7702"));
                         stageController.setXr7PlusGoalStage(goalTool.getGoal(stageMapList.get(3), "7703"));
@@ -367,7 +367,7 @@ public class Main extends Application {
                         buildController.setRetailTotalCurrentBuild(buildController.getXr7CurrentBuild() + buildController.getXr7PlusCurrentBuild() + buildController.getXr5CurrentBuild() + buildController.getNextGenDisplayCurrentBuild());
 
                         testController.setRetailTotalCurrentTest(testController.getXr7CurrentTest() + testController.getXr7PlusCurrentTest() + testController.getXr5CurrentTest() + testController.getNextGenDisplayCurrentTest());
-
+                        testController.setRetailTotalGoalBuild(buildController.getRetailTotalGoalBuild());
                         stageController.setRetailTotalGoalStage(stageController.getXr7GoalStage() + stageController.getXr7PlusGoalStage() + stageController.getXr5GoalStage() + stageController.getNextGenDisplayGoalsStage());
                         stageController.setRetailTotalCurrentStage(stageController.getXr7CurrentStage() + stageController.getXr7PlusCurrentStage() + stageController.getXr5CurrentStage() + stageController.getNextGenDisplayCurrentStage());
 
@@ -377,8 +377,11 @@ public class Main extends Application {
 
                         //---------------------------------Servers Build--------------------------------------------------------
                         buildController.setMediaPlayerGoalBuild(goalTool.getGoal(mapList.get(1), "1656"));
+                        testController.setMediaPlayerGoalBuild(goalTool.getGoal(mapList.get(1), "1656"));
                         buildController.setN3000GoalBuild(goalTool.getGoal(mapList.get(1), "1657"));
+                        testController.setN3000GoalBuild(goalTool.getGoal(mapList.get(1), "1657"));
                         buildController.setS500GoalBuild(goalTool.getGoal(mapList.get(1), "1611"));
+                        testController.setS500GoalBuild(goalTool.getGoal(mapList.get(1), "1611"));
 
                         stageController.setMediaPlayerGoalStage(goalTool.getGoal(stageMapList.get(1), "1656"));
                         stageController.setN3000GoalStage(goalTool.getGoal(stageMapList.get(1), "1657"));
@@ -389,6 +392,7 @@ public class Main extends Application {
                         buildController.setServerCurrentBuild(buildController.getMediaPlayerCurrentBuild() + buildController.getN3000CurrentBuild() + buildController.getS500CurrentBuild());
 
                         testController.setServerCurrentTest(testController.getMediaPlayerCurrentTest() + testController.getN3000CurrentTest() + testController.getS500CurrentTest());
+                        testController.setServerGoalTotalBuild(buildController.getServerGoalTotalBuild());
 
                         stageController.setServerGoalTotalStage(stageController.getMediaPlayerGoalStage() + stageController.getN3000GoalStage() + stageController.getS500GoalStage());
                         stageController.setServerCurrentStage(stageController.getMediaPlayerCurrentStage() + stageController.getN3000CurrentStage() + stageController.getS500CurrentStage());
@@ -400,9 +404,13 @@ public class Main extends Application {
 
                         //---------------------------------Periph Build---------------------------------------------------------
                         buildController.setKiwi4sGoalBuild(goalTool.getGoal(mapList.get(3), "1924"));
+                        testController.setKiwi4sGoalBuild(goalTool.getGoal(mapList.get(3), "1924"));
                         buildController.setKiwi2XsGoalBuild(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
+                        testController.setKiwi2XsGoalBuild(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
                         buildController.setBumpBarsGoalBuild(goalTool.getGoal(mapList.get(3), "1635"));
+                        testController.setBumpBarsGoalBuild(goalTool.getGoal(mapList.get(3), "1635"));
                         buildController.setPantherEPC4sGoalBuild(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
+                        testController.setPantherEPC4sGoalBuild(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
 
                         stageController.setKiwi4sGoalStage(goalTool.getGoal(stageMapList.get(2), "1924"));
                         stageController.setKiwi2XsGoalStage(goalTool.getListGoal(stageMapList.get(2), kiwi2XsProdList));
@@ -414,6 +422,7 @@ public class Main extends Application {
                         buildController.setPeriphCurrentTotalBuild(buildController.getKiwi4sCurrentBuild() + buildController.getKiwi2XsCurrentBuild() + buildController.getBumpBarsCurrentBuild() + buildController.getPantherEPC4sCurrentBuild());
 
                         testController.setPeriphCurrentTotalTest(testController.getKiwi4sCurrentTest() + testController.getKiwi2XsCurrentTest() + testController.getBumpBarsCurrentTest() + testController.getPantherEPC4sCurrentTest());
+                        testController.setPeriphGoalTotalBuild(buildController.getPeriphGoalTotalBuild());
 
                         stageController.setPeriphGoalTotalStage(stageController.getKiwi4sGoalStage() + stageController.getKiwi2XsGoalStage() +stageController.getBumpBarsGoalStage() + stageController.getPantherEPC4sGoalStage());
                         stageController.setPeriphCurrentTotalStage(stageController.getKiwi4sCurrentStage() + stageController.getKiwi2XsCurrentStage() + stageController.getBumpBarsCurrentStage() + stageController.getPantherEPC4sCurrentStage());
@@ -425,271 +434,34 @@ public class Main extends Application {
 
                         //---------------------------------Optic Build----------------------------------------------------------
                         buildController.setOptic5sGoalBuild(goalTool.getGoal(mapList.get(2), "6001"));
+                        testController.setOptic5sGoalBuild(goalTool.getGoal(mapList.get(2), "6001"));
                         buildController.setOptic12sGoalBuild(goalTool.getGoal(mapList.get(2), "6002"));
+                        testController.setOptic12sGoalBuild(goalTool.getGoal(mapList.get(2), "6002"));
                         buildController.setKitsGoalBuild(goalTool.getGoal(mapList.get(2), "6003"));
+                        testController.setKitsGoalBuild(goalTool.getGoal(mapList.get(2), "6003"));
 
                         //---------------------------------Percent Calculation and Update for Optic-----------------------------
                         buildController.setOpticGoalTotalBuild(buildController.getOptic5sGoalBuild() + buildController.getOptic12sGoalBuild() + buildController.getKitsGoalBuild());
                         buildController.setOpticCurrentTotalBuild(buildController.getOptic5sCurrentBuild() + buildController.getOptic12sCurrentBuild() + buildController.getKitsCurrentBuild());
 
-                        testController.setOpticCurrentTotalTest(testController.getOptic5sCurrentTest() + testController.getOptic12sCurrentTest() + testController.getKitsCurrentTest());
-
+                        testController.setOpticCurrentTotalTest(testController.getOptic5sCurrentTest() + testController.getOptic12sCurrentTest());
+                        testController.setOpticGoalTotalBuild(buildController.getOpticGoalTotalBuild());
 
                         buildController.setOpticPercentTotalBuild(goalTool.getPercentTotal(buildController.getOpticCurrentTotalBuild(), buildController.getOpticGoalTotalBuild()));
                         testController.setOpticPercentTotalTest(goalTool.getPercentTotal(testController.getOpticCurrentTotalTest(), buildController.getOpticGoalTotalBuild()));
 
-                        buildController.refresh();
-                        testController.refresh();
-                        stageController.refresh();
                         //---------------------------------This is some hacky shit-------------------------------------------
                         System.out.println("\n***********Dynamic Creation Block***********\n");
 
-                        Tile posClock = TileBuilder.create()
-                                .skinType(Tile.SkinType.CLOCK)
-                                .prefSize(480, 217)
-                                .title("Current Time")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .locale(Locale.US)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .running(true)
-                                .dateVisible(false)
-                                .roundedCorners(false)
-                                .textAlignment(TextAlignment.CENTER)
-                                .build();
+                        buildController.setOpticThrough(dataBaseTool.opticFTTDataBase());
+                        buildController.setPeriphThrough(dataBaseTool.periphFTTDataBase());
+                        buildController.setServersThrough(dataBaseTool.serversFTTDataBase());
+                        buildController.setRetailThrough(dataBaseTool.retailFTTDataBase());
+                        buildController.setPosThrough(dataBaseTool.hospFTTDataBase());
 
-                        Tile retailClock = TileBuilder.create()
-                                .skinType(Tile.SkinType.CLOCK)
-                                .prefSize(480, 217)
-                                .title("Current Time")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .locale(Locale.US)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .running(true)
-                                .dateVisible(false)
-                                .roundedCorners(false)
-                                .textAlignment(TextAlignment.CENTER)
-                                .build();
-
-                        Tile serversClock = TileBuilder.create()
-                                .skinType(Tile.SkinType.CLOCK)
-                                .prefSize(480, 217)
-                                .title("Current Time")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .locale(Locale.US)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .running(true)
-                                .dateVisible(false)
-                                .roundedCorners(false)
-                                .textAlignment(TextAlignment.CENTER)
-                                .build();
-
-                        Tile periphClock = TileBuilder.create()
-                                .skinType(Tile.SkinType.CLOCK)
-                                .prefSize(480, 217)
-                                .title("Current Time")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .locale(Locale.US)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .running(true)
-                                .dateVisible(false)
-                                .roundedCorners(false)
-                                .textAlignment(TextAlignment.CENTER)
-                                .build();
-
-                        final ImageView logoView = new ImageView();
-                        final Image logoImage = new Image("NCR Brand Block Logo JPG.jpg");
-                        logoView.setImage(logoImage);
-                        logoView.setFitHeight(217);
-                        logoView.setFitWidth(480);
-                        logoView.setPreserveRatio(true);
-
-                        HBox hbox = new HBox(logoView);
-                        hbox.setPrefWidth(480);
-                        hbox.setPrefHeight(217);
-                        hbox.setAlignment(Pos.CENTER);
-                        hbox.setStyle("-fx-background-color:#54B948");
-
-
-                        Tile posLogo  = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(hbox)
-                                .build();
-
-                        Tile retailLogo  = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(hbox)
-                                .build();
-                        Tile serversLogo  = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(hbox)
-                                .build();
-                        Tile periphLogo  = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(hbox)
-                                .build();
-
-                        String date = dataBaseTool.incidentReader();
-
-                        LocalDate currentDate = LocalDate.now();
-                        LocalDate incidentDate = LocalDate.parse(date);
-
-                        long daysBetween = DAYS.between(incidentDate, currentDate);
-
-                        int counter = Math.toIntExact(daysBetween);
-
-                        String useDate = Integer.toString(counter);
-
-                        ImageView stopView = new ImageView();
-                        final Image redImage = new Image("Red Light.PNG");
-                        final Image yellowImage = new Image("Yellow Light.PNG");
-                        final Image greenImage = new Image("Green Light.PNG");
-
-                        if(counter <30)
-                        {
-                            stopView.setImage(redImage);
-                        }
-                        if(counter > 30 && counter <60)
-                        {
-                            stopView.setImage(yellowImage);
-                        }
-                        if(counter >= 60)
-                        {
-                            stopView.setImage(greenImage);
-                        }
-                        stopView.setFitHeight(217);
-                        stopView.setFitWidth(480);
-                        stopView.setPreserveRatio(true);
-
-                        HBox myBox = new HBox(stopView);
-                        myBox.setPrefWidth(480);
-                        myBox.setPrefHeight(217);
-                        myBox.setAlignment(Pos.CENTER);
-                        myBox.setStyle("-fx-background-color:#54B948");
-
-                        Tile posStopLight = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(myBox)
-                                .build();
-
-                        Tile retailStopLight = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(myBox)
-                                .build();
-
-                        Tile serversStopLight = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(myBox)
-                                .build();
-
-                        Tile periphStopLight = TileBuilder.create()
-                                .skinType(Tile.SkinType.CUSTOM)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .prefSize(480,217)
-                                .roundedCorners(false)
-                                .graphic(myBox)
-                                .build();
-
-                        Tile posQuality = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480, 217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Days Since Last Safety Incident")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description(useDate)
-                                .build();
-
-                        Tile retailQuality = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480, 217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Days Since Last Safety Incident")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description(useDate)
-                                .build();
-
-                        Tile serversQuality = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480, 217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Days Since Last Safety Incident")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description(useDate)
-                                .build();
-
-                        Tile periphQuality = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480, 217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Days Since Last Safety Incident")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description(useDate)
-                                .build();
-
-
-                        Tile posGoalTile = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480,217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Department")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description("POS")
-                                .build();
-
-                        Tile retailGoalTile = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480,217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Department")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description("Retail")
-                                .build();
-
-                        Tile serversGoalTile = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480,217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Department")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description("Servers")
-                                .build();
-
-                        Tile periphGoalTile = TileBuilder.create()
-                                .skinType(Tile.SkinType.CHARACTER)
-                                .prefSize(480,217)
-                                .backgroundColor(Color.valueOf("#54B948"))
-                                .title("Department")
-                                .titleAlignment(TextAlignment.CENTER)
-                                .roundedCorners(false)
-                                .description("Periph")
-                                .build();
+                        Platform.runLater(() ->buildController.refresh());
+                        Platform.runLater(() ->testController.refresh());
+                        Platform.runLater(() ->stageController.refresh());
 
 
                         ArrayList<Tile> posTiles = new ArrayList<>();
@@ -744,31 +516,6 @@ public class Main extends Application {
                         int retailSize = retailTiles.size();
                         int serversSize = serversTiles.size();
                         int periphSize = periphTiles.size();
-
-                        posTiles.add(0,posLogo);
-                        posTiles.add(4,posClock);
-                        posTiles.add(8,posGoalTile);
-                        posTiles.add(12,posStopLight);
-                        posTiles.add(16,posQuality);
-
-                        retailTiles.add(0,retailLogo);
-                        retailTiles.add(4,retailClock);
-                        retailTiles.add(8,retailGoalTile);
-                        retailTiles.add(12,retailStopLight);
-                        retailTiles.add(16,retailQuality);
-
-                        serversTiles.add(0,serversLogo);
-                        serversTiles.add(4,serversClock);
-                        serversTiles.add(8,serversGoalTile);
-                        serversTiles.add(12,serversStopLight);
-                        serversTiles.add(16,serversQuality);
-
-
-                        periphTiles.add(0,periphLogo);
-                        periphTiles.add(4,periphClock);
-                        periphTiles.add(8,periphGoalTile);
-                        periphTiles.add(12,periphStopLight);
-                        periphTiles.add(16,periphQuality);
 
                         Platform.runLater(()->posGridPane.getChildren().clear());
                         ArrayList<Tile> finalPosTiles = posTiles;

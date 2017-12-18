@@ -5,13 +5,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +34,8 @@ public class NavigationController implements Initializable {
     private ImageView safetyIcon;
     @FXML
     private ImageView qualityIcon;
+    @FXML
+    private ImageView exitIcon;
     @FXML
     private GridPane pane;
 
@@ -57,6 +66,91 @@ public class NavigationController implements Initializable {
 
     private void createActions()
     {
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+            }
+        });
+        buildIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        buildIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        testIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        testIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        stageIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        stageIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        safetyIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        safetyIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        qualityIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        qualityIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        exitIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.HAND);
+            }
+        });
+        exitIcon.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                pane.setCursor(Cursor.DEFAULT);
+            }
+        });
+        exitIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+               System.exit(0);
+
+            }
+        });
         buildIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

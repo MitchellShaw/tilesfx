@@ -16,11 +16,14 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="763.999951171875" minHeight="10.0" prefHeight="763.999951171875" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="558.3999999999999" minHeight="10.0" prefHeight="315.20004882812486" vgrow="SOMETIMES" />
+    <RowConstraints />
+    <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="763.999951171875" minHeight="10.0" prefHeight="763.999951171875" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="558.3999999999999" minHeight="10.0" prefHeight="315.20004882812486" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <VBox alignment="CENTER" prefHeight="864.0" prefWidth="1920.0">
+      <VBox alignment="CENTER" prefHeight="864.0" prefWidth="1920.0" GridPane.rowIndex="3">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -41,7 +44,7 @@
             </Label>
          </children>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0" GridPane.rowIndex="1">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0" GridPane.rowIndex="4">
          <children>
             <ImageView fx:id="buildIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
                <image>
@@ -69,6 +72,18 @@
                </image>
             </ImageView>
          </children>
+      </HBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="exitIcon" fitHeight="56.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+               <image>
+                  <Image url="@../cancel.png" />
+               </image>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets right="15.0" top="15.0" />
+         </padding>
       </HBox>
    </children>
 </GridPane>

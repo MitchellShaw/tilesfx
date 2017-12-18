@@ -1,0 +1,16 @@
+
+
+.pane-grid{
+    -fx-background-color: #54B948;
+}
+.label{
+    -fx-font-size: 68px;
+    -fx-text-fill: WHITE;
+    -fx-font-family: OpenSans;
+}
+
+.ImageView:hover {
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+    -fx-scale-z: 1.5;
+}

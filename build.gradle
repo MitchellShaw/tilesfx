@@ -42,6 +42,7 @@ dependencies
             compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
             compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
             compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.3.0.jre8-preview'
+
         }
 
 jfx

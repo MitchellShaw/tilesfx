@@ -13,11 +13,10 @@
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="480.0" minWidth="480.0" prefWidth="480.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="217.0" minHeight="217.0" prefHeight="217.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="217.0" minHeight="217.0" prefHeight="217.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="217.0" minHeight="217.0" prefHeight="217.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="217.0" minHeight="217.0" prefHeight="217.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="217.0" minHeight="217.0" prefHeight="217.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="270.0" minHeight="270.0" prefHeight="270.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="270.0" minHeight="270.0" prefHeight="270.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="270.0" minHeight="270.0" prefHeight="270.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="270.0" minHeight="270.0" prefHeight="270.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Tile fx:id="logo" />
@@ -27,14 +26,12 @@
       <Tile fx:id="clock" GridPane.rowIndex="1" />
       <Tile fx:id="buildTotal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <Tile fx:id="buildComments" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-      <Tile fx:id="filler" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="218.0" prefWidth="1473.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-      <Tile fx:id="stopLight" GridPane.rowIndex="3" />
-      <Tile fx:id="safetyDays" GridPane.rowIndex="4" />
-      <Tile fx:id="testGraph" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-      <Tile fx:id="testPercent" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <Tile fx:id="testTotal" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Tile fx:id="fttTestPercent" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Tile fx:id="testComments" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-      <Tile fx:id="department" GridPane.rowIndex="2" />
+      <Tile fx:id="stopLight" GridPane.rowIndex="2" />
+      <Tile fx:id="safetyDays" GridPane.rowIndex="3" />
+      <Tile fx:id="testGraph" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+      <Tile fx:id="testPercent" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Tile fx:id="testTotal" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Tile fx:id="fttTestPercent" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Tile fx:id="testComments" GridPane.columnIndex="3" GridPane.rowIndex="3" />
    </children>
 </GridPane>

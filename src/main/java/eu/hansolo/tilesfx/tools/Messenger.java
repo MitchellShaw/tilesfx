@@ -16,11 +16,13 @@ public class Messenger {
     ServersBuildController serversBuildController;
     PeriphBuildController periphBuildController;
     OpticBuildController opticBuildController;
+    TimeLineController timeLineController;
     Stage primaryStage;
 
-    public Messenger(LoadingController loadingController, NavigationController navigationController, MainBuildController mainBuildController, MainTestController mainTestController,  MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController, Stage primaryStage) {
+    public Messenger(LoadingController loadingController, NavigationController navigationController,TimeLineController timeLineController, MainBuildController mainBuildController, MainTestController mainTestController,  MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController, Stage primaryStage) {
         this.loadingController = loadingController;
         this.navigationController = navigationController;
+        this.timeLineController = timeLineController;
         this.mainStageController = mainStageController;
         this.mainBuildController = mainBuildController;
         this.mainTestController = mainTestController;
@@ -31,6 +33,15 @@ public class Messenger {
         this.opticBuildController = opticBuildController;
         this.primaryStage = primaryStage;
     }
+
+    public TimeLineController getTimeLineController() {
+        return timeLineController;
+    }
+    public void setTimeLineController(TimeLineController timeLineController)
+    {
+        this.timeLineController = timeLineController;
+    }
+
     public LoadingController getLoadingController() {
         return loadingController;
     }

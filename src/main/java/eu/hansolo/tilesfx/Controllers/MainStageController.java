@@ -5,17 +5,27 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Messenger;
+import javafx.animation.Animation;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -45,10 +55,7 @@ public class MainStageController implements Initializable
     private Tile periphStagePercent;
     @FXML
     private Tile periphTotal;
-    @FXML
-    private Tile opticTestPercent;
-    @FXML
-    private Tile opticTotal;
+
     @FXML
     private GridPane pane;
 
@@ -178,6 +185,15 @@ public class MainStageController implements Initializable
                 .subText(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .value(posPercentTotalStage)
                 .build();
+        posTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .title("Total Built")
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
         pane.add(posStage,0,0,1,2);
         pane.add(posStagePercent,0,2,1,1);
@@ -207,6 +223,15 @@ public class MainStageController implements Initializable
                 .roundedCorners(false)
                 .value(retailPercentTotalStage)
                 .build();
+        retailTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .subText("Total Staged")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(Double.toString(retailTotalCurrentStage))
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
         pane.add(retailStage,1,0,1,2);
         pane.add(retailStagePercent,1,2,1,1);
@@ -234,6 +259,15 @@ public class MainStageController implements Initializable
                 .roundedCorners(false)
                 .subText(Double.toString(serverCurrentStage) + "/" + Double.toString(serverGoalTotalStage))
                 .value(serversPercentTotalStage)
+                .build();
+        serversTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .subText("Total Staged")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(Double.toString(serverCurrentStage))
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
                 .build();
 
         pane.add(serversStage,2,0,1,2);
@@ -263,11 +297,21 @@ public class MainStageController implements Initializable
                 .roundedCorners(false)
                 .value(periphPercentTotalStage)
                 .build();
+        periphTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .subText("Total Staged")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(Double.toString(periphCurrentTotalStage))
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
        pane.add(periphStage,3,0,1,2);
        pane.add(periphStagePercent,3,2,1,1);
 
        refresh();
+       createActions();
     }
 
     public void refresh()
@@ -368,6 +412,64 @@ public class MainStageController implements Initializable
 
     private void createActions()
     {
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    NavigationController buildController = messenger.getNavigationController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.T && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initStyle(StageStyle.UNDECORATED);
+
+                    dialog.initOwner(messenger.getPrimaryStage());
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
+
+                    root.setController(timeLineController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 800, 600);
+
+                    timeLineController.setStage(dialog);
+
+                    dialog.setScene(buildScene);
+                    dialog.show();
+                }
+                if(event.getCode() == KeyCode.X && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    Timeline temp = timeLineController.getTimeline();
+
+                    if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
+                    {
+                        temp.stop();
+                    }
+                }
+            }
+        });
        posStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
            @Override
            public void handle(MouseEvent event) {

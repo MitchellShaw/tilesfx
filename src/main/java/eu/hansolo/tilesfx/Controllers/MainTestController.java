@@ -5,16 +5,35 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Messenger;
+import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainTestController implements Initializable
@@ -37,6 +56,9 @@ public class MainTestController implements Initializable
 
     @FXML
     private GridPane pane;
+
+    double x = 0;
+    double y = 0;
     //---------------------------------Variables for Query Data (POS)-----------------------------------------
     double p1x30CurrentBuild;
     double p1x30GoalBuild;
@@ -174,11 +196,27 @@ public class MainTestController implements Initializable
     BarChartItem xr7PlusDataTest;
     BarChartItem nextGenDisplaysTest;
 
+    double opticThrough;
+    double periphThrough;
+    double serversThrough;
+    double retailThrough;
+    double posThrough;
+
     Messenger messenger;
+
+    DecimalFormat df = new DecimalFormat("#.0");
+
+    ArrayList<Tile> tiles;
+
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        tiles = new ArrayList<>();
+        MainBuildController buildController = messenger.getMainBuildController();
+
         //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
         p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
         p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild, Tile.GREEN);
@@ -226,18 +264,17 @@ public class MainTestController implements Initializable
             .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
             .value(posPercentTotalTest)
             .build();
+        System.out.println(posTotalGoalBuild);
 
-        posFTT = TileBuilder.create()
+        posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getPosThrough())+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
-                .value(posPercentTotalTest)
                 .build();
 
         pane.add(posTest,0,0,1,2);
@@ -270,18 +307,17 @@ public class MainTestController implements Initializable
                 .value(retailPercentTotalTest)
                 .build();
 
-        retailFTT = TileBuilder.create()
+        retailFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
-                .subText(Double.toString(retailTotalCurrentTest) + "/" + Double.toString(retailTotalGoalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getRetailThrough())+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(retailPercentTotalTest)
                 .build();
+
 
         pane.add(retailTest,1,0,1,2);
         pane.add(retailTestPercent,1,2,1,1);
@@ -313,18 +349,17 @@ public class MainTestController implements Initializable
                 .value(serversPercentTotalTest)
                 .build();
 
-        serversFTT = TileBuilder.create()
+        serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getServersThrough())+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .subText(Double.toString(serverCurrentTest) + "/" + Double.toString(serverGoalTotalBuild))
-                .value(serversPercentTotalTest)
                 .build();
+
 
         pane.add(serversTest,2,0,1,2);
         pane.add(serversTestPercent,2,2,1,1);
@@ -356,18 +391,17 @@ public class MainTestController implements Initializable
                 .value(periphPercentTotalTest)
                 .build();
 
-        periphFTT = TileBuilder.create()
+        periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalTest) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getPeriphThrough())+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(periphPercentTotalTest)
                 .build();
+
         pane.add(periphTest,3,0,1,2);
         pane.add(periphTestPercent,3,2,1,1);
         pane.add(periphFTT,3,3,1,1);
@@ -392,7 +426,7 @@ public class MainTestController implements Initializable
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalTest) + "/" + Double.toString(opticGoalTotalBuild))
+                .unit(Double.toString(opticCurrentTotalTest) + "/" + Double.toString(buildController.getOpticGoalTotalBuild()))
                 .subText(Double.toString(opticCurrentTotalBuild))
                 .animated(true)
                 .animationDuration(3000)
@@ -400,101 +434,378 @@ public class MainTestController implements Initializable
                 .value(opticPercentTotalTest)
                 .build();
 
-        opticFTT = TileBuilder.create()
+        opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(opticCurrentTotalTest) + "/" + Double.toString(opticGoalTotalBuild))
-                .subText(Double.toString(opticCurrentTotalBuild))
+                .subText("FTT Rating")
+                .titleAlignment(TextAlignment.CENTER)
+                .title("FTT")
+                .description(df.format(messenger.getMainBuildController().getOpticThrough())+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(opticPercentTotalTest)
                 .build();
 
         pane.add(opticTest,4,0,1,2);
         pane.add(opticTestPercent,4,2,1,1);
         pane.add(opticFTT,4,3,1,1);
 
+        createActions();
+
+        tiles.add(posTest);
+        tiles.add(retailTest);
+        tiles.add(serversTest);
+        tiles.add(periphTest);
+        tiles.add(opticTest);
+        tiles.add(posTestPercent);
+        tiles.add(posFTT);
+        tiles.add(retailTestPercent);
+        tiles.add(retailFTT);
+        tiles.add(serversTestPercent);
+        tiles.add(serversFTT);
+        tiles.add(periphTestPercent);
+        tiles.add(periphFTT);
+        tiles.add(opticTestPercent);
+        tiles.add(opticFTT);
+
+        tilesListeners(tiles);
         refresh();
     }
 
     public void refresh()
     {
-        p1x35DataTest.setValue(p1x35CurrentTest);
-        p1x35DataTest.setMaxValue(p1x35GoalBuild);
-        p1532DataTest.setValue(p1532CurrentTest);
-        p1532DataTest.setMaxValue(p1532GoalBuild);
-        p1x30DataTest.setValue(p1x30CurrentTest);
-        p1x30DataTest.setMaxValue(p1x30GoalBuild);
-        t1000DataTest.setValue(t1000sCurrentTest);
-        t1000DataTest.setMaxValue(t1000sGoalBuild);
+        Platform.runLater(() ->
+        {
+            p1x35DataTest.setValue(p1x35CurrentTest);
+            p1x35DataTest.setMaxValue(p1x35GoalBuild);
+            p1532DataTest.setValue(p1532CurrentTest);
+            p1532DataTest.setMaxValue(p1532GoalBuild);
+            p1x30DataTest.setValue(p1x30CurrentTest);
+            p1x30DataTest.setMaxValue(p1x30GoalBuild);
+            t1000DataTest.setValue(t1000sCurrentTest);
+            t1000DataTest.setMaxValue(t1000sGoalBuild);
 
-        //---------------------------------Update the Server Units------------------------------------------
-        n3000Test.setValue(n3000CurrentTest);
-        n3000Test.setMaxValue(n3000GoalBuild);
-        s500DataTest.setValue(s500CurrentTest);
-        s500DataTest.setMaxValue(s500GoalBuild);
-        mediaPlayerTest.setValue(mediaPlayerCurrentTest);
-        mediaPlayerTest.setMaxValue(mediaPlayerGoalBuild);
+            //---------------------------------Update the Server Units------------------------------------------
+            n3000Test.setValue(n3000CurrentTest);
+            n3000Test.setMaxValue(n3000GoalBuild);
+            s500DataTest.setValue(s500CurrentTest);
+            s500DataTest.setMaxValue(s500GoalBuild);
+            mediaPlayerTest.setValue(mediaPlayerCurrentTest);
+            mediaPlayerTest.setMaxValue(mediaPlayerGoalBuild);
 
-        //---------------------------------Updating the Peripheral Units------------------------------------
-        kiwi4DataTest.setValue(kiwi4sCurrentTest);
-        kiwi4DataTest.setMaxValue(kiwi4sGoalBuild);
-        kiwi25DataTest.setValue(kiwi2XsCurrentTest);
-        kiwi25DataTest.setMaxValue(kiwi2XsGoalBuild);
-        bumpBarDataTest.setValue(bumpBarsCurrentTest);
-        bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
-        pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
-        pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
-        optic5DataTest.setValue(optic5sCurrentTest);
-        optic5DataTest.setMaxValue(optic5sGoalBuild);
-        optic12DataTest.setValue(optic12sCurrentTest);
-        optic12DataTest.setMaxValue(optic12sGoalBuild);
-        xr5DataTest.setValue(xr5CurrentTest);
-        xr5DataTest.setMaxValue(xr5GoalBuild);
-        xr7DataTest.setValue(xr7CurrentTest);
-        xr7DataTest.setMaxValue(xr7GoalBuild);
-        xr7PlusDataTest.setValue(xr7PlusCurrentTest);
-        xr7PlusDataTest.setMaxValue(xr7PlusGoalBuild);
-        nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
-        nextGenDisplaysTest.setMaxValue(nextGenDisplayGoalsBuild);
+            //---------------------------------Updating the Peripheral Units------------------------------------
+            kiwi4DataTest.setValue(kiwi4sCurrentTest);
+            kiwi4DataTest.setMaxValue(kiwi4sGoalBuild);
+            kiwi25DataTest.setValue(kiwi2XsCurrentTest);
+            kiwi25DataTest.setMaxValue(kiwi2XsGoalBuild);
+            bumpBarDataTest.setValue(bumpBarsCurrentTest);
+            bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
+            pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
+            pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
+            optic5DataTest.setValue(optic5sCurrentTest);
+            optic5DataTest.setMaxValue(optic5sGoalBuild);
+            optic12DataTest.setValue(optic12sCurrentTest);
+            optic12DataTest.setMaxValue(optic12sGoalBuild);
+            xr5DataTest.setValue(xr5CurrentTest);
+            xr5DataTest.setMaxValue(xr5GoalBuild);
+            xr7DataTest.setValue(xr7CurrentTest);
+            xr7DataTest.setMaxValue(xr7GoalBuild);
+            xr7PlusDataTest.setValue(xr7PlusCurrentTest);
+            xr7PlusDataTest.setMaxValue(xr7PlusGoalBuild);
+            nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
+            nextGenDisplaysTest.setMaxValue(nextGenDisplayGoalsBuild);
 
-        //---------------------------------Creating Color Changes for POS Dial------------------------------------------
-        posTestPercent.setValue(posPercentTotalTest);
-        posFTT.setValue(posPercentTotalTest);
+            //---------------------------------Creating Color Changes for POS Dial------------------------------------------
+            posTestPercent.setValue(posPercentTotalTest);
+            posFTT.setDescription(df.format(messenger.getMainBuildController().getPosThrough())+"%");
 
-        changePercent(posTestPercent, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
-        changePercent(posFTT, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
+            changePercent(posTestPercent, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
+            changePercent(posFTT, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
 
-        //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
-        serversTestPercent.setValue(serversPercentTotalTest);
-        serversFTT.setValue(serversPercentTotalTest);
+            //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
+            serversTestPercent.setValue(serversPercentTotalTest);
+            serversFTT.setDescription(df.format(messenger.getMainBuildController().getServersThrough())+"%");
 
-        changePercent(serversTestPercent, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
-        changePercent(serversFTT, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
+            changePercent(serversTestPercent, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
+            changePercent(serversFTT, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
 
-        //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
-        periphTestPercent.setValue(periphPercentTotalTest);
-        periphFTT.setValue(periphPercentTotalTest);
+            //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
+            periphTestPercent.setValue(periphPercentTotalTest);
+            periphFTT.setDescription(df.format(messenger.getMainBuildController().getPeriphThrough())+"%");
 
-        changePercent(periphTestPercent, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
-        changePercent(periphFTT, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
+            changePercent(periphTestPercent, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
+            changePercent(periphFTT, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
 
-        //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
-        opticTestPercent.setValue(opticPercentTotalTest);
-        opticFTT.setValue(opticPercentTotalTest);
+            //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
+            opticTestPercent.setValue(opticPercentTotalTest);
+            opticFTT.setDescription(df.format(messenger.getMainBuildController().getOpticThrough())+"%");
 
-        changePercent(opticTestPercent, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
-        changePercent(opticFTT, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
+            changePercent(opticTestPercent, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
+            changePercent(opticFTT, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
 
-        //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
-        retailTestPercent.setValue(retailPercentTotalTest);
-        retailFTT.setValue(retailPercentTotalTest);
+            //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
+            retailTestPercent.setValue(retailPercentTotalTest);
+            retailFTT.setDescription(df.format(messenger.getMainBuildController().getRetailThrough())+"%");
 
-        changePercent(retailTestPercent, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
-        changePercent(retailFTT, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
+            changePercent(retailTestPercent, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
+            changePercent(retailFTT, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
+        });
+    }
+    private void createActions()
+    {
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    NavigationController buildController = messenger.getNavigationController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.T && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initStyle(StageStyle.UNDECORATED);
+
+                    dialog.initOwner(messenger.getPrimaryStage());
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
+
+                    root.setController(timeLineController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 800, 600);
+
+                    timeLineController.setStage(dialog);
+
+                    dialog.setScene(buildScene);
+                    dialog.show();
+                }
+                if(event.getCode() == KeyCode.X && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    Timeline temp = timeLineController.getTimeline();
+
+                    if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
+                    {
+                        temp.stop();
+                    }
+                }
+            }
+        });
+        posTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                POSBuildController buildController = messenger.getPosBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+            }
+        });
+        retailTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RetailBuildController buildController = messenger.getRetailBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
+            }
+        });
+        serversTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                ServersBuildController buildController = messenger.getServersBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/serversBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
+            }
+        });
+        periphTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                PeriphBuildController buildController = messenger.getPeriphBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
+            }
+        });
+        opticTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                OpticBuildController buildController = messenger.getOpticBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/opticBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
+            }
+        });
+    }
+    private void tilesListeners(ArrayList<Tile> tileList)
+    {
+        Bounds allScreenBounds = computeAllScreenBounds();
+
+        for(int i =0;i<tileList.size();i++)
+        {
+            Tile temp = tileList.get(i);
+
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
+            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        temp.setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        temp.setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        temp.setCursor(Cursor.NONE);
+                        temp.setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Color.TRANSPARENT);
+                }
+            });
+            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                    temp.getScene().getWindow().setX(event.getScreenX() - x);
+                    temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
+                }
+            });
+        }
+    }
+    public void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        }
     }
 
     private void changePercent(Tile main, double current, double goal, double total)
@@ -1349,6 +1660,41 @@ public class MainTestController implements Initializable
 
     public void setPeriphPercentTotalTest(double periphPercentTotalTest) {
         this.periphPercentTotalTest = periphPercentTotalTest;
+    }
+    public void setOpticThrough(double opticThrough) {
+        this.opticThrough = opticThrough;
+    }
+
+    public double getPeriphThrough() {
+        return periphThrough;
+    }
+
+    public void setPeriphThrough(double periphThrough) {
+        this.periphThrough = periphThrough;
+    }
+
+    public double getServersThrough() {
+        return serversThrough;
+    }
+
+    public void setServersThrough(double serversThrough) {
+        this.serversThrough = serversThrough;
+    }
+
+    public double getRetailThrough() {
+        return retailThrough;
+    }
+
+    public void setRetailThrough(double retailThrough) {
+        this.retailThrough = retailThrough;
+    }
+
+    public double getPosThrough() {
+        return posThrough;
+    }
+
+    public void setPosThrough(double posThrough) {
+        this.posThrough = posThrough;
     }
 
 }

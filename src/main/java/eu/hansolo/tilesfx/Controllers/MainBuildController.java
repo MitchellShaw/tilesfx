@@ -4,6 +4,10 @@ import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
+import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,15 +15,24 @@ import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainBuildController implements Initializable
@@ -109,6 +122,12 @@ public class MainBuildController implements Initializable
     double serversPercentTotalBuild;
     double periphPercentTotalBuild;
 
+    double opticThrough;
+    double periphThrough;
+    double serversThrough;
+    double retailThrough;
+    double posThrough;
+
     BarChartItem p1x35Data;
     BarChartItem p1532Data;
     BarChartItem p1x30Data;
@@ -133,9 +152,18 @@ public class MainBuildController implements Initializable
 
     Messenger messenger;
 
+    DecimalFormat df = new DecimalFormat("#.0");
+
+    double x = 0;
+    double y = 0;
+
+    ArrayList<Tile> tiles;
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+
+        tiles = new ArrayList<>();
+
         //---------------------------------Creating the Bar Chart Items for Hosp----------------------------------------
         p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
         p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild, Tile.GREEN);
@@ -160,13 +188,15 @@ public class MainBuildController implements Initializable
         nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
         //---------------------------------Creating Tiles for Scene-----------------------------------------------------
 
+
+
         posBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("POS Build")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 470)
+                .prefSize(384, 540)
                 .barChartItems(p1x30Data, p1x35Data, p1532Data, t1000Data)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -187,17 +217,15 @@ public class MainBuildController implements Initializable
                 .value(posPercentTotalBuild)
                 .build();
 
-        posFTT = TileBuilder.create()
+        posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(posThrough)+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .subText(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
-                .value(posPercentTotalBuild)
                 .build();
 
         pane.add(posPercent,0,2,1,1);
@@ -231,17 +259,15 @@ public class MainBuildController implements Initializable
                 .value(retailPercentTotalBuild)
                 .build();
 
-        retailFTT = TileBuilder.create()
+        retailFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(retailTotalCurrentBuild) + "/" + Double.toString(retailTotalGoalBuild))
-                .subText(Double.toString(retailTotalCurrentBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(retailThrough)+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(retailPercentTotalBuild)
                 .build();
 
         pane.add(retailPercent,1,2,1,1);
@@ -276,18 +302,17 @@ public class MainBuildController implements Initializable
                 .value(serversPercentTotalBuild)
                 .build();
 
-        serversFTT = TileBuilder.create()
+        serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(serversThrough)+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .subText(Double.toString(serverCurrentBuild) + "/" + Double.toString(serverGoalTotalBuild))
-                .value(serversPercentTotalBuild)
                 .build();
+
 
         pane.add(serversPercent,2,2,1,1);
         pane.add(serversFTT,2,3,1,1);
@@ -321,17 +346,15 @@ public class MainBuildController implements Initializable
                 .value(periphPercentTotalBuild)
                 .build();
 
-        periphFTT = TileBuilder.create()
+        periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("FTT Rating")
-                .unit(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
-                .subText(Double.toString(periphCurrentTotalBuild) + "/" + Double.toString(periphGoalTotalBuild))
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(periphThrough)+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(periphPercentTotalBuild)
                 .build();
 
         pane.add(periphPercent,3,2,1,1);
@@ -367,104 +390,123 @@ public class MainBuildController implements Initializable
                 .value(opticPercentTotalBuild)
                 .build();
 
-        opticFTT = TileBuilder.create()
+        opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("Percentage to Goal")
-                .unit(Double.toString(opticCurrentTotalBuild) + "/" + Double.toString(opticGoalTotalBuild))
-                .subText(Double.toString(opticCurrentTotalBuild))
+                .subText("FTT Rating")
+                .titleAlignment(TextAlignment.CENTER)
+                .title("FTT")
+                .description(df.format(opticThrough)+"%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .value(opticPercentTotalBuild)
                 .build();
 
         pane.add(opticPercent,4,2,1,1);
         pane.add(opticFTT,4,3,1,1);
 
-        refresh();
         createActions();
+        tiles.add(posBuild);
+        tiles.add(serversBuild);
+        tiles.add(periphBuild);
+        tiles.add(opticBuild);
+        tiles.add(retailBuild);
+        tiles.add(posPercent);
+        tiles.add(serversPercent);
+        tiles.add(periphPercent);
+        tiles.add(opticPercent);
+        tiles.add(retailPercent);
+        tiles.add(posFTT);
+        tiles.add(serversFTT);
+        tiles.add(periphFTT);
+        tiles.add(opticFTT);
+        tiles.add(retailFTT);
+
+        tilesListeners(tiles);
+        refresh();
 
     }
 
-    public void refresh() {
-        p1x35Data.setValue(p1x35CurrentBuild);
-        p1x35Data.setMaxValue(p1x35GoalBuild);
-        p1532Data.setValue(p1532CurrentBuild);
-        p1532Data.setMaxValue(p1532GoalBuild);
+    public void refresh()
+    {
+        Platform.runLater( ()->
+        {
+            p1x35Data.setValue(p1x35CurrentBuild);
+            p1x35Data.setMaxValue(p1x35GoalBuild);
+            p1532Data.setValue(p1532CurrentBuild);
+            p1532Data.setMaxValue(p1532GoalBuild);
 
-        p1x30Data.setValue(p1x30CurrentBuild);
-        p1x30Data.setMaxValue(p1x30GoalBuild);
+            p1x30Data.setValue(p1x30CurrentBuild);
+            p1x30Data.setMaxValue(p1x30GoalBuild);
 
-        t1000Data.setValue(t1000sCurrentBuild);
-        t1000Data.setMaxValue(t1000sGoalBuild);
-        //---------------------------------Update the Server Units------------------------------------------
-        n3000Data.setValue(n3000CurrentBuild);
-        n3000Data.setMaxValue(n3000GoalBuild);
-        s500Data.setValue(s500CurrentBuild);
-        s500Data.setMaxValue(s500GoalBuild);
-        mediaPlayer.setValue(mediaPlayerCurrentBuild);
-        mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
+            t1000Data.setValue(t1000sCurrentBuild);
+            t1000Data.setMaxValue(t1000sGoalBuild);
+            //---------------------------------Update the Server Units------------------------------------------
+            n3000Data.setValue(n3000CurrentBuild);
+            n3000Data.setMaxValue(n3000GoalBuild);
+            s500Data.setValue(s500CurrentBuild);
+            s500Data.setMaxValue(s500GoalBuild);
+            mediaPlayer.setValue(mediaPlayerCurrentBuild);
+            mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
 
-        //---------------------------------Updating the Peripheral Units------------------------------------
-        kiwi4Data.setValue(kiwi4sCurrentBuild);
-        kiwi4Data.setMaxValue(kiwi4sGoalBuild);
-        kiwi25Data.setValue(kiwi2XsCurrentBuild);
-        kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
-        bumpBarData.setValue(bumpBarsCurrentBuild);
-        bumpBarData.setMaxValue(bumpBarsGoalBuild);
-        pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
-        pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
-        //---------------------------------Updating the Optic Units------------------------------------------
-        optic5Data.setValue(optic5sCurrentBuild);
-        optic5Data.setMaxValue(optic5sGoalBuild);
-        optic12Data.setValue(optic12sCurrentBuild);
-        optic12Data.setMaxValue(optic12sGoalBuild);
-        //---------------------------------Updating the Retail Units----------------------------------------
-        xr5Data.setValue(xr5CurrentBuild);
-        xr5Data.setMaxValue(xr5GoalBuild);
-        xr7Data.setValue(xr7CurrentBuild);
-        xr7Data.setMaxValue(xr7GoalBuild);
-        xr7PlusData.setValue(xr7PlusCurrentBuild);
-        xr7PlusData.setMaxValue(xr7PlusGoalBuild);
-        nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
-        nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
+            //---------------------------------Updating the Peripheral Units------------------------------------
+            kiwi4Data.setValue(kiwi4sCurrentBuild);
+            kiwi4Data.setMaxValue(kiwi4sGoalBuild);
+            kiwi25Data.setValue(kiwi2XsCurrentBuild);
+            kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
+            bumpBarData.setValue(bumpBarsCurrentBuild);
+            bumpBarData.setMaxValue(bumpBarsGoalBuild);
+            pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
+            pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
+            //---------------------------------Updating the Optic Units------------------------------------------
+            optic5Data.setValue(optic5sCurrentBuild);
+            optic5Data.setMaxValue(optic5sGoalBuild);
+            optic12Data.setValue(optic12sCurrentBuild);
+            optic12Data.setMaxValue(optic12sGoalBuild);
+            //---------------------------------Updating the Retail Units----------------------------------------
+            xr5Data.setValue(xr5CurrentBuild);
+            xr5Data.setMaxValue(xr5GoalBuild);
+            xr7Data.setValue(xr7CurrentBuild);
+            xr7Data.setMaxValue(xr7GoalBuild);
+            xr7PlusData.setValue(xr7PlusCurrentBuild);
+            xr7PlusData.setMaxValue(xr7PlusGoalBuild);
+            nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
+            nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
 
-        //---------------------------------Creating Color Changes for POS Dial------------------------------------------
-        posPercent.setValue(posPercentTotalBuild);
-        posFTT.setValue(posPercentTotalBuild);
+            //---------------------------------Creating Color Changes for POS Dial------------------------------------------
+            posPercent.setValue(posPercentTotalBuild);
+            posFTT.setDescription(df.format(posThrough) + "%");
 
-        changePercent(posPercent, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
-        changePercent(posFTT, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
+            changePercent(posPercent, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
+            changePercent(posFTT, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
 
-        //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
-        serversPercent.setValue(serversPercentTotalBuild);
-        serversFTT.setValue(serversPercentTotalBuild);
+            //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
+            serversPercent.setValue(serversPercentTotalBuild);
+            serversFTT.setDescription(df.format(serversThrough) + "%");
 
-        changePercent(serversPercent, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
-        changePercent(serversFTT, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
+            changePercent(serversPercent, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
+            changePercent(serversFTT, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
 
-        //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
-        periphPercent.setValue(periphPercentTotalBuild);
-        periphFTT.setValue(periphPercentTotalBuild);
+            //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
+            periphPercent.setValue(periphPercentTotalBuild);
+            periphFTT.setDescription(df.format(periphThrough) + "%");
 
-        changePercent(periphPercent,periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
-        changePercent(periphFTT,periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
+            changePercent(periphPercent, periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
+            changePercent(periphFTT, periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
 
-        //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
-        opticPercent.setValue(opticPercentTotalBuild);
-        opticFTT.setValue(opticPercentTotalBuild);
+            //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
+            opticPercent.setValue(opticPercentTotalBuild);
+            opticFTT.setDescription(df.format(opticThrough) + "%");
 
-        changePercent(opticPercent, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
-        changePercent(opticFTT, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
+            changePercent(opticPercent, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
+            changePercent(opticFTT, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
 
-        //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
-        retailPercent.setValue(retailPercentTotalBuild);
-        retailFTT.setValue(retailPercentTotalBuild);
+            //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
+            retailPercent.setValue(retailPercentTotalBuild);
+            retailFTT.setDescription(df.format(retailThrough) + "%");
 
-        changePercent(retailPercent, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
-        changePercent(retailFTT, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
+            changePercent(retailPercent, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
+            changePercent(retailFTT, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
+        });
     }
     private void changePercent(Tile main, double current, double goal, double total)
     {
@@ -506,6 +548,64 @@ public class MainBuildController implements Initializable
 
     private void createActions()
     {
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ESCAPE)
+                {
+                    NavigationController buildController = messenger.getNavigationController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.T && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initStyle(StageStyle.UNDECORATED);
+
+                    dialog.initOwner(messenger.getPrimaryStage());
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
+
+                    root.setController(timeLineController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 800, 600);
+
+                    timeLineController.setStage(dialog);
+
+                    dialog.setScene(buildScene);
+                    dialog.show();
+                }
+                if(event.getCode() == KeyCode.X && event.isControlDown())
+                {
+                    TimeLineController timeLineController = messenger.getTimeLineController();
+
+                    Timeline temp = timeLineController.getTimeline();
+
+                    if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
+                    {
+                        temp.stop();
+                    }
+                }
+            }
+        });
         posBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -527,29 +627,142 @@ public class MainBuildController implements Initializable
         retailBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                RetailBuildController buildController = messenger.getRetailBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
 
             }
         });
         serversBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                ServersBuildController buildController = messenger.getServersBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/serversBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
 
             }
         });
         periphBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                PeriphBuildController buildController = messenger.getPeriphBuildController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphBuildScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
 
             }
         });
         opticBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+            OpticBuildController buildController = messenger.getOpticBuildController();
+
+            FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/opticBuildScreen.fxml"));
+            root.setController(buildController);
+            GridPane buildPane = null;
+            try {
+                buildPane = root.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene buildScene = new Scene(buildPane, 1920, 1080);
+            Stage primaryStage = messenger.getPrimaryStage();
+            primaryStage.setScene(buildScene);
 
         }
     });
+    }
+    private void tilesListeners(ArrayList<Tile> tileList)
+    {
+        Bounds allScreenBounds = computeAllScreenBounds();
 
+        for(int i =0;i<tileList.size();i++)
+        {
+            Tile temp = tileList.get(i);
 
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
+            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        temp.setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        temp.setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        temp.setCursor(Cursor.NONE);
+                        temp.setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Color.TRANSPARENT);
+                }
+            });
+            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                    temp.getScene().getWindow().setX(event.getScreenX() - x);
+                    temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
+                }
+            });
+        }
     }
     public Messenger getMessenger() {
         return messenger;
@@ -1054,5 +1267,44 @@ public class MainBuildController implements Initializable
 
     public void setPeriphPercentTotalBuild(double periphPercentTotalBuild) {
         this.periphPercentTotalBuild = periphPercentTotalBuild;
+    }
+    public double getOpticThrough() {
+        return opticThrough;
+    }
+
+    public void setOpticThrough(double opticThrough) {
+        this.opticThrough = opticThrough;
+    }
+
+    public double getPeriphThrough() {
+        return periphThrough;
+    }
+
+    public void setPeriphThrough(double periphThrough) {
+        this.periphThrough = periphThrough;
+    }
+
+    public double getServersThrough() {
+        return serversThrough;
+    }
+
+    public void setServersThrough(double serversThrough) {
+        this.serversThrough = serversThrough;
+    }
+
+    public double getRetailThrough() {
+        return retailThrough;
+    }
+
+    public void setRetailThrough(double retailThrough) {
+        this.retailThrough = retailThrough;
+    }
+
+    public double getPosThrough() {
+        return posThrough;
+    }
+
+    public void setPosThrough(double posThrough) {
+        this.posThrough = posThrough;
     }
 }

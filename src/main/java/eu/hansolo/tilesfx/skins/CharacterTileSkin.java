@@ -52,7 +52,7 @@ public class CharacterTileSkin extends TileSkin {
         description.setWrapText(true);
         description.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
         description.setTextFill(tile.getTextColor());
-        description.setPrefSize(PREFERRED_WIDTH * 0.9, PREFERRED_HEIGHT * 0.795);
+        description.setPrefSize(PREFERRED_WIDTH * 0.5, PREFERRED_HEIGHT * 0.7 );
         Helper.enableNode(description, tile.isTextVisible());
 
         text = new Text(tile.getText());
@@ -81,7 +81,7 @@ public class CharacterTileSkin extends TileSkin {
 
     // ******************** Resizing ******************************************
     @Override protected void resizeDynamicText() {
-        double fontSize = size * 0.65;
+        double fontSize = size * 0.38;
         description.setFont(Fonts.latoLight(fontSize));
     }
     @Override protected void resizeStaticText() {
