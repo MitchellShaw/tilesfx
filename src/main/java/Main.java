@@ -91,10 +91,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         //---------------------------------Stage Handlers and Show------------------------------------------------------
 
-        FlowGridPane posGridPane = new FlowGridPane(4,5);
-        FlowGridPane retailGridPane = new FlowGridPane(4,5);
-        FlowGridPane serversGridPane = new FlowGridPane(4,5);
-        FlowGridPane periphGridPane = new FlowGridPane(4,5);
+        FlowGridPane posGridPane = new FlowGridPane(4, 5);
+        FlowGridPane retailGridPane = new FlowGridPane(4, 5);
+        FlowGridPane serversGridPane = new FlowGridPane(4, 5);
+        FlowGridPane periphGridPane = new FlowGridPane(4, 5);
 
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
         Tool dataBaseTool = new Tool();
@@ -134,8 +134,11 @@ public class Main extends Application {
         ServersBuildController serversBuildController = new ServersBuildController();
         PeriphBuildController periphBuildController = new PeriphBuildController();
         OpticBuildController opticBuildController = new OpticBuildController();
+        POSStageController posStageController = new POSStageController();
+        RetailStageController retailStageController = new RetailStageController();
+        PeriphStageController periphStageController = new PeriphStageController();
 
-        messenger = new Messenger(loadingController,navigationController,timeLineController, buildController,testController,stageController,posBuildController,retailBuildController,serversBuildController,periphBuildController,opticBuildController,primaryStage);
+        messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
 
         timeLineController.setMessenger(messenger);
         navigationController.setMessenger(messenger);
@@ -147,6 +150,9 @@ public class Main extends Application {
         serversBuildController.setMessenger(messenger);
         periphBuildController.setMessenger(messenger);
         opticBuildController.setMessenger(messenger);
+        posStageController.setMessenger(messenger);
+        retailStageController.setMessenger(messenger);
+        periphStageController.setMessenger(messenger);
 
         FXMLLoader root;
 
@@ -295,7 +301,7 @@ public class Main extends Application {
                         //---------------------------------Servers Stage-----------------------------------------------------------------------
                         serversStageMap = dataBaseTool.serversStageDataBase();
 
-                        serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
+                        //serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
 
 
                         stageController.setMediaPlayerCurrentStage(mapTool.getCurrentSingleValue("1656", serversStageMap));
@@ -315,7 +321,6 @@ public class Main extends Application {
                         System.out.println("\n***********Running Doc Block.***********\n");
                         mapList = dataBaseTool.documentReader();
                         stageMapList = dataBaseTool.stageDocumentReader();
-
 
 
                         buildController.setP1532GoalBuild(goalTool.getGoal(mapList.get(0), "7734"));
@@ -373,7 +378,7 @@ public class Main extends Application {
 
                         buildController.setRetailPercentTotalBuild(goalTool.getPercentTotal(buildController.getRetailTotalCurrentBuild(), buildController.getRetailTotalGoalBuild()));
                         testController.setRetailPercentTotalTest(goalTool.getPercentTotal(testController.getRetailTotalCurrentTest(), testController.getRetailTotalGoalBuild()));
-                        stageController.setRetailPercentTotalStage(goalTool.getPercentTotal(stageController.getRetailTotalCurrentStage(),stageController.getRetailTotalGoalStage()));
+                        stageController.setRetailPercentTotalStage(goalTool.getPercentTotal(stageController.getRetailTotalCurrentStage(), stageController.getRetailTotalGoalStage()));
 
                         //---------------------------------Servers Build--------------------------------------------------------
                         buildController.setMediaPlayerGoalBuild(goalTool.getGoal(mapList.get(1), "1656"));
@@ -398,7 +403,7 @@ public class Main extends Application {
                         stageController.setServerCurrentStage(stageController.getMediaPlayerCurrentStage() + stageController.getN3000CurrentStage() + stageController.getS500CurrentStage());
 
 
-                        buildController.setServersPercentTotalBuild(goalTool.getPercentTotal(buildController.getServerCurrentBuild(),buildController.getServerGoalTotalBuild()));
+                        buildController.setServersPercentTotalBuild(goalTool.getPercentTotal(buildController.getServerCurrentBuild(), buildController.getServerGoalTotalBuild()));
                         testController.setServersPercentTotalTest(goalTool.getPercentTotal(testController.getServerCurrentTest(), buildController.getServerGoalTotalBuild()));
                         stageController.setServersPercentTotalStage(goalTool.getPercentTotal(stageController.getServerCurrentStage(), stageController.getServerGoalTotalStage()));
 
@@ -424,7 +429,7 @@ public class Main extends Application {
                         testController.setPeriphCurrentTotalTest(testController.getKiwi4sCurrentTest() + testController.getKiwi2XsCurrentTest() + testController.getBumpBarsCurrentTest() + testController.getPantherEPC4sCurrentTest());
                         testController.setPeriphGoalTotalBuild(buildController.getPeriphGoalTotalBuild());
 
-                        stageController.setPeriphGoalTotalStage(stageController.getKiwi4sGoalStage() + stageController.getKiwi2XsGoalStage() +stageController.getBumpBarsGoalStage() + stageController.getPantherEPC4sGoalStage());
+                        stageController.setPeriphGoalTotalStage(stageController.getKiwi4sGoalStage() + stageController.getKiwi2XsGoalStage() + stageController.getBumpBarsGoalStage() + stageController.getPantherEPC4sGoalStage());
                         stageController.setPeriphCurrentTotalStage(stageController.getKiwi4sCurrentStage() + stageController.getKiwi2XsCurrentStage() + stageController.getBumpBarsCurrentStage() + stageController.getPantherEPC4sCurrentStage());
 
 
@@ -459,89 +464,24 @@ public class Main extends Application {
                         buildController.setRetailThrough(dataBaseTool.retailFTTDataBase());
                         buildController.setPosThrough(dataBaseTool.hospFTTDataBase());
 
-                        Platform.runLater(() ->buildController.refresh());
-                        Platform.runLater(() ->testController.refresh());
-                        Platform.runLater(() ->stageController.refresh());
+                        Platform.runLater(() -> buildController.refresh());
+                        Platform.runLater(() -> testController.refresh());
+                        Platform.runLater(() -> stageController.refresh());
 
 
-                        ArrayList<Tile> posTiles = new ArrayList<>();
-
-                        ArrayList<Tile> retailTiles = new ArrayList<>();
-
-                        ArrayList<Tile> serversTiles = new ArrayList<>();
-
-                        ArrayList<Tile> periphTiles = new ArrayList<>();
+                        posStageController.setUsers(getCharTiles(posUserStageMap));
+                        retailStageController.setUsers(getCharTiles(retailUserStageMap));
+                        periphStageController.setUsers(getCharTiles(periphUserStageMap));
 
 
-                        posTiles = getCharTiles(posUserStageMap,480,217);
-                        retailTiles = getCharTiles(retailUserStageMap,480,217);
-                        serversTiles = getCharTiles(serversUserStageMap,480,217);
-                        periphTiles = getCharTiles(periphUserStageMap,480,217);
-
-                        posTiles.sort(Comparator.comparing(Tile::getDescription));
-                        retailTiles.sort(Comparator.comparing(Tile::getDescription));
-                        serversTiles.sort(Comparator.comparing(Tile::getDescription));
-                        periphTiles.sort(Comparator.comparing(Tile::getDescription));
-
-                        Collections.reverse(posTiles);
-                        Collections.reverse(retailTiles);
-                        Collections.reverse(serversTiles);
-                        Collections.reverse(periphTiles);
-
-                        for(int i = posTiles.size(); i < 15;i++)
-                        {
-                            Tile tile = new Tile();
-                            tile.setVisible(false);
-                            posTiles.add(tile);
-                        }
-                        for(int i = retailTiles.size(); i < 15;i++)
-                        {
-                            Tile tile = new Tile();
-                            tile.setVisible(false);
-                            retailTiles.add(tile);
-                        }
-                        for(int i = serversTiles.size(); i < 15;i++)
-                        {
-                            Tile tile = new Tile();
-                            tile.setVisible(false);
-                            serversTiles.add(tile);
-                        }
-                        for(int i = periphTiles.size(); i < 15;i++)
-                        {
-                            Tile tile = new Tile();
-                            tile.setVisible(false);
-                            periphTiles.add(tile);
-                        }
-
-                        int retailSize = retailTiles.size();
-                        int serversSize = serversTiles.size();
-                        int periphSize = periphTiles.size();
-
-                        Platform.runLater(()->posGridPane.getChildren().clear());
-                        ArrayList<Tile> finalPosTiles = posTiles;
-                        Platform.runLater(()->posGridPane.getChildren().addAll(finalPosTiles));
-
-                        Platform.runLater(()->retailGridPane.getChildren().clear());
-                        ArrayList<Tile> finalRetailTiles = retailTiles;
-                        Platform.runLater(()->retailGridPane.getChildren().addAll(finalRetailTiles));
-
-                        Platform.runLater(()->serversGridPane.getChildren().clear());
-                        ArrayList<Tile> finalServersTiles = serversTiles;
-                        Platform.runLater(()->serversGridPane.getChildren().addAll(finalServersTiles));
-
-                        Platform.runLater(()->periphGridPane.getChildren().clear());
-                        ArrayList<Tile> finalPeriphTiles = periphTiles;
-                        Platform.runLater(()->periphGridPane.getChildren().addAll(finalPeriphTiles));
-
-                        int fuckchris = 0;
-
-                        if(primaryStage.getScene() == loadingScene)
-                        {
-                            System.out.println("HELP");
-                            Platform.runLater(()-> primaryStage.setScene(navigationScene));
+                        if (primaryStage.getScene() == loadingScene) {
+                            Platform.runLater(() -> primaryStage.setScene(navigationScene));
                             flag = false;
                         }
 
+                        System.out.println("Help");
+                        System.gc();
+                        System.out.println("GC Done");
 
                         return null;
                     }
@@ -549,633 +489,15 @@ public class Main extends Application {
             }
         };
 
-        //---------------------------------Creating Animations for Graphs-----------------------------------------------
-
-
         //--------------------------------Scheduled State Params--------------------------------------------------------
-        ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-        Bounds allScreenBounds = computeAllScreenBounds();
-
         buildVariables.setPeriod(Duration.seconds(10));
 
         buildVariables.setRestartOnFailure(true);
 
         buildVariables.start();
-
-        //---------------------------------General Tile Handlers--------------------------------------------------------
-//        ArrayList<Tile> tileList = new ArrayList<>();
-//
-//        tileList.add(pos);
-//        tileList.add(posPercent);
-//        tileList.add(retail);
-//        tileList.add(retailPercent);
-//        tileList.add(servers);
-//        tileList.add(serversPercent);
-//        tileList.add(peripherals);
-//        tileList.add(periphPercent);
-//        tileList.add(optic);
-//        tileList.add(opticPercent);
-//
-//        tileList.add(posBuildFocused);
-//        tileList.add(posPercentFocused);
-//        tileList.add(posTestFocused);
-//        tileList.add(posPercentTestFocused);
-//        tileList.add(retailBuildFocused);
-//        tileList.add(retailPercentFocused);
-//        tileList.add(serversBuildFocused);
-//        tileList.add(serversPercentFocused);
-//        tileList.add(periphBuildFocused);
-//        tileList.add(periphPercentFocused);
-//        tileList.add(opticBuildFocused);
-//        tileList.add(opticPercentFocused);
-//
-//
-//        tileList.add(posTest);
-//        tileList.add(posPercentTest);
-//        tileList.add(retailTest);
-//        tileList.add(retailPercentTest);
-//        tileList.add(serversTest);
-//        tileList.add(serversPercentTest);
-//        tileList.add(peripheralsTest);
-//        tileList.add(periphPercentTest);
-//        tileList.add(opticTest);
-//        tileList.add(opticPercentTest);
-//
-//        tileList.add(posTestFocused);
-//        tileList.add(posPercentTestFocused);
-//        tileList.add(retailTestFocused);
-//        tileList.add(retailPercentTestFocused);
-//        tileList.add(serversTestFocused);
-//        tileList.add(serversPercentTestFocused);
-//        tileList.add(periphTestFocused);
-//        tileList.add(periphPercentTestFocused);
-//        tileList.add(opticTestFocused);
-//        tileList.add(opticPercentTestFocused);
-//
-//
-//        tileList.add(posStage);
-//        tileList.add(posPercentStage);
-//        tileList.add(retailStage);
-//        tileList.add(retailPercentStage);
-//        tileList.add(serversStage);
-//        tileList.add(serversPercentStage);
-//        tileList.add(peripheralsStage);
-//        tileList.add(periphPercentStage);
-//
-//        tileList.add(posStageFocused);
-//        tileList.add(posPercentStageFocused);
-//        tileList.add(retailStageFocused);
-//        tileList.add(retailPercentStageFocused);
-//        tileList.add(serversStageFocused);
-//        tileList.add(serversPercentStageFocused);
-//        tileList.add(periphStageFocused);
-//        tileList.add(periphPercentStageFocused);
-//
-//
-//        for(int i =0;i<tileList.size();i++)
-//        {
-//            Tile temp = tileList.get(i);
-//
-//            temp.setAnimated(true);
-//            temp.setAnimationDuration(3000);
-//
-//            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    x = event.getSceneX();
-//                    y = event.getSceneY();
-//
-//                }
-//            });
-//            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    temp.setBorderColor(Tile.GRAY);
-//                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
-//                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-//                        temp.setCursor(Cursor.HAND);
-//                        idle.playFromStart();
-//                        temp.setBorderColor(Tile.GRAY);
-//                    });
-//                    idle.setOnFinished(e ->
-//                    {
-//                        temp.setCursor(Cursor.NONE);
-//                        temp.setBorderColor(Color.TRANSPARENT);
-//                    });
-//                }
-//            });
-//            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    temp.setBorderColor(Color.TRANSPARENT);
-//                }
-//            });
-//            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    temp.getScene().getWindow().setX(event.getScreenX() - x);
-//                    temp.getScene().getWindow().setY(event.getScreenY() - y);
-//                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
-//                    {
-//                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
-//
-//                    }
-//                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
-//                    {
-//                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
-//                    }
-//                }
-//            });
-//        }
-//
-//        //---------------------------------Unique Tile Handlers---------------------------------------------------------
-//
-//
-//        //---------------------------------Scene and Pane Creation------------------------------------------------------
-//        flowPane.getChildren().addAll(pos,retail, servers, peripherals, optic, posPercent, retailPercent,serversPercent, periphPercent,opticPercent);
-//        flowPaneTest.getChildren().addAll(posTest,retailTest, serversTest, peripheralsTest, opticTest, posPercentTest, retailPercentTest,serversPercentTest, periphPercentTest,opticPercentTest);
-//        flowPaneStage.getChildren().addAll(posStage,retailStage, serversStage, peripheralsStage, posPercentStage, retailPercentStage,serversPercentStage, periphPercentStage);
-//        flowPanePOSBuildOrTestFocus.getChildren().addAll(posBuildFocused,posTestFocused,posPercentFocused,posPercentTestFocused);
-//        flowPaneRetailBuildOrTestFocus.getChildren().addAll(retailBuildFocused,retailTestFocused,retailPercentFocused,retailPercentTestFocused);
-//        flowPaneServersBuildOrTestFocus.getChildren().addAll(serversBuildFocused,serversTestFocused,serversPercentFocused,serversPercentTestFocused);
-//        flowPanePeriphBuildOrTestFocus.getChildren().addAll(periphBuildFocused,periphTestFocused,periphPercentFocused,periphPercentTestFocused);
-//        flowPaneOpticBuildOrTestFocus.getChildren().addAll(opticBuildFocused,opticTestFocused,opticPercentFocused,opticPercentTestFocused);
-//        flowPanePOSStageFocus.getChildren().addAll(posStageFocused);
-//        flowPaneRetailStageFocus.getChildren().addAll(retailStageFocused);
-//        flowPaneServersStageFocus.getChildren().addAll(serversStageFocused);
-//        flowPanePeriphStageFocus.getChildren().addAll(periphStageFocused);
-//
-//
-//
-//        ArrayList<FlowPane> flowList = new ArrayList<>();
-//
-//        flowList.add(flowPane);
-//        flowList.add(flowPaneTest);
-//        flowList.add(flowPaneStage);
-//        flowList.add(flowPanePOSBuildOrTestFocus);
-//        flowList.add(flowPaneRetailBuildOrTestFocus);
-//        flowList.add(flowPaneServersBuildOrTestFocus);
-//        flowList.add(flowPanePeriphBuildOrTestFocus);
-//        flowList.add(flowPaneOpticBuildOrTestFocus);
-//        flowList.add(flowPanePOSStageFocus);
-//        flowList.add(flowPaneRetailStageFocus);
-//        flowList.add(flowPaneServersStageFocus);
-//        flowList.add(flowPanePeriphStageFocus);
-//
-//        for(int i = 0; i < flowList.size();i++)
-//        {
-//            flowList.get(i).setStyle("-fx-background-color: rgb(42, 42, 42)");
-//            flowList.get(i).setPrefSize(1920, 1080);
-//        }
-//
-//        Scene buildScene = new Scene(flowPane);
-//        Scene testScene = new Scene (flowPaneTest);
-//        Scene stageScene = new Scene (flowPaneStage);
-//        Scene posBuildOrTestScene = new Scene(flowPanePOSBuildOrTestFocus);
-//        Scene retailBuildOrTestScene = new Scene(flowPaneRetailBuildOrTestFocus);
-//        Scene serversBuildOrTestScene = new Scene(flowPaneServersBuildOrTestFocus);
-//        Scene periphBuildOrTestScene = new Scene(flowPanePeriphBuildOrTestFocus);
-//        Scene opticBuildOrTestScene = new Scene(flowPaneOpticBuildOrTestFocus);
-//        Scene posStageScene = new Scene(flowPanePOSStageFocus);
-//        Scene retailStageScene = new Scene(flowPaneRetailStageFocus);
-//        Scene serversStageScene = new Scene(flowPaneServersStageFocus);
-//        Scene periphStageScene = new Scene(flowPanePeriphStageFocus);
-//        Scene posUserScene = new Scene(posGridPane);
-//        Scene retailUserScene = new Scene(retailGridPane);
-//        Scene serversUserScene = new Scene(serversGridPane);
-//        Scene periphUserScene = new Scene(periphGridPane);
-//
-//        final Scene[] previousScene = new Scene[1];
-//
-//        ArrayList<Scene> sceneList = new ArrayList<>();
-//        sceneList.add(buildScene);
-//        sceneList.add(testScene);
-//        sceneList.add(stageScene);
-//        //sceneList.add(clockOrQualityScene);
-//
-//        //---------------------------------General Scene Handlers-------------------------------------------------------
-//        int previous = 0;
-//        int next = 0;
-//        for(int i = 0; i<sceneList.size();i++)
-//        {
-//            if(i != 0 && (i+1) < sceneList.size())
-//            {
-//                previous = i-1;
-//                next = i + 1;
-//            }
-//            if(i == 0 && (i+1) <sceneList.size())
-//            {
-//                next = i + 1;
-//            }
-//            if(i == sceneList.size()-1)
-//            {
-//                previous = i-1;
-//            }
-//            int finalPrevious = previous;
-//            int finalNext = next;
-//            sceneList.get(i).setOnKeyPressed(new EventHandler<KeyEvent>() {
-//                @Override
-//                public void handle(KeyEvent event) {
-//                    if(event.getCode() == KeyCode.LEFT)
-//                    {
-//                        primaryStage.setScene(sceneList.get(finalPrevious));
-//                    }
-//                    if(event.getCode() == KeyCode.RIGHT)
-//                    {
-//                        primaryStage.setScene(sceneList.get(finalNext));
-//                    }
-//                    if (event.getCode() == KeyCode.F4) {
-//                        primaryStage.setIconified(true);
-//                    }
-//                    if (event.getCode() == KeyCode.F5) {
-//                        screenMove(primaryStage,allScreenBounds,screens);
-//                    }
-//                }
-//            });
-//        }
-//
-//        //---------------------------------Unique Scene Handlers--------------------------------------------------------
-//        pos.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = buildScene;
-//                primaryStage.setScene(posBuildOrTestScene);
-//            }
-//        });
-//        posTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = testScene;
-//                primaryStage.setScene(posBuildOrTestScene);
-//            }
-//        });
-//        posStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = stageScene;
-//                primaryStage.setScene(posUserScene);
-//                posUserScene.setCursor(Cursor.NONE);
-//            }
-//        });
-//        posBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//            }
-//        });
-//        posStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        posUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//
-//        retail.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = buildScene;
-//                primaryStage.setScene(retailBuildOrTestScene);
-//            }
-//        });
-//        retailTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = testScene;
-//                primaryStage.setScene(retailBuildOrTestScene);
-//            }
-//        });
-//        retailStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = stageScene;
-//                primaryStage.setScene(retailUserScene);
-//                retailUserScene.setCursor(Cursor.NONE);
-//            }
-//        });
-//        retailBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        retailStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        retailUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//
-//        servers.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = buildScene;
-//                primaryStage.setScene(serversBuildOrTestScene);
-//            }
-//        });
-//        serversTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = testScene;
-//                primaryStage.setScene(serversBuildOrTestScene);
-//            }
-//        });
-//        serversStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = stageScene;
-//                primaryStage.setScene(serversUserScene);
-//                serversUserScene.setCursor(Cursor.NONE);
-//            }
-//        });
-//        serversBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        serversStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        serversUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//
-//        peripherals.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = buildScene;
-//                primaryStage.setScene(periphBuildOrTestScene);
-//            }
-//        });
-//        peripheralsTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = testScene;
-//                primaryStage.setScene(periphBuildOrTestScene);
-//            }
-//        });
-//        peripheralsStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = stageScene;
-//                primaryStage.setScene(periphUserScene);
-//                periphUserScene.setCursor(Cursor.NONE);
-//            }
-//        });
-//        periphBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        periphStageScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//        periphUserScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
-//
-//        optic.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = buildScene;
-//                primaryStage.setScene(opticBuildOrTestScene);
-//            }
-//        });
-//        opticTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event)
-//            {
-//                previousScene[0] = testScene;
-//                primaryStage.setScene(opticBuildOrTestScene);
-//            }
-//        });
-//        opticBuildOrTestScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event)
-//            {
-//                if (event.getCode() == KeyCode.F5) {
-//                    screenMove(primaryStage,allScreenBounds,screens);
-//                }
-//                if(event.getCode() == KeyCode.ESCAPE)
-//                {
-//                    primaryStage.setScene(previousScene[0]);
-//                }
-//                if(event.getCode() == KeyCode.F4)
-//                {
-//                    primaryStage.setIconified(true);
-//                }
-//
-//            }
-//        });
     }
 
-    public static void main(String[] args) { launch(args); }
-
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY ;
-        double minY = Double.POSITIVE_INFINITY ;
-        double maxX = Double.NEGATIVE_INFINITY ;
-        double maxY = Double.NEGATIVE_INFINITY ;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY() ;
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY() ;
-            }
-        }
-        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
-    }
-
-    private ArrayList<Tile> getCharTiles (HashMap<String,Integer> userMap, double width, double height)
+    private ArrayList<Tile> getCharTiles (HashMap<String,Integer> userMap)
     {
         ArrayList<Tile> tiles = new ArrayList<>();
 
@@ -1191,50 +513,19 @@ public class Main extends Application {
 
             Tile characterTile = TileBuilder.create()
                     .skinType(Tile.SkinType.CHARACTER)
-                    .prefSize(width, height)
+                    .prefSize(384,216)
                     .title(user)
+                    .roundedCorners(false)
                     .titleAlignment(TextAlignment.CENTER)
                     .description(formatted)
                     .build();
 
             tiles.add(characterTile);
         }
+        tiles.sort(Comparator.comparing(Tile::getDescription));
+        Collections.reverse(tiles);
+
 
         return tiles;
-    }
-
-
-
-
-
-    public void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
     }
 }

@@ -8,18 +8,26 @@ import java.util.ArrayList;
 public class Messenger {
     LoadingController loadingController;
     NavigationController navigationController;
+    TimeLineController timeLineController;
     MainBuildController mainBuildController;
     MainTestController mainTestController;
     MainStageController mainStageController;
+
     POSBuildController posBuildController;
     RetailBuildController retailBuildController;
     ServersBuildController serversBuildController;
     PeriphBuildController periphBuildController;
     OpticBuildController opticBuildController;
-    TimeLineController timeLineController;
+
+    POSStageController posStageController;
+    RetailStageController retailStageController;
+
+    PeriphStageController periphStageController;
+
+
     Stage primaryStage;
 
-    public Messenger(LoadingController loadingController, NavigationController navigationController,TimeLineController timeLineController, MainBuildController mainBuildController, MainTestController mainTestController,  MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController, Stage primaryStage) {
+    public Messenger(LoadingController loadingController, NavigationController navigationController,TimeLineController timeLineController, MainBuildController mainBuildController, MainTestController mainTestController,  MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController,POSStageController posStageController, RetailStageController retailStageController, PeriphStageController periphStageController, Stage primaryStage) {
         this.loadingController = loadingController;
         this.navigationController = navigationController;
         this.timeLineController = timeLineController;
@@ -31,6 +39,9 @@ public class Messenger {
         this.serversBuildController = serversBuildController;
         this.periphBuildController = periphBuildController;
         this.opticBuildController = opticBuildController;
+        this.posStageController = posStageController;
+        this.retailStageController = retailStageController;
+        this.periphStageController = periphStageController;
         this.primaryStage = primaryStage;
     }
 
@@ -120,6 +131,29 @@ public class Messenger {
 
     public void setOpticBuildController(OpticBuildController opticBuildController) {
         this.opticBuildController = opticBuildController;
+    }
+
+    public POSStageController getPosStageController() {
+        return posStageController;
+    }
+
+    public void setPosStageController(POSStageController posStageController) {
+        this.posStageController = posStageController;
+    }
+    public RetailStageController getRetailStageController() {
+        return retailStageController;
+    }
+
+    public void setRetailStageController(RetailStageController retailStageController) {
+        this.retailStageController = retailStageController;
+    }
+
+    public PeriphStageController getPeriphStageController() {
+        return periphStageController;
+    }
+
+    public void setPeriphStageController(PeriphStageController periphStageController) {
+        this.periphStageController = periphStageController;
     }
 
     public Stage getPrimaryStage() {

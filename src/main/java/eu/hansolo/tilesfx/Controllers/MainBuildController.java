@@ -158,6 +158,10 @@ public class MainBuildController implements Initializable
     double y = 0;
 
     ArrayList<Tile> tiles;
+
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -506,6 +510,7 @@ public class MainBuildController implements Initializable
 
             changePercent(retailPercent, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
             changePercent(retailFTT, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
+
         });
     }
     private void changePercent(Tile main, double current, double goal, double total)
@@ -548,7 +553,8 @@ public class MainBuildController implements Initializable
 
     private void createActions()
     {
-        pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        pane.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ESCAPE)
@@ -603,6 +609,9 @@ public class MainBuildController implements Initializable
                     {
                         temp.stop();
                     }
+                }
+                if (event.getCode() == KeyCode.F5) {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
                 }
             }
         });
@@ -762,6 +771,37 @@ public class MainBuildController implements Initializable
                     }
                 }
             });
+        }
+    }
+
+    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
         }
     }
     public Messenger getMessenger() {

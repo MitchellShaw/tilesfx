@@ -6,7 +6,9 @@ import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.GoalTool;
 import eu.hansolo.tilesfx.tools.Messenger;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,19 +16,23 @@ import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainStageController implements Initializable
@@ -137,11 +143,18 @@ public class MainStageController implements Initializable
     BarChartItem xr7PlusDataStage;
     BarChartItem nextGenDisplaysStage;
 
+    double x = 0;
+    double y = 0;
+
+    ArrayList<Tile> tiles;
+
     Messenger messenger;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        tiles = new ArrayList<>();
+
         p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
         p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage, Tile.GREEN);
         p1x30DataStage = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
@@ -167,14 +180,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(480, 640)
+                .prefSize(480, 540)
                 .barChartItems(p1x30DataStage, p1x35DataStage, p1532DataStage, t1000DataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         posStagePercent = TileBuilder.create()
-                .prefSize(480, 440)
+                .prefSize(480, 270)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -186,10 +199,10 @@ public class MainStageController implements Initializable
                 .value(posPercentTotalStage)
                 .build();
         posTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
-                .title("Total Built")
+                .prefSize(480, 270)
+                .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
-                .description("")
+                .description(Double.toString(posTotalCurrentStage))
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
@@ -197,6 +210,7 @@ public class MainStageController implements Initializable
 
         pane.add(posStage,0,0,1,2);
         pane.add(posStagePercent,0,2,1,1);
+        pane.add(posTotal,0,3,1,1);
 
         //---------------------------------Creating the Tiles for Retail------------------------------------------------
         retailStage = TileBuilder.create()
@@ -205,14 +219,14 @@ public class MainStageController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .title("Retail Stage")
-                .prefSize(480, 640)
+                .prefSize(480, 540)
                 .barChartItems(xr5DataStage, xr7DataStage, xr7PlusDataStage, nextGenDisplaysStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailStagePercent= TileBuilder.create()
-                .prefSize(480, 440)
+                .prefSize(480, 270)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -224,8 +238,8 @@ public class MainStageController implements Initializable
                 .value(retailPercentTotalStage)
                 .build();
         retailTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
-                .subText("Total Staged")
+                .prefSize(480, 270)
+                .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(retailTotalCurrentStage))
                 .animated(true)
@@ -235,6 +249,7 @@ public class MainStageController implements Initializable
 
         pane.add(retailStage,1,0,1,2);
         pane.add(retailStagePercent,1,2,1,1);
+        pane.add(retailTotal,1,3,1,1);
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
         serversStage = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -242,14 +257,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(480, 200)
+                .prefSize(480, 540)
                 .barChartItems(s500DataStage, n3000Stage, mediaPlayerStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         serversStagePercent = TileBuilder.create()
-                .prefSize(480, 440)
+                .prefSize(480, 270)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -261,8 +276,8 @@ public class MainStageController implements Initializable
                 .value(serversPercentTotalStage)
                 .build();
         serversTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
-                .subText("Total Staged")
+                .prefSize(480, 270)
+                .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(serverCurrentStage))
                 .animated(true)
@@ -272,6 +287,7 @@ public class MainStageController implements Initializable
 
         pane.add(serversStage,2,0,1,2);
         pane.add(serversStagePercent,2,2,1,1);
+        pane.add(serversTotal,2,3,1,1);
         //---------------------------------Creating the Tiles for Peripherals-------------------------------------------
         periphStage = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -279,14 +295,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(480, 640)
+                .prefSize(480, 540)
                 .barChartItems(kiwi4DataStage, kiwi25DataStage, bumpBarDataStage, pantherEPC4Stage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         periphStagePercent = TileBuilder.create()
-                .prefSize(480, 440)
+                .prefSize(480, 270)
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -298,8 +314,8 @@ public class MainStageController implements Initializable
                 .value(periphPercentTotalStage)
                 .build();
         periphTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
-                .subText("Total Staged")
+                .prefSize(480, 270)
+                .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(periphCurrentTotalStage))
                 .animated(true)
@@ -309,67 +325,82 @@ public class MainStageController implements Initializable
 
        pane.add(periphStage,3,0,1,2);
        pane.add(periphStagePercent,3,2,1,1);
+       pane.add(periphTotal,3,3,1,1);
+
+       tiles.add(posStage);
+       tiles.add(serversStage);
+       tiles.add(retailStage);
+       tiles.add(periphStage);
 
        refresh();
        createActions();
+       tilesListeners(tiles);
     }
 
     public void refresh()
     {
+        Platform.runLater(() ->
+        {
 
-        p1x35DataStage.setValue(p1x35CurrentStage);
-        p1x35DataStage.setMaxValue(p1x35GoalStage);
-        p1532DataStage.setValue(p1532CurrentStage);
-        p1532DataStage.setMaxValue(p1532GoalStage);
-        p1x30DataStage.setValue(p1x30CurrentStage);
-        p1x30DataStage.setMaxValue(p1x30GoalStage);
-        t1000DataStage.setValue(t1000sCurrentStage);
-        t1000DataStage.setMaxValue(t1000sGoalStage);
-        //---------------------------------Update the Server Units------------------------------------------
-        n3000Stage.setValue(n3000CurrentStage);
-        n3000Stage.setMaxValue(n3000GoalStage);
-        s500DataStage.setValue(s500CurrentStage);
-        s500DataStage.setMaxValue(s500GoalStage);
-        mediaPlayerStage.setValue(mediaPlayerCurrentStage);
-        mediaPlayerStage.setMaxValue(mediaPlayerGoalStage);
-        //---------------------------------Updating the Peripheral Units------------------------------------
-        kiwi4DataStage.setValue(kiwi4sCurrentStage);
-        kiwi4DataStage.setMaxValue(kiwi4sGoalStage);
-        kiwi25DataStage.setValue(kiwi2XsCurrentStage);
-        kiwi25DataStage.setMaxValue(kiwi2XsGoalStage);
-        bumpBarDataStage.setValue(bumpBarsCurrentStage);
-        bumpBarDataStage.setMaxValue(bumpBarsGoalStage);
-        pantherEPC4Stage.setValue(pantherEPC4sCurrentStage);
-        pantherEPC4Stage.setMaxValue(pantherEPC4sGoalStage);
-        //---------------------------------Updating the Retail Units----------------------------------------
-        xr5DataStage.setValue(xr5CurrentStage);
-        xr5DataStage.setMaxValue(xr5GoalStage);
-        xr7DataStage.setValue(xr7CurrentStage);
-        xr7DataStage.setMaxValue(xr7GoalStage);
-        xr7PlusDataStage.setValue(xr7PlusCurrentStage);
-        xr7PlusDataStage.setMaxValue(xr7PlusGoalStage);
-        nextGenDisplaysStage.setValue(nextGenDisplayCurrentStage);
-        nextGenDisplaysStage.setMaxValue(nextGenDisplayGoalsStage);
-        //---------------------------------Creating Color Changes for POS Dial------------------------------------------
-        posStagePercent.setValue(posPercentTotalStage);
+            p1x35DataStage.setValue(p1x35CurrentStage);
+            p1x35DataStage.setMaxValue(p1x35GoalStage);
+            p1532DataStage.setValue(p1532CurrentStage);
+            p1532DataStage.setMaxValue(p1532GoalStage);
+            p1x30DataStage.setValue(p1x30CurrentStage);
+            p1x30DataStage.setMaxValue(p1x30GoalStage);
+            t1000DataStage.setValue(t1000sCurrentStage);
+            t1000DataStage.setMaxValue(t1000sGoalStage);
+            //---------------------------------Update the Server Units------------------------------------------
+            n3000Stage.setValue(n3000CurrentStage);
+            n3000Stage.setMaxValue(n3000GoalStage);
+            s500DataStage.setValue(s500CurrentStage);
+            s500DataStage.setMaxValue(s500GoalStage);
+            mediaPlayerStage.setValue(mediaPlayerCurrentStage);
+            mediaPlayerStage.setMaxValue(mediaPlayerGoalStage);
+            //---------------------------------Updating the Peripheral Units------------------------------------
+            kiwi4DataStage.setValue(kiwi4sCurrentStage);
+            kiwi4DataStage.setMaxValue(kiwi4sGoalStage);
+            kiwi25DataStage.setValue(kiwi2XsCurrentStage);
+            kiwi25DataStage.setMaxValue(kiwi2XsGoalStage);
+            bumpBarDataStage.setValue(bumpBarsCurrentStage);
+            bumpBarDataStage.setMaxValue(bumpBarsGoalStage);
+            pantherEPC4Stage.setValue(pantherEPC4sCurrentStage);
+            pantherEPC4Stage.setMaxValue(pantherEPC4sGoalStage);
+            //---------------------------------Updating the Retail Units----------------------------------------
+            xr5DataStage.setValue(xr5CurrentStage);
+            xr5DataStage.setMaxValue(xr5GoalStage);
+            xr7DataStage.setValue(xr7CurrentStage);
+            xr7DataStage.setMaxValue(xr7GoalStage);
+            xr7PlusDataStage.setValue(xr7PlusCurrentStage);
+            xr7PlusDataStage.setMaxValue(xr7PlusGoalStage);
+            nextGenDisplaysStage.setValue(nextGenDisplayCurrentStage);
+            nextGenDisplaysStage.setMaxValue(nextGenDisplayGoalsStage);
+            //---------------------------------Creating Color Changes for POS Dial------------------------------------------
+            posStagePercent.setValue(posPercentTotalStage);
+            posTotal.setDescription(Double.toString(posTotalCurrentStage));
 
-        changePercent(posStagePercent,posTotalCurrentStage, posTotalGoalStage, posPercentTotalStage);
+            changePercent(posStagePercent, posTotalCurrentStage, posTotalGoalStage, posPercentTotalStage);
 
-        //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
-        serversStagePercent.setValue(serversPercentTotalStage);
+            //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
+            serversStagePercent.setValue(serversPercentTotalStage);
+            serversTotal.setDescription(Double.toString(serverCurrentStage));
 
-        changePercent(serversStagePercent, serverCurrentStage, serverGoalTotalStage, serversPercentTotalStage);
-
-
-        periphStagePercent.setValue(periphPercentTotalStage);
+            changePercent(serversStagePercent, serverCurrentStage, serverGoalTotalStage, serversPercentTotalStage);
 
 
-        changePercent(periphStagePercent, periphCurrentTotalStage, periphGoalTotalStage, periphPercentTotalStage);
+            periphStagePercent.setValue(periphPercentTotalStage);
+            periphTotal.setDescription(Double.toString(periphCurrentTotalStage));
 
-        //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
-        retailStagePercent.setValue(retailPercentTotalStage);
 
-        changePercent(retailStagePercent, retailTotalCurrentStage, retailTotalGoalStage, retailPercentTotalStage);
+            changePercent(periphStagePercent, periphCurrentTotalStage, periphGoalTotalStage, periphPercentTotalStage);
+
+            //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
+            retailStagePercent.setValue(retailPercentTotalStage);
+            retailTotal.setDescription(Double.toString(retailTotalCurrentStage));
+
+            changePercent(retailStagePercent, retailTotalCurrentStage, retailTotalGoalStage, retailPercentTotalStage);
+
+        });
     }
 
     private void changePercent(Tile main, double current, double goal, double total)
@@ -473,27 +504,146 @@ public class MainStageController implements Initializable
        posStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
            @Override
            public void handle(MouseEvent event) {
+               POSStageController buildController = messenger.getPosStageController();
+
+               FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posStageScreen.fxml"));
+               root.setController(buildController);
+               GridPane buildPane = null;
+               try {
+                   buildPane = root.load();
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+               Scene buildScene = new Scene(buildPane, 1920, 1080);
+               Stage primaryStage = messenger.getPrimaryStage();
+               primaryStage.setScene(buildScene);
 
            }
        });
         retailStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                RetailStageController buildController = messenger.getRetailStageController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailStageScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
 
             }
         });
         serversStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                POSStageController buildController = messenger.getPosStageController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posStageScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
 
             }
         });
         periphStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                PeriphStageController buildController = messenger.getPeriphStageController();
+
+                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphStageScreen.fxml"));
+                root.setController(buildController);
+                GridPane buildPane = null;
+                try {
+                    buildPane = root.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene buildScene = new Scene(buildPane, 1920, 1080);
+                Stage primaryStage = messenger.getPrimaryStage();
+                primaryStage.setScene(buildScene);
+
 
             }
         });
+    }
+
+    private void tilesListeners(ArrayList<Tile> tileList)
+    {
+        Bounds allScreenBounds = computeAllScreenBounds();
+
+        for(int i =0;i<tileList.size();i++)
+        {
+            Tile temp = tileList.get(i);
+
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
+            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        temp.setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        temp.setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        temp.setCursor(Cursor.NONE);
+                        temp.setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    temp.setBorderColor(Color.TRANSPARENT);
+                }
+            });
+            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                    temp.getScene().getWindow().setX(event.getScreenX() - x);
+                    temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
+                }
+            });
+        }
     }
     public Messenger getMessenger() {
         return messenger;

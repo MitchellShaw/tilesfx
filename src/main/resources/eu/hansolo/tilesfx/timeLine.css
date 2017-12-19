@@ -3,6 +3,9 @@
 .pane-grid{
     -fx-background-color: #54B948;
 }
+.pane-grid-background{
+    -fx-background-color: rgb(42, 42, 42);
+}
 .label{
     -fx-font-size: 68px;
     -fx-text-fill: WHITE;
