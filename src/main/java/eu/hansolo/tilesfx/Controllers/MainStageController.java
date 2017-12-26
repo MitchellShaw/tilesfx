@@ -146,6 +146,9 @@ public class MainStageController implements Initializable
     double x = 0;
     double y = 0;
 
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
+
     ArrayList<Tile> tiles;
 
     Messenger messenger;
@@ -441,6 +444,37 @@ public class MainStageController implements Initializable
         return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
     }
 
+    public void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        }
+    }
+
     private void createActions()
     {
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -461,6 +495,31 @@ public class MainStageController implements Initializable
                     Scene buildScene = new Scene(buildPane, 1920, 1080);
                     Stage primaryStage = messenger.getPrimaryStage();
                     primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.LEFT)
+                {
+                    MainTestController buildController = messenger.getMainTestController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {

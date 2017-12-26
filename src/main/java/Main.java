@@ -35,8 +35,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.*;
@@ -272,7 +275,6 @@ public class Main extends Application {
                         opticTestMap = dataBaseTool.opticTestDataBase();
 
 
-                        testController.setOptic5sCurrentTest(mapTool.getCurrentSingleValue("6001", opticTestMap));
                         testController.setOptic12sCurrentTest(mapTool.getCurrentSingleValue("6002", opticTestMap));
                         testController.setKitsCurrentTest(mapTool.getCurrentSingleValue("6003", opticTestMap));
 
@@ -449,7 +451,7 @@ public class Main extends Application {
                         buildController.setOpticGoalTotalBuild(buildController.getOptic5sGoalBuild() + buildController.getOptic12sGoalBuild() + buildController.getKitsGoalBuild());
                         buildController.setOpticCurrentTotalBuild(buildController.getOptic5sCurrentBuild() + buildController.getOptic12sCurrentBuild() + buildController.getKitsCurrentBuild());
 
-                        testController.setOpticCurrentTotalTest(testController.getOptic5sCurrentTest() + testController.getOptic12sCurrentTest());
+                        testController.setOpticCurrentTotalTest(testController.getOptic12sCurrentTest());
                         testController.setOpticGoalTotalBuild(buildController.getOpticGoalTotalBuild());
 
                         buildController.setOpticPercentTotalBuild(goalTool.getPercentTotal(buildController.getOpticCurrentTotalBuild(), buildController.getOpticGoalTotalBuild()));
@@ -464,14 +466,51 @@ public class Main extends Application {
                         buildController.setRetailThrough(dataBaseTool.retailFTTDataBase());
                         buildController.setPosThrough(dataBaseTool.hospFTTDataBase());
 
-                        Platform.runLater(() -> buildController.refresh());
-                        Platform.runLater(() -> testController.refresh());
-                        Platform.runLater(() -> stageController.refresh());
-
 
                         posStageController.setUsers(getCharTiles(posUserStageMap));
                         retailStageController.setUsers(getCharTiles(retailUserStageMap));
                         periphStageController.setUsers(getCharTiles(periphUserStageMap));
+
+                        String date = null;
+                        try {
+                            date = dataBaseTool.incidentReader();
+                        } catch (IOException | ParserConfigurationException | SAXException e) {
+                            e.printStackTrace();
+                        }
+
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate incidentDate = LocalDate.parse(date);
+
+                        long daysBetween = DAYS.between(incidentDate, currentDate);
+
+                        int counter = Math.toIntExact(daysBetween);
+
+                        String useDate = Integer.toString(counter);
+
+                        opticBuildController.setUseDate(useDate);
+                        retailBuildController.setUseDate(useDate);
+                        serversBuildController.setUseDate(useDate);
+                        periphBuildController.setUseDate(useDate);
+                        posBuildController.setUseDate(useDate);
+
+                        posStageController.setUseDate(useDate);
+                        periphStageController.setUseDate(useDate);
+                        retailStageController.setUseDate(useDate);
+
+
+                        Platform.runLater(() -> buildController.refresh());
+                        Platform.runLater(() -> testController.refresh());
+                        Platform.runLater(() -> stageController.refresh());
+
+                        Platform.runLater( ()->opticBuildController.refresh());
+                        Platform.runLater( ()->retailBuildController.refresh());
+                        Platform.runLater( ()->serversBuildController.refresh());
+                        Platform.runLater( ()->periphBuildController.refresh());
+                        Platform.runLater( ()->posBuildController.refresh());
+
+                        Platform.runLater( ()->periphStageController.refresh());
+                        Platform.runLater( ()->posStageController.refresh());
+                        Platform.runLater( ()->retailStageController.refresh());
 
 
                         if (primaryStage.getScene() == loadingScene) {

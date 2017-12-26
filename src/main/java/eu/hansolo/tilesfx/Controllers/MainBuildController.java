@@ -573,6 +573,31 @@ public class MainBuildController implements Initializable
                     Stage primaryStage = messenger.getPrimaryStage();
                     primaryStage.setScene(buildScene);
                 }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.RIGHT)
+                {
+                    MainTestController buildController = messenger.getMainTestController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
                     TimeLineController timeLineController = messenger.getTimeLineController();

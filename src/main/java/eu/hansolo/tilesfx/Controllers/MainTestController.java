@@ -233,7 +233,6 @@ public class MainTestController implements Initializable
         pantherEPC4Test = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
-        optic5DataTest = new BarChartItem("Optic 5", optic5sCurrentTest, optic5sGoalBuild, Tile.BLUE);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         xr5DataTest = new BarChartItem("7701", xr5CurrentTest, xr5GoalBuild, Tile.BLUE);
         xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild, Tile.RED);
@@ -415,7 +414,7 @@ public class MainTestController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 640)
-                .barChartItems(optic5DataTest, optic12DataTest)
+                .barChartItems(optic12DataTest)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -501,8 +500,6 @@ public class MainTestController implements Initializable
             bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
             pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
             pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
-            optic5DataTest.setValue(optic5sCurrentTest);
-            optic5DataTest.setMaxValue(optic5sGoalBuild);
             optic12DataTest.setValue(optic12sCurrentTest);
             optic12DataTest.setMaxValue(optic12sGoalBuild);
             xr5DataTest.setValue(xr5CurrentTest);
@@ -579,6 +576,38 @@ public class MainTestController implements Initializable
                 if(event.getCode() == KeyCode.F5)
                 {
                     screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
+                if(event.getCode() == KeyCode.LEFT)
+                {
+                    MainBuildController buildController = messenger.getMainBuildController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
+                }
+                if(event.getCode() == KeyCode.RIGHT)
+                {
+                    MainStageController buildController = messenger.getMainStageController();
+
+                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
+                    root.setController(buildController);
+                    GridPane buildPane = null;
+                    try {
+                        buildPane = root.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Scene buildScene = new Scene(buildPane, 1920, 1080);
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setScene(buildScene);
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
@@ -1524,14 +1553,6 @@ public class MainTestController implements Initializable
 
     public void setPrinterGoalBuild(double printerGoalBuild) {
         this.printerGoalBuild = printerGoalBuild;
-    }
-
-    public double getOptic5sCurrentTest() {
-        return optic5sCurrentTest;
-    }
-
-    public void setOptic5sCurrentTest(double optic5sCurrentTest) {
-        this.optic5sCurrentTest = optic5sCurrentTest;
     }
 
     public double getOptic12sCurrentTest() {

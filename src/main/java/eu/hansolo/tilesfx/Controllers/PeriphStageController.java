@@ -53,6 +53,14 @@ public class PeriphStageController implements Initializable {
 
     ArrayList<Tile> tiles;
 
+    String useDate;
+
+    ImageView stopView = new ImageView();
+
+    final Image redImage = new Image("/Red Light.PNG");
+    final Image yellowImage = new Image("/Yellow Light.PNG");
+    final Image greenImage = new Image("/Green Light.PNG");
+
     @FXML
     private GridPane pane;
 
@@ -63,13 +71,13 @@ public class PeriphStageController implements Initializable {
         final ImageView logoView = new ImageView();
         final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
         logoView.setImage(logoImage);
-        logoView.setFitHeight(270);
+        logoView.setFitHeight(216);
         logoView.setFitWidth(384);
         logoView.setPreserveRatio(true);
 
         HBox hbox = new HBox(logoView);
         hbox.setPrefWidth(384);
-        hbox.setPrefHeight(270);
+        hbox.setPrefHeight(216);
         hbox.setAlignment(Pos.CENTER);
         hbox.setStyle("-fx-background-color:#54B948");
 
@@ -89,12 +97,7 @@ public class PeriphStageController implements Initializable {
 
         int counter = Math.toIntExact(daysBetween);
 
-        String useDate = Integer.toString(counter);
-
-        ImageView stopView = new ImageView();
-        final Image redImage = new Image("/Red Light.PNG");
-        final Image yellowImage = new Image("/Yellow Light.PNG");
-        final Image greenImage = new Image("/Green Light.PNG");
+        useDate = Integer.toString(counter);
 
         if (counter < 30) {
             stopView.setImage(redImage);
@@ -105,13 +108,13 @@ public class PeriphStageController implements Initializable {
         if (counter >= 60) {
             stopView.setImage(greenImage);
         }
-        stopView.setFitHeight(270);
+        stopView.setFitHeight(216);
         stopView.setFitWidth(384);
         stopView.setPreserveRatio(true);
 
         HBox myBox = new HBox(stopView);
         myBox.setPrefWidth(384);
-        myBox.setPrefHeight(270);
+        myBox.setPrefHeight(216);
         myBox.setAlignment(Pos.CENTER);
         myBox.setStyle("-fx-background-color:#54B948");
 
@@ -160,7 +163,7 @@ public class PeriphStageController implements Initializable {
                 .backgroundColor(Color.valueOf("#54B948"))
                 .titleAlignment(TextAlignment.CENTER)
                 .roundedCorners(false)
-                .description("Periph")
+                .description("Retail")
                 .build();
 
         pane.add(logo, 0, 0, 1, 1);
@@ -176,7 +179,6 @@ public class PeriphStageController implements Initializable {
         tiles.add(daySince);
 
         createActions();
-        Platform.runLater(()->refresh());
 
     }
 
@@ -238,54 +240,80 @@ public class PeriphStageController implements Initializable {
             }
         });
     }
-    private void refresh()
+    public void refresh()
     {
-        ArrayList<Tile> temp = getUsers();
-
-        for(int i = 0; i<temp.size();i++)
+        Platform.runLater ( () ->
         {
-            int column = 0;
-            int row = 0;
+            ArrayList<Tile> temp = getUsers();
 
-            if(i == 0 || i == 4 || i == 8 || i == 12 || i == 16)
-            {
-               column = 1;
-            }
-            if(i == 1 || i == 5 || i == 9 || i == 13 || i == 17)
-            {
-                column = 2;
-            }
-            if(i == 2 || i == 6 || i == 10 || i == 14|| i == 18)
-            {
-                column = 3;
-            }
-            if(i == 3 || i == 7 || i == 11 || i == 15 || i == 19)
-            {
-                column = 4;
-            }
-            if(i >= 0 && i<4)
-            {
-                row = 0;
-            }
-            if(i>=4 && i <8)
-            {
-                row = 1;
-            }
-            if(i>=8 && i <12)
-            {
-                row = 2;
-            }
-            if(i>=12 && i <16)
-            {
-                row = 3;
-            }
-            if(i > 16)
-            {
-                row = 4;
-            }
-            pane.add(temp.get(i),column,row);
+            for (int i = 0; i < temp.size(); i++) {
+                int column = 0;
+                int row = 0;
 
-        }
+                if (i == 0 || i == 4 || i == 8 || i == 12 || i == 16) {
+                    column = 1;
+                }
+                if (i == 1 || i == 5 || i == 9 || i == 13 || i == 17) {
+                    column = 2;
+                }
+                if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18) {
+                    column = 3;
+                }
+                if (i == 3 || i == 7 || i == 11 || i == 15 || i == 19) {
+                    column = 4;
+                }
+                if (i >= 0 && i < 4) {
+                    row = 0;
+                }
+                if (i >= 4 && i < 8) {
+                    row = 1;
+                }
+                if (i >= 8 && i < 12) {
+                    row = 2;
+                }
+                if (i >= 12 && i < 16) {
+                    row = 3;
+                }
+                if (i > 16) {
+                    row = 4;
+                }
+                System.out.println("This is I:" + i);
+                System.out.println(temp.get(i).getDescription());
+                pane.add(temp.get(i), column, row);
+            }
+
+            if(daySince != null)
+            {
+                daySince.setDescription(useDate);
+            }
+
+            if (Integer.parseInt(useDate) < 30) {
+                stopView.setImage(redImage);
+            }
+            if (Integer.parseInt(useDate) > 30 && Integer.parseInt(useDate) < 60) {
+                stopView.setImage(yellowImage);
+            }
+            if (Integer.parseInt(useDate) >= 60) {
+                stopView.setImage(greenImage);
+            }
+            stopView.setFitHeight(216);
+            stopView.setFitWidth(384);
+            stopView.setPreserveRatio(true);
+
+            HBox myBox = new HBox(stopView);
+            myBox.setPrefWidth(384);
+            myBox.setPrefHeight(216);
+            myBox.setAlignment(Pos.CENTER);
+            myBox.setStyle("-fx-background-color:#54B948");
+
+            if(stopLight != null)
+            {
+                stopLight.setGraphic(myBox);
+            }
+
+
+
+        });
     }
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY;
@@ -344,6 +372,14 @@ public class PeriphStageController implements Initializable {
 
     public void setUsers(ArrayList<Tile> users) {
         this.users = users;
+    }
+
+    public String getUseDate() {
+        return useDate;
+    }
+
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 
 }

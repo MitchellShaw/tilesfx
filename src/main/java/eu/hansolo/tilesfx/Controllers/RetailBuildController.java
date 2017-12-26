@@ -6,6 +6,7 @@ import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +66,13 @@ public class RetailBuildController implements Initializable
 
     ArrayList<Tile> tiles;
 
+    String useDate;
+
+    ImageView stopView = new ImageView();
+    final Image redImage = new Image("/Red Light.PNG");
+    final Image yellowImage = new Image("/Yellow Light.PNG");
+    final Image greenImage = new Image("/Green Light.PNG");
+
     @FXML
     private GridPane pane;
 
@@ -105,37 +113,14 @@ public class RetailBuildController implements Initializable
 
         Tool dataBaseTool = new Tool();
 
-        String date = null;
-        try {
-            date = dataBaseTool.incidentReader();
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        }
 
-        LocalDate currentDate = LocalDate.now();
-        LocalDate incidentDate = LocalDate.parse(date);
-
-        long daysBetween = DAYS.between(incidentDate, currentDate);
-
-        int counter = Math.toIntExact(daysBetween);
-
-        String useDate = Integer.toString(counter);
-
-        ImageView stopView = new ImageView();
-        final Image redImage = new Image("/Red Light.PNG");
-        final Image yellowImage = new Image("/Yellow Light.PNG");
-        final Image greenImage = new Image("/Green Light.PNG");
-
-        if(counter <30)
-        {
+        if (Integer.parseInt(useDate) < 30) {
             stopView.setImage(redImage);
         }
-        if(counter > 30 && counter <60)
-        {
+        if (Integer.parseInt(useDate) > 30 && Integer.parseInt(useDate) < 60) {
             stopView.setImage(yellowImage);
         }
-        if(counter >= 60)
-        {
+        if (Integer.parseInt(useDate) >= 60) {
             stopView.setImage(greenImage);
         }
         stopView.setFitHeight(270);
@@ -161,10 +146,10 @@ public class RetailBuildController implements Initializable
                 .textAlignment(TextAlignment.CENTER)
                 .build();
 
-        logo  = TileBuilder.create()
+        logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384,270)
+                .prefSize(384, 270)
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -172,7 +157,7 @@ public class RetailBuildController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384,270)
+                .prefSize(384, 270)
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
@@ -244,6 +229,41 @@ public class RetailBuildController implements Initializable
 
         createActions();
 
+    }
+    public void refresh()
+    {
+        Platform.runLater( () ->
+        {
+            if(daySince != null)
+            {
+                daySince.setDescription(useDate);
+            }
+
+            if (Integer.parseInt(useDate) < 30) {
+                stopView.setImage(redImage);
+            }
+            if (Integer.parseInt(useDate) > 30 && Integer.parseInt(useDate) < 60) {
+                stopView.setImage(yellowImage);
+            }
+            if (Integer.parseInt(useDate) >= 60) {
+                stopView.setImage(greenImage);
+            }
+            stopView.setFitHeight(270);
+            stopView.setFitWidth(384);
+            stopView.setPreserveRatio(true);
+
+            HBox myBox = new HBox(stopView);
+            myBox.setPrefWidth(384);
+            myBox.setPrefHeight(270);
+            myBox.setAlignment(Pos.CENTER);
+            myBox.setStyle("-fx-background-color:#54B948");
+
+            if(stopLight != null)
+            {
+                stopLight.setGraphic(myBox);
+            }
+
+        });
     }
     private void createActions()
     {
@@ -445,5 +465,13 @@ public class RetailBuildController implements Initializable
 
     public void setMessage(Tile message) {
         this.message = message;
+    }
+
+    public String getUseDate() {
+        return useDate;
+    }
+
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 }

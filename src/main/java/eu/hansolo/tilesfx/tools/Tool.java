@@ -39,7 +39,8 @@ public class Tool {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         //\\\\SUSMID8000\D\Metrics Dashboard\info.xml
-        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        //Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        Document document = db.parse(new File("C:\\Users\\ms185594\\Documents\\tilesfx\\tilesfx\\src\\main\\resources\\info2.xml"));
         NodeList nodeList = document.getElementsByTagName("safety");
 
         String product = nodeList.item(0).getAttributes().getNamedItem("incident").getNodeValue();
@@ -63,7 +64,8 @@ public class Tool {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
-        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        //Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        Document document = db.parse(new File("C:\\Users\\ms185594\\Documents\\tilesfx\\tilesfx\\src\\main\\resources\\info2.xml"));
 
 
         //---------------------------------Hosp Reader----------------------------------------------------
@@ -146,7 +148,8 @@ public class Tool {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
-        Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+       // Document document = db.parse(new File("\\\\SUSMID8000\\\\D\\\\Metrics Dashboard\\\\info2.xml"));
+        Document document = db.parse(new File("C:\\Users\\ms185594\\Documents\\tilesfx\\tilesfx\\src\\main\\resources\\info2.xml"));
 
 
         //---------------------------------Hosp Reader----------------------------------------------------
@@ -2282,9 +2285,8 @@ public class Tool {
                 "                 \n" +
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  AND (ut.[Assembly] LIKE '6001MC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '6002MC[0-9]%' \n" +
+                "\t\t\t\t  AND (ut.[Assembly] LIKE '6002MC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '6003MC[0-9]%') \n" +
                 "                 \n" +
