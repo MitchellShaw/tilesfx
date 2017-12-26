@@ -163,7 +163,7 @@ public class PeriphStageController implements Initializable {
                 .backgroundColor(Color.valueOf("#54B948"))
                 .titleAlignment(TextAlignment.CENTER)
                 .roundedCorners(false)
-                .description("Retail")
+                .description("Periph")
                 .build();
 
         pane.add(logo, 0, 0, 1, 1);
@@ -179,6 +179,7 @@ public class PeriphStageController implements Initializable {
         tiles.add(daySince);
 
         createActions();
+        refresh();
 
     }
 
@@ -244,42 +245,43 @@ public class PeriphStageController implements Initializable {
     {
         Platform.runLater ( () ->
         {
-            ArrayList<Tile> temp = getUsers();
+            if(pane != null)
+            {
+                ArrayList<Tile> temp = getUsers();
 
-            for (int i = 0; i < temp.size(); i++) {
-                int column = 0;
-                int row = 0;
+                for (int i = 0; i < temp.size(); i++) {
+                    int column = 0;
+                    int row = 0;
 
-                if (i == 0 || i == 4 || i == 8 || i == 12 || i == 16) {
-                    column = 1;
+                    if (i == 0 || i == 4 || i == 8 || i == 12 || i == 16) {
+                        column = 1;
+                    }
+                    if (i == 1 || i == 5 || i == 9 || i == 13 || i == 17) {
+                        column = 2;
+                    }
+                    if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18) {
+                        column = 3;
+                    }
+                    if (i == 3 || i == 7 || i == 11 || i == 15 || i == 19) {
+                        column = 4;
+                    }
+                    if (i >= 0 && i < 4) {
+                        row = 0;
+                    }
+                    if (i >= 4 && i < 8) {
+                        row = 1;
+                    }
+                    if (i >= 8 && i < 12) {
+                        row = 2;
+                    }
+                    if (i >= 12 && i < 16) {
+                        row = 3;
+                    }
+                    if (i > 16) {
+                        row = 4;
+                    }
+                    pane.add(temp.get(i), column, row);
                 }
-                if (i == 1 || i == 5 || i == 9 || i == 13 || i == 17) {
-                    column = 2;
-                }
-                if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18) {
-                    column = 3;
-                }
-                if (i == 3 || i == 7 || i == 11 || i == 15 || i == 19) {
-                    column = 4;
-                }
-                if (i >= 0 && i < 4) {
-                    row = 0;
-                }
-                if (i >= 4 && i < 8) {
-                    row = 1;
-                }
-                if (i >= 8 && i < 12) {
-                    row = 2;
-                }
-                if (i >= 12 && i < 16) {
-                    row = 3;
-                }
-                if (i > 16) {
-                    row = 4;
-                }
-                System.out.println("This is I:" + i);
-                System.out.println(temp.get(i).getDescription());
-                pane.add(temp.get(i), column, row);
             }
 
             if(daySince != null)

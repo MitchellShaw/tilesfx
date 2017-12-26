@@ -540,8 +540,6 @@ public class Main extends Application {
     {
         ArrayList<Tile> tiles = new ArrayList<>();
 
-        ArrayList<ChartData> chartItems = new ArrayList<>();
-
         int i = 1;
         for(Map.Entry<String,Integer> entry : userMap.entrySet())
         {
