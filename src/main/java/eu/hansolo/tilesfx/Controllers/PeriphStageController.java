@@ -7,6 +7,7 @@ import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -248,6 +250,8 @@ public class PeriphStageController implements Initializable {
             if(pane != null)
             {
                 ArrayList<Tile> temp = getUsers();
+                ObservableList<Node> children = pane.getChildren();
+                ArrayList<Node> deletion = new ArrayList<>();
 
                 for (int i = 0; i < temp.size(); i++) {
                     int column = 0;
@@ -280,8 +284,17 @@ public class PeriphStageController implements Initializable {
                     if (i > 16) {
                         row = 4;
                     }
+                    for(Node node : children)
+                    {
+                        if (pane.getRowIndex(node) == row && pane.getColumnIndex(node) == column)
+                        {
+                            System.out.println("Deleting old periph data.");
+                            deletion.add(node);
+                        }
+                    }
                     pane.add(temp.get(i), column, row);
                 }
+                children.removeAll(deletion);
             }
 
             if(daySince != null)
