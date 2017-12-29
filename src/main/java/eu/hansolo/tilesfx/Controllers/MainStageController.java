@@ -77,6 +77,9 @@ public class MainStageController implements Initializable
     double questsCurrentStage;
     double questsGoalStage;
 
+    double posBar1Total;
+    double posBar1Goal;
+
     double posTotalGoalStage;
     double posTotalCurrentStage;
 
@@ -124,24 +127,30 @@ public class MainStageController implements Initializable
     double serversPercentTotalStage;
     double periphPercentTotalStage;
 
-    BarChartItem p1x35DataStage;
-    BarChartItem p1532DataStage;
+    BarChartItem posBar1DataStage;
     BarChartItem p1x30DataStage;
     BarChartItem t1000DataStage;
+    BarChartItem questDataStage;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem n3000Stage;
-    BarChartItem s500DataStage;
-    BarChartItem mediaPlayerStage;
+    BarChartItem serverBar1DataStage;
+    BarChartItem serverBar2DataStage;
     //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
     BarChartItem kiwi4DataStage;
     BarChartItem kiwi25DataStage;
     BarChartItem bumpBarDataStage;
     BarChartItem pantherEPC4Stage;
     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-    BarChartItem xr5DataStage;
-    BarChartItem xr7DataStage;
-    BarChartItem xr7PlusDataStage;
     BarChartItem nextGenDisplaysStage;
+    BarChartItem retailBar1Stage;
+
+    double retailBar1Total;
+    double retailBar1Goal;
+
+    double serverBar1Total;
+    double serverBar1Goal;
+
+    double serverBar2Total;
+    double serverBar2Goal;
 
     double x = 0;
     double y = 0;
@@ -158,24 +167,21 @@ public class MainStageController implements Initializable
     {
         tiles = new ArrayList<>();
 
-        p1x35DataStage = new BarChartItem("P1X35", p1x35CurrentStage, p1x35GoalStage, Tile.RED);
-        p1532DataStage = new BarChartItem("P1532", p1532CurrentStage, p1532GoalStage, Tile.GREEN);
-        p1x30DataStage = new BarChartItem("P1X30", p1x30CurrentStage, p1x30GoalStage, Tile.BLUE);
-        t1000DataStage = new BarChartItem("T1000", t1000sCurrentStage, t1000sGoalStage, Tile.YELLOW);
+        posBar1DataStage = new BarChartItem("7734/7745/7761", posBar1Total, posBar1Goal, Tile.BLUE);
+        p1x30DataStage = new BarChartItem("7743", p1x30CurrentStage, p1x30GoalStage, Tile.RED);
+        t1000DataStage = new BarChartItem("7744", t1000sCurrentStage, t1000sGoalStage, Tile.GREEN);
+        questDataStage = new BarChartItem("7791/7792", questsCurrentStage,questsGoalStage, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        n3000Stage = new BarChartItem("N3000", n3000CurrentStage, n3000GoalStage, Tile.RED);
-        s500DataStage = new BarChartItem("S500", s500CurrentStage, s500GoalStage, Tile.BLUE);
-        mediaPlayerStage = new BarChartItem("Media Player", mediaPlayerCurrentStage, mediaPlayerGoalStage, Tile.GREEN);
+        serverBar1DataStage = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
+        serverBar2DataStage = new BarChartItem("1656/1657", serverBar2Total,serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
         kiwi4DataStage = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
         kiwi25DataStage = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
         bumpBarDataStage = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalStage, Tile.GREEN);
         pantherEPC4Stage = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        xr5DataStage = new BarChartItem("7701", xr5CurrentStage, xr5GoalStage, Tile.BLUE);
-        xr7DataStage = new BarChartItem("7702", xr7CurrentStage, xr7GoalStage, Tile.RED);
-        xr7PlusDataStage = new BarChartItem("7703", xr7PlusCurrentStage, xr7PlusGoalStage, Tile.GREEN);
-        nextGenDisplaysStage = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.YELLOW);
+        retailBar1Stage = new BarChartItem("770X",retailBar1Total, retailBar1Goal, Tile.BLUE);
+        nextGenDisplaysStage = new BarChartItem("5968/5985", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.RED);
         //---------------------------------Creating the Tiles-----------------------------------------------------------
         posStage = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -184,7 +190,7 @@ public class MainStageController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(480, 540)
-                .barChartItems(p1x30DataStage, p1x35DataStage, p1532DataStage, t1000DataStage)
+                .barChartItems(posBar1DataStage, p1x30DataStage, t1000DataStage, questDataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -223,7 +229,7 @@ public class MainStageController implements Initializable
                 .roundedCorners(false)
                 .title("Retail Stage")
                 .prefSize(480, 540)
-                .barChartItems(xr5DataStage, xr7DataStage, xr7PlusDataStage, nextGenDisplaysStage)
+                .barChartItems(retailBar1Stage, nextGenDisplaysStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -261,7 +267,7 @@ public class MainStageController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(480, 540)
-                .barChartItems(s500DataStage, n3000Stage, mediaPlayerStage)
+                .barChartItems(serverBar1DataStage,serverBar2DataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -345,21 +351,21 @@ public class MainStageController implements Initializable
         Platform.runLater(() ->
         {
 
-            p1x35DataStage.setValue(p1x35CurrentStage);
-            p1x35DataStage.setMaxValue(p1x35GoalStage);
-            p1532DataStage.setValue(p1532CurrentStage);
-            p1532DataStage.setMaxValue(p1532GoalStage);
+            posBar1DataStage.setValue(posBar1Total);
+            posBar1DataStage.setMaxValue(posBar1Goal);
             p1x30DataStage.setValue(p1x30CurrentStage);
             p1x30DataStage.setMaxValue(p1x30GoalStage);
             t1000DataStage.setValue(t1000sCurrentStage);
             t1000DataStage.setMaxValue(t1000sGoalStage);
+            questDataStage.setValue(questsCurrentStage);
+            questDataStage.setMaxValue(questsGoalStage);
+
             //---------------------------------Update the Server Units------------------------------------------
-            n3000Stage.setValue(n3000CurrentStage);
-            n3000Stage.setMaxValue(n3000GoalStage);
-            s500DataStage.setValue(s500CurrentStage);
-            s500DataStage.setMaxValue(s500GoalStage);
-            mediaPlayerStage.setValue(mediaPlayerCurrentStage);
-            mediaPlayerStage.setMaxValue(mediaPlayerGoalStage);
+            serverBar1DataStage.setValue(serverBar1Total);
+            serverBar1DataStage.setMaxValue(serverBar1Goal);
+            serverBar2DataStage.setValue(serverBar2Total);
+            serverBar2DataStage.setMaxValue(serverBar2Goal);
+
             //---------------------------------Updating the Peripheral Units------------------------------------
             kiwi4DataStage.setValue(kiwi4sCurrentStage);
             kiwi4DataStage.setMaxValue(kiwi4sGoalStage);
@@ -370,12 +376,8 @@ public class MainStageController implements Initializable
             pantherEPC4Stage.setValue(pantherEPC4sCurrentStage);
             pantherEPC4Stage.setMaxValue(pantherEPC4sGoalStage);
             //---------------------------------Updating the Retail Units----------------------------------------
-            xr5DataStage.setValue(xr5CurrentStage);
-            xr5DataStage.setMaxValue(xr5GoalStage);
-            xr7DataStage.setValue(xr7CurrentStage);
-            xr7DataStage.setMaxValue(xr7GoalStage);
-            xr7PlusDataStage.setValue(xr7PlusCurrentStage);
-            xr7PlusDataStage.setMaxValue(xr7PlusGoalStage);
+            retailBar1Stage.setValue(retailBar1Total);
+            retailBar1Stage.setMaxValue(retailBar1Goal);
             nextGenDisplaysStage.setValue(nextGenDisplayCurrentStage);
             nextGenDisplaysStage.setMaxValue(nextGenDisplayGoalsStage);
             //---------------------------------Creating Color Changes for POS Dial------------------------------------------
@@ -1061,5 +1063,66 @@ public class MainStageController implements Initializable
 
     public void setPeriphPercentTotalStage(double periphPercentTotalStage) {
         this.periphPercentTotalStage = periphPercentTotalStage;
+    }
+    public double getPosBar1Total() {
+        return posBar1Total;
+    }
+
+    public void setPosBar1Total(double posBar1Total) {
+        this.posBar1Total = posBar1Total;
+    }
+
+    public double getPosBar1Goal() {
+        return posBar1Goal;
+    }
+
+    public void setPosBar1Goal(double posBar1Goal) {
+        this.posBar1Goal = posBar1Goal;
+    }
+    public double getRetailBar1Total() {
+        return retailBar1Total;
+    }
+
+    public void setRetailBar1Total(double retailBar1Total) {
+        this.retailBar1Total = retailBar1Total;
+    }
+
+    public double getRetailBar1Goal() {
+        return retailBar1Goal;
+    }
+
+    public void setRetailBar1Goal(double retailBar1Goal) {
+        this.retailBar1Goal = retailBar1Goal;
+    }
+    public double getServerBar1Total() {
+        return serverBar1Total;
+    }
+
+    public void setServerBar1Total(double serverBar1Total) {
+        this.serverBar1Total = serverBar1Total;
+    }
+
+    public double getServerBar1Goal() {
+        return serverBar1Goal;
+    }
+
+    public void setServerBar1Goal(double serverBar1Goal) {
+        this.serverBar1Goal = serverBar1Goal;
+    }
+
+    public double getServerBar2Total() {
+        return serverBar2Total;
+    }
+
+    public void setServerBar2Total(double serverBar2Total) {
+        this.serverBar2Total = serverBar2Total;
+    }
+
+    public double getServerBar2Goal() {
+        return serverBar2Goal;
+    }
+
+    public void setServerBar2Goal(double serverBar2Goal) {
+        this.serverBar2Goal = serverBar2Goal;
     }
 }

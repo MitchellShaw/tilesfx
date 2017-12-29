@@ -64,6 +64,8 @@ public class MainBuildController implements Initializable
     double p1532GoalBuild;
     double t1000sCurrentBuild;
     double t1000sGoalBuild;
+    double questGoalBuild;
+    double questCurrentBuild;
 
     double posTotalGoalBuild;
     double posTotalCurrentBuild;
@@ -128,14 +130,37 @@ public class MainBuildController implements Initializable
     double retailThrough;
     double posThrough;
 
-    BarChartItem p1x35Data;
-    BarChartItem p1532Data;
+    double posBar1Total;
+    double posBar1Goal;
+
+    double retailBar1Total;
+    double retailBar1Goal;
+
+    double serverBar1Total;
+    double serverBar1Goal;
+
+    double serverBar2Total;
+    double serverBar2Goal;
+
+    double periphBar1Total;
+    double periphBar1Goal;
+
+    double periphBar2Total;
+    double periphBar2Goal;
+
+    double periphBar2Total;
+    double periphBar2Goal;
+
+    //---------------------------------Creating the Bar Chart Items for Hosp-----------------------------------------
+    BarChartItem posBar1Data;
     BarChartItem p1x30Data;
     BarChartItem t1000Data;
+    BarChartItem questData;
+
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem n3000Data;
-    BarChartItem s500Data;
-    BarChartItem mediaPlayer;
+    BarChartItem serverBar1;
+    BarChartItem serverBar2;
+
     //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
     BarChartItem kiwi4Data;
     BarChartItem kiwi25Data;
@@ -145,9 +170,7 @@ public class MainBuildController implements Initializable
     BarChartItem optic12Data;
     BarChartItem optic5Data;
     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-    BarChartItem xr5Data;
-    BarChartItem xr7Data;
-    BarChartItem xr7PlusData;
+    BarChartItem retailBar1Data;
     BarChartItem nextGenDisplays;
 
     Messenger messenger;
@@ -169,27 +192,24 @@ public class MainBuildController implements Initializable
         tiles = new ArrayList<>();
 
         //---------------------------------Creating the Bar Chart Items for Hosp----------------------------------------
-        p1x35Data = new BarChartItem("P1X35", p1x35CurrentBuild, p1x35GoalBuild, Tile.RED);
-        p1532Data = new BarChartItem("P1532", p1532CurrentBuild, p1532GoalBuild, Tile.GREEN);
-        p1x30Data = new BarChartItem("P1X30", p1x30CurrentBuild, p1x30GoalBuild, Tile.BLUE);
-        t1000Data = new BarChartItem("T1000", t1000sCurrentBuild, t1000sGoalBuild, Tile.YELLOW);
+        posBar1Data = new BarChartItem("7734/7745/7761", posBar1Total, posBar1Goal, Tile.BLUE);
+        p1x30Data = new BarChartItem("7743", p1x30CurrentBuild, p1x30GoalBuild, Tile.RED);
+        t1000Data = new BarChartItem("7744", t1000sCurrentBuild, t1000sGoalBuild, Tile.GREEN);
+        questData = new BarChartItem("7791/7792", questCurrentBuild, questGoalBuild, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        n3000Data = new BarChartItem("N3000", n3000CurrentBuild, n3000GoalBuild, Tile.RED);
-        s500Data = new BarChartItem("S500", s500CurrentBuild, s500GoalBuild, Tile.BLUE);
-        mediaPlayer = new BarChartItem("Media Player", mediaPlayerCurrentBuild, mediaPlayerGoalBuild, Tile.GREEN);
+        serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
+        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
         kiwi25Data = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
+        kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
         bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
         pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
         optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
         optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        xr5Data = new BarChartItem("7701", xr5CurrentBuild, xr5GoalBuild, Tile.BLUE);
-        xr7Data = new BarChartItem("7702", xr7CurrentBuild, xr7GoalBuild, Tile.RED);
-        xr7PlusData = new BarChartItem("7703", xr7PlusCurrentBuild, xr7PlusGoalBuild, Tile.GREEN);
-        nextGenDisplays = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        retailBar1Data = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
+        nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.RED);
         //---------------------------------Creating Tiles for Scene-----------------------------------------------------
 
 
@@ -201,7 +221,7 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 540)
-                .barChartItems(p1x30Data, p1x35Data, p1532Data, t1000Data)
+                .barChartItems(posBar1Data, p1x30Data, t1000Data, questData)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -240,7 +260,7 @@ public class MainBuildController implements Initializable
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Retail Build")
                 .prefSize(384, 540)
-                .barChartItems(xr5Data, xr7Data, xr7PlusData, nextGenDisplays)
+                .barChartItems(retailBar1Data, nextGenDisplays)
                 .decimals(0)
                 .animated(true)
                 .animationDuration(3000)
@@ -286,7 +306,7 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 540)
-                .barChartItems(s500Data, n3000Data, mediaPlayer)
+                .barChartItems(serverBar1,serverBar2)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -434,23 +454,23 @@ public class MainBuildController implements Initializable
     {
         Platform.runLater( ()->
         {
-            p1x35Data.setValue(p1x35CurrentBuild);
-            p1x35Data.setMaxValue(p1x35GoalBuild);
-            p1532Data.setValue(p1532CurrentBuild);
-            p1532Data.setMaxValue(p1532GoalBuild);
+            posBar1Data.setValue(posBar1Total);
+            posBar1Data.setMaxValue(posBar1Goal);
 
             p1x30Data.setValue(p1x30CurrentBuild);
             p1x30Data.setMaxValue(p1x30GoalBuild);
 
             t1000Data.setValue(t1000sCurrentBuild);
             t1000Data.setMaxValue(t1000sGoalBuild);
+
+            questData.setValue(questCurrentBuild);
+            questData.setMaxValue(questGoalBuild);
+
             //---------------------------------Update the Server Units------------------------------------------
-            n3000Data.setValue(n3000CurrentBuild);
-            n3000Data.setMaxValue(n3000GoalBuild);
-            s500Data.setValue(s500CurrentBuild);
-            s500Data.setMaxValue(s500GoalBuild);
-            mediaPlayer.setValue(mediaPlayerCurrentBuild);
-            mediaPlayer.setMaxValue(mediaPlayerGoalBuild);
+            serverBar1.setValue(serverBar1Total);
+            serverBar1.setMaxValue(serverBar1Goal);
+            serverBar2.setValue(serverBar2Total);
+            serverBar2.setMaxValue(serverBar2Goal);
 
             //---------------------------------Updating the Peripheral Units------------------------------------
             kiwi4Data.setValue(kiwi4sCurrentBuild);
@@ -467,12 +487,8 @@ public class MainBuildController implements Initializable
             optic12Data.setValue(optic12sCurrentBuild);
             optic12Data.setMaxValue(optic12sGoalBuild);
             //---------------------------------Updating the Retail Units----------------------------------------
-            xr5Data.setValue(xr5CurrentBuild);
-            xr5Data.setMaxValue(xr5GoalBuild);
-            xr7Data.setValue(xr7CurrentBuild);
-            xr7Data.setMaxValue(xr7GoalBuild);
-            xr7PlusData.setValue(xr7PlusCurrentBuild);
-            xr7PlusData.setMaxValue(xr7PlusGoalBuild);
+            retailBar1Data.setValue(retailBar1Total);
+            retailBar1Data.setMaxValue(retailBar1Goal);
             nextGenDisplays.setValue(nextGenDisplayCurrentBuild);
             nextGenDisplays.setMaxValue(nextGenDisplayGoalsBuild);
 
@@ -1371,5 +1387,82 @@ public class MainBuildController implements Initializable
 
     public void setPosThrough(double posThrough) {
         this.posThrough = posThrough;
+    }
+
+    public double getQuestCurrentBuild() {
+        return questCurrentBuild;
+    }
+
+    public void setQuestCurrentBuild(double questCurrentBuild) {
+        this.questCurrentBuild = questCurrentBuild;
+    }
+    public double getQuestGoalBuild() {
+        return questGoalBuild;
+    }
+
+    public void setQuestGoalBuild(double questGoalBuild) {
+        this.questGoalBuild = questGoalBuild;
+    }
+    public double getPosBar1Goal() {
+        return posBar1Goal;
+    }
+
+    public void setPosBar1Goal(double posBar1Goal) {
+        this.posBar1Goal = posBar1Goal;
+    }
+    public double getPosBar1Total() {
+        return posBar1Total;
+    }
+
+    public void setPosBar1Total(double posBar1Total) {
+        this.posBar1Total = posBar1Total;
+    }
+
+    public double getRetailBar1Total() {
+        return retailBar1Total;
+    }
+
+    public void setRetailBar1Total(double retailBar1Total) {
+        this.retailBar1Total = retailBar1Total;
+    }
+
+    public double getRetailBar1Goal() {
+        return retailBar1Goal;
+    }
+
+    public void setRetailBar1Goal(double retailBar1Goal) {
+        this.retailBar1Goal = retailBar1Goal;
+    }
+
+    public double getServerBar1Total() {
+        return serverBar1Total;
+    }
+
+    public void setServerBar1Total(double serverBar1Total) {
+        this.serverBar1Total = serverBar1Total;
+    }
+
+    public double getServerBar1Goal() {
+        return serverBar1Goal;
+    }
+
+    public void setServerBar1Goal(double serverBar1Goal) {
+        this.serverBar1Goal = serverBar1Goal;
+    }
+
+    public double getServerBar2Total() {
+        return serverBar2Total;
+    }
+
+    public void setServerBar2Total(double serverBar2Total) {
+        this.serverBar2Total = serverBar2Total;
+    }
+
+    public double getServerBar2Goal() {
+        return serverBar2Goal;
+    }
+
+    public void setServerBar2Goal(double serverBar2Goal) {
+        this.serverBar2Goal = serverBar2Goal;
     }
 }

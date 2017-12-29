@@ -231,7 +231,7 @@ public class Tool {
                 "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
                 "\n" +
                 "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "AND (Item.ItemID Like '7734%' or Item.ItemID LIKE '774[3-5]%' or Item.ItemID Like '7761%' or Item.ItemID Like '7791%')\n" +
+                "AND (Item.ItemID Like '7734%' or Item.ItemID LIKE '774[3-5]%' or Item.ItemID Like '7761%' or Item.ItemID Like '7791%' or Item.ItemID Like '7792%')\n" +
                 "\n" +
                 "\tORDER BY ItemID";
 
@@ -318,17 +318,17 @@ public class Tool {
                 "                 \n" +
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                 \n" +
-                "                  AND (ut.[Assembly] LIKE '7745MC[0-9]%' \n" +
+                "                  AND (ut.[Assembly] LIKE '7745MCC[0-9]%' \n" +
                 "                 \n" +
-                "                  OR ut.[Assembly] LIKE '7734MC[0-9]%' \n" +
+                "                  OR ut.[Assembly] LIKE '7734MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7743MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7743MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7761MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7761MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7791MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7791MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MC[0-9]%') \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '7744MCC[0-9]%') \n" +
                 "                 \n" +
                 "                  ORDER BY [Assembly] ASC";
 
@@ -803,9 +803,9 @@ public class Tool {
                 "\n" +
                 "  AND (ut.[Assembly] LIKE '770[0-9]MC%'\n" +
                 "\n" +
-                "  OR ut.[Assembly] LIKE '5968MC[0-9]%'\n" +
+                "  OR ut.[Assembly] LIKE '5968%'\n" +
                 "\n" +
-                "  OR ut.[Assembly] LIKE '5985MC[0-9]%')\n" +
+                "  OR ut.[Assembly] LIKE '5985%')\n" +
                 "\n" +
                 "  ORDER BY [Assembly] ASC";
 
@@ -1280,35 +1280,35 @@ public class Tool {
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                 \n" +
-                "                  AND (ut.[Assembly] LIKE '5931MC[0-9]%' \n" +
+                "                  AND (ut.[Assembly] LIKE '5931MCC[0-9]%' \n" +
                 "                 \n" +
-                "                  OR ut.[Assembly] LIKE '5933MC[0-9]%' \n" +
+                "                  OR ut.[Assembly] LIKE '5933MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '5934MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5934MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '5937MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5937MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '5938MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5938MCC[0-9]%' \n" +
                 "\n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '5943MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '5943MCC[0-9]%' \n" +
                 "                 \n" +
-                "                  OR ut.[Assembly] LIKE '5967MC[0-9]%'\n" +
+                "                  OR ut.[Assembly] LIKE '5967MCC[0-9]%'\n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1635MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1635MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1640MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1640MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1641MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1641MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1642MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1642MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1924MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1924MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1646MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1646MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1650MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1650MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1651MC[0-9]%' ) \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1651MCC[0-9]%' ) \n" +
                 "\n" +
                 "                 \n" +
                 "                  ORDER BY [Assembly] ASC";
@@ -1817,13 +1817,13 @@ public class Tool {
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
                 "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1930MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1657MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MC[0-9]%' \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1611MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
-                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MC[0-9]%' ) \n" +
+                "\t\t\t\t  OR ut.[Assembly] LIKE '1612MCC[0-9]%' ) \n" +
                 "\n" +
                 "                 \n" +
                 "                  ORDER BY [Assembly] ASC";

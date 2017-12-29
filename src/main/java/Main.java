@@ -105,9 +105,14 @@ public class Main extends Application {
         GoalTool goalTool = new GoalTool();
 
         //---------------------------------List Storage Area for Running Group Values ----------------------------------
-        ArrayList<String> p1x35ProdList = new ArrayList<>();
-        p1x35ProdList.add("7745");
-        p1x35ProdList.add("7761");
+        ArrayList<String> posBar1ProdList = new ArrayList<>();
+        posBar1ProdList.add("7734");
+        posBar1ProdList.add("7745");
+        posBar1ProdList.add("7761");
+
+        ArrayList<String> questProdList = new ArrayList<>();
+        questProdList.add("7791");
+        questProdList.add("7792");
 
         ArrayList<String> kiwi2XsProdList = new ArrayList<>();
         kiwi2XsProdList.add("1640");
@@ -117,6 +122,11 @@ public class Main extends Application {
         pantherEPC4sProdList.add("1646");
         pantherEPC4sProdList.add("1651");
 
+        ArrayList<String> xrProdList = new ArrayList<>();
+        xrProdList.add("7701");
+        xrProdList.add("7702");
+        xrProdList.add("7703");
+
         ArrayList<String> nextGenProdList = new ArrayList<>();
         nextGenProdList.add("5968");
         nextGenProdList.add("5985");
@@ -124,6 +134,12 @@ public class Main extends Application {
         ArrayList<String> s500ProdList = new ArrayList<>();
         s500ProdList.add("1611");
         s500ProdList.add("1612");
+
+        ArrayList<String> mediaProdList = new ArrayList<>();
+        mediaProdList.add("1656");
+        mediaProdList.add("1657");
+
+
 
 
         LoadingController loadingController = new LoadingController();
@@ -202,25 +218,22 @@ public class Main extends Application {
                         //---------------------------------Hosp Build---------------------------------------------------
                         posBuildMap = dataBaseTool.hospBuildDataBase();
 
-                        buildController.setP1532CurrentBuild(mapTool.getCurrentSingleValue("7734", posBuildMap));
+                        buildController.setPosBar1Total(mapTool.getCurrentGroupValue(posBar1ProdList, posBuildMap));
                         buildController.setP1x30CurrentBuild(mapTool.getCurrentSingleValue("7743", posBuildMap));
-                        buildController.setP1x35CurrentBuild(mapTool.getCurrentGroupValue(p1x35ProdList, posBuildMap));
                         buildController.setT1000sCurrentBuild(mapTool.getCurrentSingleValue("7744", posBuildMap));
+                        buildController.setQuestCurrentBuild(mapTool.getCurrentGroupValue(questProdList, posBuildMap));
 
                         //---------------------------------Retail Build-------------------------------------------------
                         retailBuildMap = dataBaseTool.retailBuildDataBase();
 
-                        buildController.setXr7CurrentBuild(mapTool.getCurrentSingleValue("7702", retailBuildMap));
-                        buildController.setXr7PlusCurrentBuild(mapTool.getCurrentSingleValue("7703", retailBuildMap));
-                        buildController.setXr5CurrentBuild(mapTool.getCurrentSingleValue("7701", retailBuildMap));
+                        buildController.setRetailBar1Total(mapTool.getCurrentGroupValue(xrProdList, retailBuildMap));
                         buildController.setNextGenDisplayCurrentBuild(mapTool.getCurrentGroupValue(nextGenProdList, retailBuildMap));
 
                         //---------------------------------Servers Build------------------------------------------------
                         serversBuildMap = dataBaseTool.serversBuildDataBase();
 
-                        buildController.setMediaPlayerCurrentBuild(mapTool.getCurrentSingleValue("1656", serversBuildMap));
-                        buildController.setN3000CurrentBuild(mapTool.getCurrentSingleValue("1657", serversBuildMap));
-                        buildController.setS500CurrentBuild(mapTool.getCurrentGroupValue(s500ProdList, serversBuildMap));
+                        buildController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, serversBuildMap));
+                        buildController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, serversBuildMap));
 
                         //---------------------------------Periph Build-------------------------------------------------
                         periphBuildMap = dataBaseTool.periphBuildDataBase();
@@ -240,27 +253,22 @@ public class Main extends Application {
                         System.out.println("\n***********Running Test Block.***********\n");
                         //---------------------------------Hosp Test-----------------------------------------------------------------------
                         posTestMap = dataBaseTool.hospTestDataBase();
-
-                        testController.setP1532CurrentTest(mapTool.getCurrentSingleValue("7734", posTestMap));
                         testController.setP1x30CurrentTest(mapTool.getCurrentSingleValue("7743", posTestMap));
-                        testController.setP1x35CurrentTest(mapTool.getCurrentGroupValue(p1x35ProdList, posTestMap));
+                        testController.setPosBar1Total(mapTool.getCurrentGroupValue(posBar1ProdList, posTestMap));
                         testController.setT1000sCurrentTest(mapTool.getCurrentSingleValue("7744", posTestMap));
+                        testController.setQuestsCurrentTest(mapTool.getCurrentGroupValue(questProdList,posTestMap));
 
                         //---------------------------------Retail Test-----------------------------------------------------------------------
                         retailTestMap = dataBaseTool.retailTestDataBase();
 
-                        testController.setXr7CurrentTest(mapTool.getCurrentSingleValue("7702", retailTestMap));
-                        testController.setXr7PlusCurrentTest(mapTool.getCurrentSingleValue("7703", retailTestMap));
-                        testController.setXr5CurrentTest(mapTool.getCurrentSingleValue("7701", retailTestMap));
+                        testController.setRetailBar1Total(mapTool.getCurrentGroupValue(xrProdList,retailTestMap));
                         testController.setNextGenDisplayCurrentTest(mapTool.getCurrentGroupValue(nextGenProdList, retailTestMap));
 
                         //---------------------------------Server Test-----------------------------------------------------------------------
                         serversTestMap = dataBaseTool.serversTestDataBase();
 
-
-                        testController.setMediaPlayerCurrentTest(mapTool.getCurrentSingleValue("1656", serversTestMap));
-                        testController.setN3000CurrentTest(mapTool.getCurrentSingleValue("1657", serversTestMap));
-                        testController.setS500CurrentTest(mapTool.getCurrentGroupValue(s500ProdList, serversTestMap));
+                        testController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, serversTestMap));
+                        testController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, serversTestMap));
 
                         //---------------------------------Periph Test-----------------------------------------------------------------------
                         periphTestMap = dataBaseTool.periphTestDataBase();
@@ -285,30 +293,24 @@ public class Main extends Application {
 
                         posUserStageMap = dataBaseTool.hospStageDataBaseUsers();
 
-                        stageController.setP1532CurrentStage(mapTool.getCurrentSingleValue("7734", posStageMap));
                         stageController.setP1x30CurrentStage(mapTool.getCurrentSingleValue("7743", posStageMap));
-                        stageController.setP1x35CurrentStage(mapTool.getCurrentGroupValue(p1x35ProdList, posStageMap));
+                        stageController.setPosBar1Total(mapTool.getCurrentGroupValue(posBar1ProdList, posStageMap));
                         stageController.setT1000sCurrentStage(mapTool.getCurrentSingleValue("7744", posStageMap));
+                        stageController.setQuestsCurrentStage(mapTool.getCurrentGroupValue(questProdList,posStageMap));
 
                         //---------------------------------Retail Stage-----------------------------------------------------------------------
                         retailStageMap = dataBaseTool.retailStageDataBase();
                         retailUserStageMap = dataBaseTool.retailStageDataBaseUsers();
 
 
-                        stageController.setXr7CurrentStage(mapTool.getCurrentSingleValue("7702", retailStageMap));
-                        stageController.setXr7PlusCurrentStage(mapTool.getCurrentSingleValue("7703", retailStageMap));
-                        stageController.setXr5CurrentStage(mapTool.getCurrentSingleValue("7701", retailStageMap));
+                        stageController.setRetailBar1Total(mapTool.getCurrentGroupValue(xrProdList,retailStageMap));
                         stageController.setNextGenDisplayCurrentStage(mapTool.getCurrentGroupValue(nextGenProdList, retailStageMap));
 
                         //---------------------------------Servers Stage-----------------------------------------------------------------------
                         serversStageMap = dataBaseTool.serversStageDataBase();
-
                         //serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
-
-
-                        stageController.setMediaPlayerCurrentStage(mapTool.getCurrentSingleValue("1656", serversStageMap));
-                        stageController.setN3000CurrentStage(mapTool.getCurrentSingleValue("1657", serversStageMap));
-                        stageController.setS500CurrentStage(mapTool.getCurrentGroupValue(s500ProdList, serversStageMap));
+                        stageController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, serversStageMap));
+                        stageController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, serversStageMap));
 
                         //---------------------------------Periph Stage-----------------------------------------------------------------------
                         periphStageMap = dataBaseTool.periphStageDataBase();
@@ -324,86 +326,77 @@ public class Main extends Application {
                         mapList = dataBaseTool.documentReader();
                         stageMapList = dataBaseTool.stageDocumentReader();
 
-
-                        buildController.setP1532GoalBuild(goalTool.getGoal(mapList.get(0), "7734"));
-                        testController.setP1532GoalBuild(goalTool.getGoal(mapList.get(0), "7734"));
                         buildController.setP1x30GoalBuild(goalTool.getGoal(mapList.get(0), "7743"));
                         testController.setP1x30GoalBuild(goalTool.getGoal(mapList.get(0), "7743"));
-                        buildController.setP1x35GoalBuild(goalTool.getListGoal(mapList.get(0), p1x35ProdList));
-                        testController.setP1x35GoalBuild(goalTool.getListGoal(mapList.get(0), p1x35ProdList));
+                        buildController.setPosBar1Goal(goalTool.getListGoal(mapList.get(0), posBar1ProdList));
+                        testController.setPosBar1Goal(goalTool.getListGoal(mapList.get(0), posBar1ProdList));
                         buildController.setT1000sGoalBuild(goalTool.getGoal(mapList.get(0), "7744"));
                         testController.setT1000sGoalBuild(goalTool.getGoal(mapList.get(0), "7744"));
+                        buildController.setQuestGoalBuild(goalTool.getListGoal(mapList.get(0),questProdList));
+                        testController.setQuestGoalBuild(goalTool.getListGoal(mapList.get(0),questProdList));
 
-                        stageController.setP1532GoalStage(goalTool.getGoal(stageMapList.get(0), "7734"));
                         stageController.setP1x30GoalStage(goalTool.getGoal(stageMapList.get(0), "7743"));
-                        stageController.setP1x35GoalStage(goalTool.getListGoal(stageMapList.get(0), p1x35ProdList));
+                        stageController.setPosBar1Goal(goalTool.getListGoal(stageMapList.get(0), posBar1ProdList));
                         stageController.setT1000sGoalStage(goalTool.getGoal(stageMapList.get(0), "7744"));
+                        stageController.setQuestsGoalStage(goalTool.getListGoal(stageMapList.get(0),questProdList));
 
 
                         //---------------------------------Percent Calculation and Update for POS-------------------------------
-                        buildController.setPosTotalGoalBuild(buildController.getP1532GoalBuild() + buildController.getP1x30GoalBuild() + buildController.getP1x35GoalBuild() + buildController.getT1000sGoalBuild());
-                        buildController.setPosTotalCurrentBuild(buildController.getP1532CurrentBuild() + buildController.getP1x35CurrentBuild() + buildController.getP1x30CurrentBuild() + buildController.getT1000sCurrentBuild());
+                        buildController.setPosTotalGoalBuild(buildController.getP1x30GoalBuild() + buildController.getPosBar1Goal() + buildController.getT1000sGoalBuild());
+                        buildController.setPosTotalCurrentBuild(buildController.getPosBar1Total() + buildController.getP1x30CurrentBuild() + buildController.getT1000sCurrentBuild());
 
-                        testController.setPosTotalCurrentTest(testController.getP1532CurrentTest() + testController.getP1x35CurrentTest() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest());
+                        testController.setPosTotalCurrentTest(testController.getPosBar1Total() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest());
                         testController.setPosTotalGoalBuild(buildController.getPosTotalGoalBuild());
 
                         stageController.setPosTotalGoalStage(stageController.getP1532GoalStage() + stageController.getP1x30GoalStage() + stageController.getP1x35GoalStage() + stageController.getT1000sGoalStage());
-                        stageController.setPosTotalCurrentStage(stageController.getP1532CurrentStage() + stageController.getP1x35CurrentStage() + stageController.getP1x30CurrentStage() + stageController.getT1000sCurrentStage());
+                        stageController.setPosTotalCurrentStage(stageController.getPosBar1Total() + stageController.getP1x30CurrentStage() + stageController.getT1000sCurrentStage());
 
                         buildController.setPosPercentTotalBuild(goalTool.getPercentTotal(buildController.getPosTotalCurrentBuild(), buildController.getPosTotalGoalBuild()));
                         testController.setPosPercentTotalTest(goalTool.getPercentTotal(testController.getPosTotalCurrentTest(), testController.getPosTotalGoalBuild()));
                         stageController.setPosPercentTotalStage(goalTool.getPercentTotal(stageController.getPosTotalCurrentStage(), stageController.getPosTotalGoalStage()));
 
                         //---------------------------------Retail Build---------------------------------------------------------
-                        buildController.setXr7GoalBuild(goalTool.getGoal(mapList.get(4), "7702"));
-                        testController.setXr7GoalBuild(goalTool.getGoal(mapList.get(4), "7702"));
-                        buildController.setXr7PlusGoalBuild(goalTool.getGoal(mapList.get(4), "7703"));
-                        testController.setXr7PlusGoalBuild(goalTool.getGoal(mapList.get(4), "7703"));
-                        buildController.setXr5GoalBuild(goalTool.getGoal(mapList.get(4), "7701"));
-                        testController.setXr5GoalBuild(goalTool.getGoal(mapList.get(4), "7701"));
+                        buildController.setRetailBar1Goal(goalTool.getListGoal(mapList.get(4),xrProdList));
+                        testController.setRetailBar1Goal(goalTool.getListGoal(mapList.get(4),xrProdList));
                         buildController.setNextGenDisplayGoalsBuild(goalTool.getListGoal(mapList.get(4), nextGenProdList));
                         testController.setNextGenDisplayGoalsBuild(goalTool.getListGoal(mapList.get(4), nextGenProdList));
 
-                        stageController.setXr7GoalStage(goalTool.getGoal(stageMapList.get(3), "7702"));
-                        stageController.setXr7PlusGoalStage(goalTool.getGoal(stageMapList.get(3), "7703"));
-                        stageController.setXr5GoalStage(goalTool.getGoal(stageMapList.get(3), "7701"));
+                        stageController.setRetailBar1Goal(goalTool.getListGoal(stageMapList.get(3),xrProdList));
                         stageController.setNextGenDisplayGoalsStage(goalTool.getListGoal(stageMapList.get(3), nextGenProdList));
 
                         //---------------------------------Percent Calculation and Update for Retail----------------------------
-                        buildController.setRetailTotalGoalBuild(buildController.getXr7GoalBuild() + buildController.getXr7PlusGoalBuild() + buildController.getXr5GoalBuild() + buildController.getNextGenDisplayGoalsBuild());
-                        buildController.setRetailTotalCurrentBuild(buildController.getXr7CurrentBuild() + buildController.getXr7PlusCurrentBuild() + buildController.getXr5CurrentBuild() + buildController.getNextGenDisplayCurrentBuild());
+                        buildController.setRetailTotalGoalBuild(buildController.getRetailBar1Goal()+ buildController.getNextGenDisplayGoalsBuild());
+                        buildController.setRetailTotalCurrentBuild(buildController.getRetailBar1Total() + buildController.getNextGenDisplayCurrentBuild());
 
-                        testController.setRetailTotalCurrentTest(testController.getXr7CurrentTest() + testController.getXr7PlusCurrentTest() + testController.getXr5CurrentTest() + testController.getNextGenDisplayCurrentTest());
+                        testController.setRetailTotalCurrentTest(testController.getRetailBar1Total() + testController.getNextGenDisplayCurrentTest());
                         testController.setRetailTotalGoalBuild(buildController.getRetailTotalGoalBuild());
-                        stageController.setRetailTotalGoalStage(stageController.getXr7GoalStage() + stageController.getXr7PlusGoalStage() + stageController.getXr5GoalStage() + stageController.getNextGenDisplayGoalsStage());
-                        stageController.setRetailTotalCurrentStage(stageController.getXr7CurrentStage() + stageController.getXr7PlusCurrentStage() + stageController.getXr5CurrentStage() + stageController.getNextGenDisplayCurrentStage());
+
+                        stageController.setRetailTotalGoalStage(stageController.getRetailBar1Goal() + stageController.getNextGenDisplayGoalsStage());
+                        stageController.setRetailTotalCurrentStage(stageController.getRetailBar1Total()+ stageController.getNextGenDisplayCurrentStage());
 
                         buildController.setRetailPercentTotalBuild(goalTool.getPercentTotal(buildController.getRetailTotalCurrentBuild(), buildController.getRetailTotalGoalBuild()));
                         testController.setRetailPercentTotalTest(goalTool.getPercentTotal(testController.getRetailTotalCurrentTest(), testController.getRetailTotalGoalBuild()));
                         stageController.setRetailPercentTotalStage(goalTool.getPercentTotal(stageController.getRetailTotalCurrentStage(), stageController.getRetailTotalGoalStage()));
 
                         //---------------------------------Servers Build--------------------------------------------------------
-                        buildController.setMediaPlayerGoalBuild(goalTool.getGoal(mapList.get(1), "1656"));
-                        testController.setMediaPlayerGoalBuild(goalTool.getGoal(mapList.get(1), "1656"));
-                        buildController.setN3000GoalBuild(goalTool.getGoal(mapList.get(1), "1657"));
-                        testController.setN3000GoalBuild(goalTool.getGoal(mapList.get(1), "1657"));
-                        buildController.setS500GoalBuild(goalTool.getGoal(mapList.get(1), "1611"));
-                        testController.setS500GoalBuild(goalTool.getGoal(mapList.get(1), "1611"));
+                        buildController.setServerBar1Goal(goalTool.getListGoal(mapList.get(1), s500ProdList));
+                        testController.setServerBar1Goal(goalTool.getListGoal(mapList.get(1), s500ProdList));
 
-                        stageController.setMediaPlayerGoalStage(goalTool.getGoal(stageMapList.get(1), "1656"));
-                        stageController.setN3000GoalStage(goalTool.getGoal(stageMapList.get(1), "1657"));
-                        stageController.setS500GoalStage(goalTool.getGoal(stageMapList.get(1), "1611"));
+                        buildController.setServerBar2Goal(goalTool.getListGoal(mapList.get(1), mediaProdList));
+                        testController.setServerBar2Goal(goalTool.getListGoal(mapList.get(1), mediaProdList));
+
+                        stageController.setServerBar1Goal(goalTool.getListGoal(stageMapList.get(1), s500ProdList));
+                        stageController.setServerBar2Goal(goalTool.getListGoal(stageMapList.get(1), mediaProdList));
 
                         //---------------------------------Percent Calculation and Update for Servers---------------------------
-                        buildController.setServerGoalTotalBuild(buildController.getMediaPlayerGoalBuild() + buildController.getN3000GoalBuild() + buildController.getS500GoalBuild());
-                        buildController.setServerCurrentBuild(buildController.getMediaPlayerCurrentBuild() + buildController.getN3000CurrentBuild() + buildController.getS500CurrentBuild());
+                        buildController.setServerGoalTotalBuild(buildController.getServerBar1Goal() + buildController.getServerBar2Goal());
+                        buildController.setServerCurrentBuild(buildController.getServerBar1Total() + buildController.getServerBar2Total());
 
-                        testController.setServerCurrentTest(testController.getMediaPlayerCurrentTest() + testController.getN3000CurrentTest() + testController.getS500CurrentTest());
+                        testController.setServerCurrentTest(testController.getServerBar1Total() + testController.getServerBar2Total());
                         testController.setServerGoalTotalBuild(buildController.getServerGoalTotalBuild());
 
-                        stageController.setServerGoalTotalStage(stageController.getMediaPlayerGoalStage() + stageController.getN3000GoalStage() + stageController.getS500GoalStage());
-                        stageController.setServerCurrentStage(stageController.getMediaPlayerCurrentStage() + stageController.getN3000CurrentStage() + stageController.getS500CurrentStage());
-
+                        stageController.setServerGoalTotalStage(stageController.getServerBar1Goal() + stageController.getServerBar2Goal());
+                        stageController.setServerCurrentStage(stageController.getServerBar1Total() + stageController.getServerBar2Total());
 
                         buildController.setServersPercentTotalBuild(goalTool.getPercentTotal(buildController.getServerCurrentBuild(), buildController.getServerGoalTotalBuild()));
                         testController.setServersPercentTotalTest(goalTool.getPercentTotal(testController.getServerCurrentTest(), buildController.getServerGoalTotalBuild()));

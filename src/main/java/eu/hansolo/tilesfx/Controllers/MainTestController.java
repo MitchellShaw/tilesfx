@@ -69,6 +69,11 @@ public class MainTestController implements Initializable
     double t1000sCurrentBuild;
     double t1000sGoalBuild;
 
+    double posBar1Total;
+    double posBar1Goal;
+    double questGoalBuild;
+    double questCurrentBuild;
+
 
     double p1x30CurrentTest;
     double p1x35CurrentTest;
@@ -174,14 +179,13 @@ public class MainTestController implements Initializable
     double serversPercentTotalTest;
     double periphPercentTotalTest;
     //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
-    BarChartItem p1x35DataTest;
-    BarChartItem p1532DataTest;
+    BarChartItem posBar1DataTest;
     BarChartItem p1x30DataTest;
     BarChartItem t1000DataTest;
+    BarChartItem questDataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem n3000Test;
-    BarChartItem s500DataTest;
-    BarChartItem mediaPlayerTest;
+    BarChartItem serverBar1DataTest;
+    BarChartItem serverBar2DataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
     BarChartItem kiwi4DataTest;
     BarChartItem kiwi25DataTest;
@@ -189,11 +193,8 @@ public class MainTestController implements Initializable
     BarChartItem pantherEPC4Test;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
     BarChartItem optic12DataTest;
-    BarChartItem optic5DataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem xr5DataTest;
-    BarChartItem xr7DataTest;
-    BarChartItem xr7PlusDataTest;
+    BarChartItem retailBar1DataTest;
     BarChartItem nextGenDisplaysTest;
 
     double opticThrough;
@@ -201,6 +202,15 @@ public class MainTestController implements Initializable
     double serversThrough;
     double retailThrough;
     double posThrough;
+
+    double retailBar1Total;
+    double retailBar1Goal;
+
+    double serverBar1Total;
+    double serverBar1Goal;
+
+    double serverBar2Total;
+    double serverBar2Goal;
 
     Messenger messenger;
 
@@ -218,14 +228,13 @@ public class MainTestController implements Initializable
         MainBuildController buildController = messenger.getMainBuildController();
 
         //---------------------------------Creating the Bar Chart Items Creation----------------------------------------
-        p1x35DataTest = new BarChartItem("P1X35", p1x35CurrentTest, p1x35GoalBuild, Tile.RED);
-        p1532DataTest = new BarChartItem("P1532", p1532CurrentTest, p1532GoalBuild, Tile.GREEN);
-        p1x30DataTest = new BarChartItem("P1X30", p1x30CurrentTest, p1x30GoalBuild, Tile.BLUE);
-        t1000DataTest = new BarChartItem("T1000", t1000sCurrentTest, t1000sGoalBuild, Tile.YELLOW);
+        posBar1DataTest = new BarChartItem("7734/7745/7761", posBar1Total, posBar1Goal, Tile.BLUE);
+        p1x30DataTest = new BarChartItem("7743", p1x30CurrentTest, p1x30GoalBuild, Tile.RED);
+        t1000DataTest = new BarChartItem("7744", t1000sCurrentTest, t1000sGoalBuild, Tile.GREEN);
+        questDataTest = new BarChartItem("7791/7792", questsCurrentTest, questGoalBuild, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        n3000Test = new BarChartItem("N3000", n3000CurrentTest, n3000GoalBuild, Tile.RED);
-        s500DataTest = new BarChartItem("S500", s500CurrentTest, s500GoalBuild, Tile.BLUE);
-        mediaPlayerTest = new BarChartItem("Media Player", mediaPlayerCurrentTest, mediaPlayerGoalBuild, Tile.GREEN);
+        serverBar1DataTest = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
+        serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         kiwi4DataTest = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
         kiwi25DataTest = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
@@ -234,10 +243,8 @@ public class MainTestController implements Initializable
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        xr5DataTest = new BarChartItem("7701", xr5CurrentTest, xr5GoalBuild, Tile.BLUE);
-        xr7DataTest = new BarChartItem("7702", xr7CurrentTest, xr7GoalBuild, Tile.RED);
-        xr7PlusDataTest = new BarChartItem("7703", xr7PlusCurrentTest, xr7PlusGoalBuild, Tile.GREEN);
-        nextGenDisplaysTest = new BarChartItem("Next Gen Displays", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.YELLOW);
+        retailBar1DataTest = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
+        nextGenDisplaysTest = new BarChartItem("5968/5985", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.RED);
         //---------------------------------Creating the Tiles-----------------------------------------------------------
         posTest = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -246,7 +253,7 @@ public class MainTestController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 470)
-                .barChartItems(p1x30DataTest, p1x35DataTest, p1532DataTest, t1000DataTest)
+                .barChartItems(posBar1DataTest, p1x30DataTest, t1000DataTest, questDataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -288,7 +295,7 @@ public class MainTestController implements Initializable
                 .roundedCorners(false)
                 .title("Retail Test")
                 .prefSize(384, 640)
-                .barChartItems(xr5DataTest, xr7DataTest, xr7PlusDataTest, nextGenDisplaysTest)
+                .barChartItems(retailBar1DataTest, nextGenDisplaysTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -330,7 +337,7 @@ public class MainTestController implements Initializable
                  .animationDuration(3000)
                  .roundedCorners(false)
                 .prefSize(384, 200)
-                .barChartItems(s500DataTest, n3000Test, mediaPlayerTest)
+                .barChartItems(serverBar1DataTest,serverBar2DataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -474,22 +481,20 @@ public class MainTestController implements Initializable
     {
         Platform.runLater(() ->
         {
-            p1x35DataTest.setValue(p1x35CurrentTest);
-            p1x35DataTest.setMaxValue(p1x35GoalBuild);
-            p1532DataTest.setValue(p1532CurrentTest);
-            p1532DataTest.setMaxValue(p1532GoalBuild);
+            posBar1DataTest.setValue(posBar1Total);
+            posBar1DataTest.setMaxValue(posBar1Goal);
             p1x30DataTest.setValue(p1x30CurrentTest);
             p1x30DataTest.setMaxValue(p1x30GoalBuild);
             t1000DataTest.setValue(t1000sCurrentTest);
             t1000DataTest.setMaxValue(t1000sGoalBuild);
+            questDataTest.setValue(questsCurrentTest);
+            questDataTest.setMaxValue(questGoalBuild);
 
             //---------------------------------Update the Server Units------------------------------------------
-            n3000Test.setValue(n3000CurrentTest);
-            n3000Test.setMaxValue(n3000GoalBuild);
-            s500DataTest.setValue(s500CurrentTest);
-            s500DataTest.setMaxValue(s500GoalBuild);
-            mediaPlayerTest.setValue(mediaPlayerCurrentTest);
-            mediaPlayerTest.setMaxValue(mediaPlayerGoalBuild);
+            serverBar1DataTest.setValue(serverBar1Total);
+            serverBar1DataTest.setMaxValue(serverBar1Goal);
+            serverBar2DataTest.setValue(serverBar2Total);
+            serverBar2DataTest.setMaxValue(serverBar2Goal);
 
             //---------------------------------Updating the Peripheral Units------------------------------------
             kiwi4DataTest.setValue(kiwi4sCurrentTest);
@@ -499,15 +504,14 @@ public class MainTestController implements Initializable
             bumpBarDataTest.setValue(bumpBarsCurrentTest);
             bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
             pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
-            pantherEPC4Test.setMaxValue(pantherEPC4sGoalBuild);
+
+            //---------------------------------Updating the Optic Units------------------------------------
             optic12DataTest.setValue(optic12sCurrentTest);
             optic12DataTest.setMaxValue(optic12sGoalBuild);
-            xr5DataTest.setValue(xr5CurrentTest);
-            xr5DataTest.setMaxValue(xr5GoalBuild);
-            xr7DataTest.setValue(xr7CurrentTest);
-            xr7DataTest.setMaxValue(xr7GoalBuild);
-            xr7PlusDataTest.setValue(xr7PlusCurrentTest);
-            xr7PlusDataTest.setMaxValue(xr7PlusGoalBuild);
+
+            //---------------------------------Updating the Retail Units------------------------------------
+            retailBar1DataTest.setValue(retailBar1Total);
+            retailBar1DataTest.setMaxValue(retailBar1Goal);
             nextGenDisplaysTest.setValue(nextGenDisplayCurrentTest);
             nextGenDisplaysTest.setMaxValue(nextGenDisplayGoalsBuild);
 
@@ -1716,6 +1720,84 @@ public class MainTestController implements Initializable
 
     public void setPosThrough(double posThrough) {
         this.posThrough = posThrough;
+    }
+
+    public double getPosBar1Total() {
+        return posBar1Total;
+    }
+
+    public void setPosBar1Total(double posBar1Total) {
+        this.posBar1Total = posBar1Total;
+    }
+
+    public double getPosBar1Goal() {
+        return posBar1Goal;
+    }
+
+    public void setPosBar1Goal(double posBar1Goal) {
+        this.posBar1Goal = posBar1Goal;
+    }
+
+    public double getQuestGoalBuild() {
+        return questGoalBuild;
+    }
+
+    public void setQuestGoalBuild(double questGoalBuild) {
+        this.questGoalBuild = questGoalBuild;
+    }
+
+    public double getQuestCurrentBuild() {
+        return questCurrentBuild;
+    }
+
+    public void setQuestCurrentBuild(double questCurrentBuild) {
+        this.questCurrentBuild = questCurrentBuild;
+    }
+    public double getRetailBar1Total() {
+        return retailBar1Total;
+    }
+
+    public void setRetailBar1Total(double retailBar1Total) {
+        this.retailBar1Total = retailBar1Total;
+    }
+
+    public double getRetailBar1Goal() {
+        return retailBar1Goal;
+    }
+
+    public void setRetailBar1Goal(double retailBar1Goal) {
+        this.retailBar1Goal = retailBar1Goal;
+    }
+    public double getServerBar1Total() {
+        return serverBar1Total;
+    }
+
+    public void setServerBar1Total(double serverBar1Total) {
+        this.serverBar1Total = serverBar1Total;
+    }
+
+    public double getServerBar1Goal() {
+        return serverBar1Goal;
+    }
+
+    public void setServerBar1Goal(double serverBar1Goal) {
+        this.serverBar1Goal = serverBar1Goal;
+    }
+
+    public double getServerBar2Total() {
+        return serverBar2Total;
+    }
+
+    public void setServerBar2Total(double serverBar2Total) {
+        this.serverBar2Total = serverBar2Total;
+    }
+
+    public double getServerBar2Goal() {
+        return serverBar2Goal;
+    }
+
+    public void setServerBar2Goal(double serverBar2Goal) {
+        this.serverBar2Goal = serverBar2Goal;
     }
 
 }
