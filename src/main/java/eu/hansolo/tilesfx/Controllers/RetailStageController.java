@@ -63,12 +63,16 @@ public class RetailStageController implements Initializable {
     final Image yellowImage = new Image("/Yellow Light.PNG");
     final Image greenImage = new Image("/Green Light.PNG");
 
+    MainStageController stageController;
+
     @FXML
     private GridPane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tiles = new ArrayList<>();
+
+        stageController = messenger.getMainStageController();
 
         final ImageView logoView = new ImageView();
         final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
@@ -165,7 +169,8 @@ public class RetailStageController implements Initializable {
                 .backgroundColor(Color.valueOf("#54B948"))
                 .titleAlignment(TextAlignment.CENTER)
                 .roundedCorners(false)
-                .description("Retail")
+                .title("Total Staged")
+                .description(Double.toString(stageController.getRetailTotalCurrentStage()))
                 .build();
 
         pane.add(logo, 0, 0, 1, 1);
@@ -300,6 +305,10 @@ public class RetailStageController implements Initializable {
             if(daySince != null)
             {
                 daySince.setDescription(useDate);
+            }
+            if(dept != null)
+            {
+                dept.setDescription(Double.toString(stageController.getRetailTotalCurrentStage()));
             }
 
             if (Integer.parseInt(useDate) < 30) {

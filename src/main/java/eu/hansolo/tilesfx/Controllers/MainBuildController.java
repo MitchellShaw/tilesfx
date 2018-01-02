@@ -148,24 +148,21 @@ public class MainBuildController implements Initializable
     double periphBar2Total;
     double periphBar2Goal;
 
-    double periphBar2Total;
-    double periphBar2Goal;
+    double periphBar3Total;
+    double periphBar3Goal;
 
     //---------------------------------Creating the Bar Chart Items for Hosp-----------------------------------------
     BarChartItem posBar1Data;
     BarChartItem p1x30Data;
     BarChartItem t1000Data;
     BarChartItem questData;
-
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
     BarChartItem serverBar1;
     BarChartItem serverBar2;
-
     //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-    BarChartItem kiwi4Data;
-    BarChartItem kiwi25Data;
-    BarChartItem bumpBarData;
-    BarChartItem pantherEPC4Data;
+    BarChartItem periphBar1Data;
+    BarChartItem periphBar2Data;
+    BarChartItem periphBar3Data;
     //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
     BarChartItem optic12Data;
     BarChartItem optic5Data;
@@ -200,13 +197,12 @@ public class MainBuildController implements Initializable
         serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
         serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        kiwi25Data = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentBuild, kiwi2XsGoalBuild, Tile.RED);
-        kiwi4Data = new BarChartItem("Kiwi 4", kiwi4sCurrentBuild, kiwi4sGoalBuild, Tile.BLUE);
-        bumpBarData = new BarChartItem("Bumpbar", bumpBarsCurrentBuild, bumpBarsGoalBuild, Tile.GREEN);
-        pantherEPC4Data = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentBuild, pantherEPC4sGoalBuild, Tile.YELLOW);
+        periphBar1Data = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
+        periphBar2Data = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar3Data = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
-        optic12Data = new BarChartItem("Optic 12", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
-        optic5Data = new BarChartItem("Optic 5", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
+        optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
+        optic5Data = new BarChartItem("6001", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         retailBar1Data = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
         nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.RED);
@@ -350,7 +346,7 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 540)
-                .barChartItems(kiwi4Data, kiwi25Data, bumpBarData, pantherEPC4Data)
+                .barChartItems(periphBar1Data,periphBar2Data,periphBar3Data)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -473,14 +469,12 @@ public class MainBuildController implements Initializable
             serverBar2.setMaxValue(serverBar2Goal);
 
             //---------------------------------Updating the Peripheral Units------------------------------------
-            kiwi4Data.setValue(kiwi4sCurrentBuild);
-            kiwi4Data.setMaxValue(kiwi4sGoalBuild);
-            kiwi25Data.setValue(kiwi2XsCurrentBuild);
-            kiwi25Data.setMaxValue(kiwi2XsGoalBuild);
-            bumpBarData.setValue(bumpBarsCurrentBuild);
-            bumpBarData.setMaxValue(bumpBarsGoalBuild);
-            pantherEPC4Data.setValue(pantherEPC4sCurrentBuild);
-            pantherEPC4Data.setMaxValue(pantherEPC4sGoalBuild);
+            periphBar1Data.setValue(periphBar1Total);
+            periphBar1Data.setMaxValue(periphBar1Goal);
+            periphBar2Data.setValue(periphBar2Total);
+            periphBar2Data.setMaxValue(periphBar2Goal);
+            periphBar3Data.setValue(periphBar3Total);
+            periphBar3Data.setMaxValue(periphBar3Goal);
             //---------------------------------Updating the Optic Units------------------------------------------
             optic5Data.setValue(optic5sCurrentBuild);
             optic5Data.setMaxValue(optic5sGoalBuild);
@@ -1464,5 +1458,53 @@ public class MainBuildController implements Initializable
 
     public void setServerBar2Goal(double serverBar2Goal) {
         this.serverBar2Goal = serverBar2Goal;
+    }
+
+    public double getPeriphBar1Total() {
+        return periphBar1Total;
+    }
+
+    public void setPeriphBar1Total(double periphBar1Total) {
+        this.periphBar1Total = periphBar1Total;
+    }
+
+    public double getPeriphBar1Goal() {
+        return periphBar1Goal;
+    }
+
+    public void setPeriphBar1Goal(double periphBar1Goal) {
+        this.periphBar1Goal = periphBar1Goal;
+    }
+
+    public double getPeriphBar2Total() {
+        return periphBar2Total;
+    }
+
+    public void setPeriphBar2Total(double periphBar2Total) {
+        this.periphBar2Total = periphBar2Total;
+    }
+
+    public double getPeriphBar2Goal() {
+        return periphBar2Goal;
+    }
+
+    public void setPeriphBar2Goal(double periphBar2Goal) {
+        this.periphBar2Goal = periphBar2Goal;
+    }
+
+    public double getPeriphBar3Total() {
+        return periphBar3Total;
+    }
+
+    public void setPeriphBar3Total(double periphBar3Total) {
+        this.periphBar3Total = periphBar3Total;
+    }
+
+    public double getPeriphBar3Goal() {
+        return periphBar3Goal;
+    }
+
+    public void setPeriphBar3Goal(double periphBar3Goal) {
+        this.periphBar3Goal = periphBar3Goal;
     }
 }

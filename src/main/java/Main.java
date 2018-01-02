@@ -115,8 +115,8 @@ public class Main extends Application {
         questProdList.add("7792");
 
         ArrayList<String> kiwi2XsProdList = new ArrayList<>();
-        kiwi2XsProdList.add("1640");
         kiwi2XsProdList.add("1642");
+        kiwi2XsProdList.add("1924");
 
         ArrayList<String> pantherEPC4sProdList = new ArrayList<>();
         pantherEPC4sProdList.add("1646");
@@ -238,10 +238,9 @@ public class Main extends Application {
                         //---------------------------------Periph Build-------------------------------------------------
                         periphBuildMap = dataBaseTool.periphBuildDataBase();
 
-                        buildController.setKiwi4sCurrentBuild(mapTool.getCurrentSingleValue("1924", periphBuildMap));
-                        buildController.setKiwi2XsCurrentBuild(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphBuildMap));
-                        buildController.setBumpBarsCurrentBuild(mapTool.getCurrentSingleValue("1635", periphBuildMap));
-                        buildController.setPantherEPC4sCurrentBuild(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphBuildMap));
+                        buildController.setPeriphBar1Total(mapTool.getCurrentSingleValue("1635", periphBuildMap));
+                        buildController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphBuildMap));
+                        buildController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphBuildMap));
 
                         //---------------------------------Optic Build--------------------------------------------------
                         opticBuildMap = dataBaseTool.opticBuildDataBase();
@@ -273,11 +272,9 @@ public class Main extends Application {
                         //---------------------------------Periph Test-----------------------------------------------------------------------
                         periphTestMap = dataBaseTool.periphTestDataBase();
 
-
-                        testController.setKiwi4sCurrentTest(mapTool.getCurrentSingleValue("1924", periphTestMap));
-                        testController.setKiwi2XsCurrentTest(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphTestMap));
-                        testController.setBumpBarsCurrentTest(mapTool.getCurrentSingleValue("1635", periphTestMap));
-                        testController.setPantherEPC4sCurrentTest(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphTestMap));
+                        testController.setPeriphBar1Total(mapTool.getCurrentSingleValue("1635", periphTestMap));
+                        testController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphTestMap));
+                        testController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphTestMap));
 
                         //---------------------------------Optic Test----------------------------------------------------------------------
                         opticTestMap = dataBaseTool.opticTestDataBase();
@@ -317,10 +314,9 @@ public class Main extends Application {
 
                         periphUserStageMap = dataBaseTool.periphStageDataBaseUsers();
 
-                        stageController.setKiwi4sCurrentStage(mapTool.getCurrentSingleValue("1924", periphStageMap));
-                        stageController.setKiwi2XsCurrentStage(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphStageMap));
-                        stageController.setBumpBarsCurrentStage(mapTool.getCurrentSingleValue("1635", periphStageMap));
-                        stageController.setPantherEPC4sCurrentStage(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphStageMap));
+                        stageController.setPeriphBar1Total(mapTool.getCurrentSingleValue("1635", periphStageMap));
+                        stageController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphStageMap));
+                        stageController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphStageMap));
 
                         System.out.println("\n***********Running Doc Block.***********\n");
                         mapList = dataBaseTool.documentReader();
@@ -403,29 +399,26 @@ public class Main extends Application {
                         stageController.setServersPercentTotalStage(goalTool.getPercentTotal(stageController.getServerCurrentStage(), stageController.getServerGoalTotalStage()));
 
                         //---------------------------------Periph Build---------------------------------------------------------
-                        buildController.setKiwi4sGoalBuild(goalTool.getGoal(mapList.get(3), "1924"));
-                        testController.setKiwi4sGoalBuild(goalTool.getGoal(mapList.get(3), "1924"));
-                        buildController.setKiwi2XsGoalBuild(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
-                        testController.setKiwi2XsGoalBuild(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
-                        buildController.setBumpBarsGoalBuild(goalTool.getGoal(mapList.get(3), "1635"));
-                        testController.setBumpBarsGoalBuild(goalTool.getGoal(mapList.get(3), "1635"));
-                        buildController.setPantherEPC4sGoalBuild(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
-                        testController.setPantherEPC4sGoalBuild(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
+                        buildController.setPeriphBar1Goal(goalTool.getGoal(mapList.get(3), "1635"));
+                        testController.setPeriphBar1Goal(goalTool.getGoal(mapList.get(3), "1635"));
+                        buildController.setPeriphBar2Goal(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
+                        testController.setPeriphBar2Goal(goalTool.getListGoal(mapList.get(3), kiwi2XsProdList));
+                        buildController.setPeriphBar3Goal(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
+                        testController.setPeriphBar3Goal(goalTool.getListGoal(mapList.get(3), pantherEPC4sProdList));
 
-                        stageController.setKiwi4sGoalStage(goalTool.getGoal(stageMapList.get(2), "1924"));
-                        stageController.setKiwi2XsGoalStage(goalTool.getListGoal(stageMapList.get(2), kiwi2XsProdList));
-                        stageController.setBumpBarsGoalStage(goalTool.getGoal(stageMapList.get(2), "1635"));
-                        stageController.setPantherEPC4sGoalStage(goalTool.getListGoal(stageMapList.get(2), pantherEPC4sProdList));
+                        stageController.setPeriphBar1Goal(goalTool.getGoal(stageMapList.get(2), "1635"));
+                        stageController.setPeriphBar2Goal(goalTool.getListGoal(stageMapList.get(2), kiwi2XsProdList));
+                        stageController.setPeriphBar3Goal(goalTool.getListGoal(stageMapList.get(2), pantherEPC4sProdList));
 
                         //---------------------------------Percent Calculation and Update for Periph----------------------------
-                        buildController.setPeriphGoalTotalBuild(buildController.getKiwi4sGoalBuild() + buildController.getKiwi2XsGoalBuild() + buildController.getBumpBarsGoalBuild() + buildController.getPantherEPC4sGoalBuild());
-                        buildController.setPeriphCurrentTotalBuild(buildController.getKiwi4sCurrentBuild() + buildController.getKiwi2XsCurrentBuild() + buildController.getBumpBarsCurrentBuild() + buildController.getPantherEPC4sCurrentBuild());
+                        buildController.setPeriphGoalTotalBuild(buildController.getPeriphBar1Goal()+buildController.getPeriphBar2Goal()+buildController.getPeriphBar3Goal());
+                        buildController.setPeriphCurrentTotalBuild(buildController.getPeriphBar1Total()+buildController.getPeriphBar2Total()+buildController.getPeriphBar3Total());
 
-                        testController.setPeriphCurrentTotalTest(testController.getKiwi4sCurrentTest() + testController.getKiwi2XsCurrentTest() + testController.getBumpBarsCurrentTest() + testController.getPantherEPC4sCurrentTest());
+                        testController.setPeriphCurrentTotalTest(testController.getPeriphBar1Total()+testController.getPeriphBar2Total()+testController.getPeriphBar3Total());
                         testController.setPeriphGoalTotalBuild(buildController.getPeriphGoalTotalBuild());
 
-                        stageController.setPeriphGoalTotalStage(stageController.getKiwi4sGoalStage() + stageController.getKiwi2XsGoalStage() + stageController.getBumpBarsGoalStage() + stageController.getPantherEPC4sGoalStage());
-                        stageController.setPeriphCurrentTotalStage(stageController.getKiwi4sCurrentStage() + stageController.getKiwi2XsCurrentStage() + stageController.getBumpBarsCurrentStage() + stageController.getPantherEPC4sCurrentStage());
+                        stageController.setPeriphGoalTotalStage(stageController.getPeriphBar1Goal()+stageController.getPeriphBar2Goal()+stageController.getPeriphBar3Goal());
+                        stageController.setPeriphCurrentTotalStage(stageController.getPeriphBar1Total()+stageController.getPeriphBar2Total()+stageController.getPeriphBar3Total());
 
 
                         buildController.setPeriphPercentTotalBuild(goalTool.getPercentTotal(buildController.getPeriphCurrentTotalBuild(), buildController.getPeriphGoalTotalBuild()));

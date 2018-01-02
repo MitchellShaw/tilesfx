@@ -187,10 +187,9 @@ public class MainTestController implements Initializable
     BarChartItem serverBar1DataTest;
     BarChartItem serverBar2DataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem kiwi4DataTest;
-    BarChartItem kiwi25DataTest;
-    BarChartItem bumpBarDataTest;
-    BarChartItem pantherEPC4Test;
+    BarChartItem periphBar1DataTest;
+    BarChartItem periphBar2DataTest;
+    BarChartItem periphBar3DataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
     BarChartItem optic12DataTest;
     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
@@ -211,6 +210,15 @@ public class MainTestController implements Initializable
 
     double serverBar2Total;
     double serverBar2Goal;
+
+    double periphBar1Total;
+    double periphBar1Goal;
+
+    double periphBar2Total;
+    double periphBar2Goal;
+
+    double periphBar3Total;
+    double periphBar3Goal;
 
     Messenger messenger;
 
@@ -236,12 +244,11 @@ public class MainTestController implements Initializable
         serverBar1DataTest = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
         serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        kiwi4DataTest = new BarChartItem("Kiwi 4", kiwi4sCurrentTest, kiwi4sGoalBuild, Tile.BLUE);
-        kiwi25DataTest = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentTest, kiwi2XsGoalBuild, Tile.RED);
-        bumpBarDataTest = new BarChartItem("Bumpbar", bumpBarsCurrentTest, bumpBarsGoalBuild, Tile.GREEN);
-        pantherEPC4Test = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentTest, pantherEPC4sGoalBuild, Tile.YELLOW);
+        periphBar1DataTest = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
+        periphBar2DataTest = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar3DataTest = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-        optic12DataTest = new BarChartItem("Optic 12", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
+        optic12DataTest = new BarChartItem("6002", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         retailBar1DataTest = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
         nextGenDisplaysTest = new BarChartItem("5968/5985", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.RED);
@@ -379,7 +386,7 @@ public class MainTestController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 640)
-                .barChartItems(kiwi4DataTest, kiwi25DataTest, bumpBarDataTest, pantherEPC4Test)
+                .barChartItems(periphBar1DataTest,periphBar2DataTest,periphBar3DataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -497,13 +504,12 @@ public class MainTestController implements Initializable
             serverBar2DataTest.setMaxValue(serverBar2Goal);
 
             //---------------------------------Updating the Peripheral Units------------------------------------
-            kiwi4DataTest.setValue(kiwi4sCurrentTest);
-            kiwi4DataTest.setMaxValue(kiwi4sGoalBuild);
-            kiwi25DataTest.setValue(kiwi2XsCurrentTest);
-            kiwi25DataTest.setMaxValue(kiwi2XsGoalBuild);
-            bumpBarDataTest.setValue(bumpBarsCurrentTest);
-            bumpBarDataTest.setMaxValue(bumpBarsGoalBuild);
-            pantherEPC4Test.setValue(pantherEPC4sCurrentTest);
+            periphBar1DataTest.setValue(periphBar1Total);
+            periphBar1DataTest.setMaxValue(periphBar1Goal);
+            periphBar2DataTest.setValue(periphBar2Total);
+            periphBar2DataTest.setMaxValue(periphBar2Goal);
+            periphBar3DataTest.setValue(periphBar3Total);
+            periphBar3DataTest.setMaxValue(periphBar3Goal);
 
             //---------------------------------Updating the Optic Units------------------------------------
             optic12DataTest.setValue(optic12sCurrentTest);
@@ -1798,6 +1804,54 @@ public class MainTestController implements Initializable
 
     public void setServerBar2Goal(double serverBar2Goal) {
         this.serverBar2Goal = serverBar2Goal;
+    }
+
+    public double getPeriphBar1Total() {
+        return periphBar1Total;
+    }
+
+    public void setPeriphBar1Total(double periphBar1Total) {
+        this.periphBar1Total = periphBar1Total;
+    }
+
+    public double getPeriphBar1Goal() {
+        return periphBar1Goal;
+    }
+
+    public void setPeriphBar1Goal(double periphBar1Goal) {
+        this.periphBar1Goal = periphBar1Goal;
+    }
+
+    public double getPeriphBar2Total() {
+        return periphBar2Total;
+    }
+
+    public void setPeriphBar2Total(double periphBar2Total) {
+        this.periphBar2Total = periphBar2Total;
+    }
+
+    public double getPeriphBar2Goal() {
+        return periphBar2Goal;
+    }
+
+    public void setPeriphBar2Goal(double periphBar2Goal) {
+        this.periphBar2Goal = periphBar2Goal;
+    }
+
+    public double getPeriphBar3Total() {
+        return periphBar3Total;
+    }
+
+    public void setPeriphBar3Total(double periphBar3Total) {
+        this.periphBar3Total = periphBar3Total;
+    }
+
+    public double getPeriphBar3Goal() {
+        return periphBar3Goal;
+    }
+
+    public void setPeriphBar3Goal(double periphBar3Goal) {
+        this.periphBar3Goal = periphBar3Goal;
     }
 
 }

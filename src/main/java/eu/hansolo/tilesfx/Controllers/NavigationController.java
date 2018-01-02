@@ -1,12 +1,15 @@
 package eu.hansolo.tilesfx.Controllers;
 
 import eu.hansolo.tilesfx.tools.Messenger;
+import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -66,6 +69,18 @@ public class NavigationController implements Initializable {
 
     private void createActions()
     {
+        Tooltip buildTool = new Tooltip("Build");
+        Tooltip testTool = new Tooltip("Test");
+        Tooltip stageTool = new Tooltip("Stage");
+        Tooltip safetyTool = new Tooltip("Safety");
+        Tooltip qualityTool = new Tooltip("Quality");
+
+        Tooltip.install(buildIcon,buildTool);
+        Tooltip.install(testIcon,testTool);
+        Tooltip.install(stageIcon,stageTool);
+        Tooltip.install(safetyIcon,safetyTool);
+        Tooltip.install(qualityIcon,qualityTool);
+
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {

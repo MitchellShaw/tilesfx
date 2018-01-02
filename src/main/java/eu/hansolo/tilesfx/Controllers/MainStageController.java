@@ -127,6 +127,7 @@ public class MainStageController implements Initializable
     double serversPercentTotalStage;
     double periphPercentTotalStage;
 
+    //---------------------------------Creating the Bar Chart Items for Hosp-------------------------------------
     BarChartItem posBar1DataStage;
     BarChartItem p1x30DataStage;
     BarChartItem t1000DataStage;
@@ -135,10 +136,9 @@ public class MainStageController implements Initializable
     BarChartItem serverBar1DataStage;
     BarChartItem serverBar2DataStage;
     //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-    BarChartItem kiwi4DataStage;
-    BarChartItem kiwi25DataStage;
-    BarChartItem bumpBarDataStage;
-    BarChartItem pantherEPC4Stage;
+    BarChartItem periphBar1DataStage;
+    BarChartItem periphBar2DataStage;
+    BarChartItem periphBar3DataStage;
     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
     BarChartItem nextGenDisplaysStage;
     BarChartItem retailBar1Stage;
@@ -151,6 +151,15 @@ public class MainStageController implements Initializable
 
     double serverBar2Total;
     double serverBar2Goal;
+
+    double periphBar1Total;
+    double periphBar1Goal;
+
+    double periphBar2Total;
+    double periphBar2Goal;
+
+    double periphBar3Total;
+    double periphBar3Goal;
 
     double x = 0;
     double y = 0;
@@ -175,10 +184,9 @@ public class MainStageController implements Initializable
         serverBar1DataStage = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
         serverBar2DataStage = new BarChartItem("1656/1657", serverBar2Total,serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        kiwi4DataStage = new BarChartItem("Kiwi 4", kiwi4sCurrentStage, kiwi4sGoalStage, Tile.BLUE);
-        kiwi25DataStage = new BarChartItem("Kiwi 2/2.5", kiwi2XsCurrentStage, kiwi2XsGoalStage, Tile.RED);
-        bumpBarDataStage = new BarChartItem("Bumpbar", bumpBarsCurrentStage, bumpBarsGoalStage, Tile.GREEN);
-        pantherEPC4Stage = new BarChartItem("Panther/EPC4", pantherEPC4sCurrentStage, pantherEPC4sGoalStage, Tile.YELLOW);
+        periphBar1DataStage = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
+        periphBar2DataStage = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar3DataStage = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         retailBar1Stage = new BarChartItem("770X",retailBar1Total, retailBar1Goal, Tile.BLUE);
         nextGenDisplaysStage = new BarChartItem("5968/5985", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.RED);
@@ -305,7 +313,7 @@ public class MainStageController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(480, 540)
-                .barChartItems(kiwi4DataStage, kiwi25DataStage, bumpBarDataStage, pantherEPC4Stage)
+                .barChartItems(periphBar1DataStage,periphBar2DataStage,periphBar3DataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
@@ -367,14 +375,12 @@ public class MainStageController implements Initializable
             serverBar2DataStage.setMaxValue(serverBar2Goal);
 
             //---------------------------------Updating the Peripheral Units------------------------------------
-            kiwi4DataStage.setValue(kiwi4sCurrentStage);
-            kiwi4DataStage.setMaxValue(kiwi4sGoalStage);
-            kiwi25DataStage.setValue(kiwi2XsCurrentStage);
-            kiwi25DataStage.setMaxValue(kiwi2XsGoalStage);
-            bumpBarDataStage.setValue(bumpBarsCurrentStage);
-            bumpBarDataStage.setMaxValue(bumpBarsGoalStage);
-            pantherEPC4Stage.setValue(pantherEPC4sCurrentStage);
-            pantherEPC4Stage.setMaxValue(pantherEPC4sGoalStage);
+            periphBar1DataStage.setValue(periphBar1Total);
+            periphBar1DataStage.setMaxValue(periphBar1Goal);
+            periphBar2DataStage.setValue(periphBar2Total);
+            periphBar2DataStage.setMaxValue(periphBar2Goal);
+            periphBar3DataStage.setValue(periphBar3Total);
+            periphBar3DataStage.setMaxValue(periphBar3Goal);
             //---------------------------------Updating the Retail Units----------------------------------------
             retailBar1Stage.setValue(retailBar1Total);
             retailBar1Stage.setMaxValue(retailBar1Goal);
@@ -1124,5 +1130,53 @@ public class MainStageController implements Initializable
 
     public void setServerBar2Goal(double serverBar2Goal) {
         this.serverBar2Goal = serverBar2Goal;
+    }
+
+    public double getPeriphBar1Total() {
+        return periphBar1Total;
+    }
+
+    public void setPeriphBar1Total(double periphBar1Total) {
+        this.periphBar1Total = periphBar1Total;
+    }
+
+    public double getPeriphBar1Goal() {
+        return periphBar1Goal;
+    }
+
+    public void setPeriphBar1Goal(double periphBar1Goal) {
+        this.periphBar1Goal = periphBar1Goal;
+    }
+
+    public double getPeriphBar2Total() {
+        return periphBar2Total;
+    }
+
+    public void setPeriphBar2Total(double periphBar2Total) {
+        this.periphBar2Total = periphBar2Total;
+    }
+
+    public double getPeriphBar2Goal() {
+        return periphBar2Goal;
+    }
+
+    public void setPeriphBar2Goal(double periphBar2Goal) {
+        this.periphBar2Goal = periphBar2Goal;
+    }
+
+    public double getPeriphBar3Total() {
+        return periphBar3Total;
+    }
+
+    public void setPeriphBar3Total(double periphBar3Total) {
+        this.periphBar3Total = periphBar3Total;
+    }
+
+    public double getPeriphBar3Goal() {
+        return periphBar3Goal;
+    }
+
+    public void setPeriphBar3Goal(double periphBar3Goal) {
+        this.periphBar3Goal = periphBar3Goal;
     }
 }
