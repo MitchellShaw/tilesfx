@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -65,6 +66,12 @@ public class OpticBuildController implements Initializable
 
     Tile message;
 
+    double x = 0;
+    double y = 0;
+
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
+
     String useDate;
 
     ImageView stopView = new ImageView();
@@ -93,12 +100,16 @@ public class OpticBuildController implements Initializable
 
         opticFTT = mainBuildController.getOpticFTT();
 
+        opticFTT.setPrefSize(480,540);
+
         opticTest = mainTestController.getOpticTest();
 
 
         opticTestPercent = mainTestController.getOpticTestPercent();
 
         opticTestFTT = mainTestController.getOpticFTT();
+
+        opticTestFTT.setPrefSize(480,540);
 
 
         final ImageView logoView = new ImageView();
@@ -202,18 +213,18 @@ public class OpticBuildController implements Initializable
 
         pane.add(opticBuild, 1, 0, 1, 2);
         pane.add(opticPercent, 2, 0, 1, 1);
-        pane.add(opticFTT, 3, 0, 1, 1);
+        pane.add(opticFTT, 3, 0, 1, 2);
         pane.add(opticTest, 1, 2, 1, 2);
         pane.add(opticTestPercent, 2, 2, 1, 1);
-        pane.add(opticTestFTT, 3, 2, 1, 1);
+        pane.add(opticTestFTT, 3, 2, 1, 2);
         pane.add(logo, 0, 0, 1, 1);
         pane.add(clock, 0, 1, 1, 1);
         pane.add(stopLight, 0, 2, 1, 1);
         pane.add(daySince, 0, 3, 1, 1);
         pane.add(filler1, 2, 1, 1, 1);
-        pane.add(filler2, 3, 1, 1, 1);
+        //pane.add(filler2, 3, 1, 1, 1);
         pane.add(filler3, 2, 3, 1, 1);
-        pane.add(filler4, 3, 3, 1, 1);
+        //pane.add(filler4, 3, 3, 1, 1);
 
         tiles.add(opticBuild);
         tiles.add(opticPercent);
@@ -222,15 +233,18 @@ public class OpticBuildController implements Initializable
         tiles.add(opticTestPercent);
         tiles.add(opticTestFTT);
         tiles.add(logo);
-        tiles.add(clock);
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
-        tiles.add(filler2);
+        //tiles.add(filler2);
         tiles.add(filler3);
-        tiles.add(filler4);
+       // tiles.add(filler4);
 
         createActions();
+        if(pane!=null)
+        {
+            tilesListeners(tiles);
+        }
 
     }
 
@@ -326,10 +340,56 @@ public class OpticBuildController implements Initializable
                         temp.stop();
                     }
                 }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
             }
         });
     }
 
+    private void tilesListeners(ArrayList<Tile> tileList)
+    {
+
+        for(int i =0;i<tileList.size();i++)
+        {
+            Tile temp = tileList.get(i);
+
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
+            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                }
+            });
+            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event)
+                {
+                    temp.getScene().getWindow().setX(event.getScreenX() - x);
+                    temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
+                }
+            });
+        }
+    }
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
@@ -351,6 +411,36 @@ public class OpticBuildController implements Initializable
             }
         }
         return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
+    }
+    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        }
     }
     public Tile getLogo() {
         return logo;

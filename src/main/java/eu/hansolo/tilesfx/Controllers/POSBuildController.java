@@ -63,6 +63,12 @@ public class POSBuildController implements Initializable
 
     Tile message;
 
+    double x = 0;
+    double y = 0;
+
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
+
     Messenger messenger;
 
     ArrayList<Tile> tiles;
@@ -91,12 +97,16 @@ public class POSBuildController implements Initializable
 
         posFTT = mainBuildController.getPosFTT();
 
+        posFTT.setPrefSize(480,540);
+
         posTest = mainTestController.getPosTest();
 
 
         posTestPercent = mainTestController.getPosTestPercent();
 
         posTestFTT = mainTestController.getPosFTT();
+
+        posTestFTT.setPrefSize(480,540);
 
 
         final ImageView logoView = new ImageView();
@@ -200,18 +210,18 @@ public class POSBuildController implements Initializable
 
         pane.add(posBuild,1,0,1,2);
         pane.add(posPercent,2,0,1,1);
-        pane.add(posFTT,3,0,1,1);
+        pane.add(posFTT,3,0,1,2);
         pane.add(posTest,1,2,1,2);
         pane.add(posTestPercent,2,2,1,1);
-        pane.add(posTestFTT,3,2,1,1);
+        pane.add(posTestFTT,3,2,1,2);
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
         pane.add(filler1,2,1,1,1);
-        pane.add(filler2,3,1,1,1);
+        //pane.add(filler2,3,1,1,1);
         pane.add(filler3,2,3,1,1);
-        pane.add(filler4,3,3,1,1);
+        //pane.add(filler4,3,3,1,1);
 
         tiles.add(posBuild);
         tiles.add(posPercent);
@@ -220,15 +230,18 @@ public class POSBuildController implements Initializable
         tiles.add(posTestPercent);
         tiles.add(posTestFTT);
         tiles.add(logo);
-        tiles.add(clock);
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
-        tiles.add(filler2);
+       // tiles.add(filler2);
         tiles.add(filler3);
-        tiles.add(filler4);
+       // tiles.add(filler4);
 
         createActions();
+        if(pane != null)
+        {
+            tilesListeners(tiles);
+        }
 
     }
 
@@ -325,30 +338,109 @@ public class POSBuildController implements Initializable
                         temp.stop();
                     }
                 }
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
             }
         });
     }
+
+    private void tilesListeners(ArrayList<Tile> tileList)
+    {
+
+        for(int i =0;i<tileList.size();i++)
+        {
+            Tile temp = tileList.get(i);
+
+            temp.setAnimated(true);
+            temp.setAnimationDuration(3000);
+
+            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+
+                }
+            });
+            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event)
+                {
+                    temp.getScene().getWindow().setX(event.getScreenX() - x);
+                    temp.getScene().getWindow().setY(event.getScreenY() - y);
+                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                    }
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    {
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    }
+                }
+            });
+        }
+    }
+
     private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY ;
-        double minY = Double.POSITIVE_INFINITY ;
-        double maxX = Double.NEGATIVE_INFINITY ;
-        double maxY = Double.NEGATIVE_INFINITY ;
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
         for (Screen screen : Screen.getScreens()) {
             Rectangle2D screenBounds = screen.getBounds();
             if (screenBounds.getMinX() < minX) {
                 minX = screenBounds.getMinX();
             }
             if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY() ;
+                minY = screenBounds.getMinY();
             }
             if (screenBounds.getMaxX() > maxX) {
                 maxX = screenBounds.getMaxX();
             }
             if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY() ;
+                maxY = screenBounds.getMaxY();
             }
         }
-        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
+        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        }
     }
     public Messenger getMessenger() {
         return messenger;

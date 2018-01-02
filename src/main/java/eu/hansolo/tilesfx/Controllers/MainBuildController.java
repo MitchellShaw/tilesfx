@@ -173,6 +173,7 @@ public class MainBuildController implements Initializable
     Messenger messenger;
 
     DecimalFormat df = new DecimalFormat("#.0");
+    DecimalFormat hundred = new DecimalFormat("#");
 
     double x = 0;
     double y = 0;
@@ -248,6 +249,11 @@ public class MainBuildController implements Initializable
                 .roundedCorners(false)
                 .build();
 
+        if(posThrough == 100)
+        {
+            posFTT.setDescription(hundred.format(posThrough)+"%");
+        }
+
         pane.add(posPercent,0,2,1,1);
         pane.add(posFTT,0,3,1,1);
 
@@ -289,6 +295,11 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
+
+        if(retailFTT.getDescription().equals( "100.0"))
+        {
+           retailFTT.setDescription(hundred.format(retailThrough)+"%");
+        }
 
         pane.add(retailPercent,1,2,1,1);
         pane.add(retailFTT,1,3,1,1);
@@ -333,6 +344,10 @@ public class MainBuildController implements Initializable
                 .roundedCorners(false)
                 .build();
 
+        if(serversFTT.getDescription().equals( "100.0"))
+        {
+            serversFTT.setDescription(hundred.format(serversThrough)+"%");
+        }
 
         pane.add(serversPercent,2,2,1,1);
         pane.add(serversFTT,2,3,1,1);
@@ -377,6 +392,11 @@ public class MainBuildController implements Initializable
                 .roundedCorners(false)
                 .build();
 
+        if(periphFTT.getDescription().equals( "100.0"))
+        {
+            periphFTT.setDescription(hundred.format(periphThrough)+"%");
+        }
+
         pane.add(periphPercent,3,2,1,1);
         pane.add(periphFTT,3,3,1,1);
 
@@ -420,6 +440,11 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
+
+        if(opticFTT.getDescription().equals( "100.0"))
+        {
+            opticFTT.setDescription(hundred.format(opticThrough)+"%");
+        }
 
         pane.add(opticPercent,4,2,1,1);
         pane.add(opticFTT,4,3,1,1);
@@ -489,6 +514,10 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for POS Dial------------------------------------------
             posPercent.setValue(posPercentTotalBuild);
             posFTT.setDescription(df.format(posThrough) + "%");
+            if(posThrough == 100)
+            {
+                posFTT.setDescription(hundred.format(posThrough)+"%");
+            }
 
             changePercent(posPercent, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
             changePercent(posFTT, posTotalCurrentBuild, posTotalGoalBuild, posPercentTotalBuild);
@@ -496,6 +525,10 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
             serversPercent.setValue(serversPercentTotalBuild);
             serversFTT.setDescription(df.format(serversThrough) + "%");
+            if(serversFTT.getDescription().equals( "100.0"))
+            {
+                serversFTT.setDescription(hundred.format(serversThrough)+"%");
+            }
 
             changePercent(serversPercent, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
             changePercent(serversFTT, serverCurrentBuild, serverGoalTotalBuild, serversPercentTotalBuild);
@@ -503,6 +536,11 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
             periphPercent.setValue(periphPercentTotalBuild);
             periphFTT.setDescription(df.format(periphThrough) + "%");
+            if(periphFTT.getDescription().equals( "100.0"))
+            {
+                periphFTT.setDescription(hundred.format(periphThrough)+"%");
+            }
+
 
             changePercent(periphPercent, periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
             changePercent(periphFTT, periphCurrentTotalBuild, periphGoalTotalBuild, periphPercentTotalBuild);
@@ -510,6 +548,10 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
             opticPercent.setValue(opticPercentTotalBuild);
             opticFTT.setDescription(df.format(opticThrough) + "%");
+            if(opticFTT.getDescription().equals( "100.0"))
+            {
+                opticFTT.setDescription(hundred.format(opticThrough)+"%");
+            }
 
             changePercent(opticPercent, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
             changePercent(opticFTT, opticCurrentTotalBuild, opticGoalTotalBuild, opticPercentTotalBuild);
@@ -517,6 +559,11 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
             retailPercent.setValue(retailPercentTotalBuild);
             retailFTT.setDescription(df.format(retailThrough) + "%");
+            if(retailFTT.getDescription().equals( "100.0"))
+            {
+                retailFTT.setDescription(hundred.format(retailThrough)+"%");
+            }
+
 
             changePercent(retailPercent, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
             changePercent(retailFTT, retailTotalCurrentBuild, retailTotalGoalBuild, retailPercentTotalBuild);
@@ -644,9 +691,6 @@ public class MainBuildController implements Initializable
                     {
                         temp.stop();
                     }
-                }
-                if (event.getCode() == KeyCode.F5) {
-                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
                 }
             }
         });
@@ -789,10 +833,9 @@ public class MainBuildController implements Initializable
             });
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
+                public void handle(MouseEvent event)
+                {
+//
                     temp.getScene().getWindow().setX(event.getScreenX() - x);
                     temp.getScene().getWindow().setY(event.getScreenY() - y);
                     if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
@@ -810,35 +853,35 @@ public class MainBuildController implements Initializable
     }
 
     private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
+{
+    if (screens.size() == 1) {
+        primaryStage.setX(allScreenBounds.getMinX());
+        primaryStage.setY(allScreenBounds.getMinY());
+    }
+    if (screens.size() == 2) {
+
+        if (primaryStage.getX() < 0) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        } else {
+            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+    } else {
+        if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
             primaryStage.setX(allScreenBounds.getMinX());
             primaryStage.setY(allScreenBounds.getMinY());
         }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
+        if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+            primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+            primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+            primaryStage.setY(allScreenBounds.getMinY());
         }
     }
+}
     public Messenger getMessenger() {
         return messenger;
     }

@@ -172,6 +172,7 @@ public class Main extends Application {
         posStageController.setMessenger(messenger);
         retailStageController.setMessenger(messenger);
         periphStageController.setMessenger(messenger);
+        loadingController.setMessenger(messenger);
 
         FXMLLoader root;
 

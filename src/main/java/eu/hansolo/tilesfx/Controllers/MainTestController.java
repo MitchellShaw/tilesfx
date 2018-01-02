@@ -57,8 +57,6 @@ public class MainTestController implements Initializable
     @FXML
     private GridPane pane;
 
-    double x = 0;
-    double y = 0;
     //---------------------------------Variables for Query Data (POS)-----------------------------------------
     double p1x30CurrentBuild;
     double p1x30GoalBuild;
@@ -226,9 +224,11 @@ public class MainTestController implements Initializable
 
     ArrayList<Tile> tiles;
 
+    double x = 0;
+    double y = 0;
+
     ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
     Bounds allScreenBounds = computeAllScreenBounds();
-
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -797,10 +797,8 @@ public class MainTestController implements Initializable
             });
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
+                public void handle(MouseEvent event)
+                {
                     temp.getScene().getWindow().setX(event.getScreenX() - x);
                     temp.getScene().getWindow().setY(event.getScreenY() - y);
                     if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())

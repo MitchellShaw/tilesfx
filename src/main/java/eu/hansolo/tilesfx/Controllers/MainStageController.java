@@ -693,10 +693,8 @@ public class MainStageController implements Initializable
             });
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
+                public void handle(MouseEvent event)
+                {
                     temp.getScene().getWindow().setX(event.getScreenX() - x);
                     temp.getScene().getWindow().setY(event.getScreenY() - y);
                     if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())

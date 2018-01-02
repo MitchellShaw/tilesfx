@@ -1,11 +1,15 @@
 package eu.hansolo.tilesfx.Controllers;
 
+import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.tools.Messenger;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
@@ -16,14 +20,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
+import javafx.stage.*;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class NavigationController implements Initializable {
@@ -44,27 +46,16 @@ public class NavigationController implements Initializable {
 
     Messenger messenger;
 
+    double x = 0;
+    double y = 0;
+
+    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    Bounds allScreenBounds = computeAllScreenBounds();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         createActions();
-//        Tooltip buildToolTip = new Tooltip("Build");
-//        buildToolTip.setFont(Font.font("OpenSans"));
-//        buildToolTip.setGraphic(null);
-//        Tooltip testToolTip = new Tooltip("Testing");
-//        testToolTip.setFont(Font.font("OpenSans"));
-//        Tooltip stageToolTip = new Tooltip("Staging");
-//        stageToolTip.setFont(Font.font("OpenSans"));
-//        Tooltip safetyToolTip= new Tooltip("Safety");
-//        safetyToolTip.setFont(Font.font("OpenSans"));
-//        Tooltip qualityToolTip = new Tooltip("Quality");
-//        qualityToolTip.setFont(Font.font("OpenSans"));
-//
-//        Tooltip.install(buildIcon,buildToolTip);
-//        Tooltip.install(testIcon,testToolTip);
-//        Tooltip.install(stageIcon,stageToolTip);
-//        Tooltip.install(safetyIcon,safetyToolTip);
-//        Tooltip.install(qualityIcon,qualityToolTip);
     }
 
     private void createActions()
@@ -84,6 +75,39 @@ public class NavigationController implements Initializable {
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.F4)
+                {
+                    Stage primaryStage = messenger.getPrimaryStage();
+                    primaryStage.setIconified(true);
+                }
+                if(event.getCode() == KeyCode.F5)
+                {
+                    screenMove(messenger.getPrimaryStage(),allScreenBounds,screens);
+                }
+            }
+        });
+        pane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            }
+        });
+        pane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                pane.getScene().getWindow().setX(event.getScreenX() - x);
+                pane.getScene().getWindow().setY(event.getScreenY() - y);
+                if(pane.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                {
+                   pane.getScene().getWindow().setX(allScreenBounds.getMinX());
+
+                }
+                if(pane.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                {
+                    pane.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                }
             }
         });
         buildIcon.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -257,6 +281,59 @@ public class NavigationController implements Initializable {
 //                primaryStage.setScene(buildScene);
 //            }
 //        });
+    }
+
+    private Bounds computeAllScreenBounds() {
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        for (Screen screen : Screen.getScreens()) {
+            Rectangle2D screenBounds = screen.getBounds();
+            if (screenBounds.getMinX() < minX) {
+                minX = screenBounds.getMinX();
+            }
+            if (screenBounds.getMinY() < minY) {
+                minY = screenBounds.getMinY();
+            }
+            if (screenBounds.getMaxX() > maxX) {
+                maxX = screenBounds.getMaxX();
+            }
+            if (screenBounds.getMaxY() > maxY) {
+                maxY = screenBounds.getMaxY();
+            }
+        }
+        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
+    }
+    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
+    {
+        if (screens.size() == 1) {
+            primaryStage.setX(allScreenBounds.getMinX());
+            primaryStage.setY(allScreenBounds.getMinY());
+        }
+        if (screens.size() == 2) {
+
+            if (primaryStage.getX() < 0) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            } else {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        } else {
+            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
+                primaryStage.setX(allScreenBounds.getMinX());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
+                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
+                primaryStage.setY(allScreenBounds.getMinY());
+            }
+        }
     }
     public Messenger getMessenger() {
         return messenger;

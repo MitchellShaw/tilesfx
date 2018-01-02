@@ -508,17 +508,12 @@ public class Tool {
                 "                AND f.LocationID = 'MIDLAND'\n" +
                 "                AND ut.Type = 'Checkout'\n" +
                 "\t\t\t\tAND ut.IsPass = '1'\n" +
-                "\t\t\t\tAND (i.ItemID LIKE '1656-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1930-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1657-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1611-%'\n" +
+                "\t\t\t\tAND(i.ItemID LIKE '1611-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '1612-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '7745-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '7734-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '7743-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '7761-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '7791-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '7744-%')\n" +
+                "\t\t\t\tOR i.ItemID LIKE '7761-%')\n" +
                 "\n" +
                 "\t\t\t\tORDER BY UserID,ItemID";
 
