@@ -525,7 +525,7 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
             serversPercent.setValue(serversPercentTotalBuild);
             serversFTT.setDescription(df.format(serversThrough) + "%");
-            if(serversFTT.getDescription().equals( "100.0"))
+            if(serversThrough == 100)
             {
                 serversFTT.setDescription(hundred.format(serversThrough)+"%");
             }
@@ -548,7 +548,7 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
             opticPercent.setValue(opticPercentTotalBuild);
             opticFTT.setDescription(df.format(opticThrough) + "%");
-            if(opticFTT.getDescription().equals( "100.0"))
+            if(opticThrough == 100)
             {
                 opticFTT.setDescription(hundred.format(opticThrough)+"%");
             }
@@ -559,7 +559,7 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
             retailPercent.setValue(retailPercentTotalBuild);
             retailFTT.setDescription(df.format(retailThrough) + "%");
-            if(retailFTT.getDescription().equals( "100.0"))
+            if(retailThrough == 100)
             {
                 retailFTT.setDescription(hundred.format(retailThrough)+"%");
             }

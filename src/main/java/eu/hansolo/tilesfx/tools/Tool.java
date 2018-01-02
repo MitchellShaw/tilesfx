@@ -252,27 +252,15 @@ public class Tool {
             resultSet = statement.executeQuery(query);
 
             System.out.println("Connection established.");
-
-            if (!resultSet.next()) {
-                //do something
-                System.out.println("Nothing to see here.");
-
-            } else {
-                String model = resultSet.getString("ItemID");
-
-                String sub = model.substring(0, model.indexOf('-'));
-
-                strings.add(sub);
-
                 while (resultSet.next()) {
 
-                    model = resultSet.getString("ItemID");
+                    String model = resultSet.getString("ItemID");
 
-                    sub = model.substring(0, model.indexOf('-'));
+                    String sub = model.substring(0, model.indexOf('-'));
 
                     strings.add(sub);
+
                 }
-            }
         }finally{
             try{
                 System.out.println("Closing connection");
@@ -599,52 +587,13 @@ public class Tool {
 
 
 
-        String query ="SELECT DISTINCT \n" +
-                "Item.ItemID, \n" +
-                "Unit.Serial, \n" +
-                "CAST(UnitTest.IsPass AS INT) AS Result, \n" +
-                "UnitTest.[Type],\n" +
-                "UnitTest.TestDate,\n" +
-                "[User].[UserID]\n" +
-                "\n" +
-                "FROM\n" +
-                "(\n" +
-                "\tSELECT DISTINCT \n" +
-                "\tUnit.Serial, \n" +
-                "\tItem.ItemID,\n" +
-                "\tmin(UnitTest.RQSID) AS TestRQSID \n" +
-                "\tFROM UnitTest \n" +
-                "\tJOIN Unit ON UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "\tJOIN Item ON Unit.ItemRQSID = Item.RQSID \n" +
-                "\tJOIN Location ON UnitTest.EntryLocationRQSID = Location.RQSID\n" +
-                "\tWHERE UnitTest.[Type] IN ('Functional')\n" +
-                "\t--and UnitTest.EntryLocationRQSID = '3421'\n" +
-                "\tAND Location.FacilityRQSID = 3421\n" +
-                "\tAND UnitTest.EntryLocationRQSID NOT IN (3745)\n" +
-                "\tGROUP BY Unit.Serial, Item.ItemID\n" +
-                ") \n" +
-                "AS FirstTest\n" +
-                "\n" +
-                "JOIN UnitTest ON FirstTest.TestRQSID = UnitTest.RQSID\n" +
-                "JOIN Unit ON UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "JOIN Item ON Unit.ItemRQSID = Item.RQSID\n" +
-                "JOIN Location ON UnitTest.EntryLocationRQSID = Location.RQSID\n" +
-                "JOIN [User] ON UnitTest.EntryUserRQSID = [User].RQSID\n" +
-                "\n" +
-                "WHERE Cast(UnitTest.TestDate as Date) >= Cast(GetDate() as Date)\n" +
-                "                 \n" +
-                "                AND (Item.ItemID LIKE '7734%' OR Item.ItemID LIKE '7743%' OR Item.ItemID LIKE '7744%' OR Item.ItemID LIKE '7745%' OR Item.ItemID LIKE '7754%' OR Item.ItemID LIKE '7761%' OR Item.ItemID LIKE '7791%') \n" +
-                "                 \n" +
-                "                ORDER BY ItemID, Result ASC";
+        String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
         Connection conn = null;
 
         Statement statement = null;
         ResultSet resultSet = null;
 
-
-
-        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
             String User = "rqs_read_only";
@@ -655,23 +604,12 @@ public class Tool {
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                    flag = true;
-                    String model = resultSet.getString("ItemID");
+                    String model = resultSet.getString("name");
+                    if(model.equals("HospitalityFTT"))
+                    {
+                        percentages = resultSet.getDouble("value");
+                    }
 
-                    String sub = model.substring(0, model.indexOf('-'));
-
-                    int result = resultSet.getInt("Result");
-
-                    itemIDS.add(sub);
-                    count.add(result);
-
-            }
-        }finally
-        {
-            if(!itemIDS.isEmpty()) {
-                double size = count.size();
-                double one = Collections.frequency(count, 1);
-                percentages = ((one / size) * 100);
             }
             try{
                 conn.close();
@@ -680,8 +618,6 @@ public class Tool {
             {
                 e.printStackTrace();
             }
-
-        }
 
         return percentages;
 
@@ -733,25 +669,14 @@ public class Tool {
 
             System.out.println("Connection established.");
 
-            if (!resultSet.next()) {
-                //do something
-                System.out.println("Nothing to see here.");
-
-            } else {
-                String model = resultSet.getString("ItemID");
-
-                String sub = model.substring(0, model.indexOf('-'));
-
-                strings.add(sub);
                 while (resultSet.next()) {
 
-                    model = resultSet.getString("ItemID");
+                    String model = resultSet.getString("ItemID");
 
-                    sub = model.substring(0, model.indexOf('-'));
+                    String sub = model.substring(0, model.indexOf('-'));
 
                     strings.add(sub);
                 }
-            }
         }finally{
             try{
                 System.out.println("Closing connection");
@@ -957,45 +882,12 @@ public class Tool {
     public double retailFTTDataBase() throws ClassNotFoundException, SQLException
     {
 
-
-        ArrayList<String> itemIDS = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>();
         double percentages = 0.0;
         boolean flag;
 
 
 
-        String query ="select distinct \n" +
-                "Item.ItemID, \n" +
-                "CAST(UnitTest.IsPass AS INT) as Result, \n" +
-                "UnitTest.[Type],\n" +
-                "UnitTest.TestDate\n" +
-                "\n" +
-                "from\n" +
-                "(\n" +
-                "\tselect distinct \n" +
-                "\tItem.ItemID,\n" +
-                "\tmin(UnitTest.RQSID) as TestRQSID \n" +
-                "\tfrom UnitTest \n" +
-                "\tjoin Unit on UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "\tjoin Item on Unit.ItemRQSID = Item.RQSID \n" +
-                "\twhere UnitTest.[Type] in ('Functional')\n" +
-                "\tand UnitTest.EntryLocationRQSID in (3737, 3422, 3424, 3421, 3738, 3744, 3741, 3742, 3743, 3821, 3740, 3425, 3739, 3746) " +
-                "\tgroup by Unit.Serial, Item.ItemID\n" +
-                ") \n" +
-                "as FirstTest\n" +
-                "\n" +
-                "join UnitTest on FirstTest.TestRQSID = UnitTest.RQSID\n" +
-                "join Unit on UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "join Item on Unit.ItemRQSID = Item.RQSID\n" +
-                "join Location on UnitTest.EntryLocationRQSID = Location.RQSID\n" +
-                "\n" +
-                "\n" +
-                "WHERE Cast(UnitTest.TestDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
-                "\n" +
-                "and (Item.ItemID like '7701%' or Item.ItemID like '7702%'  or Item.ItemID like '7703%' or Item.ItemID like '5968%' or Item.ItemID like '5985%')\n" +
-                "\n" +
-                "Order by ItemID, Result asc";
+        String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
         Connection conn = null;
 
@@ -1004,34 +896,22 @@ public class Tool {
 
 
 
-        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
             conn = DriverManager.getConnection(URL,User,Pass);
 
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                flag = true;
-                String model = resultSet.getString("ItemID");
+                String model = resultSet.getString("name");
+                if(model.equals("RetailFTT"))
+                {
+                    percentages = resultSet.getDouble("value");
+                }
 
-                String sub = model.substring(0, model.indexOf('-'));
-
-                int result = resultSet.getInt("Result");
-
-                itemIDS.add(sub);
-                count.add(result);
-
-            }
-        }finally
-        {
-            if(!itemIDS.isEmpty()) {
-                double size = count.size();
-                double one = Collections.frequency(count, 1);
-                percentages = ((one / size) * 100);
             }
             try{
                 conn.close();
@@ -1041,7 +921,6 @@ public class Tool {
                 e.printStackTrace();
             }
 
-        }
 
         return percentages;
 
@@ -1203,26 +1082,14 @@ public class Tool {
             resultSet = statement.executeQuery(query);
 
             System.out.println("Connection established.");
-
-            if (!resultSet.next()) {
-                //do something
-                System.out.println("Nothing to see here.");
-
-            } else {
-                String model = resultSet.getString("ItemID");
-
-                String sub = model.substring(0, model.indexOf('-'));
-
-                strings.add(sub);
                 while (resultSet.next()) {
 
-                    model = resultSet.getString("ItemID");
+                    String model = resultSet.getString("ItemID");
 
-                    sub = model.substring(0, model.indexOf('-'));
+                    String sub = model.substring(0, model.indexOf('-'));
 
                     strings.add(sub);
                 }
-            }
         }finally{
             try{
                 System.out.println("Closing connection");
@@ -1613,80 +1480,28 @@ public class Tool {
 
 
 
-        String query ="SELECT DISTINCT \n" +
-                "Item.ItemID, \n" +
-                "Unit.Serial, \n" +
-                "CAST(UnitTest.IsPass AS INT) AS Result, \n" +
-                "UnitTest.[Type],\n" +
-                "UnitTest.TestDate,\n" +
-                "[User].[UserID]\n" +
-                "\n" +
-                "FROM\n" +
-                "(\n" +
-                "\tSELECT DISTINCT \n" +
-                "\tUnit.Serial, \n" +
-                "\tItem.ItemID,\n" +
-                "\tmin(UnitTest.RQSID) AS TestRQSID \n" +
-                "\tFROM UnitTest \n" +
-                "\tJOIN Unit ON UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "\tJOIN Item ON Unit.ItemRQSID = Item.RQSID \n" +
-                "\tJOIN Location ON UnitTest.EntryLocationRQSID = Location.RQSID\n" +
-                "\tWHERE UnitTest.[Type] IN ('Functional') \n" +
-                "\t--and UnitTest.EntryLocationRQSID = '3421'\n" +
-                "\tAND Location.FacilityRQSID = 3421\n" +
-                "\tAND UnitTest.EntryLocationRQSID NOT IN (3745)\n" +
-                "\tGROUP BY Unit.Serial, Item.ItemID\n" +
-                ") \n" +
-                "AS FirstTest\n" +
-                "\n" +
-                "JOIN UnitTest ON FirstTest.TestRQSID = UnitTest.RQSID\n" +
-                "JOIN Unit ON UnitTest.UnitRQSID = Unit.RQSID\n" +
-                "JOIN Item ON Unit.ItemRQSID = Item.RQSID\n" +
-                "JOIN Location ON UnitTest.EntryLocationRQSID = Location.RQSID\n" +
-                "JOIN [User] ON UnitTest.EntryUserRQSID = [User].RQSID\n" +
-                "\n" +
-                "WHERE Cast(UnitTest.TestDate AS DATE) >= Cast(GetDate() AS DATE)  \n" +
-                " \n" +
-                "and (Item.ItemID like '5938%' or Item.ItemID like '5943%' or Item.ItemID like '5967%' or Item.ItemID like '1635%' or Item.ItemID like '1640%' or Item.ItemID like '1641%' \n" +
-                "or Item.ItemID like '1642%' or Item.ItemID like '1924%') "+
-                " \n" +
-                " ORDER BY ItemID, Result ASC";
+        String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
         Connection conn = null;
 
         Statement statement = null;
         ResultSet resultSet = null;
 
-
-
-        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
             conn = DriverManager.getConnection(URL,User,Pass);
 
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                flag = true;
-                String model = resultSet.getString("ItemID");
-
-                String sub = model.substring(0, model.indexOf('-'));
-
-                int result = resultSet.getInt("Result");
-
-                itemIDS.add(sub);
-                count.add(result);
-
-            }
-        }finally
-        {
-            if(!itemIDS.isEmpty()) {
-                double size = count.size();
-                double one = Collections.frequency(count, 1);
-                percentages = ((one / size) * 100);
+                String model = resultSet.getString("name");
+                if(model.equals("PeripheralsFTT"))
+                {
+                    percentages = resultSet.getDouble("value");
+                }
             }
             try{
                 conn.close();
@@ -1696,10 +1511,7 @@ public class Tool {
                 e.printStackTrace();
             }
 
-        }
-
         return percentages;
-
     }
 
     //---------------------------------Servers Build Query----------------------------------------------------------------
@@ -1748,26 +1560,15 @@ public class Tool {
             resultSet = statement.executeQuery(query);
 
             System.out.println("Connection established.");
+                while (resultSet.next())
+                {
 
-            if (!resultSet.next()) {
-                //do something
-                System.out.println("Nothing to see here.");
+                    String model = resultSet.getString("ItemID");
 
-            } else {
-                String model = resultSet.getString("ItemID");
-
-                String sub = model.substring(0, model.indexOf('-'));
-
-                strings.add(sub);
-                while (resultSet.next()) {
-
-                    model = resultSet.getString("ItemID");
-
-                    sub = model.substring(0, model.indexOf('-'));
+                    String sub = model.substring(0, model.indexOf('-'));
 
                     strings.add(sub);
                 }
-            }
         }finally{
             try{
                 System.out.println("Closing connection");
@@ -2086,73 +1887,29 @@ public class Tool {
 
 
 
-        String query ="select distinct  \n" +
-                "                Item.ItemID,  \n" +
-                "                CAST(UnitTest.IsPass AS INT) as Result,  \n" +
-                "                UnitTest.[Type], \n" +
-                "                UnitTest.TestDate \n" +
-                "                 \n" +
-                "                from \n" +
-                "                ( \n" +
-                "                select distinct  \n" +
-                "                Item.ItemID, \n" +
-                "                min(UnitTest.RQSID) as TestRQSID  \n" +
-                "                from UnitTest  \n" +
-                "                join Unit on UnitTest.UnitRQSID = Unit.RQSID \n" +
-                "                join Item on Unit.ItemRQSID = Item.RQSID  \n" +
-                "                where UnitTest.[Type] in ('Functional') \n" +
-                "                and UnitTest.EntryLocationRQSID in (3737, 3422, 3424, 3421, 3738, 3744, 3741, 3742, 3743, 3821, 3740, 3425, 3739, 3746) \n" +
-                "                group by Unit.Serial, Item.ItemID \n" +
-                "                )  \n" +
-                "                as FirstTest \n" +
-                "                 \n" +
-                "                join UnitTest on FirstTest.TestRQSID = UnitTest.RQSID \n" +
-                "                join Unit on UnitTest.UnitRQSID = Unit.RQSID \n" +
-                "                join Item on Unit.ItemRQSID = Item.RQSID \n" +
-                "                join Location on UnitTest.EntryLocationRQSID = Location.RQSID \n" +
-                "                 \n" +
-                "                 \n" +
-                "                  WHERE Cast(UnitTest.TestDate AS DATE) >= Cast(GetDate() AS DATE)  \n" +
-                "                 \n" +
-                "                and (Item.ItemID like '1611%' or Item.ItemID like '1612%'  or Item.ItemID like '1656%' or Item.ItemID like '1657%' or Item.ItemID like '1930%') \n" +
-                "                 \n" +
-                "                Order by ItemID, Result asc";
+        String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
         Connection conn = null;
 
         Statement statement = null;
         ResultSet resultSet = null;
 
-
-
-        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
             conn = DriverManager.getConnection(URL,User,Pass);
 
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                flag = true;
-                String model = resultSet.getString("ItemID");
+                String model = resultSet.getString("name");
+                if(model.equals("HospitalityFTT"))
+                {
+                    percentages = resultSet.getDouble("value");
+                }
 
-                String sub = model.substring(0, model.indexOf('-'));
-
-                int result = resultSet.getInt("Result");
-
-                itemIDS.add(sub);
-                count.add(result);
-
-            }
-        }finally
-        {
-            if(!itemIDS.isEmpty()) {
-                double size = count.size();
-                double one = Collections.frequency(count, 1);
-                percentages = ((one / size) * 100);
             }
             try{
                 conn.close();
@@ -2161,11 +1918,7 @@ public class Tool {
             {
                 e.printStackTrace();
             }
-
-        }
-
         return percentages;
-
     }
 
     //---------------------------------Optic Build Query----------------------------------------------------------------
@@ -2220,25 +1973,15 @@ public class Tool {
 
             System.out.println("Connection established.");
 
-            if (!resultSet.next()) {
-                //do something
-                System.out.println("Nothing to see here.");
+                while (resultSet.next())
+                {
 
-            } else {
-                String model = resultSet.getString("ItemID");
+                    String model = resultSet.getString("ItemID");
 
-                String sub = model.substring(0, model.indexOf('-'));
-
-                strings.add(sub);
-                while (resultSet.next()) {
-
-                    model = resultSet.getString("ItemID");
-
-                    sub = model.substring(0, model.indexOf('-'));
+                    String sub = model.substring(0, model.indexOf('-'));
 
                     strings.add(sub);
                 }
-            }
         }finally{
             try{
                 System.out.println("Closing connection");
@@ -2356,46 +2099,13 @@ public class Tool {
 
 
 
-        String query ="select distinct  \n" +
-                "                Item.ItemID,  \n" +
-                "                CAST(UnitTest.IsPass AS INT) as Result,  \n" +
-                "                UnitTest.[Type], \n" +
-                "                UnitTest.TestDate \n" +
-                "                 \n" +
-                "                from \n" +
-                "                ( \n" +
-                "                select distinct  \n" +
-                "                Item.ItemID, \n" +
-                "                min(UnitTest.RQSID) as TestRQSID  \n" +
-                "                from UnitTest  \n" +
-                "                join Unit on UnitTest.UnitRQSID = Unit.RQSID \n" +
-                "                join Item on Unit.ItemRQSID = Item.RQSID  \n" +
-                "                where UnitTest.[Type] in ('Functional') \n" +
-                "                and UnitTest.EntryLocationRQSID in (3737, 3422, 3424, 3421, 3738, 3744, 3741, 3742, 3743, 3821, 3740, 3425, 3739, 3746)  \n" +
-                "                group by Unit.Serial, Item.ItemID \n" +
-                "                )  \n" +
-                "                as FirstTest \n" +
-                "                 \n" +
-                "                join UnitTest on FirstTest.TestRQSID = UnitTest.RQSID \n" +
-                "                join Unit on UnitTest.UnitRQSID = Unit.RQSID \n" +
-                "                join Item on Unit.ItemRQSID = Item.RQSID \n" +
-                "                join Location on UnitTest.EntryLocationRQSID = Location.RQSID \n" +
-                "                 \n" +
-                "                 \n" +
-                "                WHERE Cast(UnitTest.TestDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
-                "                 \n" +
-                "                and (Item.ItemID like '6001%' or Item.ItemID like '6002%' )\n" +
-                "                 \n" +
-                "                Order by ItemID, Result asc";
+        String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
         Connection conn = null;
 
         Statement statement = null;
         ResultSet resultSet = null;
 
-
-
-        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
             String User = "rqs_read_only";
@@ -2406,24 +2116,12 @@ public class Tool {
             resultSet = statement.executeQuery(query);
             while (resultSet.next())
             {
-                flag = true;
-                String model = resultSet.getString("ItemID");
+                String model = resultSet.getString("name");
+                if(model.equals("HospitalityFTT"))
+                {
+                    percentages = resultSet.getDouble("value");
+                }
 
-                String sub = model.substring(0, model.indexOf('-'));
-
-                int result = resultSet.getInt("Result");
-
-
-                itemIDS.add(sub);
-                count.add(result);
-
-            }
-        }finally
-        {
-            if(!itemIDS.isEmpty()) {
-                double size = count.size();
-                double one = Collections.frequency(count, 1);
-                percentages = ((one / size) * 100);
             }
             try{
                 conn.close();
@@ -2433,9 +2131,6 @@ public class Tool {
             {
                 e.printStackTrace();
             }
-
-        }
-
         return percentages;
 
     }
