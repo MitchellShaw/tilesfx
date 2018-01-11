@@ -284,20 +284,9 @@ public class PeriphBuildController implements Initializable {
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ESCAPE) {
-                    MainBuildController buildController = messenger.getMainBuildController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                if (event.getCode() == KeyCode.ESCAPE)
+                {
+                    messenger.getPrimaryStage().setScene(messenger.getMainBuild());
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {

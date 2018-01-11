@@ -249,11 +249,6 @@ public class MainBuildController implements Initializable
                 .roundedCorners(false)
                 .build();
 
-        if(posThrough == 100)
-        {
-            posFTT.setDescription(hundred.format(posThrough)+"%");
-        }
-
         pane.add(posPercent,0,2,1,1);
         pane.add(posFTT,0,3,1,1);
 
@@ -466,6 +461,28 @@ public class MainBuildController implements Initializable
         tiles.add(opticFTT);
         tiles.add(retailFTT);
 
+        if(posThrough == 100)
+        {
+            posFTT.setDescription(hundred.format(posThrough)+"%");
+        }
+        if(serversThrough == 100)
+        {
+            serversFTT.setDescription(hundred.format(serversThrough)+"%");
+        }
+        if(periphThrough == 100)
+        {
+            periphFTT.setDescription(hundred.format(periphThrough)+"%");
+        }
+        if(opticThrough == 100)
+        {
+            opticFTT.setDescription(hundred.format(opticThrough)+"%");
+        }
+        if(retailThrough == 100)
+        {
+            retailFTT.setDescription(hundred.format(retailThrough)+"%");
+        }
+
+
         tilesListeners(tiles);
         refresh();
 
@@ -536,7 +553,7 @@ public class MainBuildController implements Initializable
             //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
             periphPercent.setValue(periphPercentTotalBuild);
             periphFTT.setDescription(df.format(periphThrough) + "%");
-            if(periphFTT.getDescription().equals( "100.0"))
+            if(periphThrough == 100)
             {
                 periphFTT.setDescription(hundred.format(periphThrough)+"%");
             }
@@ -616,19 +633,7 @@ public class MainBuildController implements Initializable
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
-                    NavigationController buildController = messenger.getNavigationController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getNavigationScene());
                 }
                 if(event.getCode() == KeyCode.F4)
                 {
@@ -641,19 +646,7 @@ public class MainBuildController implements Initializable
                 }
                 if(event.getCode() == KeyCode.RIGHT)
                 {
-                    MainTestController buildController = messenger.getMainTestController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainTest());
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
@@ -696,96 +689,37 @@ public class MainBuildController implements Initializable
         });
         posBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                POSBuildController buildController = messenger.getPosBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
             }
         });
         retailBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                RetailBuildController buildController = messenger.getRetailBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
             }
         });
         serversBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                ServersBuildController buildController = messenger.getServersBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/serversBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
             }
         });
         periphBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                PeriphBuildController buildController = messenger.getPeriphBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
             }
         });
         opticBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
         @Override
-        public void handle(MouseEvent event) {
-            OpticBuildController buildController = messenger.getOpticBuildController();
-
-            FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/opticBuildScreen.fxml"));
-            root.setController(buildController);
-            GridPane buildPane = null;
-            try {
-                buildPane = root.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Scene buildScene = new Scene(buildPane, 1920, 1080);
-            Stage primaryStage = messenger.getPrimaryStage();
-            primaryStage.setScene(buildScene);
-
+        public void handle(MouseEvent event)
+        {
+            messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
         }
     });
     }

@@ -490,35 +490,11 @@ public class MainStageController implements Initializable
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
-                    NavigationController buildController = messenger.getNavigationController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getNavigationScene());
                 }
                 if(event.getCode() == KeyCode.LEFT)
                 {
-                    MainTestController buildController = messenger.getMainTestController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainTest());
                 }
                 if(event.getCode() == KeyCode.F4)
                 {
@@ -570,81 +546,30 @@ public class MainStageController implements Initializable
         });
        posStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
            @Override
-           public void handle(MouseEvent event) {
-               POSStageController buildController = messenger.getPosStageController();
-
-               FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posStageScreen.fxml"));
-               root.setController(buildController);
-               GridPane buildPane = null;
-               try {
-                   buildPane = root.load();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               Scene buildScene = new Scene(buildPane, 1920, 1080);
-               Stage primaryStage = messenger.getPrimaryStage();
-               primaryStage.setScene(buildScene);
-
+           public void handle(MouseEvent event)
+           {
+               messenger.getPrimaryStage().setScene(messenger.getPosStage());
            }
        });
         retailStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                RetailStageController buildController = messenger.getRetailStageController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailStageScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailStage());
             }
         });
         serversStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                POSStageController buildController = messenger.getPosStageController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posStageScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosStage());
             }
         });
         periphStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                PeriphStageController buildController = messenger.getPeriphStageController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphStageScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphStage());
             }
         });
     }

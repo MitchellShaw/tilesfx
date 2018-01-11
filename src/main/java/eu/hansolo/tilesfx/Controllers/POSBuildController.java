@@ -189,19 +189,7 @@ public class POSBuildController implements Initializable
                 .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
-        Tile filler2  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
-                .roundedCorners(false)
-                .build();
         Tile filler3  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
-                .roundedCorners(false)
-                .build();
-        Tile filler4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
                 .prefSize(384,270)
@@ -219,9 +207,7 @@ public class POSBuildController implements Initializable
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
         pane.add(filler1,2,1,1,1);
-        //pane.add(filler2,3,1,1,1);
         pane.add(filler3,2,3,1,1);
-        //pane.add(filler4,3,3,1,1);
 
         tiles.add(posBuild);
         tiles.add(posPercent);
@@ -233,9 +219,7 @@ public class POSBuildController implements Initializable
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
-       // tiles.add(filler2);
         tiles.add(filler3);
-       // tiles.add(filler4);
 
         createActions();
         if(pane != null)
@@ -287,19 +271,7 @@ public class POSBuildController implements Initializable
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
-                    MainBuildController buildController = messenger.getMainBuildController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainBuild());
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {

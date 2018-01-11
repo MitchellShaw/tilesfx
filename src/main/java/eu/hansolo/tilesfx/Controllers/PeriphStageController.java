@@ -201,20 +201,9 @@ public class PeriphStageController implements Initializable {
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ESCAPE) {
-                    MainStageController buildController = messenger.getMainStageController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                if (event.getCode() == KeyCode.ESCAPE)
+                {
+                    messenger.getPrimaryStage().setScene(messenger.getMainStage());
                 }
                 if (event.getCode() == KeyCode.T && event.isControlDown()) {
                     TimeLineController timeLineController = messenger.getTimeLineController();
@@ -265,9 +254,19 @@ public class PeriphStageController implements Initializable {
         {
             if(pane != null)
             {
-                ArrayList<Tile> temp = getUsers();
                 ObservableList<Node> children = pane.getChildren();
                 ArrayList<Node> deletion = new ArrayList<>();
+                int g = 0;
+                for(Node node : children)
+                {
+                    if (pane.getColumnIndex(node) != 0)
+                    {
+                        System.out.println("Periph Children Deleted: "+g);
+                        g++;
+                        deletion.add(node);
+                    }
+                }
+                ArrayList<Tile> temp = getUsers();
 
                 for (int i = 0; i < temp.size(); i++) {
                     int column = 0;
@@ -299,14 +298,6 @@ public class PeriphStageController implements Initializable {
                     }
                     if (i >= 16) {
                         row = 4;
-                    }
-                    for(Node node : children)
-                    {
-                        if (pane.getRowIndex(node) == row && pane.getColumnIndex(node) == column)
-                        {
-                            System.out.println("Deleting old periph data.");
-                            deletion.add(node);
-                        }
                     }
                     pane.add(temp.get(i), column, row);
                     tiles.add(temp.get(i));

@@ -58,26 +58,23 @@ public class Main extends Application {
     double y = 0;
     boolean flag;
     Messenger messenger;
+
+    HashMap<String, Integer> buildMap;
     //---------------------------------Variables for Map Creation for POS Database Call----------------------------
-    HashMap<String, Integer> posBuildMap;
     HashMap<String, Integer> posTestMap;
     HashMap<String, Integer> posStageMap;
     HashMap<String, Integer> posUserStageMap;
-
     //---------------------------------Variables for Map Creation for Retail Database Call-------------------------
-    HashMap<String, Integer> retailBuildMap;
     HashMap<String, Integer> retailTestMap;
     HashMap<String, Integer> retailStageMap;
     HashMap<String, Integer> retailUserStageMap;
 
     //---------------------------------Variables for Map Creation for Servers Database Call------------------------
-    HashMap<String, Integer> serversBuildMap;
     HashMap<String, Integer> serversTestMap;
     HashMap<String, Integer> serversStageMap;
     HashMap<String, Integer> serversUserStageMap;
 
     //---------------------------------Variables for Map Creation for Peripherals Database Call--------------------
-    HashMap<String, Integer> periphBuildMap;
     HashMap<String, Integer> periphTestMap;
     HashMap<String, Integer> periphStageMap;
     HashMap<String, Integer> periphUserStageMap;
@@ -185,21 +182,26 @@ public class Main extends Application {
         root.setController(navigationController);
         GridPane navigationPane = root.load();
         Scene navigationScene = new Scene(navigationPane, 1920, 1080);
+        messenger.setNavigationScene(navigationScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainBuildScreen.fxml"));
         root.setController(buildController);
         GridPane buildPane = root.load();
         Scene buildScene = new Scene(buildPane, 1920, 1080);
+        messenger.setMainBuild(buildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainTestScreen.fxml"));
         root.setController(testController);
         GridPane testPane = root.load();
         Scene testScene = new Scene(testPane, 1920, 1080);
+        messenger.setMainTest(testScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainStageScreen.fxml"));
         root.setController(stageController);
         GridPane stagePane = root.load();
         Scene stageScene = new Scene(stagePane, 1920, 1080);
+        messenger.setMainStage(stageScene);
+
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(loadingScene);
@@ -217,38 +219,27 @@ public class Main extends Application {
                         System.out.println("\n***********Running Build Block.***********\n");
 
                         //---------------------------------Hosp Build---------------------------------------------------
-                        posBuildMap = dataBaseTool.hospBuildDataBase();
+                        buildMap = dataBaseTool.buildQuery();
 
-                        buildController.setPosBar1Total(mapTool.getCurrentGroupValue(posBar1ProdList, posBuildMap));
-                        buildController.setP1x30CurrentBuild(mapTool.getCurrentSingleValue("7743", posBuildMap));
-                        buildController.setT1000sCurrentBuild(mapTool.getCurrentSingleValue("7744", posBuildMap));
-                        buildController.setQuestCurrentBuild(mapTool.getCurrentGroupValue(questProdList, posBuildMap));
-
+                        buildController.setPosBar1Total(mapTool.getCurrentGroupValue(posBar1ProdList, buildMap));
+                        buildController.setP1x30CurrentBuild(mapTool.getCurrentSingleValue("7743", buildMap));
+                        buildController.setT1000sCurrentBuild(mapTool.getCurrentSingleValue("7744", buildMap));
+                        buildController.setQuestCurrentBuild(mapTool.getCurrentGroupValue(questProdList, buildMap));
                         //---------------------------------Retail Build-------------------------------------------------
-                        retailBuildMap = dataBaseTool.retailBuildDataBase();
-
-                        buildController.setRetailBar1Total(mapTool.getCurrentGroupValue(xrProdList, retailBuildMap));
-                        buildController.setNextGenDisplayCurrentBuild(mapTool.getCurrentGroupValue(nextGenProdList, retailBuildMap));
-
+                        buildController.setRetailBar1Total(mapTool.getCurrentGroupValue(xrProdList, buildMap));
+                        buildController.setNextGenDisplayCurrentBuild(mapTool.getCurrentGroupValue(nextGenProdList, buildMap));
                         //---------------------------------Servers Build------------------------------------------------
-                        serversBuildMap = dataBaseTool.serversBuildDataBase();
-
-                        buildController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, serversBuildMap));
-                        buildController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, serversBuildMap));
-
+                        buildController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, buildMap));
+                        buildController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, buildMap));
                         //---------------------------------Periph Build-------------------------------------------------
-                        periphBuildMap = dataBaseTool.periphBuildDataBase();
-
-                        buildController.setPeriphBar1Total(mapTool.getCurrentSingleValue("1635", periphBuildMap));
-                        buildController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphBuildMap));
-                        buildController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphBuildMap));
-
+                        buildController.setPeriphBar1Total(mapTool.getCurrentSingleValue("1635", buildMap));
+                        buildController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, buildMap));
+                        buildController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, buildMap));
                         //---------------------------------Optic Build--------------------------------------------------
-                        opticBuildMap = dataBaseTool.opticBuildDataBase();
+                        buildController.setOptic5sCurrentBuild(mapTool.getCurrentSingleValue("6001", buildMap));
+                        buildController.setOptic12sCurrentBuild(mapTool.getCurrentSingleValue("6002", buildMap));
+                        buildController.setKitsCurrentBuild(mapTool.getCurrentSingleValue("6003", buildMap));
 
-                        buildController.setOptic5sCurrentBuild(mapTool.getCurrentSingleValue("6001", opticBuildMap));
-                        buildController.setOptic12sCurrentBuild(mapTool.getCurrentSingleValue("6002", opticBuildMap));
-                        buildController.setKitsCurrentBuild(mapTool.getCurrentSingleValue("6003", opticBuildMap));
 
                         System.out.println("\n***********Running Test Block.***********\n");
                         //---------------------------------Hosp Test-----------------------------------------------------------------------
@@ -345,7 +336,7 @@ public class Main extends Application {
                         testController.setPosTotalCurrentTest(testController.getPosBar1Total() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest());
                         testController.setPosTotalGoalBuild(buildController.getPosTotalGoalBuild());
 
-                        stageController.setPosTotalGoalStage(stageController.getP1532GoalStage() + stageController.getP1x30GoalStage() + stageController.getP1x35GoalStage() + stageController.getT1000sGoalStage());
+                        stageController.setPosTotalGoalStage(stageController.getPosBar1Goal()+ stageController.getP1x30GoalStage() + stageController.getQuestsGoalStage() + stageController.getT1000sGoalStage());
                         stageController.setPosTotalCurrentStage(stageController.getPosBar1Total() + stageController.getP1x30CurrentStage() + stageController.getT1000sCurrentStage());
 
                         buildController.setPosPercentTotalBuild(goalTool.getPercentTotal(buildController.getPosTotalCurrentBuild(), buildController.getPosTotalGoalBuild()));
@@ -453,6 +444,8 @@ public class Main extends Application {
                         buildController.setRetailThrough(dataBaseTool.retailFTTDataBase());
                         buildController.setPosThrough(dataBaseTool.hospFTTDataBase());
 
+                        System.out.println("Made it");
+
 
                         posStageController.setUsers(getCharTiles(posUserStageMap));
                         retailStageController.setUsers(getCharTiles(retailUserStageMap));
@@ -502,7 +495,56 @@ public class Main extends Application {
 
                         if (primaryStage.getScene() == loadingScene) {
                             Platform.runLater(() -> primaryStage.setScene(navigationScene));
+                            FXMLLoader root;
+                            root = new FXMLLoader(getClass().getResource("FXML/opticBuildScreen.fxml"));
+                            root.setController(opticBuildController);
+                            GridPane opticBuildPane = root.load();
+                            Scene opticBuildScene = new Scene(opticBuildPane, 1920, 1080);
+                            messenger.setOpticBuild(opticBuildScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/periphBuildScreen.fxml"));
+                            root.setController(periphBuildController);
+                            GridPane periphBuildPane = root.load();
+                            Scene periphBuildScene = new Scene(periphBuildPane, 1920, 1080);
+                            messenger.setPeriphBuild(periphBuildScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/posBuildScreen.fxml"));
+                            root.setController(posBuildController);
+                            GridPane posBuildPane = root.load();
+                            Scene posBuildScene = new Scene(posBuildPane, 1920, 1080);
+                            messenger.setPosBuild(posBuildScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/retailBuildScreen.fxml"));
+                            root.setController(retailBuildController);
+                            GridPane retailBuildPane = root.load();
+                            Scene retailBuildScene = new Scene(retailBuildPane, 1920, 1080);
+                            messenger.setRetailBuild(retailBuildScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/serversBuildScreen.fxml"));
+                            root.setController(serversBuildController);
+                            GridPane serversBuildPane = root.load();
+                            Scene serversBuildScene = new Scene(serversBuildPane, 1920, 1080);
+                            messenger.setServerBuild(serversBuildScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/periphStageScreen.fxml"));
+                            root.setController(periphStageController);
+                            GridPane periphStagePane = root.load();
+                            Scene periphStageScene = new Scene(periphStagePane, 1920, 1080);
+                            messenger.setPeriphStage(periphStageScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/posStageScreen.fxml"));
+                            root.setController(posStageController);
+                            GridPane posStagePane = root.load();
+                            Scene posStageScene = new Scene(posStagePane, 1920, 1080);
+                            messenger.setPosStage(posStageScene);
+
+                            root = new FXMLLoader(getClass().getResource("FXML/retailStageScreen.fxml"));
+                            root.setController(retailStageController);
+                            GridPane retailStagePane = root.load();
+                            Scene retailStageScene = new Scene(retailStagePane, 1920, 1080);
+                            messenger.setRetailStage(retailStageScene);
                             flag = false;
+
                         }
 
                         System.out.println("Help");

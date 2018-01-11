@@ -208,90 +208,108 @@ public class Tool {
 
 
     //---------------------------------Database Queries----------------------------------------------------------------
-
-
-
-    //---------------------------------Hosp Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> hospBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public HashMap<String,Integer> buildQuery() throws SQLException
+    {
         ArrayList<String> strings = new ArrayList<>();
-
         HashMap<String,Integer> returnMap = new HashMap<>();
-
-
-
-        String query = "SELECT DISTINCT Item.ItemID, Parent.Serial\n" +
-                "\n" +
-                "From Unit as Parent\n" +
-                "\n" +
-                "JOIN Unit as Child on Parent.RQSID = Child.ParentRQSID\n" +
-                "JOIN Item on Item.RQSID = Parent.ItemRQSID\n" +
-                "JOIN Item as ChildItem on ChildItem.RQSID = Child.ItemRQSID\n" +
-                "Join Location as LineLocation on LineLocation.RQSID = Child.EntryLocationRQSID\n" +
-                "\n" +
-                "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
-                "\n" +
-                "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "AND (Item.ItemID Like '7734%' or Item.ItemID LIKE '774[3-5]%' or Item.ItemID Like '7761%' or Item.ItemID Like '7791%' or Item.ItemID Like '7792%')\n" +
-                "\n" +
-                "\tORDER BY ItemID";
 
         Connection conn = null;
 
         Statement statement = null;
         ResultSet resultSet = null;
 
+        String query = "SELECT * FROM [ERP].[dbo].[BuildQuery]";
 
-        try {
+
+        try
+        {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
             conn = DriverManager.getConnection(URL, User, Pass);
 
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
 
-            System.out.println("Connection established.");
-                while (resultSet.next()) {
+            while (resultSet.next())
+            {
 
-                    String model = resultSet.getString("ItemID");
+                String model = resultSet.getString("ItemID");
 
-                    String sub = model.substring(0, model.indexOf('-'));
+                String sub = model.substring(0, model.indexOf('-'));
 
-                    strings.add(sub);
-
-                }
-        }finally{
-            try{
-                System.out.println("Closing connection");
+                strings.add(sub);
+            }
+        }
+        catch (Exception e)
+        {
+            //--- do nothing ---//
+        }
+        finally
+        {
+            try
+            {
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
-            catch(SQLException e){
+            catch (SQLException e)
+            {
                 e.printStackTrace();
             }
-        }
 
-        if(strings.isEmpty())
-        {
-            returnMap.put("7745",0);
-            returnMap.put("7734",0);
-            returnMap.put("7743",0);
-            returnMap.put("7761",0);
-            returnMap.put("7791",0);
-            returnMap.put("7744",0);
-        }else {
-            for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(0);
-                int tempValue = Collections.frequency(strings, strings.get(0));
-                strings.removeAll(Collections.singleton(strings.get(0)));
-                returnMap.put(tempString, tempValue);
+            if (strings.isEmpty())
+            {
+                returnMap.put("7745",0);
+                returnMap.put("7734",0);
+                returnMap.put("7743",0);
+                returnMap.put("7761",0);
+                returnMap.put("7791",0);
+                returnMap.put("7744",0);
+                returnMap.put("6001",0);
+                returnMap.put("6002",0);
+                returnMap.put("6003",0);
+                returnMap.put("5931",0);
+                returnMap.put("5933",0);
+                returnMap.put("5934",0);
+                returnMap.put("5937",0);
+                returnMap.put("5938",0);
+                returnMap.put("5943",0);
+                returnMap.put("5967",0);
+                returnMap.put("1635",0);
+                returnMap.put("1640",0);
+                returnMap.put("1641",0);
+                returnMap.put("1642",0);
+                returnMap.put("1924",0);
+                returnMap.put("1646",0);
+                returnMap.put("1650",0);
+                returnMap.put("1651",0);
+                returnMap.put("7701",0);
+                returnMap.put("7702",0);
+                returnMap.put("7703",0);
+                returnMap.put("5968",0);
+                returnMap.put("5985",0);
+                returnMap.put("1656",0);
+                returnMap.put("1930",0);
+                returnMap.put("1657",0);
+                returnMap.put("1611",0);
+                returnMap.put("1612",0);
             }
+            else
+                {
+                    for (int i = 0; i < strings.size(); i++)
+                    {
+                        String tempString = strings.get(0);
+                        int tempValue = Collections.frequency(strings, strings.get(0));
+                        strings.removeAll(Collections.singleton(strings.get(0)));
+                        returnMap.put(tempString, tempValue);
+                    }
+                }
         }
-
 
         return returnMap;
     }
-
     //---------------------------------Hosp Test Query-------------------------------------------------------------------
     public HashMap<String,Integer> hospTestDataBase() throws ClassNotFoundException, SQLException
     {
@@ -352,6 +370,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -443,6 +463,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -549,6 +571,8 @@ public class Tool {
         } finally {
             try {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -594,10 +618,10 @@ public class Tool {
         Statement statement = null;
         ResultSet resultSet = null;
 
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+        String User = "MidlandMFG";
+        String Pass = "Midland";
             conn = DriverManager.getConnection(URL,User,Pass);
 
             statement = conn.createStatement();
@@ -605,13 +629,16 @@ public class Tool {
             while (resultSet.next())
             {
                     String model = resultSet.getString("name");
-                    if(model.equals("HospitalityFTT"))
+                    if(model.equals("Hospitality FTT"))
                     {
                         percentages = resultSet.getDouble("value");
                     }
 
             }
-            try{
+            try
+            {
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -621,89 +648,6 @@ public class Tool {
 
         return percentages;
 
-    }
-
-    //---------------------------------Retail Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> retailBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
-        ArrayList<String> strings = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
-
-
-        String query ="SELECT DISTINCT Item.ItemID, Parent.Serial\n" +
-                "\n" +
-                "FROM Unit AS Parent\n" +
-                "\n" +
-                "JOIN Unit AS Child ON Parent.RQSID = Child.ParentRQSID\n" +
-                "JOIN Item ON Item.RQSID = Parent.ItemRQSID\n" +
-                "JOIN Item AS ChildItem ON ChildItem.RQSID = Child.ItemRQSID\n" +
-                "JOIN Location AS LineLocation ON LineLocation.RQSID = Child.EntryLocationRQSID\n" +
-                "\n" +
-                "WHERE Cast(child.CreateDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
-                "\n" +
-                "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "AND (Item.ItemID LIKE '770[1-3]%'\n" +
-                "\tOR Item.ItemID LIKE '59[6-8][5-8]%')\n" +
-                "\n" +
-                "\tORDER BY ItemID";
-
-
-        Connection conn = null;
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-
-        int counter = 0;
-        int currentIndexofStringKey = 0;
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
-            conn = DriverManager.getConnection(URL, User, Pass);
-
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            System.out.println("Connection established.");
-
-                while (resultSet.next()) {
-
-                    String model = resultSet.getString("ItemID");
-
-                    String sub = model.substring(0, model.indexOf('-'));
-
-                    strings.add(sub);
-                }
-        }finally{
-            try{
-                System.out.println("Closing connection");
-                conn.close();
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(strings.isEmpty())
-        {
-            returnMap.put("7701",0);
-            returnMap.put("7702",0);
-            returnMap.put("7703",0);
-            returnMap.put("5968",0);
-            returnMap.put("5985",0);
-        }else {
-            for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(0);
-                int tempValue = Collections.frequency(strings, strings.get(0));
-                strings.removeAll(Collections.singleton(strings.get(0)));
-                returnMap.put(tempString, tempValue);
-            }
-        }
-
-        return returnMap;
     }
 
     //---------------------------------Retail Test Query-----------------------------------------------------------------
@@ -761,6 +705,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -851,6 +797,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -907,13 +855,15 @@ public class Tool {
             while (resultSet.next())
             {
                 String model = resultSet.getString("name");
-                if(model.equals("RetailFTT"))
+                if(model.equals("Retail FTT"))
                 {
                     percentages = resultSet.getDouble("value");
                 }
 
             }
             try{
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1001,6 +951,8 @@ public class Tool {
         } finally {
             try {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -1028,107 +980,6 @@ public class Tool {
         }
         return returnMap;
     }
-
-
-    //---------------------------------Periph Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> periphBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
-        ArrayList<String> strings = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
-
-
-        String query = "SELECT DISTINCT Item.ItemID, Parent.Serial" +
-                "\n"+
-                "From Unit as Parent\n" +
-                "\n" +
-                "JOIN Unit as Child on Parent.RQSID = Child.ParentRQSID\n" +
-                "JOIN Item on Item.RQSID = Parent.ItemRQSID\n" +
-                "JOIN Item as ChildItem on ChildItem.RQSID = Child.ItemRQSID\n" +
-                "Join Location as LineLocation on LineLocation.RQSID = Child.EntryLocationRQSID\n" +
-                "\n" +
-                "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
-                "\n" +
-                "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "                and (Item.ItemID like '5938%' or Item.ItemID like '5943%' or Item.ItemID like '5967%' or Item.ItemID like '1635%' or Item.ItemID like '1640%' or Item.ItemID like '1641%' \n" +
-                "                or Item.ItemID like '1642%' or Item.ItemID like '1924%' or childitem.ItemID = '497-0510398') \n" +
-                "\n" +
-                "\t\t\t\t--case \n" +
-                "\t\t\t\t--when ItemID like '7752%' or ItemID like '7753%' or ItemID like '7754%' or ItemID like '7756%' \n" +
-                "\t\t\t\t--then \n" +
-                "                 \n" +
-                "                --Only return POS \n" +
-                "                --and (Item.ItemID like '77%-0000' \n" +
-                "                --or Item.ItemID like '7743-8037-8801') \n" +
-                "                 \n" +
-                "                Order by ItemID asc";
-
-        Connection conn = null;
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-
-        int counter = 0;
-        int currentIndexofStringKey = 0;
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
-            conn = DriverManager.getConnection(URL, User, Pass);
-
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            System.out.println("Connection established.");
-                while (resultSet.next()) {
-
-                    String model = resultSet.getString("ItemID");
-
-                    String sub = model.substring(0, model.indexOf('-'));
-
-                    strings.add(sub);
-                }
-        }finally{
-            try{
-                System.out.println("Closing connection");
-                conn.close();
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(strings.isEmpty())
-        {
-            returnMap.put("5931",0);
-            returnMap.put("5933",0);
-            returnMap.put("5934",0);
-            returnMap.put("5937",0);
-            returnMap.put("5938",0);
-            returnMap.put("5943",0);
-            returnMap.put("5967",0);
-            returnMap.put("1635",0);
-            returnMap.put("1640",0);
-            returnMap.put("1641",0);
-            returnMap.put("1642",0);
-            returnMap.put("1924",0);
-            returnMap.put("1646",0);
-            returnMap.put("1650",0);
-            returnMap.put("1651",0);
-        }else {
-            for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(0);
-                int tempValue = Collections.frequency(strings, strings.get(0));
-                strings.removeAll(Collections.singleton(strings.get(0)));
-                returnMap.put(tempString, tempValue);
-            }
-        }
-
-        return returnMap;
-    }
-
     //---------------------------------Periph Test Query----------------------------------------------------------------
     public HashMap<String,Integer> periphTestDataBase() throws ClassNotFoundException, SQLException
     {
@@ -1206,6 +1057,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1324,6 +1177,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1441,6 +1296,8 @@ public class Tool {
         } finally {
             try {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -1498,12 +1355,14 @@ public class Tool {
             while (resultSet.next())
             {
                 String model = resultSet.getString("name");
-                if(model.equals("PeripheralsFTT"))
+                if(model.equals("Peripherals FTT"))
                 {
                     percentages = resultSet.getDouble("value");
                 }
             }
             try{
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1513,92 +1372,6 @@ public class Tool {
 
         return percentages;
     }
-
-    //---------------------------------Servers Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> serversBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
-        ArrayList<String> strings = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
-
-
-        String query ="SELECT DISTINCT Item.ItemID, Parent.Serial"+
-                "\n" +
-                "From Unit as Parent\n" +
-                "\n" +
-                "JOIN Unit as Child on Parent.RQSID = Child.ParentRQSID\n" +
-                "JOIN Item on Item.RQSID = Parent.ItemRQSID\n" +
-                "JOIN Item as ChildItem on ChildItem.RQSID = Child.ItemRQSID\n" +
-                "Join Location as LineLocation on LineLocation.RQSID = Child.EntryLocationRQSID\n" +
-                "\n" +
-                "WHERE Cast(child.CreateDate as Date) >= Cast(GetDate() as Date)\n" +
-                "\n" +
-                "AND LineLocation.FacilityRQSID = '3421'\n" +
-                "                AND (Item.ItemID like '1611%' OR Item.ItemID like '1612%' OR Item.ItemID like '1656%' OR Item.ItemID like '1657%' OR Item.ItemID like '1930%') \n" +
-                "                 \n" +
-                "                --Only return POS \n" +
-                "                --and (Item.ItemID like '77%-0000' \n" +
-                "                --or Item.ItemID like '7743-8037-8801') \n" +
-                "                 \n" +
-                "                ORDER BY ItemID ASC";
-
-
-        Connection conn = null;
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
-            conn = DriverManager.getConnection(URL, User, Pass);
-
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            System.out.println("Connection established.");
-                while (resultSet.next())
-                {
-
-                    String model = resultSet.getString("ItemID");
-
-                    String sub = model.substring(0, model.indexOf('-'));
-
-                    strings.add(sub);
-                }
-        }finally{
-            try{
-                System.out.println("Closing connection");
-                conn.close();
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(strings.isEmpty())
-        {
-            returnMap.put("1656",0);
-            returnMap.put("1930",0);
-            returnMap.put("1657",0);
-            returnMap.put("1611",0);
-            returnMap.put("1612",0);
-        }else {
-            for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(0);
-                int tempValue = Collections.frequency(strings, strings.get(0));
-                strings.removeAll(Collections.singleton(strings.get(0)));
-                returnMap.put(tempString, tempValue);
-            }
-        }
-
-
-        return returnMap;
-    }
-
     //---------------------------------Servers Test Query----------------------------------------------------------------
     public HashMap<String,Integer> serversTestDataBase() throws ClassNotFoundException, SQLException
     {
@@ -1656,6 +1429,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1743,6 +1518,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1848,6 +1625,8 @@ public class Tool {
         } finally {
             try {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -1905,13 +1684,16 @@ public class Tool {
             while (resultSet.next())
             {
                 String model = resultSet.getString("name");
-                if(model.equals("HospitalityFTT"))
+                if(model.equals("Server FTT"))
                 {
                     percentages = resultSet.getDouble("value");
                 }
 
             }
-            try{
+            try
+            {
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -1920,95 +1702,6 @@ public class Tool {
             }
         return percentages;
     }
-
-    //---------------------------------Optic Build Query----------------------------------------------------------------
-    public HashMap<String,Integer> opticBuildDataBase() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-
-        ArrayList<String> strings = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
-
-
-
-        String query = "SELECT DISTINCT Item.ItemID, Parent.Serial\n" +
-                "\n" +
-                "FROM Unit AS Parent\n" +
-                "\n" +
-                "JOIN Unit AS Child ON Parent.RQSID = Child.ParentRQSID\n" +
-                "JOIN Item ON Item.RQSID = Parent.ItemRQSID\n" +
-                "JOIN Item AS childitem ON childitem.RQSID = child.ItemRQSID\n" +
-                "JOIN Location AS LineLoc ON LineLoc.RQSID = Child.EntryLocationRQSID\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "--Only returns units that were done today\n" +
-                "WHERE Cast(Child.CreateDate AS DATE) >= Cast(GetDate() AS DATE)\n" +
-                "\n" +
-                "AND LineLoc.FacilityRQSID = '3421'\n" +
-                "--Optic 5\n" +
-                "AND (Item.ItemID LIKE '6001%' \n" +
-                "--Optic 12\n" +
-                "OR Item.ItemID LIKE '6002%'" +
-                "" +
-                "OR Item.ItemID LIKE '6003%')\n" +
-                "                 \n" +
-                "                \n" +
-                "ORDER BY ItemID ASC";
-
-
-        Connection conn = null;
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
-            conn = DriverManager.getConnection(URL, User, Pass);
-
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            System.out.println("Connection established.");
-
-                while (resultSet.next())
-                {
-
-                    String model = resultSet.getString("ItemID");
-
-                    String sub = model.substring(0, model.indexOf('-'));
-
-                    strings.add(sub);
-                }
-        }finally{
-            try{
-                System.out.println("Closing connection");
-                conn.close();
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(strings.isEmpty())
-        {
-            returnMap.put("6001",0);
-            returnMap.put("6002",0);
-            returnMap.put("6003",0);
-        }else {
-            for (int i = 0; i < strings.size(); i++) {
-                String tempString = strings.get(0);
-                int tempValue = Collections.frequency(strings, strings.get(0));
-                strings.removeAll(Collections.singleton(strings.get(0)));
-                returnMap.put(tempString, tempValue);
-            }
-        }
-
-        return returnMap;
-    }
-
     //---------------------------------Optic Test Query----------------------------------------------------------------
     public HashMap<String,Integer> opticTestDataBase() throws ClassNotFoundException, SQLException
     {
@@ -2062,6 +1755,8 @@ public class Tool {
             try
             {
                 System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
                 conn.close();
             }
             catch(SQLException e)
@@ -2091,13 +1786,7 @@ public class Tool {
     public double opticFTTDataBase() throws ClassNotFoundException, SQLException
     {
 
-
-        ArrayList<String> itemIDS = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>();
         double percentages = 0.0;
-        boolean flag;
-
-
 
         String query ="SELECT * FROM [ERP].[dbo].[QueryService]";
 
@@ -2106,10 +1795,10 @@ public class Tool {
         Statement statement = null;
         ResultSet resultSet = null;
 
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+        String User = "MidlandMFG";
+        String Pass = "Midland";
             conn = DriverManager.getConnection(URL,User,Pass);
 
             statement = conn.createStatement();
@@ -2117,13 +1806,15 @@ public class Tool {
             while (resultSet.next())
             {
                 String model = resultSet.getString("name");
-                if(model.equals("HospitalityFTT"))
+                if(model.equals("Optic FTT"))
                 {
                     percentages = resultSet.getDouble("value");
                 }
 
             }
             try{
+                resultSet.close();
+                statement.close();
                 conn.close();
                 System.out.println("Closing connection");
             }

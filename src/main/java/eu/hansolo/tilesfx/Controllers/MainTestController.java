@@ -221,6 +221,7 @@ public class MainTestController implements Initializable
     Messenger messenger;
 
     DecimalFormat df = new DecimalFormat("#.0");
+    DecimalFormat hundred = new DecimalFormat("#");
 
     ArrayList<Tile> tiles;
 
@@ -480,6 +481,27 @@ public class MainTestController implements Initializable
         tiles.add(opticTestPercent);
         tiles.add(opticFTT);
 
+        if(messenger.getMainBuildController().getPosThrough() == 100)
+        {
+            posFTT.setDescription(hundred.format(messenger.getMainBuildController().getPosThrough())+"%");
+        }
+        if(messenger.getMainBuildController().getServersThrough() == 100)
+        {
+            serversFTT.setDescription(hundred.format(messenger.getMainBuildController().getServersThrough())+"%");
+        }
+        if(messenger.getMainBuildController().getPeriphThrough() == 100)
+        {
+            periphFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+        }
+        if(messenger.getMainBuildController().getOpticThrough() == 100)
+        {
+            opticFTT.setDescription(hundred.format(messenger.getMainBuildController().getOpticThrough())+"%");
+        }
+        if(messenger.getMainBuildController().getRetailThrough() == 100)
+        {
+            retailFTT.setDescription(hundred.format(messenger.getMainBuildController().getRetailThrough())+"%");
+        }
+
         tilesListeners(tiles);
         refresh();
     }
@@ -524,6 +546,10 @@ public class MainTestController implements Initializable
             //---------------------------------Creating Color Changes for POS Dial------------------------------------------
             posTestPercent.setValue(posPercentTotalTest);
             posFTT.setDescription(df.format(messenger.getMainBuildController().getPosThrough())+"%");
+            if(messenger.getMainBuildController().getPosThrough() == 100)
+            {
+                posFTT.setDescription(hundred.format(messenger.getMainBuildController().getPosThrough())+"%");
+            }
 
             changePercent(posTestPercent, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
             changePercent(posFTT, posTotalCurrentTest, posTotalGoalBuild, posPercentTotalTest);
@@ -531,6 +557,10 @@ public class MainTestController implements Initializable
             //---------------------------------Creating Color Changes for Servers Dial--------------------------------------
             serversTestPercent.setValue(serversPercentTotalTest);
             serversFTT.setDescription(df.format(messenger.getMainBuildController().getServersThrough())+"%");
+            if(messenger.getMainBuildController().getServersThrough() == 100)
+            {
+                serversFTT.setDescription(hundred.format(messenger.getMainBuildController().getServersThrough())+"%");
+            }
 
             changePercent(serversTestPercent, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
             changePercent(serversFTT, serverCurrentTest, serverGoalTotalBuild, serversPercentTotalTest);
@@ -538,6 +568,10 @@ public class MainTestController implements Initializable
             //---------------------------------Creating Color Changes for Periph Dial---------------------------------------
             periphTestPercent.setValue(periphPercentTotalTest);
             periphFTT.setDescription(df.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+            if(messenger.getMainBuildController().getPeriphThrough() == 100)
+            {
+                periphFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+            }
 
             changePercent(periphTestPercent, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
             changePercent(periphFTT, periphCurrentTotalTest, periphGoalTotalBuild, periphPercentTotalTest);
@@ -545,6 +579,10 @@ public class MainTestController implements Initializable
             //---------------------------------Creating Color Changes for Optic Dial----------------------------------------
             opticTestPercent.setValue(opticPercentTotalTest);
             opticFTT.setDescription(df.format(messenger.getMainBuildController().getOpticThrough())+"%");
+            if(messenger.getMainBuildController().getOpticThrough() == 100)
+            {
+                opticFTT.setDescription(hundred.format(messenger.getMainBuildController().getOpticThrough())+"%");
+            }
 
             changePercent(opticTestPercent, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
             changePercent(opticFTT, opticCurrentTotalTest, opticGoalTotalBuild, opticPercentTotalTest);
@@ -552,6 +590,10 @@ public class MainTestController implements Initializable
             //---------------------------------Creating Color Changes for Retail Dial---------------------------------------
             retailTestPercent.setValue(retailPercentTotalTest);
             retailFTT.setDescription(df.format(messenger.getMainBuildController().getRetailThrough())+"%");
+            if(messenger.getMainBuildController().getRetailThrough() == 100)
+            {
+               retailFTT.setDescription(hundred.format(messenger.getMainBuildController().getRetailThrough())+"%");
+            }
 
             changePercent(retailTestPercent, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
             changePercent(retailFTT, retailTotalCurrentTest, retailTotalGoalBuild, retailPercentTotalTest);
@@ -564,19 +606,7 @@ public class MainTestController implements Initializable
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ESCAPE)
                 {
-                    NavigationController buildController = messenger.getNavigationController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getNavigationScene());
                 }
                 if(event.getCode() == KeyCode.F4)
                 {
@@ -589,35 +619,11 @@ public class MainTestController implements Initializable
                 }
                 if(event.getCode() == KeyCode.LEFT)
                 {
-                    MainBuildController buildController = messenger.getMainBuildController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainBuild());
                 }
                 if(event.getCode() == KeyCode.RIGHT)
                 {
-                    MainStageController buildController = messenger.getMainStageController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainStage());
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
@@ -661,94 +667,34 @@ public class MainTestController implements Initializable
         posTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                POSBuildController buildController = messenger.getPosBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
             }
         });
         retailTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                RetailBuildController buildController = messenger.getRetailBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
 
             }
         });
         serversTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                ServersBuildController buildController = messenger.getServersBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/serversBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
             }
         });
         periphTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                PeriphBuildController buildController = messenger.getPeriphBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
             }
         });
         opticTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                OpticBuildController buildController = messenger.getOpticBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/opticBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
 
             }
         });

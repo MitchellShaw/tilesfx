@@ -186,8 +186,6 @@ public class POSStageController implements Initializable {
         pane.add(dept, 0, 2, 1, 1);
         pane.add(stopLight, 0, 3, 1, 1);
         pane.add(daySince, 0, 4, 1, 1);
-
-
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
@@ -207,19 +205,7 @@ public class POSStageController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ESCAPE) {
-                    MainStageController buildController = messenger.getMainStageController();
-
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
-                    root.setController(buildController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 1920, 1080);
-                    Stage primaryStage = messenger.getPrimaryStage();
-                    primaryStage.setScene(buildScene);
+                    messenger.getPrimaryStage().setScene(messenger.getMainStage());
                 }
                 if (event.getCode() == KeyCode.T && event.isControlDown()) {
                     TimeLineController timeLineController = messenger.getTimeLineController();
@@ -274,9 +260,19 @@ public class POSStageController implements Initializable {
             int total = 0;
             if(pane != null)
             {
-                ArrayList<Tile> temp = getUsers();
                 ObservableList<Node> children = pane.getChildren();
                 ArrayList<Node> deletion = new ArrayList<>();
+                int g = 0;
+                for(Node node : children)
+                {
+                    if (pane.getColumnIndex(node) != 0)
+                    {
+                        System.out.println("POS Children Deleted: "+g);
+                        g++;
+                        deletion.add(node);
+                    }
+                }
+                ArrayList<Tile> temp = getUsers();
 
                 for (int i = 0; i < temp.size(); i++) {
                     int column = 0;
@@ -309,14 +305,6 @@ public class POSStageController implements Initializable {
                     }
                     if (i >= 16) {
                         row = 4;
-                    }
-                    for(Node node : children)
-                    {
-                        if (pane.getRowIndex(node) == row && pane.getColumnIndex(node) == column)
-                        {
-                            System.out.println("Deleting old POS data.");
-                            deletion.add(node);
-                        }
                     }
                     pane.add(temp.get(i), column, row);
                     tiles.add(temp.get(i));
