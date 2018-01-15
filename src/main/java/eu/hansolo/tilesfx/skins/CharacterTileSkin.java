@@ -50,7 +50,7 @@ public class CharacterTileSkin extends TileSkin {
         description.setAlignment(Pos.CENTER);
         description.setTextAlignment(TextAlignment.CENTER);
         description.setWrapText(true);
-        description.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
+        description.setTextOverrun(OverrunStyle.CLIP);
         description.setTextFill(tile.getTextColor());
         description.setPrefSize(PREFERRED_WIDTH * 0.5, PREFERRED_HEIGHT * 0.6 );
         Helper.enableNode(description, tile.isTextVisible());

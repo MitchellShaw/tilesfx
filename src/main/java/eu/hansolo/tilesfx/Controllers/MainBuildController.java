@@ -37,24 +37,42 @@ import java.util.ResourceBundle;
 
 public class MainBuildController implements Initializable
 {
+
+    @FXML
+    private Tile posBuild;
+    @FXML
+    private Tile serversBuild;
+    @FXML
+    private Tile periphBuild;
+    @FXML
+    private Tile opticBuild;
+
+
+    @FXML
+    private Tile retailBuild;
+    @FXML
+    private Tile posPercent;
+    @FXML
+    private Tile serversPercent;
+    @FXML
+    private Tile periphPercent;
+    @FXML
+    private Tile opticPercent;
+    @FXML
+    private Tile retailPercent;
+    @FXML
+    private Tile posFTT;
+    @FXML
+    private Tile serversFTT;
+    @FXML
+    private Tile periphFTT;
+    @FXML
+    private Tile opticFTT;
+    @FXML
+    private Tile retailFTT;
+
     @FXML
     private GridPane pane;
-
-    Tile posBuild;
-    Tile serversBuild;
-    Tile periphBuild;
-    Tile opticBuild;
-    Tile retailBuild;
-    Tile posPercent;
-    Tile serversPercent;
-    Tile periphPercent;
-    Tile opticPercent;
-    Tile retailPercent;
-    Tile posFTT;
-    Tile serversFTT;
-    Tile periphFTT;
-    Tile opticFTT;
-    Tile retailFTT;
 
     double p1x30CurrentBuild;
     double p1x30GoalBuild;
@@ -164,6 +182,7 @@ public class MainBuildController implements Initializable
     BarChartItem periphBar2Data;
     BarChartItem periphBar3Data;
     //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
+    //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
     BarChartItem optic12Data;
     BarChartItem optic5Data;
     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
@@ -186,7 +205,6 @@ public class MainBuildController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
         tiles = new ArrayList<>();
 
         //---------------------------------Creating the Bar Chart Items for Hosp----------------------------------------
@@ -198,18 +216,16 @@ public class MainBuildController implements Initializable
         serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
         serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-        periphBar1Data = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
-        periphBar2Data = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
-        periphBar3Data = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
+        periphBar1Data = new BarChartItem("1635", periphBar1Total, periphBar1Goal, Tile.BLUE);
+        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.RED);
+        periphBar3Data = new BarChartItem("1646/1651", periphBar3Total, periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
         optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
         optic5Data = new BarChartItem("6001", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-        retailBar1Data = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
+        retailBar1Data = new BarChartItem("770X", retailBar1Total, retailBar1Goal, Tile.BLUE);
         nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.RED);
         //---------------------------------Creating Tiles for Scene-----------------------------------------------------
-
-
 
         posBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -223,7 +239,7 @@ public class MainBuildController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        pane.add(posBuild,0,0,1,2);
+        pane.add(posBuild, 0, 0, 1, 2);
 
         posPercent = TileBuilder.create()
                 .prefSize(384, 270)
@@ -243,14 +259,14 @@ public class MainBuildController implements Initializable
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
-                .description(df.format(posThrough)+"%")
+                .description(df.format(posThrough) + "%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
 
-        pane.add(posPercent,0,2,1,1);
-        pane.add(posFTT,0,3,1,1);
+        pane.add(posPercent, 0, 2, 1, 1);
+        pane.add(posFTT, 0, 3, 1, 1);
 
         //---------------------------------Creating the Tiles for Retail------------------------------------------------
         retailBuild = TileBuilder.create()
@@ -265,7 +281,7 @@ public class MainBuildController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        pane.add(retailBuild,1,0,1,2);
+        pane.add(retailBuild, 1, 0, 1, 2);
 
         retailPercent = TileBuilder.create()
                 .prefSize(384, 270)
@@ -280,24 +296,24 @@ public class MainBuildController implements Initializable
                 .value(retailPercentTotalBuild)
                 .build();
 
-        retailFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+        retailFTT = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
-                .description(df.format(retailThrough)+"%")
+                .description(df.format(retailThrough) + "%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
 
-        if(retailFTT.getDescription().equals( "100.0"))
-        {
-           retailFTT.setDescription(hundred.format(retailThrough)+"%");
+        if (retailFTT.getDescription().equals("100.0")) {
+            retailFTT.setDescription(hundred.format(retailThrough) + "%");
         }
 
-        pane.add(retailPercent,1,2,1,1);
-        pane.add(retailFTT,1,3,1,1);
+        pane.add(retailPercent, 1, 2, 1, 1);
+        pane.add(retailFTT, 1, 3, 1, 1);
 
 
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
@@ -308,12 +324,12 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 540)
-                .barChartItems(serverBar1,serverBar2)
+                .barChartItems(serverBar1, serverBar2)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        pane.add(serversBuild,2,0,1,2);
+        pane.add(serversBuild, 2, 0, 1, 2);
 
         serversPercent = TileBuilder.create()
                 .prefSize(384, 270)
@@ -333,19 +349,18 @@ public class MainBuildController implements Initializable
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
-                .description(df.format(serversThrough)+"%")
+                .description(df.format(serversThrough) + "%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
 
-        if(serversFTT.getDescription().equals( "100.0"))
-        {
-            serversFTT.setDescription(hundred.format(serversThrough)+"%");
+        if (serversFTT.getDescription().equals("100.0")) {
+            serversFTT.setDescription(hundred.format(serversThrough) + "%");
         }
 
-        pane.add(serversPercent,2,2,1,1);
-        pane.add(serversFTT,2,3,1,1);
+        pane.add(serversPercent, 2, 2, 1, 1);
+        pane.add(serversFTT, 2, 3, 1, 1);
 
 
         //---------------------------------Creating the Tiles for Peripherals-------------------------------------------
@@ -356,12 +371,12 @@ public class MainBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .prefSize(384, 540)
-                .barChartItems(periphBar1Data,periphBar2Data,periphBar3Data)
+                .barChartItems(periphBar1Data, periphBar2Data, periphBar3Data)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        pane.add(periphBuild,3,0,1,2);
+        pane.add(periphBuild, 3, 0, 1, 2);
 
         periphPercent = TileBuilder.create()
                 .prefSize(384, 270)
@@ -381,19 +396,18 @@ public class MainBuildController implements Initializable
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
-                .description(df.format(periphThrough)+"%")
+                .description(df.format(periphThrough) + "%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
 
-        if(periphFTT.getDescription().equals( "100.0"))
-        {
-            periphFTT.setDescription(hundred.format(periphThrough)+"%");
+        if (periphFTT.getDescription().equals("100.0")) {
+            periphFTT.setDescription(hundred.format(periphThrough) + "%");
         }
 
-        pane.add(periphPercent,3,2,1,1);
-        pane.add(periphFTT,3,3,1,1);
+        pane.add(periphPercent, 3, 2, 1, 1);
+        pane.add(periphFTT, 3, 3, 1, 1);
 
 
         //---------------------------------Creating the Tiles for Optic-------------------------------------------------
@@ -410,7 +424,7 @@ public class MainBuildController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        pane.add(opticBuild,4,0,1,2);
+        pane.add(opticBuild, 4, 0, 1, 2);
 
         opticPercent = TileBuilder.create()
                 .prefSize(384, 270)
@@ -430,19 +444,18 @@ public class MainBuildController implements Initializable
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")
-                .description(df.format(opticThrough)+"%")
+                .description(df.format(opticThrough) + "%")
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
 
-        if(opticFTT.getDescription().equals( "100.0"))
-        {
-            opticFTT.setDescription(hundred.format(opticThrough)+"%");
+        if (opticFTT.getDescription().equals("100.0")) {
+            opticFTT.setDescription(hundred.format(opticThrough) + "%");
         }
 
-        pane.add(opticPercent,4,2,1,1);
-        pane.add(opticFTT,4,3,1,1);
+        pane.add(opticPercent, 4, 2, 1, 1);
+        pane.add(opticFTT, 4, 3, 1, 1);
 
         createActions();
         tiles.add(posBuild);
@@ -461,31 +474,25 @@ public class MainBuildController implements Initializable
         tiles.add(opticFTT);
         tiles.add(retailFTT);
 
-        if(posThrough == 100)
-        {
-            posFTT.setDescription(hundred.format(posThrough)+"%");
+        if (posThrough == 100) {
+            posFTT.setDescription(hundred.format(posThrough) + "%");
         }
-        if(serversThrough == 100)
-        {
-            serversFTT.setDescription(hundred.format(serversThrough)+"%");
+        if (serversThrough == 100) {
+            serversFTT.setDescription(hundred.format(serversThrough) + "%");
         }
-        if(periphThrough == 100)
-        {
-            periphFTT.setDescription(hundred.format(periphThrough)+"%");
+        if (periphThrough == 100) {
+            periphFTT.setDescription(hundred.format(periphThrough) + "%");
         }
-        if(opticThrough == 100)
-        {
-            opticFTT.setDescription(hundred.format(opticThrough)+"%");
+        if (opticThrough == 100) {
+            opticFTT.setDescription(hundred.format(opticThrough) + "%");
         }
-        if(retailThrough == 100)
-        {
-            retailFTT.setDescription(hundred.format(retailThrough)+"%");
+        if (retailThrough == 100) {
+            retailFTT.setDescription(hundred.format(retailThrough) + "%");
         }
 
 
         tilesListeners(tiles);
         refresh();
-
     }
 
     public void refresh()
@@ -650,41 +657,31 @@ public class MainBuildController implements Initializable
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if(event.getCode() == KeyCode.X && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
                     {
                         temp.stop();
                     }
                 }
+            }
+        });
+        retailPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
             }
         });
         posBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -730,6 +727,8 @@ public class MainBuildController implements Initializable
         for(int i =0;i<tileList.size();i++)
         {
             Tile temp = tileList.get(i);
+
+            temp.toFront();
 
             temp.setAnimated(true);
             temp.setAnimationDuration(3000);
@@ -1483,5 +1482,167 @@ public class MainBuildController implements Initializable
 
     public void setPeriphBar3Goal(double periphBar3Goal) {
         this.periphBar3Goal = periphBar3Goal;
+    }
+    public void setPosBuild(Tile posBuild) {
+        this.posBuild = posBuild;
+    }
+
+    public void setServersBuild(Tile serversBuild) {
+        this.serversBuild = serversBuild;
+    }
+
+    public void setPeriphBuild(Tile periphBuild) {
+        this.periphBuild = periphBuild;
+    }
+
+    public void setOpticBuild(Tile opticBuild) {
+        this.opticBuild = opticBuild;
+    }
+
+    public void setRetailBuild(Tile retailBuild) {
+        this.retailBuild = retailBuild;
+    }
+
+    public void setPosPercent(Tile posPercent) {
+        this.posPercent = posPercent;
+    }
+
+    public void setServersPercent(Tile serversPercent) {
+        this.serversPercent = serversPercent;
+    }
+
+    public void setPeriphPercent(Tile periphPercent) {
+        this.periphPercent = periphPercent;
+    }
+
+    public void setOpticPercent(Tile opticPercent) {
+        this.opticPercent = opticPercent;
+    }
+
+    public void setRetailPercent(Tile retailPercent) {
+        this.retailPercent = retailPercent;
+    }
+
+    public void setPosFTT(Tile posFTT) {
+        this.posFTT = posFTT;
+    }
+
+    public void setServersFTT(Tile serversFTT) {
+        this.serversFTT = serversFTT;
+    }
+
+    public void setPeriphFTT(Tile periphFTT) {
+        this.periphFTT = periphFTT;
+    }
+
+    public void setOpticFTT(Tile opticFTT) {
+        this.opticFTT = opticFTT;
+    }
+
+    public void setRetailFTT(Tile retailFTT) {
+        this.retailFTT = retailFTT;
+    }
+    public BarChartItem getPosBar1Data() {
+        return posBar1Data;
+    }
+
+    public void setPosBar1Data(BarChartItem posBar1Data) {
+        this.posBar1Data = posBar1Data;
+    }
+
+    public BarChartItem getP1x30Data() {
+        return p1x30Data;
+    }
+
+    public void setP1x30Data(BarChartItem p1x30Data) {
+        this.p1x30Data = p1x30Data;
+    }
+
+    public BarChartItem getT1000Data() {
+        return t1000Data;
+    }
+
+    public void setT1000Data(BarChartItem t1000Data) {
+        this.t1000Data = t1000Data;
+    }
+
+    public BarChartItem getQuestData() {
+        return questData;
+    }
+
+    public void setQuestData(BarChartItem questData) {
+        this.questData = questData;
+    }
+
+    public BarChartItem getServerBar1() {
+        return serverBar1;
+    }
+
+    public void setServerBar1(BarChartItem serverBar1) {
+        this.serverBar1 = serverBar1;
+    }
+
+    public BarChartItem getServerBar2() {
+        return serverBar2;
+    }
+
+    public void setServerBar2(BarChartItem serverBar2) {
+        this.serverBar2 = serverBar2;
+    }
+
+    public BarChartItem getPeriphBar1Data() {
+        return periphBar1Data;
+    }
+
+    public void setPeriphBar1Data(BarChartItem periphBar1Data) {
+        this.periphBar1Data = periphBar1Data;
+    }
+
+    public BarChartItem getPeriphBar2Data() {
+        return periphBar2Data;
+    }
+
+    public void setPeriphBar2Data(BarChartItem periphBar2Data) {
+        this.periphBar2Data = periphBar2Data;
+    }
+
+    public BarChartItem getPeriphBar3Data() {
+        return periphBar3Data;
+    }
+
+    public void setPeriphBar3Data(BarChartItem periphBar3Data) {
+        this.periphBar3Data = periphBar3Data;
+    }
+
+    public BarChartItem getOptic12Data() {
+        return optic12Data;
+    }
+
+    public void setOptic12Data(BarChartItem optic12Data) {
+        this.optic12Data = optic12Data;
+    }
+
+    public BarChartItem getOptic5Data() {
+        return optic5Data;
+    }
+
+    public void setOptic5Data(BarChartItem optic5Data) {
+        this.optic5Data = optic5Data;
+    }
+
+    public BarChartItem getRetailBar1Data() {
+        return retailBar1Data;
+    }
+
+    public void setRetailBar1Data(BarChartItem retailBar1Data) {
+        this.retailBar1Data = retailBar1Data;
+    }
+
+    public BarChartItem getNextGenDisplays() {
+        return nextGenDisplays;
+    }
+
+    public void setNextGenDisplays(BarChartItem nextGenDisplays) {
+        this.nextGenDisplays = nextGenDisplays;
     }
 }

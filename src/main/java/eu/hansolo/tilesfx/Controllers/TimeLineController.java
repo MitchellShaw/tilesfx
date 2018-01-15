@@ -90,11 +90,6 @@ public class TimeLineController implements Initializable {
 
     private void createActions()
     {
-        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
-            public void onChanged(ListChangeListener.Change<? extends String> c) {
-                System.out.println(checkComboBox.getCheckModel().getCheckedItems());
-            }
-        });
         createButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -131,21 +126,9 @@ public class TimeLineController implements Initializable {
                             {
                                  myHandler = new EventHandler() {
                                     @Override
-                                    public void handle(Event event) {
-                                        MainBuildController buildController = messenger.getMainBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
-
+                                    public void handle(Event event)
+                                    {
+                                        messenger.getPrimaryStage().setScene(messenger.getMainBuild());
                                     }
                                 };
                             }
@@ -154,19 +137,7 @@ public class TimeLineController implements Initializable {
                                 myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
-                                        MainTestController buildController = messenger.getMainTestController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
+                                        messenger.getPrimaryStage().setScene(messenger.getMainTest());
 
                                     }
                                 };
@@ -175,21 +146,9 @@ public class TimeLineController implements Initializable {
                             {
                                 myHandler = new EventHandler() {
                                     @Override
-                                    public void handle(Event event) {
-                                        MainStageController buildController = messenger.getMainStageController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
-
+                                    public void handle(Event event)
+                                    {
+                                        messenger.getPrimaryStage().setScene(messenger.getMainStage());
                                     }
                                 };
                             }
@@ -198,20 +157,7 @@ public class TimeLineController implements Initializable {
                                 myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
-                                        OpticBuildController buildController = messenger.getOpticBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/opticBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
-
+                                        messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
                                     }
                                 };
                             }
@@ -220,19 +166,7 @@ public class TimeLineController implements Initializable {
                                 myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
-                                        POSBuildController buildController = messenger.getPosBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/posBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
+                                        messenger.getPrimaryStage().setScene(messenger.getPosBuild());
 
                                     }
                                 };
@@ -242,20 +176,7 @@ public class TimeLineController implements Initializable {
                                  myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
-                                        RetailBuildController buildController = messenger.getRetailBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/retailBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
-
+                                        messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
                                     }
                                 };
                             }
@@ -263,21 +184,9 @@ public class TimeLineController implements Initializable {
                             {
                                  myHandler = new EventHandler() {
                                     @Override
-                                    public void handle(Event event) {
-                                        ServersBuildController buildController = messenger.getServersBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/serversBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
-
+                                    public void handle(Event event)
+                                    {
+                                        messenger.getPrimaryStage().setScene(messenger.getServerBuild());
                                     }
                                 };
                             }
@@ -286,33 +195,41 @@ public class TimeLineController implements Initializable {
                                  myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
-                                        PeriphBuildController buildController = messenger.getPeriphBuildController();
-
-                                        FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/periphBuildScreen.fxml"));
-                                        root.setController(buildController);
-                                        GridPane buildPane = null;
-                                        try {
-                                            buildPane = root.load();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Scene buildScene = new Scene(buildPane, 1920, 1080);
-                                        Stage primaryStage = messenger.getPrimaryStage();
-                                        primaryStage.setScene(buildScene);
+                                        messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
 
                                     }
                                 };
                             }
                             if(boxes.get(i).equals("POS/Servers Stage"))
                             {
+                                myHandler = new EventHandler() {
+                                    @Override
+                                    public void handle(Event event) {
+                                        messenger.getPrimaryStage().setScene(messenger.getPosStage());
 
+                                    }
+                                };
                             }
                             if(boxes.get(i).equals("Periph Stage"))
                             {
+                                myHandler = new EventHandler() {
+                                    @Override
+                                    public void handle(Event event) {
+                                        messenger.getPrimaryStage().setScene(messenger.getPeriphStage());
+
+                                    }
+                                };
 
                             }
                             if(boxes.get(i).equals("Retail Stage"))
                             {
+                                myHandler = new EventHandler() {
+                                    @Override
+                                    public void handle(Event event) {
+                                        messenger.getPrimaryStage().setScene(messenger.getRetailStage());
+
+                                    }
+                                };
 
                             }
                             userDuration = Duration.seconds(temp + convert);
@@ -323,11 +240,10 @@ public class TimeLineController implements Initializable {
                         KeyFrame buffer = new KeyFrame(userDuration);
                         frames.add(buffer);
                         timeline.getKeyFrames().addAll(frames);
-                        System.out.println(frames);
                         timeline.play();
 
-                        Stage closeMe = getStage();
-                        closeMe.close();
+                        Window closeMe = messenger.getTimelineScene().getWindow();
+                        closeMe.hide();
                     }
                 }
             }
@@ -336,8 +252,8 @@ public class TimeLineController implements Initializable {
             @Override
             public void handle(ActionEvent event)
             {
-                Stage temp = getStage();
-                temp.close();
+                Window closeMe = messenger.getTimelineScene().getWindow();
+                closeMe.hide();
             }
         });
     }

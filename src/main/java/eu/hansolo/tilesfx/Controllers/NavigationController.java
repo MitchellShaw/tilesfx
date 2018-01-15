@@ -192,57 +192,21 @@ public class NavigationController implements Initializable {
         });
         buildIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                MainBuildController buildController = messenger.getMainBuildController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainBuildScreen.fxml"));
-                root.setController(buildController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
-
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getMainBuild());
             }
         });
         testIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                MainTestController testController = messenger.getMainTestController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainTestScreen.fxml"));
-                root.setController(testController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+                messenger.getPrimaryStage().setScene(messenger.getMainTest());
             }
         });
         stageIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                MainStageController stageController = messenger.getMainStageController();
-
-                FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/mainStageScreen.fxml"));
-                root.setController(stageController);
-                GridPane buildPane = null;
-                try {
-                    buildPane = root.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene buildScene = new Scene(buildPane, 1920, 1080);
-                Stage primaryStage = messenger.getPrimaryStage();
-                primaryStage.setScene(buildScene);
+                messenger.getPrimaryStage().setScene(messenger.getMainStage());
             }
         });
 //        safetyIcon.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {

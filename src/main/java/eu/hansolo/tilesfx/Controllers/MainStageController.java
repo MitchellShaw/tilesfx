@@ -215,6 +215,7 @@ public class MainStageController implements Initializable
                 .subText(Double.toString(posTotalCurrentStage) + "/" + Double.toString(posTotalGoalStage))
                 .value(posPercentTotalStage)
                 .build();
+
         posTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(480, 270)
                 .title("Total Staged")
@@ -254,6 +255,7 @@ public class MainStageController implements Initializable
                 .roundedCorners(false)
                 .value(retailPercentTotalStage)
                 .build();
+
         retailTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(480, 270)
                 .title("Total Staged")
@@ -507,35 +509,18 @@ public class MainStageController implements Initializable
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if(event.getCode() == KeyCode.X && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
                     {

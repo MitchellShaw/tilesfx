@@ -2,6 +2,7 @@ package eu.hansolo.tilesfx.Controllers;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
@@ -35,7 +36,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -51,17 +54,54 @@ public class PeriphBuildController implements Initializable {
     Tile daySince;
 
     Tile periphBuild;
-    Tile periphPercent;
+    Tile periphBuildGauge;
     Tile periphFTT;
-    Tile periphQuant;
 
 
     Tile periphTest;
-    Tile periphTestPercent;
+    Tile periphTestGauge;
     Tile periphTestFTT;
-    Tile periphTestQuant;
 
     Tile message;
+    Tile filler1;
+    Tile filler2;
+    Tile filler3;
+    Tile filler4;
+
+    HBox myBox;
+    HBox hbox;
+
+    double kiwi4sCurrentBuild;
+    double kiwi4sGoalBuild;
+    double kiwi2XsCurrentBuild;
+    double kiwi2XsGoalBuild;
+    double bumpBarsCurrentBuild;
+    double bumpBarsGoalBuild;
+    double pantherEPC4sCurrentBuild;
+    double pantherEPC4sGoalBuild;
+    double periphGoalTotalBuild;
+    double periphCurrentTotalBuild;
+    double periphThrough;
+    double periphPercentTotalBuild;
+    double periphBar1Total;
+    double periphBar1Goal;
+    double periphBar2Total;
+    double periphBar2Goal;
+    double periphBar3Total;
+    double periphBar3Goal;
+    double periphCurrentTotalTest;
+    double periphPercentTotalTest;
+    double kiwi4sCurrentTest;
+    double kiwi2XsCurrentTest;
+    double bumpBarsCurrentTest;
+    double pantherEPC4sCurrentTest;
+
+    BarChartItem periphBar1Data;
+    BarChartItem periphBar2Data;
+    BarChartItem periphBar3Data;
+    BarChartItem periphBar1DataTest;
+    BarChartItem periphBar2DataTest;
+    BarChartItem periphBar3DataTest;
 
     double x = 0;
     double y = 0;
@@ -71,42 +111,120 @@ public class PeriphBuildController implements Initializable {
 
     Messenger messenger;
 
-    String useDate;
+    String useDate = "0";
 
     ImageView stopView = new ImageView();
     final Image redImage = new Image("/Red Light.PNG");
     final Image yellowImage = new Image("/Yellow Light.PNG");
     final Image greenImage = new Image("/Green Light.PNG");
 
+    final ImageView logoView = new ImageView();
+    final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
+
     ArrayList<Tile> tiles;
+
+    DecimalFormat df = new DecimalFormat("#.0");
+    DecimalFormat hundred = new DecimalFormat("#");
 
     @FXML
     private GridPane pane;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
         tiles = new ArrayList<>();
 
         MainBuildController mainBuildController = messenger.getMainBuildController();
         MainTestController mainTestController = messenger.getMainTestController();
 
-        periphBuild = mainBuildController.getPeriphBuild();
+        kiwi4sCurrentBuild = mainBuildController.getKiwi4sCurrentBuild();
+        kiwi4sGoalBuild = mainBuildController.getKiwi4sGoalBuild();
+        kiwi2XsCurrentBuild = mainBuildController.getKiwi2XsCurrentBuild();
+        kiwi2XsGoalBuild = mainBuildController.getKiwi2XsGoalBuild();
+        bumpBarsCurrentBuild = mainBuildController.getBumpBarsCurrentBuild();
+        bumpBarsGoalBuild = mainBuildController.getBumpBarsGoalBuild();
+        pantherEPC4sCurrentBuild = mainBuildController.getPantherEPC4sCurrentBuild();
+        pantherEPC4sGoalBuild = mainBuildController.getPantherEPC4sGoalBuild();
+        periphGoalTotalBuild = mainBuildController.getPeriphGoalTotalBuild();
+        periphCurrentTotalBuild = mainBuildController.getPeriphCurrentTotalBuild();
+        periphThrough = mainBuildController.getPeriphThrough();
+        periphPercentTotalBuild = mainBuildController.getPeriphPercentTotalBuild();
+        periphBar1Total = mainBuildController.getPeriphBar1Total();
+        periphBar1Goal = mainBuildController.getPeriphBar1Goal();
+        periphBar2Total = mainBuildController.getPeriphBar2Total();
+        periphBar2Goal = mainBuildController.getPeriphBar2Goal();
+        periphBar3Total = mainBuildController.getPeriphBar3Total();
+        periphBar3Goal = mainBuildController.getPeriphBar3Goal();
+        periphCurrentTotalTest = mainTestController.getPeriphCurrentTotalTest();
+        periphPercentTotalTest = mainTestController.getPeriphPercentTotalTest();
+        kiwi4sCurrentTest = mainTestController.getKiwi4sCurrentTest();
+        kiwi2XsCurrentTest = mainTestController.getKiwi2XsCurrentTest();
+        bumpBarsCurrentTest = mainTestController.getBumpBarsCurrentTest();
+        pantherEPC4sCurrentTest = mainTestController.getPantherEPC4sCurrentTest();
 
-        periphPercent = mainBuildController.getPeriphPercent();
+        //---------------------------------Creating the Bar Chart Items for Periph-------------------------------------
+        periphBar1Data = new BarChartItem("1635", periphBar1Total, periphBar1Goal, Tile.BLUE);
+        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.RED);
+        periphBar3Data = new BarChartItem("1646/1651", periphBar3Total, periphBar3Goal, Tile.GREEN);
+        //---------------------------------Creating the Bar Chart Items for Periph-------------------------------------
+        periphBar1DataTest = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
+        periphBar2DataTest = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar3DataTest = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
 
-        periphFTT = mainBuildController.getPeriphFTT();
+        periphBuild = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Build")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .prefSize(384, 540)
+                .barChartItems(periphBar1Data, periphBar2Data, periphBar3Data)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
 
-        periphFTT.setPrefSize(480,540);
+        periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(periphThrough) + "%")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
-        periphTest = mainTestController.getPeriphTest();
+        periphTest = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Peripherals Test")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .prefSize(384, 640)
+                .barChartItems(periphBar1DataTest,periphBar2DataTest,periphBar3DataTest)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
 
+        periphTestFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 440)
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getPeriphThrough())+"%")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
-        periphTestPercent = mainTestController.getPeriphTestPercent();
-
-        periphTestFTT = mainTestController.getPeriphFTT();
-
-        periphTestFTT.setPrefSize(480,540);
-
+        if(messenger.getMainBuildController().getPeriphThrough() == 100)
+        {
+            periphFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+        }
+        if(messenger.getMainBuildController().getPeriphThrough() == 100)
+        {
+            periphTestFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+        }
 
         final ImageView logoView = new ImageView();
         final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
@@ -115,7 +233,7 @@ public class PeriphBuildController implements Initializable {
         logoView.setFitWidth(384);
         logoView.setPreserveRatio(true);
 
-        HBox hbox = new HBox(logoView);
+        hbox = new HBox(logoView);
         hbox.setPrefWidth(384);
         hbox.setPrefHeight(270);
         hbox.setAlignment(Pos.CENTER);
@@ -137,7 +255,7 @@ public class PeriphBuildController implements Initializable {
         stopView.setFitWidth(384);
         stopView.setPreserveRatio(true);
 
-        HBox myBox = new HBox(stopView);
+        myBox = new HBox(stopView);
         myBox.setPrefWidth(384);
         myBox.setPrefHeight(270);
         myBox.setAlignment(Pos.CENTER);
@@ -182,65 +300,102 @@ public class PeriphBuildController implements Initializable {
                 .description(useDate)
                 .build();
 
-        Tile filler1 = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
+        filler1  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
                 .roundedCorners(false)
                 .build();
-        Tile filler2 = TileBuilder.create()
+        filler2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
-        Tile filler3 = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
+        filler3  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
                 .roundedCorners(false)
                 .build();
-        Tile filler4 = TileBuilder.create()
+        filler4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
 
+        periphBuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Color.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        periphTestGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Color.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Test Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
         pane.add(periphBuild, 1, 0, 1, 2);
-        pane.add(periphPercent, 2, 0, 1, 1);
-        pane.add(periphFTT, 3, 0, 1, 2);
+        pane.add(periphBuildGauge, 2, 0, 1, 1);
+        pane.add(periphFTT, 3, 0, 1, 1);
         pane.add(periphTest, 1, 2, 1, 2);
-        pane.add(periphTestPercent, 2, 2, 1, 1);
-        pane.add(periphTestFTT, 3, 2, 1, 2);
+        pane.add(periphTestGauge, 2, 2, 1, 1);
+        pane.add(periphTestFTT, 3, 2, 1, 1);
         pane.add(logo, 0, 0, 1, 1);
         pane.add(clock, 0, 1, 1, 1);
         pane.add(stopLight, 0, 2, 1, 1);
         pane.add(daySince, 0, 3, 1, 1);
-        pane.add(filler1, 2, 1, 1, 1);
-       // pane.add(filler2, 3, 1, 1, 1);
-        pane.add(filler3, 2, 3, 1, 1);
-       // pane.add(filler4, 3, 3, 1, 1);
+        pane.add(filler1,2,1,1,1);
+        pane.add(filler2,3,1,1,1);
+        pane.add(filler3,2,3,1,1);
+        pane.add(filler4,3,3,1,1);
 
         tiles.add(periphBuild);
-        tiles.add(periphPercent);
+        tiles.add(periphBuildGauge);
         tiles.add(periphFTT);
         tiles.add(periphTest);
-        tiles.add(periphTestPercent);
+        tiles.add(periphTestGauge);
         tiles.add(periphTestFTT);
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
-        //tiles.add(filler2);
         tiles.add(filler3);
-        //tiles.add(filler4);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
         }
+        refresh();
 
     }
 
@@ -248,10 +403,8 @@ public class PeriphBuildController implements Initializable {
     {
         Platform.runLater( () ->
         {
-            if(daySince != null)
-            {
-                daySince.setDescription(useDate);
-            }
+            daySince.setDescription(useDate);
+
 
             if (Integer.parseInt(useDate) < 30) {
                 stopView.setImage(redImage);
@@ -266,15 +419,46 @@ public class PeriphBuildController implements Initializable {
             stopView.setFitWidth(384);
             stopView.setPreserveRatio(true);
 
-            HBox myBox = new HBox(stopView);
+            myBox = new HBox(stopView);
             myBox.setPrefWidth(384);
             myBox.setPrefHeight(270);
             myBox.setAlignment(Pos.CENTER);
             myBox.setStyle("-fx-background-color:#54B948");
 
-            if(stopLight != null)
+            stopLight.setGraphic(myBox);
+
+            periphCurrentTotalBuild = messenger.getMainBuildController().getPeriphCurrentTotalBuild();
+            periphCurrentTotalTest = messenger.getMainTestController().getPeriphCurrentTotalTest();
+            periphGoalTotalBuild = messenger.getMainBuildController().getPeriphGoalTotalBuild();
+
+            //---------------------------------Updating the Peripheral Units------------------------------------
+            periphBar1Data.setValue(messenger.getMainBuildController().getPeriphBar1Total());
+            periphBar1Data.setMaxValue(messenger.getMainBuildController().getPeriphBar1Goal());
+            periphBar2Data.setValue(messenger.getMainBuildController().getPeriphBar2Total());
+            periphBar2Data.setMaxValue(messenger.getMainBuildController().getPeriphBar2Goal());
+            periphBar3Data.setValue(messenger.getMainBuildController().getPeriphBar3Total());
+            periphBar3Data.setMaxValue(messenger.getMainBuildController().getPeriphBar3Goal());
+
+            periphBar1DataTest.setValue(messenger.getMainTestController().getPeriphBar1Total());
+            periphBar1DataTest.setMaxValue(messenger.getMainTestController().getPeriphBar1Goal());
+            periphBar2DataTest.setValue(messenger.getMainTestController().getPeriphBar2Total());
+            periphBar2DataTest.setMaxValue(messenger.getMainTestController().getPeriphBar2Goal());
+            periphBar3DataTest.setValue(messenger.getMainTestController().getPeriphBar3Total());
+            periphBar3DataTest.setMaxValue(messenger.getMainTestController().getPeriphBar3Goal());
+
+            periphFTT.setDescription(df.format(messenger.getMainBuildController().getPeriphThrough()) + "%");
+            if(messenger.getMainBuildController().getPeriphThrough() == 100)
             {
-                stopLight.setGraphic(myBox);
+                periphFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+            }
+            periphTestFTT.setDescription(df.format(messenger.getMainBuildController().getPeriphThrough()) + "%");
+            if(messenger.getMainBuildController().getPeriphThrough() == 100)
+            {
+                periphTestFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
+            }
+            if(periphBuildGauge!=null && periphTestGauge != null)
+            {
+                buildDifferential();
             }
 
         });
@@ -290,35 +474,18 @@ public class PeriphBuildController implements Initializable {
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if(event.getCode() == KeyCode.X && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
                     {
@@ -343,10 +510,9 @@ public class PeriphBuildController implements Initializable {
 
         for(int i =0;i<tileList.size();i++)
         {
-            Tile temp = tileList.get(i);
 
-            temp.setAnimated(true);
-            temp.setAnimationDuration(3000);
+            tileList.get(i).setAnimated(true);
+            tileList.get(i).setAnimationDuration(3000);
 
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -356,24 +522,117 @@ public class PeriphBuildController implements Initializable {
 
                 }
             });
+            int finalI = i;
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event)
                 {
-                    temp.getScene().getWindow().setX(event.getScreenX() - x);
-                    temp.getScene().getWindow().setY(event.getScreenY() - y);
-                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
+                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
+                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
                     }
                 }
             });
         }
+    }
+    private void buildDifferential()
+    {
+        double hourlyGoal = periphGoalTotalBuild/9;
+        System.out.println("THIS IS PERIPH GOAL TOTAL: "+periphGoalTotalBuild);
+
+        double currentGoal = 0;
+        ZonedDateTime currentTime = clock.getTime();
+        if(currentTime.getHour() ==7)
+        {
+            currentGoal = hourlyGoal;
+        }
+        if(currentTime.getHour() ==8)
+        {
+            currentGoal = hourlyGoal * 2;
+        }
+        if(currentTime.getHour() ==9)
+        {
+            currentGoal = hourlyGoal * 3;
+        }
+        if(currentTime.getHour() ==10)
+        {
+            currentGoal = hourlyGoal * 4;
+        }
+        if(currentTime.getHour() == 11)
+        {
+            currentGoal = hourlyGoal * 5;
+        }
+        if(currentTime.getHour() == 12 )
+        {
+            currentGoal = hourlyGoal * 6;
+        }
+        if(currentTime.getHour() == 13)
+        {
+            currentGoal = hourlyGoal * 7;
+        }
+        if(currentTime.getHour() ==14)
+        {
+            currentGoal = hourlyGoal * 8;
+        }
+        if(currentTime.getHour() >=15)
+        {
+            currentGoal = hourlyGoal * 9;
+        }
+
+        periphBuildGauge.setValue(periphCurrentTotalBuild-currentGoal);
+        periphTestGauge.setValue(periphCurrentTotalTest-currentGoal);
+
+        periphBuildGauge.setMaxValue(currentGoal);
+        periphTestGauge.setMaxValue(currentGoal);
+
+        periphBuildGauge.setMinValue(-currentGoal);
+        periphTestGauge.setMinValue(-currentGoal);
+
+        int displayBuildValue = (int) (periphCurrentTotalBuild-currentGoal);
+        int displayTestValue = (int) (periphCurrentTotalTest-currentGoal);
+        String returnBuildString = "";
+        String returnTestString = "";
+
+        if(displayBuildValue > 0)
+        {
+            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayBuildValue == 0)
+        {
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.WHITE);
+        }
+
+        if(displayBuildValue < 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler1.setTextColor(Tile.RED);
+        }
+        if(displayTestValue > 0)
+        {
+            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayTestValue == 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.WHITE);
+        }
+        if(displayTestValue < 0)
+        {
+            returnTestString = "-"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Tile.RED);
+        }
+        filler1.setDescription(returnBuildString);
+        filler3.setDescription(returnTestString);
     }
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY;
@@ -476,28 +735,12 @@ public class PeriphBuildController implements Initializable {
         this.periphBuild = periphBuild;
     }
 
-    public Tile getPeriphPercent() {
-        return periphPercent;
-    }
-
-    public void setPeriphPercent(Tile periphPercent) {
-        this.periphPercent = periphPercent;
-    }
-
     public Tile getPeriphFTT() {
         return periphFTT;
     }
 
     public void setPeriphFTT(Tile periphFTT) {
         this.periphFTT = periphFTT;
-    }
-
-    public Tile getPeriphQuant() {
-        return periphQuant;
-    }
-
-    public void setPeriphQuant(Tile periphQuant) {
-        this.periphQuant = periphQuant;
     }
 
     public Tile getPeriphTest() {
@@ -508,28 +751,12 @@ public class PeriphBuildController implements Initializable {
         this.periphTest = periphTest;
     }
 
-    public Tile getPeriphTestPercent() {
-        return periphTestPercent;
-    }
-
-    public void setPeriphTestPercent(Tile periphTestPercent) {
-        this.periphTestPercent = periphTestPercent;
-    }
-
     public Tile getPeriphTestFTT() {
         return periphTestFTT;
     }
 
     public void setPeriphTestFTT(Tile periphTestFTT) {
         this.periphTestFTT = periphTestFTT;
-    }
-
-    public Tile getPeriphTestQuant() {
-        return periphTestQuant;
-    }
-
-    public void setPeriphTestQuant(Tile periphTestQuant) {
-        this.periphTestQuant = periphTestQuant;
     }
 
     public Tile getMessage() {

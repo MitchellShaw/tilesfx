@@ -38,20 +38,35 @@ import java.util.ResourceBundle;
 
 public class MainTestController implements Initializable
 {
+    @FXML
     Tile posTest;
+    @FXML
     Tile retailTest;
+    @FXML
     Tile serversTest;
+    @FXML
     Tile periphTest;
+    @FXML
     Tile opticTest;
+    @FXML
     Tile posTestPercent;
+    @FXML
     Tile posFTT;
+    @FXML
     Tile retailTestPercent;
+    @FXML
     Tile retailFTT;
+    @FXML
     Tile serversTestPercent;
+    @FXML
     Tile serversFTT;
+    @FXML
     Tile periphTestPercent;
+    @FXML
     Tile periphFTT;
+    @FXML
     Tile opticTestPercent;
+    @FXML
     Tile opticFTT;
 
     @FXML
@@ -167,6 +182,7 @@ public class MainTestController implements Initializable
     double opticGoalTotalBuild;
     double opticGoalTotalStage;
 
+
     double opticCurrentTotalBuild;
     double opticCurrentTotalTest;
 
@@ -244,13 +260,13 @@ public class MainTestController implements Initializable
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         serverBar1DataTest = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
         serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
-        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        //---------------------------------Creating the Bar Chart Items for Periph-------------------------------------
         periphBar1DataTest = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
         periphBar2DataTest = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
         periphBar3DataTest = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
-        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        //---------------------------------Creating the Bar Chart Items for Optic-------------------------------------
         optic12DataTest = new BarChartItem("6002", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
-        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        //---------------------------------Creating the Bar Chart Items for Retail-------------------------------------
         retailBar1DataTest = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
         nextGenDisplaysTest = new BarChartItem("5968/5985", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.RED);
         //---------------------------------Creating the Tiles-----------------------------------------------------------
@@ -278,7 +294,6 @@ public class MainTestController implements Initializable
             .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
             .value(posPercentTotalTest)
             .build();
-        System.out.println(posTotalGoalBuild);
 
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
@@ -338,12 +353,12 @@ public class MainTestController implements Initializable
         pane.add(retailFTT,1,3,1,1);
 
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
-         serversTest = TileBuilder.create()
+        serversTest = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Servers Test")
-                 .animated(true)
-                 .animationDuration(3000)
-                 .roundedCorners(false)
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
                 .prefSize(384, 200)
                 .barChartItems(serverBar1DataTest,serverBar2DataTest)
                 .decimals(0)
@@ -626,36 +641,18 @@ public class MainTestController implements Initializable
                     messenger.getPrimaryStage().setScene(messenger.getMainStage());
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
-                {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    final Stage dialog = new Stage();
+                { final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if(event.getCode() == KeyCode.X && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
                     {

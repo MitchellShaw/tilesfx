@@ -37,9 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static javafx.scene.paint.Color.rgb;
@@ -50,6 +48,35 @@ public class POSStageController implements Initializable {
     Tile dept;
     Tile stopLight;
     Tile daySince;
+
+    Tile user1;
+    Tile user2;
+    Tile user3;
+    Tile user4;
+    Tile user5;
+    Tile user6;
+    Tile user7;
+    Tile user8;
+    Tile user9;
+    Tile user10;
+    Tile user11;
+    Tile user12;
+    Tile user13;
+    Tile user14;
+    Tile user15;
+    Tile user16;
+    Tile user17;
+    Tile user18;
+    Tile user19;
+    Tile user20;
+
+    HashMap<String,Integer> userMap;
+    LinkedHashMap<String,Integer> sortedByValue;
+
+    Comparator<Map.Entry<String,Integer>> valueComparator;
+
+    HBox hbox;
+    HBox myBox;
 
     double x = 0;
     double y = 0;
@@ -67,11 +94,15 @@ public class POSStageController implements Initializable {
     Messenger messenger;
 
     ArrayList<Tile> tiles;
+    ArrayList<Tile> tileSort;
 
     MainStageController stageController;
 
     ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
     Bounds allScreenBounds = computeAllScreenBounds();
+
+    final ImageView logoView = new ImageView();
+    final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
 
     @FXML
     private GridPane pane;
@@ -79,17 +110,16 @@ public class POSStageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tiles = new ArrayList<>();
+        tileSort = new ArrayList<>();
 
         stageController = messenger.getMainStageController();
 
-        final ImageView logoView = new ImageView();
-        final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
         logoView.setImage(logoImage);
         logoView.setFitHeight(216);
         logoView.setFitWidth(384);
         logoView.setPreserveRatio(true);
 
-        HBox hbox = new HBox(logoView);
+        hbox = new HBox(logoView);
         hbox.setPrefWidth(384);
         hbox.setPrefHeight(216);
         hbox.setAlignment(Pos.CENTER);
@@ -126,7 +156,7 @@ public class POSStageController implements Initializable {
         stopView.setFitWidth(384);
         stopView.setPreserveRatio(true);
 
-        HBox myBox = new HBox(stopView);
+        myBox = new HBox(stopView);
         myBox.setPrefWidth(384);
         myBox.setPrefHeight(216);
         myBox.setAlignment(Pos.CENTER);
@@ -181,14 +211,286 @@ public class POSStageController implements Initializable {
                 .description(Double.toString(stageController.getPosTotalCurrentStage()))
                 .build();
 
+        user1 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user2 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user3 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user4 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user5 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user6 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user7 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user8 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user9 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user10 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user11 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user12 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user13 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user14 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user15 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user16 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user17 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user18 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user19 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+        user20 = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .title("")
+                .prefSize(384,216)
+                .backgroundColor(rgb(42, 42, 42))
+                .roundedCorners(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .build();
+
+
         pane.add(logo, 0, 0, 1, 1);
         pane.add(clock, 0, 1, 1, 1);
         pane.add(dept, 0, 2, 1, 1);
         pane.add(stopLight, 0, 3, 1, 1);
         pane.add(daySince, 0, 4, 1, 1);
+
+        pane.add(user1, 1, 0, 1, 1);
+        pane.add(user2, 2, 0, 1, 1);
+        pane.add(user3, 3, 0, 1, 1);
+        pane.add(user4, 4, 0, 1, 1);
+
+        pane.add(user5, 1, 1, 1, 1);
+        pane.add(user6, 2, 1, 1, 1);
+        pane.add(user7, 3, 1, 1, 1);
+        pane.add(user8, 4, 1, 1, 1);
+
+        pane.add(user9, 1, 2, 1, 1);
+        pane.add(user10, 2, 2, 1, 1);
+        pane.add(user11, 3, 2, 1, 1);
+        pane.add(user12, 4, 2, 1, 1);
+
+        pane.add(user13, 1, 3, 1, 1);
+        pane.add(user14, 2, 3, 1, 1);
+        pane.add(user15, 3, 3, 1, 1);
+        pane.add(user16, 4, 3, 1, 1);
+
+        pane.add(user17, 1, 4, 1, 1);
+        pane.add(user18, 2, 4, 1, 1);
+        pane.add(user19, 3, 4, 1, 1);
+        pane.add(user20, 4, 4, 1, 1);
+
+        tileSort.add(user1);
+        tileSort.add(user2);
+        tileSort.add(user3);
+        tileSort.add(user4);
+        tileSort.add(user5);
+        tileSort.add(user6);
+        tileSort.add(user7);
+        tileSort.add(user8);
+        tileSort.add(user9);
+        tileSort.add(user10);
+        tileSort.add(user11);
+        tileSort.add(user12);
+        tileSort.add(user13);
+        tileSort.add(user14);
+        tileSort.add(user15);
+        tileSort.add(user16);
+        tileSort.add(user17);
+        tileSort.add(user18);
+        tileSort.add(user19);
+        tileSort.add(user20);
+
+
+
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
+        tiles.add(dept);
+
+        tiles.add(user1);
+        tiles.add(user2);
+        tiles.add(user3);
+        tiles.add(user4);
+        tiles.add(user5);
+        tiles.add(user6);
+        tiles.add(user7);
+        tiles.add(user8);
+        tiles.add(user9);
+        tiles.add(user10);
+        tiles.add(user11);
+        tiles.add(user12);
+        tiles.add(user13);
+        tiles.add(user14);
+        tiles.add(user15);
+        tiles.add(user16);
+        tiles.add(user17);
+        tiles.add(user18);
+        tiles.add(user19);
+        tiles.add(user20);
 
         createActions();
         refresh();
@@ -208,34 +510,17 @@ public class POSStageController implements Initializable {
                     messenger.getPrimaryStage().setScene(messenger.getMainStage());
                 }
                 if (event.getCode() == KeyCode.T && event.isControlDown()) {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if (event.getCode() == KeyCode.X && event.isControlDown()) {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if (temp.getStatus() == Animation.Status.RUNNING && temp != null) {
                         temp.stop();
@@ -253,63 +538,74 @@ public class POSStageController implements Initializable {
             }
         });
     }
+    public void userTiles()
+    {
+        valueComparator = new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                int value1 = o1.getValue();
+                int value2 = o2.getValue();
+                if(value1 > value2)
+                {
+                    return 1;
+                }
+                if(value1 < value2)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        };
+
+        Set<Map.Entry<String,Integer>> entries = userMap.entrySet();
+
+        List<Map.Entry<String,Integer>> listOfEntries = new ArrayList<>(entries);
+
+        Collections.sort(listOfEntries,valueComparator);
+        Collections.reverse(listOfEntries);
+
+        sortedByValue = new LinkedHashMap<>(listOfEntries.size());
+
+        for(Map.Entry<String, Integer> entry : listOfEntries)
+        {
+            sortedByValue.put(entry.getKey(), entry.getValue());
+        }
+        System.out.println("HashMap after sorting entries by values ");
+        Set<Map.Entry<String, Integer>> entrySetSortedByValue = sortedByValue.entrySet();
+        for(Map.Entry<String, Integer> mapping : entrySetSortedByValue)
+        {
+            System.out.println(mapping.getKey() + " ==> " + mapping.getValue());
+        }
+    }
     public void refresh()
     {
         Platform.runLater ( () ->
         {
             int total = 0;
-            if(pane != null)
+            if(userMap != null)
             {
-                ObservableList<Node> children = pane.getChildren();
-                ArrayList<Node> deletion = new ArrayList<>();
-                int g = 0;
-                for(Node node : children)
+                userTiles();
+                Set<String> keySet = sortedByValue.keySet();
+                ArrayList<String> keyList = new ArrayList<>(keySet);
+
+                Collection<Integer> values = sortedByValue.values();
+                ArrayList<Integer> valueList = new ArrayList<>(values);
+                int temp = 0;
+
+                for(int i = 0; i < valueList.size();i++)
                 {
-                    if (pane.getColumnIndex(node) != 0)
-                    {
-                        System.out.println("POS Children Deleted: "+g);
-                        g++;
-                        deletion.add(node);
-                    }
+                    temp = temp + valueList.get(i);
                 }
-                ArrayList<Tile> temp = getUsers();
+                total = temp;
 
-                for (int i = 0; i < temp.size(); i++) {
-                    int column = 0;
-                    int row = 0;
-                    total = total + Integer.parseInt(temp.get(i).getDescription());
-
-                    if (i == 0 || i == 4 || i == 8 || i == 12 || i == 16) {
-                        column = 1;
-                    }
-                    if (i == 1 || i == 5 || i == 9 || i == 13 || i == 17) {
-                        column = 2;
-                    }
-                    if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18) {
-                        column = 3;
-                    }
-                    if (i == 3 || i == 7 || i == 11 || i == 15 || i == 19) {
-                        column = 4;
-                    }
-                    if (i >= 0 && i < 4) {
-                        row = 0;
-                    }
-                    if (i >= 4 && i < 8) {
-                        row = 1;
-                    }
-                    if (i >= 8 && i < 12) {
-                        row = 2;
-                    }
-                    if (i >= 12 && i < 16) {
-                        row = 3;
-                    }
-                    if (i >= 16) {
-                        row = 4;
-                    }
-                    pane.add(temp.get(i), column, row);
-                    tiles.add(temp.get(i));
+                for(int i = 0; i <userMap.size();i++)
+                {
+                    tileSort.get(i).setTitle(keyList.get(i));
+                    tileSort.get(i).setDescription(Integer.toString(valueList.get(i)));
                 }
-                children.removeAll(deletion);
             }
             if(dept !=null)
             {
@@ -334,7 +630,7 @@ public class POSStageController implements Initializable {
             stopView.setFitWidth(384);
             stopView.setPreserveRatio(true);
 
-            HBox myBox = new HBox(stopView);
+            myBox = new HBox(stopView);
             myBox.setPrefWidth(384);
             myBox.setPrefHeight(216);
             myBox.setAlignment(Pos.CENTER);
@@ -351,10 +647,9 @@ public class POSStageController implements Initializable {
 
         for(int i =0;i<tileList.size();i++)
         {
-            Tile temp = tileList.get(i);
 
-            temp.setAnimated(true);
-            temp.setAnimationDuration(3000);
+            tileList.get(i).setAnimated(true);
+            tileList.get(i).setAnimationDuration(3000);
 
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -364,20 +659,21 @@ public class POSStageController implements Initializable {
 
                 }
             });
+            int finalI = i;
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event)
                 {
-                    temp.getScene().getWindow().setX(event.getScreenX() - x);
-                    temp.getScene().getWindow().setY(event.getScreenY() - y);
-                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
+                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
+                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
+                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
                     }
                 }
             });
@@ -478,6 +774,14 @@ public class POSStageController implements Initializable {
 
     public void setUseDate(String useDate) {
         this.useDate = useDate;
+    }
+
+    public HashMap<String, Integer> getUserMap() {
+        return userMap;
+    }
+
+    public void setUserMap(HashMap<String, Integer> userMap) {
+        this.userMap = userMap;
     }
 
 }

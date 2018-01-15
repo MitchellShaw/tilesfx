@@ -20,13 +20,13 @@
       <RowConstraints maxHeight="270.0" minHeight="270.0" prefHeight="270.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Tile fx:id="posBuild" prefWidth="384.0" GridPane.rowSpan="2" />
+      <Tile fx:id="posBuild" GridPane.columnIndex="0" GridPane.rowSpan="2" />
       <Tile fx:id="retailBuild" GridPane.columnIndex="1" GridPane.rowSpan="2" />
       <Tile fx:id="serversBuild" GridPane.columnIndex="2" GridPane.rowSpan="2" />
       <Tile fx:id="periphBuild" GridPane.columnIndex="3" GridPane.rowSpan="2" />
       <Tile fx:id="opticBuild" GridPane.columnIndex="4" GridPane.rowSpan="2" />
-      <Tile fx:id="posPercent" GridPane.rowIndex="2" />
-      <Tile fx:id="posFTT" GridPane.rowIndex="3" />
+      <Tile fx:id="posPercent" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      <Tile fx:id="posFTT" GridPane.columnIndex="0" GridPane.rowIndex="3" />
       <Tile fx:id="retailPercent" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Tile fx:id="retailFTT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Tile fx:id="serversPercent" GridPane.columnIndex="2" GridPane.rowIndex="2" />

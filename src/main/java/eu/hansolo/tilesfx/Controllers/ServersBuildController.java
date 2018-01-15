@@ -2,6 +2,7 @@ package eu.hansolo.tilesfx.Controllers;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
@@ -35,7 +36,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -51,16 +54,19 @@ public class ServersBuildController implements Initializable
     Tile stopLight;
     Tile daySince;
 
+    Tile filler1;
+    Tile filler2;
+    Tile filler3;
+    Tile filler4;
+
     Tile serversBuild;
-    Tile serversPercent;
+    Tile serversBuildGauge;
     Tile serversFTT;
-    Tile serversQuant;
 
 
     Tile serversTest;
-    Tile serversTestPercent;
+    Tile serversTestGauge;
     Tile serversTestFTT;
-    Tile serversTestQuant;
 
     Tile message;
 
@@ -70,11 +76,42 @@ public class ServersBuildController implements Initializable
     ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
     Bounds allScreenBounds = computeAllScreenBounds();
 
+    DecimalFormat df = new DecimalFormat("#.0");
+    DecimalFormat hundred = new DecimalFormat("#");
+
     Messenger messenger;
 
     ArrayList<Tile> tiles;
 
-    String useDate;
+    String useDate = "0";
+
+    double mediaPlayerCurrentBuild;
+    double mediaPlayerGoalBuild;
+    double n3000CurrentBuild;
+    double n3000GoalBuild;
+    double s500CurrentBuild;
+    double s500GoalBuild;
+    double serverGoalTotalBuild;
+    double serverCurrentBuild;
+    double serversThrough;
+    double serverBar1Total;
+    double serverBar1Goal;
+    double serverBar2Total;
+    double serverBar2Goal;
+    double serversPercentTotalBuild;
+    double mediaPlayerCurrentTest;
+    double n3000CurrentTest;
+    double s500CurrentTest;
+    double serverCurrentTest;
+    double serversPercentTotalTest;
+
+
+    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    BarChartItem serverBar1;
+    BarChartItem serverBar2;
+    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    BarChartItem serverBar1DataTest;
+    BarChartItem serverBar2DataTest;
 
     ImageView stopView = new ImageView();
     final Image redImage = new Image("/Red Light.PNG");
@@ -92,23 +129,85 @@ public class ServersBuildController implements Initializable
         MainBuildController mainBuildController = messenger.getMainBuildController();
         MainTestController mainTestController = messenger.getMainTestController();
 
-        serversBuild = mainBuildController.getServersBuild();
+         mediaPlayerCurrentBuild = mainBuildController.getMediaPlayerCurrentBuild();
+         mediaPlayerGoalBuild = mainBuildController.getMediaPlayerGoalBuild();
+         n3000CurrentBuild = mainBuildController.getN3000CurrentBuild();
+         n3000GoalBuild = mainBuildController.getN3000GoalBuild();
+         s500CurrentBuild = mainBuildController.getS500CurrentBuild();
+         s500GoalBuild = mainBuildController.getS500GoalBuild();
+         serverGoalTotalBuild = mainBuildController.getServerGoalTotalBuild();
+         serverCurrentBuild = mainBuildController.getServerCurrentBuild();
+         serversThrough = mainBuildController.getServersThrough();
+         serverBar1Total = mainBuildController.getServerBar1Total();
+         serverBar1Goal = mainBuildController.getServerBar1Goal();
+         serverBar2Total = mainBuildController.getServerBar2Total();
+         serverBar2Goal = mainBuildController.getServerBar2Goal();
+         serversPercentTotalBuild = mainBuildController.getServersPercentTotalBuild();
+         mediaPlayerCurrentTest = mainTestController.getMediaPlayerCurrentTest();
+         n3000CurrentTest = mainTestController.getN3000CurrentTest();
+         s500CurrentTest = mainTestController.getS500CurrentTest();
+         serverCurrentTest = mainTestController.getServerCurrentTest();
+         serversPercentTotalTest = mainTestController.getServersPercentTotalTest();
 
-        serversPercent = mainBuildController.getServersPercent();
+        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
+        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
+        //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+        serverBar1DataTest = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
+        serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
 
-        serversFTT = mainBuildController.getServersFTT();
+        //---------------------------------Creating the Tiles for Servers-----------------------------------------------
+        serversBuild = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Build")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .prefSize(384, 540)
+                .barChartItems(serverBar1, serverBar2)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
 
-        serversFTT.setPrefSize(480,540);
+        serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 270)
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(serversThrough) + "%")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
+        //---------------------------------Creating the Tiles for Servers-----------------------------------------------
+        serversTest = TileBuilder.create()
+                .skinType(Tile.SkinType.BAR_CHART)
+                .title("Servers Test")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .prefSize(384, 200)
+                .barChartItems(serverBar1DataTest,serverBar2DataTest)
+                .decimals(0)
+                .titleAlignment(TextAlignment.CENTER)
+                .build();
 
-        serversTest = mainTestController.getServersTest();
+        serversTestFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
+                .prefSize(384, 440)
+                .subText("FTT Rating")
+                .title("FTT")
+                .titleAlignment(TextAlignment.CENTER)
+                .description(df.format(messenger.getMainBuildController().getServersThrough())+"%")
+                .animated(true)
+                .animationDuration(3000)
+                .roundedCorners(false)
+                .build();
 
 
-        serversTestPercent = mainTestController.getServersTestPercent();
-
-        serversTestFTT = mainTestController.getServersFTT();
-
-        serversTestFTT.setPrefSize(480,540);
-
+        if (serversThrough == 100) {
+            serversFTT.setDescription(hundred.format(serversThrough) + "%");
+            serversTestFTT.setDescription(hundred.format(serversThrough) + "%");
+        }
 
         final ImageView logoView = new ImageView();
         final Image logoImage = new Image("/NCR Brand Block Logo JPG.jpg");
@@ -184,49 +283,103 @@ public class ServersBuildController implements Initializable
                 .description(useDate)
                 .build();
 
-        Tile filler1  = TileBuilder.create()
+        filler1  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+        filler2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
                 .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
-        Tile filler3  = TileBuilder.create()
+        filler3  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+        filler4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
                 .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
+
+        serversBuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Color.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        serversTestGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Color.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Test Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+
+
         pane.add(serversBuild,1,0,1,2);
-        pane.add(serversPercent,2,0,1,1);
-        pane.add(serversFTT,3,0,1,2);
+        pane.add(serversBuildGauge,2,0,1,1);
+        pane.add(serversFTT,3,0,1,1);
         pane.add(serversTest,1,2,1,2);
-        pane.add(serversTestPercent,2,2,1,1);
-        pane.add(serversTestFTT,3,2,1,2);
+        pane.add(serversTestGauge,2,2,1,1);
+        pane.add(serversTestFTT,3,2,1,1);
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
         pane.add(filler1,2,1,1,1);
+        pane.add(filler2,3,1,1,1);
         pane.add(filler3,2,3,1,1);
+        pane.add(filler4,3,3,1,1);
 
         tiles.add(serversBuild);
-        tiles.add(serversPercent);
+        tiles.add(serversBuildGauge);
         tiles.add(serversFTT);
         tiles.add(serversTest);
-        tiles.add(serversTestPercent);
+        tiles.add(serversTestGauge);
         tiles.add(serversTestFTT);
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
-       // tiles.add(filler2);
         tiles.add(filler3);
-       // tiles.add(filler4);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
+            buildDifferential();
         }
 
     }
@@ -235,10 +388,29 @@ public class ServersBuildController implements Initializable
     {
         Platform.runLater( () ->
         {
-            if(daySince != null)
+            serverGoalTotalBuild = messenger.getMainBuildController().getServerGoalTotalBuild();
+            serverCurrentBuild = messenger.getMainBuildController().getServerCurrentBuild();
+            serverCurrentTest = messenger.getMainTestController().getServerCurrentTest();
+            //---------------------------------Update the Server Units------------------------------------------
+            serverBar1.setValue(messenger.getMainBuildController().getServerBar1Total());
+            serverBar1.setMaxValue(messenger.getMainBuildController().getServerBar1Goal());
+            serverBar2.setValue(messenger.getMainBuildController().getServerBar2Total());
+            serverBar2.setMaxValue(messenger.getMainBuildController().getServerBar2Goal());
+
+            //---------------------------------Update the Server Units------------------------------------------
+            serverBar1DataTest.setValue(messenger.getMainTestController().getServerBar1Total());
+            serverBar1DataTest.setMaxValue(messenger.getMainTestController().getServerBar1Goal());
+            serverBar2DataTest.setValue(messenger.getMainTestController().getServerBar2Total());
+            serverBar2DataTest.setMaxValue(messenger.getMainTestController().getServerBar2Goal());
+
+            serversFTT.setDescription(df.format(messenger.getMainBuildController().getServersThrough()) + "%");
+            serversTestFTT.setDescription(df.format(messenger.getMainBuildController().getServersThrough()) + "%");
+            if(messenger.getMainBuildController().getServersThrough() == 100)
             {
-                daySince.setDescription(useDate);
+                serversFTT.setDescription(hundred.format(messenger.getMainBuildController().getServersThrough())+"%");
+                serversTestFTT.setDescription(hundred.format(messenger.getMainBuildController().getServersThrough())+"%");
             }
+            daySince.setDescription(useDate);
 
             if (Integer.parseInt(useDate) < 30) {
                 stopView.setImage(redImage);
@@ -259,12 +431,105 @@ public class ServersBuildController implements Initializable
             myBox.setAlignment(Pos.CENTER);
             myBox.setStyle("-fx-background-color:#54B948");
 
-            if(stopLight != null)
+            stopLight.setGraphic(myBox);
+            if(serversBuildGauge!=null && serversTestGauge != null)
             {
-                stopLight.setGraphic(myBox);
+                buildDifferential();
             }
 
         });
+    }
+    private void buildDifferential()
+    {
+        double hourlyGoal =  serverGoalTotalBuild/9;
+        double currentGoal = 0;
+        ZonedDateTime currentTime = clock.getTime();
+        if(currentTime.getHour() ==7)
+        {
+            currentGoal = hourlyGoal;
+        }
+        if(currentTime.getHour() ==8)
+        {
+            currentGoal = hourlyGoal * 2;
+        }
+        if(currentTime.getHour() ==9)
+        {
+            currentGoal = hourlyGoal * 3;
+        }
+        if(currentTime.getHour() ==10)
+        {
+            currentGoal = hourlyGoal * 4;
+        }
+        if(currentTime.getHour() == 11)
+        {
+            currentGoal = hourlyGoal * 5;
+        }
+        if(currentTime.getHour() == 12 )
+        {
+            currentGoal = hourlyGoal * 6;
+        }
+        if(currentTime.getHour() == 13)
+        {
+            currentGoal = hourlyGoal * 7;
+        }
+        if(currentTime.getHour() ==14)
+        {
+            currentGoal = hourlyGoal * 8;
+        }
+        if(currentTime.getHour() >=15)
+        {
+            currentGoal = hourlyGoal * 9;
+        }
+
+        serversBuildGauge.setValue(serverCurrentBuild-currentGoal);
+        serversTestGauge.setValue(serverCurrentTest-currentGoal);
+
+        serversBuildGauge.setMaxValue(currentGoal);
+        serversTestGauge.setMaxValue(currentGoal);
+
+        serversBuildGauge.setMinValue(-currentGoal);
+        serversTestGauge.setMinValue(-currentGoal);
+
+        int displayBuildValue = (int) (serverCurrentBuild-currentGoal);
+        int displayTestValue = (int) (serverCurrentTest-currentGoal);
+        String returnBuildString = "";
+        String returnTestString = "";
+
+        if(displayBuildValue > 0)
+        {
+            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayBuildValue == 0)
+        {
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.WHITE);
+        }
+
+        if(displayBuildValue < 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler1.setTextColor(Tile.RED);
+        }
+        if(displayTestValue > 0)
+        {
+            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayTestValue == 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.WHITE);
+        }
+        if(displayTestValue < 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Tile.RED);
+        }
+        filler1.setDescription(returnBuildString);
+        filler3.setDescription(returnTestString);
+
+
     }
     private void createActions()
     {
@@ -277,35 +542,18 @@ public class ServersBuildController implements Initializable
                 }
                 if(event.getCode() == KeyCode.T && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initStyle(StageStyle.UNDECORATED);
 
                     dialog.initOwner(messenger.getPrimaryStage());
 
-                    FXMLLoader root = new FXMLLoader(getClass().getResource("/FXML/timeLine.fxml"));
-
-                    root.setController(timeLineController);
-                    GridPane buildPane = null;
-                    try {
-                        buildPane = root.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Scene buildScene = new Scene(buildPane, 800, 600);
-
-                    timeLineController.setStage(dialog);
-
-                    dialog.setScene(buildScene);
+                    dialog.setScene(messenger.getTimelineScene());
                     dialog.show();
                 }
                 if(event.getCode() == KeyCode.X && event.isControlDown())
                 {
-                    TimeLineController timeLineController = messenger.getTimeLineController();
-
-                    Timeline temp = timeLineController.getTimeline();
+                    Timeline temp = messenger.getTimeLineController().getTimeline();
 
                     if(temp.getStatus() == Animation.Status.RUNNING && temp != null)
                     {
@@ -465,28 +713,12 @@ public class ServersBuildController implements Initializable
         this.serversBuild = serversBuild;
     }
 
-    public Tile getServersPercent() {
-        return serversPercent;
-    }
-
-    public void setServersPercent(Tile serversPercent) {
-        this.serversPercent = serversPercent;
-    }
-
     public Tile getServersFTT() {
         return serversFTT;
     }
 
     public void setServersFTT(Tile serversFTT) {
         this.serversFTT = serversFTT;
-    }
-
-    public Tile getServersQuant() {
-        return serversQuant;
-    }
-
-    public void setServersQuant(Tile serversQuant) {
-        this.serversQuant = serversQuant;
     }
 
     public Tile getServersTest() {
@@ -497,28 +729,12 @@ public class ServersBuildController implements Initializable
         this.serversTest = serversTest;
     }
 
-    public Tile getServersTestPercent() {
-        return serversTestPercent;
-    }
-
-    public void setServersTestPercent(Tile serversTestPercent) {
-        this.serversTestPercent = serversTestPercent;
-    }
-
     public Tile getServersTestFTT() {
         return serversTestFTT;
     }
 
     public void setServersTestFTT(Tile serversTestFTT) {
         this.serversTestFTT = serversTestFTT;
-    }
-
-    public Tile getServersTestQuant() {
-        return serversTestQuant;
-    }
-
-    public void setServersTestQuant(Tile serversTestQuant) {
-        this.serversTestQuant = serversTestQuant;
     }
 
     public Tile getMessage() {

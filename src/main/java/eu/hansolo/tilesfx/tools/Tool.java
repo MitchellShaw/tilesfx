@@ -31,6 +31,13 @@ public class Tool {
     HashMap<String,Integer> periphStageMap;
     HashMap<String,Integer> opticStageMap;
 
+    HashMap<String,Integer> returnMap;
+    ArrayList<String> readMe;
+    ArrayList<String> strings;
+    ArrayList<String> itemIDS;
+    ArrayList<Integer> count;
+    HashMap<String, ArrayList<String>> dummyMap;
+
     ArrayList<HashMap<String,Integer>> returnList;
     ArrayList<HashMap<String,Integer>> returnStageList;
 
@@ -210,8 +217,8 @@ public class Tool {
     //---------------------------------Database Queries----------------------------------------------------------------
     public HashMap<String,Integer> buildQuery() throws SQLException
     {
-        ArrayList<String> strings = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        strings = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         Connection conn = null;
 
@@ -313,8 +320,8 @@ public class Tool {
     //---------------------------------Hosp Test Query-------------------------------------------------------------------
     public HashMap<String,Integer> hospTestDataBase() throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT THE COLUMN NAME
 
@@ -496,8 +503,8 @@ public class Tool {
 
     public HashMap<String,Integer> hospStageDataBaseUsers() throws ClassNotFoundException, SQLException
     {
-        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
-        HashMap<String, Integer> returnMap = new HashMap<>();
+        dummyMap = new HashMap<>();
+        returnMap = new HashMap<>();
 
         ////EDIT COLUMN
 
@@ -604,8 +611,8 @@ public class Tool {
     {
 
 
-        ArrayList<String> itemIDS = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>();
+        itemIDS = new ArrayList<>();
+        count = new ArrayList<>();
         double percentages = 0.0;
         boolean flag;
 
@@ -654,8 +661,8 @@ public class Tool {
     public HashMap<String,Integer> retailTestDataBase() throws ClassNotFoundException, SQLException
     {
 
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT COLUMN
 
@@ -739,8 +746,8 @@ public class Tool {
     //---------------------------------Retail Stage Query----------------------------------------------------------------
     public HashMap<String,Integer> retailStageDataBase() throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT THE COLUMN NAME
 
@@ -831,7 +838,6 @@ public class Tool {
     {
 
         double percentages = 0.0;
-        boolean flag;
 
 
 
@@ -879,8 +885,8 @@ public class Tool {
     //---------------------------------Retail User Stage Query----------------------------------------------------------------
     public HashMap<String,Integer> retailStageDataBaseUsers() throws ClassNotFoundException, SQLException
     {
-        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
-        HashMap<String, Integer> returnMap = new HashMap<>();
+        dummyMap = new HashMap<>();
+        returnMap = new HashMap<>();
 
         ////EDIT COLUMN
 
@@ -984,8 +990,8 @@ public class Tool {
     public HashMap<String,Integer> periphTestDataBase() throws ClassNotFoundException, SQLException
     {
 
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
 
         String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
@@ -1101,8 +1107,8 @@ public class Tool {
     public HashMap<String,Integer> periphStageDataBase() throws ClassNotFoundException, SQLException
     {
 
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
 
         String query = "SELECT [Assembly] ,[CompletionDate] \n" +
@@ -1220,8 +1226,8 @@ public class Tool {
 
     public HashMap<String,Integer> periphStageDataBaseUsers() throws ClassNotFoundException, SQLException
     {
-        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
-        HashMap<String, Integer> returnMap = new HashMap<>();
+        dummyMap = new HashMap<>();
+        returnMap = new HashMap<>();
 
         ////EDIT COLUMN
 
@@ -1328,12 +1334,9 @@ public class Tool {
 
     public double periphFTTDataBase() throws ClassNotFoundException, SQLException
     {
-
-
-        ArrayList<String> itemIDS = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>();
+        itemIDS = new ArrayList<>();
+        count = new ArrayList<>();
         double percentages = 0.0;
-        boolean flag;
 
 
 
@@ -1375,8 +1378,8 @@ public class Tool {
     //---------------------------------Servers Test Query----------------------------------------------------------------
     public HashMap<String,Integer> serversTestDataBase() throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT THE COLUMN NAME
 
@@ -1461,8 +1464,8 @@ public class Tool {
     //---------------------------------Servers Stage Query----------------------------------------------------------------
     public HashMap<String,Integer> serversStageDataBase() throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT THE COLUMN NAME
 
@@ -1551,8 +1554,8 @@ public class Tool {
 
     public HashMap<String,Integer> serverStageDataBaseUsers() throws ClassNotFoundException, SQLException
     {
-        HashMap<String, ArrayList<String>> dummyMap = new HashMap<>();
-        HashMap<String, Integer> returnMap = new HashMap<>();
+        dummyMap = new HashMap<>();
+        returnMap = new HashMap<>();
 
         ////EDIT COLUMN
 
@@ -1659,8 +1662,8 @@ public class Tool {
     {
 
 
-        ArrayList<String> itemIDS = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>();
+        itemIDS = new ArrayList<>();
+        count = new ArrayList<>();
         double percentages = 0.0;
         boolean flag;
 
@@ -1705,8 +1708,8 @@ public class Tool {
     //---------------------------------Optic Test Query----------------------------------------------------------------
     public HashMap<String,Integer> opticTestDataBase() throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> readMe = new ArrayList<>();
-        HashMap<String,Integer> returnMap = new HashMap<>();
+        readMe = new ArrayList<>();
+        returnMap = new HashMap<>();
 
         ////EDIT THE COLUMN NAME
 
