@@ -16,6 +16,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -32,6 +35,15 @@ public class LoadingController implements Initializable
     @FXML
     private GridPane pane;
 
+    @FXML
+    private HBox progressBox;
+
+    @FXML
+    private HBox imageHBox;
+
+    @FXML
+    private VBox imageVBox;
+
     double x = 0;
     double y = 0;
 
@@ -44,6 +56,10 @@ public class LoadingController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         pane.setCursor(Cursor.NONE);
+        image.fitWidthProperty().bind(pane.widthProperty());
+       // image.fitHeightProperty().bind(pane.heightProperty());
+        pane.setCenterShape(true);
+
         createActions();
     }
 

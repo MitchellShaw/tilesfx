@@ -19,15 +19,15 @@
     <RowConstraints />
     <RowConstraints />
       <RowConstraints />
-      <RowConstraints maxHeight="763.999951171875" minHeight="10.0" prefHeight="763.999951171875" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="558.3999999999999" minHeight="10.0" prefHeight="315.20004882812486" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <VBox alignment="CENTER" prefHeight="864.0" prefWidth="1920.0" GridPane.rowIndex="3">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="760.0" fitWidth="853.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="650.0" fitWidth="853.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../NCR%20Brand%20Block%20Logo%20JPG.jpg" />
                      </image>
@@ -46,32 +46,55 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0" GridPane.rowIndex="4">
          <children>
-            <ImageView fx:id="buildIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-               <image>
-                  <Image url="@../wrench_screwdriver-512.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="testIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-               <image>
-                  <Image url="@../test_passed-512.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="stageIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-               <image>
-                  <Image url="@../staging.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="safetyIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-               <image>
-                  <Image url="@../safety.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="qualityIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-               <image>
-                  <Image url="@../quality.png" />
-               </image>
-            </ImageView>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="buildIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../wrench_screwdriver-512.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="testIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../test_passed-512.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="stageIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../staging.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="safetyIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../safety.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fx:id="qualityIcon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../quality.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
          </children>
+         <padding>
+            <Insets bottom="77.0" />
+         </padding>
       </HBox>
       <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>

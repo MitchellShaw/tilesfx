@@ -18,25 +18,19 @@ public class Resolutionizer
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenWidth = gd.getDisplayMode().getWidth();
         screenHeight = gd.getDisplayMode().getHeight();
-        screenHeight = gd.getDisplayMode().getHeight();
-//        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        screenWidth = screenSize.getWidth();
-//        System.out.println("Screen Width: "+screenWidth);
-//        screenHeight = screenSize.getHeight();
-//        System.out.println("Screen Height: "+screenHeight);
     }
 
     public double setTileHeight(int numberOfRows, double modifier)
     {
-        double tileHeight = screenHeight/numberOfRows;
-        tileHeight = tileHeight * modifier;
+        double tileHeight = screenHeight * modifier;
+        //System.out.println("Height of Tile: "+tileHeight);
 
         return tileHeight;
     }
     public double setTileWidth(int numberOfColumns, double modifier)
     {
-        double tileWidth = screenWidth/numberOfColumns;
-        tileWidth = tileWidth * modifier;
+        double tileWidth = screenWidth * modifier;
+        //System.out.println("Width of Tile: "+tileWidth);
 
         return tileWidth;
     }
@@ -52,13 +46,4 @@ public class Resolutionizer
 
         return paneWidth;
     }
-//    public int setImageHeight(int currentHeight)
-//    {
-//
-//    }
-//    public int setImageWidth(int currentWidth)
-//    {
-//
-//    }
-
 }

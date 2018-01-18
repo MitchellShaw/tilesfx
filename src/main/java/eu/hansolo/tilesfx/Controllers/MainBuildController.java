@@ -254,6 +254,7 @@ public class MainBuildController implements Initializable
                 .value(posPercentTotalBuild)
                 .build();
 
+
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
