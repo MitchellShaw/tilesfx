@@ -607,6 +607,11 @@ public class RetailStageController implements Initializable {
                     tileSort.get(i).setTitle(keyList.get(i));
                     tileSort.get(i).setDescription(Integer.toString(valueList.get(i)));
                 }
+                for(int i = userMap.size();i<tileSort.size();i++)
+                {
+                    tileSort.get(i).setTitle("");
+                    tileSort.get(i).setDescription("");
+                }
             }
             if(dept !=null)
             {

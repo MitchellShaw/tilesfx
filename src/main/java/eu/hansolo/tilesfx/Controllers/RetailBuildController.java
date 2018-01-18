@@ -327,7 +327,7 @@ public class RetailBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -344,7 +344,7 @@ public class RetailBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -378,7 +378,9 @@ public class RetailBuildController implements Initializable
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
+        tiles.add(filler2);
         tiles.add(filler3);
+        tiles.add(filler4);
         tiles.add(retailBuildGauge);
         tiles.add(retailTestGauge);
 
@@ -438,10 +440,7 @@ public class RetailBuildController implements Initializable
 
             stopLight.setGraphic(myBox);
 
-            if(retailBuildGauge!=null && retailTestGauge != null)
-            {
-                buildDifferential();
-            }
+             buildDifferential();
 
         });
     }
@@ -616,15 +615,9 @@ public class RetailBuildController implements Initializable
         {
             currentGoal = hourlyGoal * 9;
         }
-
         retailBuildGauge.setValue(retailTotalCurrentBuild-currentGoal);
         retailTestGauge.setValue(retailTotalCurrentTest-currentGoal);
 
-        retailBuildGauge.setMaxValue(currentGoal);
-        retailTestGauge.setMaxValue(currentGoal);
-
-        retailBuildGauge.setMinValue(-currentGoal);
-        retailTestGauge.setMinValue(-currentGoal);
 
         int displayBuildValue = (int) (retailTotalCurrentBuild-currentGoal);
         int displayTestValue = (int) (retailTotalCurrentTest-currentGoal);
@@ -644,7 +637,7 @@ public class RetailBuildController implements Initializable
 
         if(displayBuildValue < 0)
         {
-            returnTestString = "-"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
             filler1.setTextColor(Tile.RED);
         }
         if(displayTestValue > 0)
@@ -659,7 +652,7 @@ public class RetailBuildController implements Initializable
         }
         if(displayTestValue < 0)
         {
-            returnTestString = "-"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
             filler3.setTextColor(Tile.RED);
         }
         filler1.setDescription(returnBuildString);

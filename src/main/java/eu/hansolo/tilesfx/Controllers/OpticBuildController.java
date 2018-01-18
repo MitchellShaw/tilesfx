@@ -177,7 +177,7 @@ public class OpticBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -194,7 +194,7 @@ public class OpticBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -474,12 +474,6 @@ public class OpticBuildController implements Initializable
         opticBuildGauge.setValue(opticCurrentTotalBuild-currentGoal);
         opticTestGauge.setValue(opticCurrentTotalTest-currentGoal);
 
-        opticBuildGauge.setMaxValue(currentGoal);
-        opticTestGauge.setMaxValue(currentGoal);
-
-        opticBuildGauge.setMinValue(-currentGoal);
-        opticTestGauge.setMinValue(-currentGoal);
-
         int displayBuildValue = (int) (opticCurrentTotalBuild-currentGoal);
         int displayTestValue = (int) (opticCurrentTotalTest-currentGoal);
         String returnBuildString = "";
@@ -498,7 +492,7 @@ public class OpticBuildController implements Initializable
 
         if(displayBuildValue < 0)
         {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
             filler1.setTextColor(Tile.RED);
         }
         if(displayTestValue > 0)
@@ -513,7 +507,7 @@ public class OpticBuildController implements Initializable
         }
         if(displayTestValue < 0)
         {
-            returnTestString = "-"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
             filler3.setTextColor(Tile.RED);
         }
         filler1.setDescription(returnBuildString);

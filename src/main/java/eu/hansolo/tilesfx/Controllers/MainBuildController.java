@@ -233,7 +233,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
                 .barChartItems(posBar1Data, p1x30Data, t1000Data, questData)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -242,7 +242,7 @@ public class MainBuildController implements Initializable
         pane.add(posBuild, 0, 0, 1, 2);
 
         posPercent = TileBuilder.create()
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -255,7 +255,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -272,7 +272,7 @@ public class MainBuildController implements Initializable
         retailBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Retail Build")
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
                 .barChartItems(retailBar1Data, nextGenDisplays)
                 .decimals(0)
                 .animated(true)
@@ -284,7 +284,7 @@ public class MainBuildController implements Initializable
         pane.add(retailBuild, 1, 0, 1, 2);
 
         retailPercent = TileBuilder.create()
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -298,7 +298,7 @@ public class MainBuildController implements Initializable
 
         retailFTT = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -323,7 +323,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
                 .barChartItems(serverBar1, serverBar2)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -332,7 +332,7 @@ public class MainBuildController implements Initializable
         pane.add(serversBuild, 2, 0, 1, 2);
 
         serversPercent = TileBuilder.create()
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -345,7 +345,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -370,7 +370,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
                 .barChartItems(periphBar1Data, periphBar2Data, periphBar3Data)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -379,7 +379,7 @@ public class MainBuildController implements Initializable
         pane.add(periphBuild, 3, 0, 1, 2);
 
         periphPercent = TileBuilder.create()
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -392,7 +392,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -417,7 +417,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
                 .barChartItems(optic5Data, optic12Data)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
@@ -427,7 +427,7 @@ public class MainBuildController implements Initializable
         pane.add(opticBuild, 4, 0, 1, 2);
 
         opticPercent = TileBuilder.create()
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -440,7 +440,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")

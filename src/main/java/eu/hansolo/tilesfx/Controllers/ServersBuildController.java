@@ -319,7 +319,7 @@ public class ServersBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -336,7 +336,7 @@ public class ServersBuildController implements Initializable
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -373,13 +373,16 @@ public class ServersBuildController implements Initializable
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
+        tiles.add(filler2);
         tiles.add(filler3);
+        tiles.add(filler4);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
             buildDifferential();
+            testDifferential();
         }
 
     }
@@ -432,14 +435,73 @@ public class ServersBuildController implements Initializable
             myBox.setStyle("-fx-background-color:#54B948");
 
             stopLight.setGraphic(myBox);
-            if(serversBuildGauge!=null && serversTestGauge != null)
-            {
-                buildDifferential();
-            }
+
+            buildDifferential();
+            testDifferential();
 
         });
     }
     private void buildDifferential()
+    {
+        Platform.runLater( () ->
+        {
+            double hourlyGoal = serverGoalTotalBuild / 9;
+            double currentGoal = 0;
+            ZonedDateTime currentTime = clock.getTime();
+            if (currentTime.getHour() == 7) {
+                currentGoal = hourlyGoal;
+            }
+            if (currentTime.getHour() == 8) {
+                currentGoal = hourlyGoal * 2;
+            }
+            if (currentTime.getHour() == 9) {
+                currentGoal = hourlyGoal * 3;
+            }
+            if (currentTime.getHour() == 10) {
+                currentGoal = hourlyGoal * 4;
+            }
+            if (currentTime.getHour() == 11) {
+                currentGoal = hourlyGoal * 5;
+            }
+            if (currentTime.getHour() == 12) {
+                currentGoal = hourlyGoal * 6;
+            }
+            if (currentTime.getHour() == 13) {
+                currentGoal = hourlyGoal * 7;
+            }
+            if (currentTime.getHour() == 14) {
+                currentGoal = hourlyGoal * 8;
+            }
+            if (currentTime.getHour() >= 15) {
+                currentGoal = hourlyGoal * 9;
+            }
+
+            serversBuildGauge.setValue(serverCurrentBuild - currentGoal);
+
+
+            int displayBuildValue = (int) (serverCurrentBuild - currentGoal);
+
+            String returnBuildString = "";
+
+            if (displayBuildValue > 0) {
+                returnBuildString = "+" + Integer.toString(displayBuildValue) + " units" + "\n\n";
+                filler1.setTextColor(Color.valueOf("#54B948"));
+            }
+            if (displayBuildValue == 0) {
+                returnBuildString = Integer.toString(displayBuildValue) + " units" + "\n\n";
+                filler1.setTextColor(Color.WHITE);
+            }
+
+            if (displayBuildValue < 0) {
+                returnBuildString = Integer.toString(displayBuildValue) + " units" + "\n\n";
+                filler1.setTextColor(Tile.RED);
+            }
+            filler1.setDescription(returnBuildString);
+        });
+
+
+    }
+    private void testDifferential()
     {
         double hourlyGoal =  serverGoalTotalBuild/9;
         double currentGoal = 0;
@@ -481,36 +543,12 @@ public class ServersBuildController implements Initializable
             currentGoal = hourlyGoal * 9;
         }
 
-        serversBuildGauge.setValue(serverCurrentBuild-currentGoal);
         serversTestGauge.setValue(serverCurrentTest-currentGoal);
 
-        serversBuildGauge.setMaxValue(currentGoal);
-        serversTestGauge.setMaxValue(currentGoal);
-
-        serversBuildGauge.setMinValue(-currentGoal);
-        serversTestGauge.setMinValue(-currentGoal);
-
-        int displayBuildValue = (int) (serverCurrentBuild-currentGoal);
         int displayTestValue = (int) (serverCurrentTest-currentGoal);
-        String returnBuildString = "";
+
         String returnTestString = "";
 
-        if(displayBuildValue > 0)
-        {
-            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayBuildValue == 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.WHITE);
-        }
-
-        if(displayBuildValue < 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler1.setTextColor(Tile.RED);
-        }
         if(displayTestValue > 0)
         {
             returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
@@ -526,10 +564,7 @@ public class ServersBuildController implements Initializable
             returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
             filler3.setTextColor(Tile.RED);
         }
-        filler1.setDescription(returnBuildString);
         filler3.setDescription(returnTestString);
-
-
     }
     private void createActions()
     {

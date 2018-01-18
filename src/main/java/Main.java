@@ -162,8 +162,11 @@ public class Main extends Application {
         retailStageController = new RetailStageController();
         periphStageController = new PeriphStageController();
 
+        Resolutionizer resolutionizer = new Resolutionizer();
+
         messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
 
+        messenger.setResolutionizer(resolutionizer);
         timeLineController.setMessenger(messenger);
         navigationController.setMessenger(messenger);
         buildController.setMessenger(messenger);
@@ -188,79 +191,79 @@ public class Main extends Application {
         root = new FXMLLoader(getClass().getResource("FXML/LoadingScreen.fxml"));
         root.setController(loadingController);
         GridPane loadPane = root.load();
-        Scene loadingScene = new Scene(loadPane, 1920, 1080);
+        Scene loadingScene = new Scene(loadPane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
 
         root = new FXMLLoader(getClass().getResource("FXML/NavigationScreen.fxml"));
         root.setController(navigationController);
         GridPane navigationPane = root.load();
-        Scene navigationScene = new Scene(navigationPane, 1920, 1080);
+        Scene navigationScene = new Scene(navigationPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setNavigationScene(navigationScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainTestScreen.fxml"));
         root.setController(testController);
         GridPane testPane = root.load();
-        Scene testScene = new Scene(testPane, 1920, 1080);
+        Scene testScene = new Scene(testPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setMainTest(testScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainStageScreen.fxml"));
         root.setController(stageController);
         GridPane stagePane = root.load();
-        Scene stageScene = new Scene(stagePane, 1920, 1080);
+        Scene stageScene = new Scene(stagePane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setMainStage(stageScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainBuildScreen.fxml"));
         root.setController(buildController);
         GridPane buildPane = root.load();
-        Scene buildScene = new Scene(buildPane, 1920, 1080);
+        Scene buildScene = new Scene(buildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setMainBuild(buildScene);
 
 
         root = new FXMLLoader(getClass().getResource("FXML/opticBuildScreen.fxml"));
         root.setController(opticBuildController);
         GridPane opticBuildPane = root.load();
-        Scene opticBuildScene = new Scene(opticBuildPane, 1920, 1080);
+        Scene opticBuildScene = new Scene(opticBuildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setOpticBuild(opticBuildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/periphBuildScreen.fxml"));
         root.setController(periphBuildController);
         GridPane periphBuildPane = root.load();
-        Scene periphBuildScene = new Scene(periphBuildPane, 1920, 1080);
+        Scene periphBuildScene = new Scene(periphBuildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setPeriphBuild(periphBuildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/posBuildScreen.fxml"));
         root.setController(posBuildController);
         GridPane posBuildPane = root.load();
-        Scene posBuildScene = new Scene(posBuildPane, 1920, 1080);
+        Scene posBuildScene = new Scene(posBuildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setPosBuild(posBuildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/retailBuildScreen.fxml"));
         root.setController(retailBuildController);
         GridPane retailBuildPane = root.load();
-        Scene retailBuildScene = new Scene(retailBuildPane, 1920, 1080);
+        Scene retailBuildScene = new Scene(retailBuildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setRetailBuild(retailBuildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/serversBuildScreen.fxml"));
         root.setController(serversBuildController);
         GridPane serversBuildPane = root.load();
-        Scene serversBuildScene = new Scene(serversBuildPane, 1920, 1080);
+        Scene serversBuildScene = new Scene(serversBuildPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setServerBuild(serversBuildScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/periphStageScreen.fxml"));
         root.setController(periphStageController);
         GridPane periphStagePane = root.load();
-        Scene periphStageScene = new Scene(periphStagePane, 1920, 1080);
+        Scene periphStageScene = new Scene(periphStagePane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setPeriphStage(periphStageScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/posStageScreen.fxml"));
         root.setController(posStageController);
         GridPane posStagePane = root.load();
-        Scene posStageScene = new Scene(posStagePane, 1920, 1080);
+        Scene posStageScene = new Scene(posStagePane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setPosStage(posStageScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/retailStageScreen.fxml"));
         root.setController(retailStageController);
         GridPane retailStagePane = root.load();
-        Scene retailStageScene = new Scene(retailStagePane, 1920, 1080);
+        Scene retailStageScene = new Scene(retailStagePane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setRetailStage(retailStageScene);
 
 
@@ -581,34 +584,34 @@ public class Main extends Application {
         buildVariables.start();
     }
 
-    private ArrayList<Tile> getCharTiles (HashMap<String,Integer> userMap)
-    {
-        ArrayList<Tile> tiles = new ArrayList<>();
-
-        int i = 1;
-        for(Map.Entry<String,Integer> entry : userMap.entrySet())
-        {
-            String user = entry.getKey();
-            int total = entry.getValue();
-
-            String formatted = String.format("%02d",total);
-
-            Tile characterTile = TileBuilder.create()
-                    .skinType(Tile.SkinType.CHARACTER)
-                    .prefSize(384,216)
-                    .title(user)
-                    .roundedCorners(false)
-                    .titleAlignment(TextAlignment.CENTER)
-                    .description(formatted)
-                    .build();
-
-            tiles.add(characterTile);
-
-            characterTile = null;
-        }
-        tiles.sort(Comparator.comparing(Tile::getDescription));
-        Collections.reverse(tiles);
-
-        return tiles;
-    }
+//    private ArrayList<Tile> getCharTiles (HashMap<String,Integer> userMap)
+//    {
+//        ArrayList<Tile> tiles = new ArrayList<>();
+//
+//        int i = 1;
+//        for(Map.Entry<String,Integer> entry : userMap.entrySet())
+//        {
+//            String user = entry.getKey();
+//            int total = entry.getValue();
+//
+//            String formatted = String.format("%02d",total);
+//
+//            Tile characterTile = TileBuilder.create()
+//                    .skinType(Tile.SkinType.CHARACTER)
+//                    .prefSize(384,216)
+//                    .title(user)
+//                    .roundedCorners(false)
+//                    .titleAlignment(TextAlignment.CENTER)
+//                    .description(formatted)
+//                    .build();
+//
+//            tiles.add(characterTile);
+//
+//            characterTile = null;
+//        }
+//        tiles.sort(Comparator.comparing(Tile::getDescription));
+//        Collections.reverse(tiles);
+//
+//        return tiles;
+//    }
 }

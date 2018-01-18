@@ -44,6 +44,8 @@ public class Messenger {
 
     Stage primaryStage;
 
+    Resolutionizer resolutionizer;
+
     public Messenger(LoadingController loadingController, NavigationController navigationController, TimeLineController timeLineController, MainBuildController mainBuildController, MainTestController mainTestController, MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController, POSStageController posStageController, RetailStageController retailStageController, PeriphStageController periphStageController, Stage primaryStage) {
         this.loadingController = loadingController;
         this.navigationController = navigationController;
@@ -291,6 +293,14 @@ public class Messenger {
 
     public void setTimelineScene(Scene timelineScene) {
         this.timelineScene = timelineScene;
+    }
+
+    public Resolutionizer getResolutionizer() {
+        return resolutionizer;
+    }
+
+    public void setResolutionizer(Resolutionizer resolutionizer) {
+        this.resolutionizer = resolutionizer;
     }
 
 }

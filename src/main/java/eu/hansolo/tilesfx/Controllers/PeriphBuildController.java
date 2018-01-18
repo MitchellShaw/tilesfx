@@ -336,7 +336,7 @@ public class PeriphBuildController implements Initializable {
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -353,7 +353,7 @@ public class PeriphBuildController implements Initializable {
                 .unit("")
                 .valueVisible(false)
                 .roundedCorners(false)
-                .barColor(Color.RED)
+                .barColor(Tile.RED)
                 .minValue(-100)
                 .maxValue(100)
                 .threshold(0)
@@ -394,6 +394,7 @@ public class PeriphBuildController implements Initializable {
         if(pane != null)
         {
             tilesListeners(tiles);
+            buildDifferential();
         }
         refresh();
 
@@ -456,10 +457,8 @@ public class PeriphBuildController implements Initializable {
             {
                 periphTestFTT.setDescription(hundred.format(messenger.getMainBuildController().getPeriphThrough())+"%");
             }
-            if(periphBuildGauge!=null && periphTestGauge != null)
-            {
-                buildDifferential();
-            }
+
+            buildDifferential();
 
         });
     }
@@ -545,7 +544,6 @@ public class PeriphBuildController implements Initializable {
     private void buildDifferential()
     {
         double hourlyGoal = periphGoalTotalBuild/9;
-        System.out.println("THIS IS PERIPH GOAL TOTAL: "+periphGoalTotalBuild);
 
         double currentGoal = 0;
         ZonedDateTime currentTime = clock.getTime();
@@ -589,12 +587,6 @@ public class PeriphBuildController implements Initializable {
         periphBuildGauge.setValue(periphCurrentTotalBuild-currentGoal);
         periphTestGauge.setValue(periphCurrentTotalTest-currentGoal);
 
-        periphBuildGauge.setMaxValue(currentGoal);
-        periphTestGauge.setMaxValue(currentGoal);
-
-        periphBuildGauge.setMinValue(-currentGoal);
-        periphTestGauge.setMinValue(-currentGoal);
-
         int displayBuildValue = (int) (periphCurrentTotalBuild-currentGoal);
         int displayTestValue = (int) (periphCurrentTotalTest-currentGoal);
         String returnBuildString = "";
@@ -613,7 +605,7 @@ public class PeriphBuildController implements Initializable {
 
         if(displayBuildValue < 0)
         {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
             filler1.setTextColor(Tile.RED);
         }
         if(displayTestValue > 0)
@@ -628,9 +620,10 @@ public class PeriphBuildController implements Initializable {
         }
         if(displayTestValue < 0)
         {
-            returnTestString = "-"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
             filler3.setTextColor(Tile.RED);
         }
+
         filler1.setDescription(returnBuildString);
         filler3.setDescription(returnTestString);
     }

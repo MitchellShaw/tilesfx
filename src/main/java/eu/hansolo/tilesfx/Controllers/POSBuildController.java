@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -54,18 +55,18 @@ public class POSBuildController implements Initializable
     Tile daySince;
 
     Tile posBuild;
-    Tile posPercent;
+    Tile posBuildGauge;
     Tile posFTT;
-    Tile posQuant;
 
     Tile posTest;
-    Tile posTestPercent;
+    Tile posTestGauge;
     Tile posTestFTT;
-    Tile posTestQuant;
 
     Tile message;
     Tile filler1;
+    Tile filler2;
     Tile filler3;
+    Tile filler4;
     HBox myBox;
     HBox hbox;
 
@@ -186,19 +187,6 @@ public class POSBuildController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        posPercent = TileBuilder.create()
-                .prefSize(384, 270)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
-                .animated(true)
-                .animationDuration(3000)
-                .roundedCorners(false)
-                .subText(Double.toString(posTotalCurrentBuild) + "/" + Double.toString(posTotalGoalBuild))
-                .value(posPercentTotalBuild)
-                .build();
-
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 270)
                 .subText("FTT Rating")
@@ -222,19 +210,6 @@ public class POSBuildController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
-        posTestPercent = TileBuilder.create()
-                .prefSize(384, 440)
-                .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
-                .textAlignment(TextAlignment.CENTER)
-                .text("Percentage to Goal")
-                .unit(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
-                .animated(true)
-                .animationDuration(3000)
-                .roundedCorners(false)
-                .subText(Double.toString(posTotalCurrentTest) + "/" + Double.toString(posTotalGoalBuild))
-                .value(posPercentTotalTest)
-                .build();
-
         posTestFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
                 .prefSize(384, 440)
                 .subText("FTT Rating")
@@ -245,10 +220,6 @@ public class POSBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .build();
-
-        posFTT.setPrefSize(480,540);
-
-        posTestFTT.setPrefSize(480,540);
 
         if (posThrough == 100) {
             posFTT.setDescription(hundred.format(posThrough) + "%");
@@ -329,47 +300,102 @@ public class POSBuildController implements Initializable
                 .build();
 
         filler1  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+        filler2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
                 .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
         filler3  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(384,270)
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+        filler4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
                 .prefSize(384,270)
                 .roundedCorners(false)
                 .build();
 
+        posBuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        posTestGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(384,270)
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-100)
+                .maxValue(100)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Test Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
         pane.add(posBuild,1,0,1,2);
-        pane.add(posPercent,2,0,1,1);
-        pane.add(posFTT,3,0,1,2);
+        pane.add(posBuildGauge,2,0,1,1);
+        pane.add(posFTT,3,0,1,1);
         pane.add(posTest,1,2,1,2);
-        pane.add(posTestPercent,2,2,1,1);
-        pane.add(posTestFTT,3,2,1,2);
+        pane.add(posTestGauge,2,2,1,1);
+        pane.add(posTestFTT,3,2,1,1);
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
         pane.add(filler1,2,1,1,1);
+        pane.add(filler2,3,1,1,1);
         pane.add(filler3,2,3,1,1);
+        pane.add(filler4,3,3,1,1);
 
         tiles.add(posBuild);
-        tiles.add(posPercent);
+        tiles.add(posBuildGauge);
         tiles.add(posFTT);
         tiles.add(posTest);
-        tiles.add(posTestPercent);
+        tiles.add(posTestGauge);
         tiles.add(posTestFTT);
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
         tiles.add(filler1);
+        tiles.add(filler2);
         tiles.add(filler3);
+        tiles.add(filler4);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
+            buildDifferential();
         }
 
     }
@@ -378,6 +404,10 @@ public class POSBuildController implements Initializable
     {
         Platform.runLater( () ->
         {
+
+            posTotalCurrentBuild = messenger.getMainBuildController().getPosTotalCurrentBuild();
+            posTotalGoalBuild = messenger.getMainBuildController().getPosTotalGoalBuild();
+            posTotalCurrentTest = messenger.getMainTestController().getPosTotalCurrentTest();
 
             posBar1Data.setValue(messenger.getMainBuildController().getPosBar1Total());
             posBar1Data.setMaxValue(messenger.getMainBuildController().getPosBar1Goal());
@@ -435,7 +465,96 @@ public class POSBuildController implements Initializable
 
             stopLight.setGraphic(myBox);
 
+            buildDifferential();
+
         });
+    }
+    private void buildDifferential()
+    {
+        double hourlyGoal = posTotalGoalBuild/9;
+        double currentGoal = 0;
+        ZonedDateTime currentTime = clock.getTime();
+        if(currentTime.getHour() ==7)
+        {
+            currentGoal = hourlyGoal;
+        }
+        if(currentTime.getHour() ==8)
+        {
+            currentGoal = hourlyGoal * 2;
+        }
+        if(currentTime.getHour() ==9)
+        {
+            currentGoal = hourlyGoal * 3;
+        }
+        if(currentTime.getHour() ==10)
+        {
+            currentGoal = hourlyGoal * 4;
+        }
+        if(currentTime.getHour() == 11)
+        {
+            currentGoal = hourlyGoal * 5;
+        }
+        if(currentTime.getHour() == 12 )
+        {
+            currentGoal = hourlyGoal * 6;
+        }
+        if(currentTime.getHour() == 13)
+        {
+            currentGoal = hourlyGoal * 7;
+        }
+        if(currentTime.getHour() ==14)
+        {
+            currentGoal = hourlyGoal * 8;
+        }
+        if(currentTime.getHour() >=15)
+        {
+            currentGoal = hourlyGoal * 9;
+        }
+
+        posBuildGauge.setValue(posTotalCurrentBuild-currentGoal);
+        posTestGauge.setValue(posTotalCurrentTest- currentGoal);
+
+        int displayBuildValue = (int) (posTotalCurrentBuild-currentGoal);
+        int displayTestValue = (int) (posTotalCurrentTest-currentGoal);
+
+        String returnBuildString = "";
+        String returnTestString = "";
+
+        if(displayBuildValue > 0)
+        {
+            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayBuildValue == 0)
+        {
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Color.WHITE);
+        }
+
+        if(displayBuildValue < 0)
+        {
+            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
+            filler1.setTextColor(Tile.RED);
+        }
+        if(displayTestValue > 0)
+        {
+            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.valueOf("#54B948"));
+        }
+        if(displayTestValue == 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Color.WHITE);
+        }
+        if(displayTestValue < 0)
+        {
+            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
+            filler3.setTextColor(Tile.RED);
+        }
+        filler1.setDescription(returnBuildString);
+        filler3.setDescription(returnTestString);
+
+
     }
     private void createActions()
     {
@@ -600,32 +719,16 @@ public class POSBuildController implements Initializable
         return posBuild;
     }
 
-    public Tile getPosPercent() {
-        return posPercent;
-    }
-
     public Tile getPosFTT() {
         return posFTT;
-    }
-
-    public Tile getPosQuant() {
-        return posQuant;
     }
 
     public Tile getPosTest() {
         return posTest;
     }
 
-    public Tile getPosTestPercent() {
-        return posTestPercent;
-    }
-
     public Tile getPosTestFTT() {
         return posTestFTT;
-    }
-
-    public Tile getPosTestQuant() {
-        return posTestQuant;
     }
 
     public Tile getMessage() {

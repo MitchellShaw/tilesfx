@@ -442,6 +442,7 @@ public class GaugeTileSkin extends TileSkin {
         cosValue  = Math.cos(Math.toRadians(-90 - (180 - angleRange) * 0.5));
         textX     = width * 0.5 + textRadius * sinValue;
         //textY     = barBackground.getLayoutBounds().getMaxY() + size * 0.05 + textRadius * cosValue;
+        textY     = barBackground.getLayoutBounds().getMaxY() + size * 0.05 + textRadius * cosValue;
         minValueText.setTranslateX(-minValueText.getLayoutBounds().getWidth() * 0.5);
         minValueText.setTranslateY(-minValueText.getLayoutBounds().getHeight() * 0.5);
         minValueText.relocate(textX, textY);
