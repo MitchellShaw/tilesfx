@@ -1,5 +1,7 @@
 package eu.hansolo.tilesfx.Controllers;
 
+import javafx.scene.image.ImageView;
+
 import java.awt.*;
 
 public class Resolutionizer
@@ -20,14 +22,14 @@ public class Resolutionizer
         screenHeight = gd.getDisplayMode().getHeight();
     }
 
-    public double setTileHeight(int numberOfRows, double modifier)
+    public double setTileHeight(double modifier)
     {
         double tileHeight = screenHeight * modifier;
         //System.out.println("Height of Tile: "+tileHeight);
 
         return tileHeight;
     }
-    public double setTileWidth(int numberOfColumns, double modifier)
+    public double setTileWidth(double modifier)
     {
         double tileWidth = screenWidth * modifier;
         //System.out.println("Width of Tile: "+tileWidth);
@@ -45,5 +47,15 @@ public class Resolutionizer
         int paneWidth = (int) screenWidth;
 
         return paneWidth;
+    }
+    public void setImageViewWidth(ImageView image, double modifier)
+    {
+        double width = image.getFitWidth() * modifier;
+        image.setFitWidth(width);
+    }
+    public void setImageViewHeight(ImageView image, double modifier)
+    {
+        double height = image.getFitHeight() * modifier;
+        image.setFitHeight(height);
     }
 }

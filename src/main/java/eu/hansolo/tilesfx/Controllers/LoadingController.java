@@ -34,6 +34,8 @@ public class LoadingController implements Initializable
     private ProgressIndicator loadingBar;
     @FXML
     private GridPane pane;
+    @FXML
+    private ImageView logo;
 
     @FXML
     private HBox progressBox;
@@ -55,7 +57,6 @@ public class LoadingController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        pane.setCursor(Cursor.NONE);
         image.fitWidthProperty().bind(pane.widthProperty());
        // image.fitHeightProperty().bind(pane.heightProperty());
         pane.setCenterShape(true);

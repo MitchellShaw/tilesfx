@@ -6,6 +6,7 @@ import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -16,6 +17,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -31,6 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.hibernate.boot.jaxb.SourceType;
 import org.xml.sax.SAXException;
 
@@ -49,26 +52,37 @@ import static javafx.scene.paint.Color.rgb;
 
 public class RetailBuildController implements Initializable
 {
+    @FXML
     Tile logo;
+    @FXML
     Tile clock;
+    @FXML
     Tile dept;
+    @FXML
     Tile stopLight;
+    @FXML
     Tile daySince;
 
+    @FXML
     Tile retailBuild;
+    @FXML
     Tile retailBuildGauge;
 
+    @FXML
     Tile retailFTT;
-    Tile retailQuant;
-
+    @FXML
     Tile retailTest;
+    @FXML
     Tile retailTestFTT;
+    @FXML
     Tile retailTestGauge;
-
-    Tile message;
+    @FXML
     Tile filler1;
+    @FXML
     Tile filler2;
+    @FXML
     Tile filler3;
+    @FXML
     Tile filler4;
 
     HBox hbox;
@@ -168,7 +182,7 @@ public class RetailBuildController implements Initializable
         retailBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Retail Build")
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.50))
                 .barChartItems(retailBar1Data, nextGenDisplays)
                 .decimals(0)
                 .animated(true)
@@ -179,7 +193,7 @@ public class RetailBuildController implements Initializable
 
         retailFTT = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -194,14 +208,14 @@ public class RetailBuildController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .title("Retail Test")
-                .prefSize(384, 640)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.50))
                 .barChartItems(retailBar1DataTest, nextGenDisplaysTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailTestFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 440)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -254,7 +268,7 @@ public class RetailBuildController implements Initializable
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -268,7 +282,7 @@ public class RetailBuildController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -276,14 +290,14 @@ public class RetailBuildController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -294,7 +308,7 @@ public class RetailBuildController implements Initializable
         filler1  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("")
                 .roundedCorners(false)
@@ -302,13 +316,13 @@ public class RetailBuildController implements Initializable
         filler2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .build();
         filler3  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("")
                 .roundedCorners(false)
@@ -316,13 +330,13 @@ public class RetailBuildController implements Initializable
         filler4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .build();
 
         retailBuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
                 .unit("")
                 .valueVisible(false)
@@ -339,7 +353,7 @@ public class RetailBuildController implements Initializable
 
         retailTestGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
                 .unit("")
                 .valueVisible(false)
@@ -484,42 +498,70 @@ public class RetailBuildController implements Initializable
                 }
             }
         });
+        retailBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuildOverview());
+            }
+        });
+        retailBuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuildOverview());
+            }
+        });
+        filler1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuildOverview());
+            }
+        });
     }
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
 
-        for(int i =0;i<tileList.size();i++)
-        {
+    private void tilesListeners(ArrayList<Tile> tileList) {
+        for (int i = 0; i < tileList.size(); i++) {
             tileList.get(i).setAnimated(true);
             tileList.get(i).setAnimationDuration(3000);
-
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     x = event.getSceneX();
                     y = event.getSceneY();
-
-                }
-            });
+                    }});
             int finalI = i;
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event)
-                {
+                public void handle(MouseEvent event) {
                     tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
                     tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
+                    if (tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX()) {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
-
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                        }
+                        if (tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX() - messenger.getResolutionizer().screenWidth)) {
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX() - messenger.getResolutionizer().screenWidth);
+                        } }});
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                        });
+                    idle.setOnFinished(e ->
                     {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
-                    }
-                }
-            });
-        }
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                        });
+                    }});
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    }});
+            }
     }
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY;
@@ -543,14 +585,12 @@ public class RetailBuildController implements Initializable
         }
         return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
     }
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
+    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens) {
         if (screens.size() == 1) {
             primaryStage.setX(allScreenBounds.getMinX());
             primaryStage.setY(allScreenBounds.getMinY());
         }
         if (screens.size() == 2) {
-
             if (primaryStage.getX() < 0) {
                 primaryStage.setX(allScreenBounds.getMinX());
                 primaryStage.setY(allScreenBounds.getMinY());
@@ -573,193 +613,166 @@ public class RetailBuildController implements Initializable
             }
         }
     }
-
     private void buildDifferential()
-    {
-        double hourlyGoal = retailTotalGoalBuild/9;
-        double currentGoal = 0;
-        ZonedDateTime currentTime = clock.getTime();
-        if(currentTime.getHour() ==7)
+{
+    double theGoal = retailTotalGoalBuild / 540;
+    double modifier = 0;
+    double currentGoal = 0;
+    double minute = 0;
+    ZonedDateTime currentTime = clock.getTime();
+    if (currentTime.getHour() == 7) {
+        modifier = 0;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 8) {
+        modifier = 60;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 9) {
+        modifier = 120;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 10) {
+        modifier = 180;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 11) {
+        modifier = 240;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 12) {
+        modifier = 300;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 13) {
+        modifier = 360;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 14) {
+        modifier = 420;
+        minute = currentTime.getMinute();
+        currentGoal = theGoal * (modifier + minute);
+    }
+    if (currentTime.getHour() == 15) {
+        if(currentTime.getMinute()< 30)
         {
-            currentGoal = hourlyGoal;
+            modifier = 480;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + (minute*2));
         }
-        if(currentTime.getHour() ==8)
+        else
         {
-            currentGoal = hourlyGoal * 2;
+            currentGoal = retailTotalGoalBuild;
         }
-        if(currentTime.getHour() ==9)
-        {
-            currentGoal = hourlyGoal * 3;
-        }
-        if(currentTime.getHour() ==10)
-        {
-            currentGoal = hourlyGoal * 4;
-        }
-        if(currentTime.getHour() == 11)
-        {
-            currentGoal = hourlyGoal * 5;
-        }
-        if(currentTime.getHour() == 12 )
-        {
-            currentGoal = hourlyGoal * 6;
-        }
-        if(currentTime.getHour() == 13)
-        {
-            currentGoal = hourlyGoal * 7;
-        }
-        if(currentTime.getHour() ==14)
-        {
-            currentGoal = hourlyGoal * 8;
-        }
-        if(currentTime.getHour() >=15)
-        {
-            currentGoal = hourlyGoal * 9;
-        }
-        retailBuildGauge.setValue(retailTotalCurrentBuild-currentGoal);
-        retailTestGauge.setValue(retailTotalCurrentTest-currentGoal);
-
-
-        int displayBuildValue = (int) (retailTotalCurrentBuild-currentGoal);
-        int displayTestValue = (int) (retailTotalCurrentTest-currentGoal);
-        String returnBuildString = "";
-        String returnTestString = "";
-
-        if(displayBuildValue > 0)
-        {
-            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayBuildValue == 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.WHITE);
-        }
-
-        if(displayBuildValue < 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Tile.RED);
-        }
-        if(displayTestValue > 0)
-        {
-            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayTestValue == 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.WHITE);
-        }
-        if(displayTestValue < 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Tile.RED);
-        }
-        filler1.setDescription(returnBuildString);
-        filler3.setDescription(returnTestString);
-
-
     }
-    public Messenger getMessenger() {
-        return messenger;
+    if (currentTime.getHour() > 15) {
+        currentGoal = retailTotalGoalBuild;
     }
+    retailBuildGauge.setValue(retailTotalCurrentBuild - currentGoal);
+    retailTestGauge.setValue(retailTotalCurrentTest - currentGoal);
+    int displayBuildValue = (int) (retailTotalCurrentBuild - currentGoal);
+    int displayTestValue = (int) (retailTotalCurrentTest - currentGoal);
+    String returnBuildString = "";
+    String returnTestString = "";
+    if (displayBuildValue > 0) {
+        returnBuildString = "+" + Integer.toString(displayBuildValue) + " units" + "\n\n";
+        filler1.setTextColor(Color.valueOf("#54B948"));
+    }
+    if (displayBuildValue == 0) {
+        returnBuildString = Integer.toString(displayBuildValue) + " units" + "\n\n";
+        filler1.setTextColor(Color.WHITE);
+    }
+    if (displayBuildValue < 0) {
+        returnBuildString = Integer.toString(displayBuildValue) + " units" + "\n\n";
+        filler1.setTextColor(Tile.RED);
+    }
+    if (displayTestValue > 0) {
+        returnTestString = "+" + Integer.toString(displayTestValue) + " units" + "\n\n";
+        filler3.setTextColor(Color.valueOf("#54B948"));
+    }
+    if (displayTestValue == 0) {
+        returnTestString = Integer.toString(displayTestValue) + " units" + "\n\n";
+        filler3.setTextColor(Color.WHITE);
+    }
+    if (displayTestValue < 0) {
+        returnTestString = Integer.toString(displayTestValue) + " units" + "\n\n";
+        filler3.setTextColor(Tile.RED);
+    }
+    filler1.setDescription(returnBuildString);
+    filler3.setDescription(returnTestString);
+}
 
-    public void setMessenger(Messenger messenger) {
-        this.messenger = messenger;
-    }
-    public Tile getLogo() {
-        return logo;
-    }
-
-    public void setLogo(Tile logo) {
-        this.logo = logo;
-    }
-
-    public Tile getClock() {
-        return clock;
-    }
-
-    public void setClock(Tile clock) {
-        this.clock = clock;
-    }
-
-    public Tile getDept() {
-        return dept;
-    }
-
-    public void setDept(Tile dept) {
-        this.dept = dept;
-    }
-
-    public Tile getStopLight() {
-        return stopLight;
-    }
-
-    public void setStopLight(Tile stopLight) {
-        this.stopLight = stopLight;
-    }
-
-    public Tile getDaySince() {
-        return daySince;
-    }
-
-    public void setDaySince(Tile daySince) {
-        this.daySince = daySince;
-    }
-
-    public Tile getRetailBuild() {
-        return retailBuild;
-    }
-
-    public void setRetailBuild(Tile retailBuild) {
-        this.retailBuild = retailBuild;
-    }
-
-    public Tile getRetailFTT() {
-        return retailFTT;
-    }
-
-    public void setRetailFTT(Tile retailFTT) {
-        this.retailFTT = retailFTT;
-    }
-
-    public Tile getRetailQuant() {
-        return retailQuant;
-    }
-
-    public void setRetailQuant(Tile retailQuant) {
-        this.retailQuant = retailQuant;
-    }
-
-    public Tile getRetailTest() {
-        return retailTest;
-    }
-
-    public void setRetailTest(Tile retailTest) {
-        this.retailTest = retailTest;
-    }
-
-    public Tile getRetailTestFTT() {
-        return retailTestFTT;
-    }
-
-    public void setRetailTestFTT(Tile retailTestFTT) {
-        this.retailTestFTT = retailTestFTT;
-    }
-
-    public Tile getMessage() {
-        return message;
-    }
-
-    public void setMessage(Tile message) {
-        this.message = message;
-    }
-
-    public String getUseDate() {
-        return useDate;
-    }
-
-    public void setUseDate(String useDate) {
-        this.useDate = useDate;
-    }
+   public Messenger getMessenger() {
+       return messenger;
+   }
+   public void setMessenger(Messenger messenger) {
+       this.messenger = messenger;
+   }
+   public Tile getLogo() {
+       return logo;
+   }
+   public void setLogo(Tile logo) {
+       this.logo = logo;
+   }
+   public Tile getClock() {
+       return clock;
+   }
+   public void setClock(Tile clock) {
+       this.clock = clock;
+   }
+   public Tile getDept() {
+       return dept;
+   }
+   public void setDept(Tile dept) {
+       this.dept = dept;
+   }
+   public Tile getStopLight() {
+       return stopLight;
+   }
+   public void setStopLight(Tile stopLight) {
+       this.stopLight = stopLight;
+   }
+   public Tile getDaySince() {
+       return daySince;
+   }
+   public void setDaySince(Tile daySince) {
+       this.daySince = daySince;
+   }
+   public Tile getRetailBuild() {
+       return retailBuild;
+   }
+   public void setRetailBuild(Tile retailBuild) {
+       this.retailBuild = retailBuild;
+   }
+   public Tile getRetailFTT() {
+       return retailFTT;
+   }
+   public void setRetailFTT(Tile retailFTT) {
+       this.retailFTT = retailFTT;
+   }
+   public Tile getRetailTest() {
+       return retailTest;
+   }
+   public void setRetailTest(Tile retailTest) {
+       this.retailTest = retailTest;
+   }
+   public Tile getRetailTestFTT() {
+       return retailTestFTT;
+   }
+   public void setRetailTestFTT(Tile retailTestFTT) {
+       this.retailTestFTT = retailTestFTT;
+   }
+   public String getUseDate() {
+       return useDate;
+   }
+   public void setUseDate(String useDate) {
+       this.useDate = useDate;
+   }
 }

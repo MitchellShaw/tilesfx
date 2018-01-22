@@ -87,6 +87,8 @@ public class Main extends Application {
     ArrayList<HashMap<String, Integer>> mapList;
     ArrayList<HashMap<String, Integer>> stageMapList;
 
+    HashMap<String,Integer> lineMap;
+
     FXMLLoader root;
 
     LoadingController loadingController;
@@ -103,6 +105,11 @@ public class Main extends Application {
     POSStageController posStageController;
     RetailStageController retailStageController;
     PeriphStageController periphStageController;
+    posBuildOverviewController posBuildOverviewController;
+    retailBuildOverviewController retailBuildOverviewController;
+    periphBuildOverviewController periphBuildOverviewController;
+    serversBuildOverviewController serversBuildOverviewController;
+    opticBuildOverviewController opticBuildOverviewController;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -164,9 +171,22 @@ public class Main extends Application {
 
         Resolutionizer resolutionizer = new Resolutionizer();
 
+        posBuildOverviewController = new posBuildOverviewController();
+        retailBuildOverviewController = new retailBuildOverviewController();
+        serversBuildOverviewController = new serversBuildOverviewController();
+        periphBuildOverviewController = new periphBuildOverviewController();
+        opticBuildOverviewController = new opticBuildOverviewController();
+
         messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
 
+        messenger.setPosBuildOverviewController(posBuildOverviewController);
+        messenger.setRetailBuildOverviewController(retailBuildOverviewController);
+        messenger.setServersBuildOverviewController(serversBuildOverviewController);
+        messenger.setPeriphBuildOverviewController(periphBuildOverviewController);
+        messenger.setOpticBuildOverviewController(opticBuildOverviewController);
+
         messenger.setResolutionizer(resolutionizer);
+
         timeLineController.setMessenger(messenger);
         navigationController.setMessenger(messenger);
         buildController.setMessenger(messenger);
@@ -181,6 +201,11 @@ public class Main extends Application {
         retailStageController.setMessenger(messenger);
         periphStageController.setMessenger(messenger);
         loadingController.setMessenger(messenger);
+        posBuildOverviewController.setMessenger(messenger);
+        retailBuildOverviewController.setMessenger(messenger);
+        serversBuildOverviewController.setMessenger(messenger);
+        periphBuildOverviewController.setMessenger(messenger);
+        opticBuildOverviewController.setMessenger(messenger);
 
         root = new FXMLLoader(getClass().getResource("FXML/timeLine.fxml"));
         root.setController(timeLineController);
@@ -265,6 +290,36 @@ public class Main extends Application {
         GridPane retailStagePane = root.load();
         Scene retailStageScene = new Scene(retailStagePane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setRetailStage(retailStageScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posBuildOverview.fxml"));
+        root.setController(posBuildOverviewController);
+        GridPane posBuildOverviewPane = root.load();
+        Scene posBuildOverviewScene = new Scene(posBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setPosBuildOverview(posBuildOverviewScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/periphBuildOverview.fxml"));
+        root.setController(periphBuildOverviewController);
+        GridPane periphBuildOverviewPane = root.load();
+        Scene periphBuildOverviewScene = new Scene(periphBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setPeriphBuildOverview(periphBuildOverviewScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/retailBuildOverview.fxml"));
+        root.setController(retailBuildOverviewController);
+        GridPane retailBuildOverviewPane = root.load();
+        Scene retailBuildOverviewScene = new Scene(retailBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setRetailBuildOverview(retailBuildOverviewScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/serversBuildOverview.fxml"));
+        root.setController(serversBuildOverviewController);
+        GridPane serversBuildOverviewPane = root.load();
+        Scene serversBuildOverviewScene = new Scene(serversBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setServersBuildOverview(serversBuildOverviewScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/opticBuildOverview.fxml"));
+        root.setController(opticBuildOverviewController);
+        GridPane opticBuildOverviewPane = root.load();
+        Scene opticBuildOverviewScene = new Scene(opticBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setOpticBuildOverview(opticBuildOverviewScene);
 
 
 
@@ -500,6 +555,17 @@ public class Main extends Application {
                         buildController.setOpticPercentTotalBuild(goalTool.getPercentTotal(buildController.getOpticCurrentTotalBuild(), buildController.getOpticGoalTotalBuild()));
                         testController.setOpticPercentTotalTest(goalTool.getPercentTotal(testController.getOpticCurrentTotalTest(), buildController.getOpticGoalTotalBuild()));
 
+                        System.out.println("\n***********Running Line Block.**************\n");
+                        lineMap = dataBaseTool.buildLineQuery();
+                        retailBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG1",lineMap));
+                        retailBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG2",lineMap));
+                        retailBuildOverviewController.setLine3Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG3",lineMap));
+                        retailBuildOverviewController.setLine4Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG4",lineMap));
+                        retailBuildOverviewController.setLine5Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG5",lineMap));
+                        retailBuildOverviewController.setLine6Total((int) mapTool.getCurrentSingleValue("MIDLAND.DISPLAY_NG1",lineMap));
+
+
+
                         //---------------------------------This is some hacky shit-------------------------------------------
                         System.out.println("\n***********Dynamic Creation Block***********\n");
 
@@ -539,6 +605,11 @@ public class Main extends Application {
                         periphStageController.setUseDate(useDate);
                         retailStageController.setUseDate(useDate);
 
+                        posBuildOverviewController.setUseDate(useDate);
+                        retailBuildOverviewController.setUseDate(useDate);
+                        serversBuildOverviewController.setUseDate(useDate);
+                        periphBuildOverviewController.setUseDate(useDate);
+                        opticBuildOverviewController.setUseDate(useDate);
 
                         Platform.runLater(() -> buildController.refresh());
                         Platform.runLater(() -> testController.refresh());
@@ -553,6 +624,11 @@ public class Main extends Application {
                         Platform.runLater( ()->periphStageController.refresh());
                         Platform.runLater( ()->posStageController.refresh());
                         Platform.runLater( ()->retailStageController.refresh());
+                        Platform.runLater( ()->posBuildOverviewController.refresh());
+                        Platform.runLater( ()->retailBuildOverviewController.refresh());
+                        Platform.runLater( ()->serversBuildOverviewController.refresh());
+                        Platform.runLater( ()->periphBuildOverviewController.refresh());
+                        Platform.runLater( ()->opticBuildOverviewController.refresh());
 
 
                         if (primaryStage.getScene() == loadingScene)

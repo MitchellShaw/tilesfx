@@ -23,37 +23,37 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
          <children>
-            <Tile fx:id="opticPercent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="394.0" />
+            <Tile fx:id="opticPercent" prefHeight="270.0" prefWidth="394.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="periphFTT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="498.0" />
+            <Tile fx:id="periphFTT" prefHeight="270.0" prefWidth="498.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="posBuild" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="419.0" />
+            <Tile fx:id="posBuild" prefHeight="541.0" prefWidth="419.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
-            <Tile fx:id="serversPercent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="538.0" />
+            <Tile fx:id="serversPercent" prefHeight="270.0" prefWidth="386.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="retailBuild" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="418.0" />
+            <Tile fx:id="retailBuild" prefHeight="598.0" prefWidth="418.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="serversBuild" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="444.0" />
+            <Tile fx:id="serversBuild" prefHeight="541.0" prefWidth="444.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="periphBuild" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="486.0" />
+            <Tile fx:id="periphBuild" prefHeight="599.0" prefWidth="486.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -68,32 +68,32 @@
       </HBox>
       <HBox GridPane.columnIndex="4" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="opticBuild" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="384.0" />
+            <Tile fx:id="opticBuild" prefHeight="599.0" prefWidth="384.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="retailFTT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="457.0" />
+            <Tile fx:id="retailFTT" prefHeight="270.0" prefWidth="457.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="serversFTT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="534.0" />
+            <Tile fx:id="serversFTT" prefHeight="270.0" prefWidth="534.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
-            <Tile fx:id="periphPercent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="478.0" />
+            <Tile fx:id="periphPercent" prefHeight="270.0" prefWidth="478.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="opticFTT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="526.0" />
+            <Tile fx:id="opticFTT" prefHeight="270.0" prefWidth="526.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="posFTT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="464.0" />
+            <Tile fx:id="posFTT" prefHeight="270.0" prefWidth="464.0" />
          </children>
       </HBox>
    </children>

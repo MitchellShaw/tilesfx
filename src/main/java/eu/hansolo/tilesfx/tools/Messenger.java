@@ -25,6 +25,12 @@ public class Messenger {
 
     PeriphStageController periphStageController;
 
+    posBuildOverviewController posBuildOverviewController;
+    retailBuildOverviewController retailBuildOverviewController;
+    serversBuildOverviewController serversBuildOverviewController;
+    periphBuildOverviewController periphBuildOverviewController;
+    opticBuildOverviewController opticBuildOverviewController;
+
 
     Scene navigationScene;
     Scene timelineScene;
@@ -40,6 +46,12 @@ public class Messenger {
     Scene posStage;
     Scene retailStage;
     Scene serverStage;
+
+    Scene posBuildOverview;
+    Scene retailBuildOverview;
+    Scene serversBuildOverview;
+    Scene periphBuildOverview;
+    Scene opticBuildOverview;
 
 
     Stage primaryStage;
@@ -301,6 +313,86 @@ public class Messenger {
 
     public void setResolutionizer(Resolutionizer resolutionizer) {
         this.resolutionizer = resolutionizer;
+    }
+
+    public posBuildOverviewController getPosBuildOverviewController() {
+        return posBuildOverviewController;
+    }
+
+    public void setPosBuildOverviewController(eu.hansolo.tilesfx.Controllers.posBuildOverviewController posBuildOverviewController) {
+        this.posBuildOverviewController = posBuildOverviewController;
+    }
+
+    public Scene getPosBuildOverview() {
+        return posBuildOverview;
+    }
+
+    public void setPosBuildOverview(Scene posBuildOverview) {
+        this.posBuildOverview = posBuildOverview;
+    }
+
+    public retailBuildOverviewController getRetailBuildOverviewController() {
+        return retailBuildOverviewController;
+    }
+
+    public void setRetailBuildOverviewController(eu.hansolo.tilesfx.Controllers.retailBuildOverviewController retailBuildOverviewController) {
+        this.retailBuildOverviewController = retailBuildOverviewController;
+    }
+
+    public serversBuildOverviewController getServersBuildOverviewController() {
+        return serversBuildOverviewController;
+    }
+
+    public void setServersBuildOverviewController(eu.hansolo.tilesfx.Controllers.serversBuildOverviewController serversBuildOverviewController) {
+        this.serversBuildOverviewController = serversBuildOverviewController;
+    }
+
+    public periphBuildOverviewController getPeriphBuildOverviewController() {
+        return periphBuildOverviewController;
+    }
+
+    public void setPeriphBuildOverviewController(eu.hansolo.tilesfx.Controllers.periphBuildOverviewController periphBuildOverviewController) {
+        this.periphBuildOverviewController = periphBuildOverviewController;
+    }
+
+    public opticBuildOverviewController getOpticBuildOverviewController() {
+        return opticBuildOverviewController;
+    }
+
+    public void setOpticBuildOverviewController(eu.hansolo.tilesfx.Controllers.opticBuildOverviewController opticBuildOverviewController) {
+        this.opticBuildOverviewController = opticBuildOverviewController;
+    }
+
+    public Scene getRetailBuildOverview() {
+        return retailBuildOverview;
+    }
+
+    public void setRetailBuildOverview(Scene retailBuildOverview) {
+        this.retailBuildOverview = retailBuildOverview;
+    }
+
+    public Scene getServersBuildOverview() {
+        return serversBuildOverview;
+    }
+
+    public void setServersBuildOverview(Scene serversBuildOverview) {
+        this.serversBuildOverview = serversBuildOverview;
+    }
+
+    public Scene getPeriphBuildOverview() {
+        return periphBuildOverview;
+    }
+
+    public void setPeriphBuildOverview(Scene periphBuildOverview) {
+        this.periphBuildOverview = periphBuildOverview;
+    }
+
+    public Scene getOpticBuildOverview() {
+        return opticBuildOverview;
+    }
+
+    public void setOpticBuildOverview(Scene opticBuildOverview) {
+        this.opticBuildOverview = opticBuildOverview;
     }
 
 }

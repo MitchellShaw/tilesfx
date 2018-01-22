@@ -28,7 +28,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class NavigationController implements Initializable {
+public class NavigationController implements Initializable
+{
     @FXML
     private ImageView buildIcon;
     @FXML
@@ -41,6 +42,8 @@ public class NavigationController implements Initializable {
     private ImageView qualityIcon;
     @FXML
     private ImageView exitIcon;
+    @FXML
+    private ImageView logo;
     @FXML
     private GridPane pane;
 
@@ -55,6 +58,8 @@ public class NavigationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        logo.fitWidthProperty().bind(pane.widthProperty());
+        pane.setCenterShape(true);
         createActions();
     }
 

@@ -3,6 +3,7 @@
 <?import eu.hansolo.tilesfx.Tile?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane fx:id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -19,19 +20,75 @@
       <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Tile fx:id="logo" />
-      <Tile fx:id="buildGraph" GridPane.columnIndex="1" GridPane.rowSpan="2" />
-      <Tile fx:id="buildPercent" GridPane.columnIndex="2" />
-      <Tile fx:id="fttPercent" GridPane.columnIndex="3" />
-      <Tile fx:id="clock" GridPane.rowIndex="1" />
-      <Tile fx:id="buildTotal" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <Tile fx:id="buildComments" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-      <Tile fx:id="stopLight" GridPane.rowIndex="2" />
-      <Tile fx:id="safetyDays" GridPane.rowIndex="3" />
-      <Tile fx:id="testGraph" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" />
-      <Tile fx:id="testPercent" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Tile fx:id="testTotal" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <Tile fx:id="fttTestPercent" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Tile fx:id="testComments" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Tile fx:id="logo" prefHeight="158.0" prefWidth="422.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="232.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowSpan="2">
+         <children>
+            <Tile fx:id="serversBuild" prefHeight="556.0" prefWidth="731.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+         <children>
+            <Tile fx:id="serversFTT" prefHeight="286.0" prefWidth="428.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <Tile fx:id="stopLight" prefHeight="308.0" prefWidth="447.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Tile fx:id="clock" prefHeight="308.0" prefWidth="454.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+         <children>
+            <Tile fx:id="serversBuildGauge" prefHeight="158.0" prefWidth="651.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+         <children>
+            <Tile fx:id="filler4" prefHeight="308.0" prefWidth="404.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <Tile fx:id="serversTestFTT" prefHeight="308.0" prefWidth="431.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <Tile fx:id="filler3" prefHeight="308.0" prefWidth="582.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <Tile fx:id="serversTestGauge" prefHeight="195.0" prefWidth="585.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+         <children>
+            <Tile fx:id="serversTest" prefHeight="195.0" prefWidth="690.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <children>
+            <Tile fx:id="daySince" prefHeight="262.0" prefWidth="496.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <children>
+            <Tile fx:id="filler2" prefHeight="326.0" prefWidth="426.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Tile fx:id="filler1" prefHeight="175.0" prefWidth="422.0" />
+         </children>
+      </HBox>
    </children>
 </GridPane>

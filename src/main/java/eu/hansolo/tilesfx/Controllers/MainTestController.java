@@ -276,14 +276,14 @@ public class MainTestController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(posBar1DataTest, p1x30DataTest, t1000DataTest, questDataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         posTestPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
             .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
             .textAlignment(TextAlignment.CENTER)
             .text("Percentage to Goal")
@@ -296,7 +296,7 @@ public class MainTestController implements Initializable
             .build();
 
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -317,14 +317,14 @@ public class MainTestController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .title("Retail Test")
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(retailBar1DataTest, nextGenDisplaysTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailTestPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -337,7 +337,7 @@ public class MainTestController implements Initializable
                 .build();
 
         retailFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -359,14 +359,14 @@ public class MainTestController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(serverBar1DataTest,serverBar2DataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         serversTestPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -379,7 +379,7 @@ public class MainTestController implements Initializable
                 .build();
 
         serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -401,14 +401,14 @@ public class MainTestController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(periphBar1DataTest,periphBar2DataTest,periphBar3DataTest)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         periphTestPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -421,7 +421,7 @@ public class MainTestController implements Initializable
                 .build();
 
         periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -443,7 +443,7 @@ public class MainTestController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(optic12DataTest)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
@@ -451,7 +451,7 @@ public class MainTestController implements Initializable
                 .build();
 
         opticTestPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -464,7 +464,7 @@ public class MainTestController implements Initializable
                 .build();
 
         opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(5,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")

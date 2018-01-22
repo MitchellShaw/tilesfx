@@ -7,6 +7,7 @@ import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -17,6 +18,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -32,6 +34,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,26 +52,40 @@ import static javafx.scene.paint.Color.rgb;
 
 public class OpticBuildController implements Initializable
 {
+    @FXML
     Tile logo;
+    @FXML
     Tile clock;
+    @FXML
     Tile dept;
+    @FXML
     Tile stopLight;
+    @FXML
     Tile daySince;
 
+    @FXML
     Tile opticBuild;
+    @FXML
     Tile opticFTT;
 
 
+    @FXML
     Tile opticTest;
+    @FXML
     Tile opticBuildGauge;
+    @FXML
     Tile opticTestGauge;
 
+    @FXML
     Tile opticTestFTT;
 
-    Tile message;
+    @FXML
     Tile filler1;
+    @FXML
     Tile filler2;
+    @FXML
     Tile filler3;
+    @FXML
     Tile filler4;
 
     HBox myBox;
@@ -150,7 +167,7 @@ public class OpticBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 540)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.50))
                 .barChartItems(optic5Data, optic12Data)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
@@ -159,7 +176,7 @@ public class OpticBuildController implements Initializable
 
 
         opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")
@@ -172,7 +189,7 @@ public class OpticBuildController implements Initializable
 
         opticBuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
                 .unit("")
                 .valueVisible(false)
@@ -189,7 +206,7 @@ public class OpticBuildController implements Initializable
 
         opticTestGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
                 .unit("")
                 .valueVisible(false)
@@ -218,7 +235,7 @@ public class OpticBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(384, 640)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.50))
                 .barChartItems(optic12DataTest)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
@@ -226,7 +243,7 @@ public class OpticBuildController implements Initializable
                 .build();
 
         opticTestFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 440)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")
@@ -274,7 +291,7 @@ public class OpticBuildController implements Initializable
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -288,7 +305,7 @@ public class OpticBuildController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -296,14 +313,14 @@ public class OpticBuildController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -314,7 +331,7 @@ public class OpticBuildController implements Initializable
         filler1  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("")
                 .roundedCorners(false)
@@ -322,13 +339,13 @@ public class OpticBuildController implements Initializable
         filler2 = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .build();
         filler3  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384,270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("")
                 .roundedCorners(false)
@@ -336,7 +353,7 @@ public class OpticBuildController implements Initializable
         filler4 = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(384, 270)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .build();
 
@@ -431,44 +448,81 @@ public class OpticBuildController implements Initializable
 
     private void buildDifferential()
     {
-        double hourlyGoal = opticGoalTotalBuild/9;
+        double theGoal = opticGoalTotalBuild/540;
+        double modifier = 0;
         double currentGoal = 0;
+        double minute = 0;
         ZonedDateTime currentTime = clock.getTime();
         if(currentTime.getHour() ==7)
         {
-            currentGoal = hourlyGoal;
+            modifier = 0;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() ==8)
         {
-            currentGoal = hourlyGoal * 2;
+            modifier = 60;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() ==9)
         {
-            currentGoal = hourlyGoal * 3;
+            modifier = 120;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() ==10)
         {
-            currentGoal = hourlyGoal * 4;
+            modifier = 180;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() == 11)
         {
-            currentGoal = hourlyGoal * 5;
+            modifier = 240;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() == 12 )
         {
-            currentGoal = hourlyGoal * 6;
+            modifier = 300;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() == 13)
         {
-            currentGoal = hourlyGoal * 7;
+            modifier = 360;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
         if(currentTime.getHour() ==14)
         {
-            currentGoal = hourlyGoal * 8;
+            modifier = 420;
+            minute = currentTime.getMinute();
+
+            currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() >=15)
+        if (currentTime.getHour() == 15) {
+            if(currentTime.getMinute()< 30)
+            {
+                modifier = 480;
+                minute = currentTime.getMinute();
+                currentGoal = theGoal * (modifier + (minute*2));
+            }
+            else
+            {
+                currentGoal = opticGoalTotalBuild;
+            }
+        }
+        if(currentTime.getHour() >15)
         {
-            currentGoal = hourlyGoal * 9;
+            currentGoal = opticGoalTotalBuild;
         }
 
         opticBuildGauge.setValue(opticCurrentTotalBuild-currentGoal);
@@ -554,6 +608,24 @@ public class OpticBuildController implements Initializable
                 }
             }
         });
+        opticBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());
+            }
+        });
+        opticBuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());
+            }
+        });
+        filler1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());
+            }
+        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -584,10 +656,33 @@ public class OpticBuildController implements Initializable
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                     {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
                 }
             });
         }
@@ -715,14 +810,6 @@ public class OpticBuildController implements Initializable
 
     public void setOpticTestFTT(Tile opticTestFTT) {
         this.opticTestFTT = opticTestFTT;
-    }
-
-    public Tile getMessage() {
-        return message;
-    }
-
-    public void setMessage(Tile message) {
-        this.message = message;
     }
 
     public Messenger getMessenger() {

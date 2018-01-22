@@ -32,6 +32,7 @@ public class Tool {
     HashMap<String,Integer> opticStageMap;
 
     HashMap<String,Integer> returnMap;
+    HashMap<String,Integer> lineMap;
     ArrayList<String> readMe;
     ArrayList<String> strings;
     ArrayList<String> itemIDS;
@@ -316,6 +317,88 @@ public class Tool {
         }
 
         return returnMap;
+    }
+
+    ArrayList<String> lineProduct;
+    ArrayList<String> lineLoc;
+    public HashMap<String,Integer> buildLineQuery() throws ClassNotFoundException, SQLException
+    {
+        lineMap = new HashMap<>();
+
+        lineProduct = new ArrayList<>();
+        lineLoc = new ArrayList<>();
+
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        String query = "SELECT * FROM [ERP].[dbo].[BuildQuery] ORDER BY Line";
+
+
+        try
+        {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next())
+            {
+                String model = resultSet.getString("ItemID");
+                String line = resultSet.getString("Line");
+
+                //String sub = model.substring(0, model.indexOf('-'));
+                lineLoc.add(line);
+
+            }
+        }finally
+        {
+            try
+            {
+                System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+            if (lineLoc.isEmpty())
+            {
+                lineMap.put("MIDLAND.DISPLAY_NG1",0);
+                lineMap.put("MIDLAND.ED_A",0);
+                lineMap.put("MIDLAND.ED_B",0);
+                lineMap.put("MIDLAND.POS_A",0);
+                lineMap.put("MIDLAND.POS_B",0);
+                lineMap.put("MIDLAND.POS_C",0);
+                lineMap.put("MIDLAND.POS_D",0);
+                lineMap.put("MIDLAND.POS_E",0);
+                lineMap.put("MIDLAND.POS_NG1",0);
+                lineMap.put("MIDLAND.POS_NG2",0);
+                lineMap.put("MIDLAND.POS_NG3",0);
+                lineMap.put("MIDLAND.POS_NG4",0);
+                lineMap.put("MIDLAND.POS_NG5",0);
+                lineMap.put("MIDLAND.SERVERS",0);
+            }
+            else
+            {
+                for (int i = 0; i < lineLoc.size();i++)
+                {
+                    String tempString = lineLoc.get(0);
+                    int tempValue = Collections.frequency(lineLoc, lineLoc.get(0));
+                    lineLoc.removeAll(Collections.singleton(lineLoc.get(0)));
+                    lineMap.put(tempString, tempValue);
+                }
+            }
+
+        }
+        return lineMap;
     }
     //---------------------------------Hosp Test Query-------------------------------------------------------------------
     public HashMap<String,Integer> hospTestDataBase() throws ClassNotFoundException, SQLException

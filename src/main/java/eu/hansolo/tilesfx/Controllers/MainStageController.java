@@ -197,14 +197,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(posBar1DataStage, p1x30DataStage, t1000DataStage, questDataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         posStagePercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -217,7 +217,7 @@ public class MainStageController implements Initializable
                 .build();
 
         posTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(posTotalCurrentStage))
@@ -237,14 +237,14 @@ public class MainStageController implements Initializable
                 .animationDuration(3000)
                 .roundedCorners(false)
                 .title("Retail Stage")
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(retailBar1Stage, nextGenDisplaysStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         retailStagePercent= TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -257,7 +257,7 @@ public class MainStageController implements Initializable
                 .build();
 
         retailTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(retailTotalCurrentStage))
@@ -276,14 +276,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(serverBar1DataStage,serverBar2DataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         serversStagePercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -295,7 +295,7 @@ public class MainStageController implements Initializable
                 .value(serversPercentTotalStage)
                 .build();
         serversTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(serverCurrentStage))
@@ -314,14 +314,14 @@ public class MainStageController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(periphBar1DataStage,periphBar2DataStage,periphBar3DataStage)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .build();
 
         periphStagePercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -333,7 +333,7 @@ public class MainStageController implements Initializable
                 .value(periphPercentTotalStage)
                 .build();
         periphTotal = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(4,.2), messenger.getResolutionizer().setTileHeight(3,.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Total Staged")
                 .titleAlignment(TextAlignment.CENTER)
                 .description(Double.toString(periphCurrentTotalStage))
