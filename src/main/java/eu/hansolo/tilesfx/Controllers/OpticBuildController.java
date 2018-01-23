@@ -149,9 +149,9 @@ public class OpticBuildController implements Initializable
         optic12sGoalBuild = messenger.getMainBuildController().getOptic12sGoalBuild();
         opticPercentTotalBuild = messenger.getMainBuildController().getOpticPercentTotalBuild();
 
-        optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
+        optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.ORANGE);
         optic5Data = new BarChartItem("6001", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
-        optic12DataTest = new BarChartItem("6002", optic12sCurrentTest, optic12sGoalBuild, Tile.RED);
+        optic12DataTest = new BarChartItem("6002", optic12sCurrentTest, optic12sGoalBuild, Tile.ORANGE);
 
         //Test Variables
         optic12sCurrentTest = messenger.getMainTestController().getOptic12sCurrentTest();

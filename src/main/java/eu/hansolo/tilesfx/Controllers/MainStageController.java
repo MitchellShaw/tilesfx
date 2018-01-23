@@ -177,19 +177,19 @@ public class MainStageController implements Initializable
         tiles = new ArrayList<>();
 
         posBar1DataStage = new BarChartItem("7734/7745/7761", posBar1Total, posBar1Goal, Tile.BLUE);
-        p1x30DataStage = new BarChartItem("7743", p1x30CurrentStage, p1x30GoalStage, Tile.RED);
+        p1x30DataStage = new BarChartItem("7743", p1x30CurrentStage, p1x30GoalStage, Tile.ORANGE);
         t1000DataStage = new BarChartItem("7744", t1000sCurrentStage, t1000sGoalStage, Tile.GREEN);
         questDataStage = new BarChartItem("7791/7792", questsCurrentStage,questsGoalStage, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         serverBar1DataStage = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
-        serverBar2DataStage = new BarChartItem("1656/1657", serverBar2Total,serverBar2Goal, Tile.RED);
+        serverBar2DataStage = new BarChartItem("1656/1657", serverBar2Total,serverBar2Goal, Tile.ORANGE);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
         periphBar1DataStage = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
-        periphBar2DataStage = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar2DataStage = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.ORANGE);
         periphBar3DataStage = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         retailBar1Stage = new BarChartItem("770X",retailBar1Total, retailBar1Goal, Tile.BLUE);
-        nextGenDisplaysStage = new BarChartItem("5968/5985", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.RED);
+        nextGenDisplaysStage = new BarChartItem("5968/5985", nextGenDisplayCurrentStage, nextGenDisplayGoalsStage, Tile.ORANGE);
         //---------------------------------Creating the Tiles-----------------------------------------------------------
         posStage = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)

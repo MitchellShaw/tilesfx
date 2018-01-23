@@ -209,22 +209,22 @@ public class MainBuildController implements Initializable
 
         //---------------------------------Creating the Bar Chart Items for Hosp----------------------------------------
         posBar1Data = new BarChartItem("7734/7745/7761", posBar1Total, posBar1Goal, Tile.BLUE);
-        p1x30Data = new BarChartItem("7743", p1x30CurrentBuild, p1x30GoalBuild, Tile.RED);
+        p1x30Data = new BarChartItem("7743", p1x30CurrentBuild, p1x30GoalBuild, Tile.ORANGE);
         t1000Data = new BarChartItem("7744", t1000sCurrentBuild, t1000sGoalBuild, Tile.GREEN);
         questData = new BarChartItem("7791/7792", questCurrentBuild, questGoalBuild, Tile.YELLOW);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
-        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
+        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.ORANGE);
         //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
         periphBar1Data = new BarChartItem("1635", periphBar1Total, periphBar1Goal, Tile.BLUE);
-        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.RED);
+        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.ORANGE);
         periphBar3Data = new BarChartItem("1646/1651", periphBar3Total, periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Optic---------------------------------------
-        optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.RED);
+        optic12Data = new BarChartItem("6002", optic12sCurrentBuild, optic12sGoalBuild, Tile.ORANGE);
         optic5Data = new BarChartItem("6001", optic5sCurrentBuild, optic5sGoalBuild, Tile.BLUE);
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         retailBar1Data = new BarChartItem("770X", retailBar1Total, retailBar1Goal, Tile.BLUE);
-        nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.RED);
+        nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.ORANGE);
         //---------------------------------Creating Tiles for Scene-----------------------------------------------------
 
         posBuild = TileBuilder.create()

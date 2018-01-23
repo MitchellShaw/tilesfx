@@ -99,7 +99,7 @@ public class CharacterTileSkin extends TileSkin {
 
         fontSize = size * textSize.factor;
         text.setText(tile.getText());
-        text.setFont(Fonts.latoRegular(fontSize));
+        text.setFont(Fonts.latoLight(fontSize));
         if (text.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(text, maxWidth, fontSize); }
         switch(tile.getTextAlignment()) {
             default    :
@@ -117,7 +117,7 @@ public class CharacterTileSkin extends TileSkin {
         description.relocate(contentBounds.getX(), height * 0.1125);
     }
 
-    @Override protected void redraw() {
+    @Override public void redraw() {
         super.redraw();
         titleText.setText(tile.getTitle());
         text.setText(tile.getText());

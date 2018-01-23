@@ -166,10 +166,10 @@ public class ServersBuildController implements Initializable
 
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         serverBar1 = new BarChartItem("1611/1612", serverBar1Total, serverBar1Goal, Tile.BLUE);
-        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
+        serverBar2 = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.ORANGE);
         //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
         serverBar1DataTest = new BarChartItem("1611/1612", serverBar1Total,serverBar1Goal, Tile.BLUE);
-        serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.RED);
+        serverBar2DataTest = new BarChartItem("1656/1657", serverBar2Total, serverBar2Goal, Tile.ORANGE);
 
         //---------------------------------Creating the Tiles for Servers-----------------------------------------------
         serversBuild = TileBuilder.create()

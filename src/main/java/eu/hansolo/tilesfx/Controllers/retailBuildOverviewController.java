@@ -2,9 +2,11 @@ package eu.hansolo.tilesfx.Controllers;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +16,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -27,9 +30,11 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sun.plugin2.util.ColorUtil;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -238,8 +243,8 @@ public class retailBuildOverviewController implements Initializable
                 .valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -273,8 +278,8 @@ public class retailBuildOverviewController implements Initializable
                 .valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -309,8 +314,8 @@ public class retailBuildOverviewController implements Initializable
                 .valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -345,8 +350,8 @@ public class retailBuildOverviewController implements Initializable
                 .valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -381,8 +386,8 @@ public class retailBuildOverviewController implements Initializable
                 .valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -414,16 +419,17 @@ public class retailBuildOverviewController implements Initializable
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
                 .backgroundColor(rgb(42, 42, 42))
                 .unit("")
-                .valueVisible(false)
+                //.valueVisible(false)
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-100)
-                .maxValue(100)
+                .minValue(-20)
+                .maxValue(20)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
+                .subText("What is happening")
                 .build();
 
         line6Differential= TileBuilder.create()
@@ -534,7 +540,10 @@ public class retailBuildOverviewController implements Initializable
     {
         conversionList = new ArrayList<>();
 
+
+
         double theGoal = (messenger.getMainBuildController().getRetailBar1Goal() / 540)/5;
+        System.out.println("This is the Goal: "+theGoal);
         double theDisplayGoal = (messenger.getMainBuildController().getNextGenDisplayGoalsBuild() / 540);
         double modifier = 0;
         double currentGoal = 0;
@@ -599,7 +608,7 @@ public class retailBuildOverviewController implements Initializable
             }
             else
             {
-                currentGoal = messenger.getMainBuildController().getRetailBar1Goal();
+                currentGoal = messenger.getMainBuildController().getRetailBar1Goal()/5;
                 currentDisplayGoal = messenger.getMainBuildController().getNextGenDisplayGoalsBuild();
             }
         }
@@ -609,7 +618,6 @@ public class retailBuildOverviewController implements Initializable
             currentDisplayGoal = messenger.getMainBuildController().getNextGenDisplayGoalsBuild();
         }
 
-        line1.setTextColor(Color.GREEN);
         line1BuildGauge.setValue(line1Total - currentGoal);
         line2BuildGauge.setValue(line2Total - currentGoal);
         line3BuildGauge.setValue(line3Total - currentGoal);
@@ -646,7 +654,6 @@ public class retailBuildOverviewController implements Initializable
                 {
                     line1Return = "+" + Integer.toString(line1Display) + " units" + "\n\n";
                     line1Differential.setTextColor(Color.valueOf("#54B948"));
-                    System.out.println(line1Differential.getTextColor());
                 }
                 if(i ==1)
                 {

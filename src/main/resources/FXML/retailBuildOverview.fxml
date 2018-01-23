@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="pane" alignment="CENTER" prefHeight="1080.0" prefWidth="1920.0" styleClass="pane-grid-background" stylesheets="@../eu/hansolo/tilesfx/timeLine.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="pane" alignment="CENTER" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />
@@ -24,27 +24,27 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Tile fx:id="logo" prefHeight="192.0" prefWidth="511.0" />
+            <Tile fx:id="logo" prefHeight="180.0" prefWidth="913.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
          <children>
-            <Tile fx:id="clock" prefHeight="192.0" prefWidth="567.0" />
+            <Tile fx:id="clock" prefHeight="180.0" prefWidth="879.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
-            <Tile fx:id="dept" prefHeight="192.0" prefWidth="578.0" />
+            <Tile fx:id="dept" prefHeight="180.0" prefWidth="822.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" GridPane.rowSpan="2">
          <children>
-            <Tile fx:id="stopLight" prefHeight="192.0" prefWidth="634.0" />
+            <Tile fx:id="stopLight" prefHeight="360.0" prefWidth="686.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
          <children>
-            <Tile fx:id="daySince" prefHeight="122.0" prefWidth="620.0" />
+            <Tile fx:id="daySince" prefHeight="180.0" prefWidth="836.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -59,52 +59,22 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Tile fx:id="line1Differential" prefHeight="180.0" prefWidth="631.0" />
+            <Tile fx:id="line1Differential" prefHeight="180.0" prefWidth="1076.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="line4" prefHeight="180.0" prefWidth="562.0" />
+            <Tile fx:id="line4" prefHeight="180.0" prefWidth="774.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Tile fx:id="line4BuildGauge" prefHeight="180.0" prefWidth="639.0" />
+            <Tile fx:id="line4BuildGauge" prefHeight="180.0" prefWidth="762.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <children>
-            <Tile fx:id="line4Differential" prefHeight="180.0" prefWidth="631.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
-         <children>
-            <Tile fx:id="line2" prefHeight="180.0" prefWidth="801.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <children>
-            <Tile fx:id="line2BuildGauage" prefHeight="180.0" prefWidth="607.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-         <children>
-            <Tile fx:id="line2Differential" prefHeight="180.0" prefWidth="620.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-         <children>
-            <Tile fx:id="line5" prefHeight="180.0" prefWidth="820.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-         <children>
-            <Tile fx:id="line5BuildGauge" prefHeight="180.0" prefWidth="730.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
-         <children>
-            <Tile fx:id="line5Differential" prefHeight="180.0" prefWidth="815.0" />
+            <Tile fx:id="line4Differential" prefHeight="180.0" prefWidth="847.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
@@ -119,7 +89,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
-            <Tile fx:id="line6" prefHeight="180.0" prefWidth="564.0" />
+            <Tile fx:id="line6" prefHeight="180.0" prefWidth="1143.0" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
@@ -134,7 +104,37 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
          <children>
-            <Tile fx:id="line6BuildGauge" prefHeight="180.0" prefWidth="602.0" />
+            <Tile fx:id="line6BuildGauge" prefHeight="180.0" prefWidth="802.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+         <children>
+            <Tile fx:id="line2" prefHeight="180.0" prefWidth="713.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Tile fx:id="line2BuildGauge" prefHeight="180.0" prefWidth="630.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <Tile fx:id="line2Differential" prefHeight="180.0" prefWidth="807.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <children>
+            <Tile fx:id="line5" prefHeight="180.0" prefWidth="1036.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <children>
+            <Tile fx:id="line5BuildGauge" prefHeight="180.0" prefWidth="758.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <children>
+            <Tile fx:id="line5Differential" prefHeight="180.0" prefWidth="1050.0" />
          </children>
       </HBox>
    </children>

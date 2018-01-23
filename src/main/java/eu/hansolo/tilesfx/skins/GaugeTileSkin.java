@@ -145,7 +145,7 @@ public class GaugeTileSkin extends TileSkin {
 
         unitText = new Text(tile.getUnit());
         unitText.setFill(tile.getUnitColor());
-        unitText.setTextOrigin(VPos.BASELINE);
+        unitText.setTextOrigin(VPos.BOTTOM);
         Helper.enableNode(unitText, tile.isValueVisible() && !tile.isAlert());
 
         valueUnitFlow = new TextFlow(valueText, unitText);
@@ -224,8 +224,8 @@ public class GaugeTileSkin extends TileSkin {
         sectionPane.getChildren().clear();
         if (!sectionsVisible || sections.isEmpty()) return;
 
-        double     centerX      = width * 0.5;
-        double     centerY      = height * 0.5;
+        double     centerX      = width*0.5;
+        double     centerY      = height*0.5;
         double     innerRadius  = size * 0.2775;
         double     outerRadius  = size * 0.3225;
         int        noOfSections = sections.size();
@@ -388,11 +388,11 @@ public class GaugeTileSkin extends TileSkin {
     @Override protected void resizeDynamicText() {
         double maxWidth = unitText.isManaged() ? width - size * 0.275 : width - size * 0.1;
         double fontSize = size * 0.24;
-        valueText.setFont(Fonts.latoRegular(fontSize));
+        valueText.setFont(Fonts.latoLight(fontSize));
         if (valueText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(valueText, maxWidth, fontSize); }
 
         fontSize = size * 0.1;
-        unitText.setFont(Fonts.latoRegular(fontSize));
+        unitText.setFont(Fonts.latoLight(fontSize));
         if (unitText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(unitText, maxWidth, fontSize); }
 
         thresholdText.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getBackgroundColor());

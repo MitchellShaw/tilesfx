@@ -11,15 +11,12 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -34,11 +31,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.hibernate.boot.jaxb.SourceType;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -174,10 +167,10 @@ public class RetailBuildController implements Initializable
 
         //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
         retailBar1Data = new BarChartItem("770X", retailBar1Total, retailBar1Goal, Tile.BLUE);
-        nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.RED);
+        nextGenDisplays = new BarChartItem("5968/5985", nextGenDisplayCurrentBuild, nextGenDisplayGoalsBuild, Tile.ORANGE);
         //---------------------------------Creating the Bar Chart Items for Retail-------------------------------------
         retailBar1DataTest = new BarChartItem("770X", retailBar1Total,retailBar1Goal, Tile.BLUE);
-        nextGenDisplaysTest = new BarChartItem("5968/5985", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.RED);
+        nextGenDisplaysTest = new BarChartItem("5968/5985", nextGenDisplayCurrentTest, nextGenDisplayGoalsBuild, Tile.ORANGE);
 
         retailBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -682,6 +675,7 @@ public class RetailBuildController implements Initializable
     String returnBuildString = "";
     String returnTestString = "";
     if (displayBuildValue > 0) {
+        //returnBuildString = "+" + Integer.toString(displayBuildValue) + " units" + "\n\n";
         returnBuildString = "+" + Integer.toString(displayBuildValue) + " units" + "\n\n";
         filler1.setTextColor(Color.valueOf("#54B948"));
     }

@@ -33,12 +33,52 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.rgb;
+
 public class posBuildOverviewController implements Initializable
 {
+    @FXML
     Tile logo;
+    @FXML
     Tile clock;
+    @FXML
     Tile stopLight;
+    @FXML
     Tile daySince;
+    @FXML
+    Tile dept;
+
+    @FXML
+    Tile line1;
+    @FXML
+    Tile line2;
+    @FXML
+    Tile line3;
+    @FXML
+    Tile line4;
+
+    @FXML
+    Tile line1BuildGauge;
+    @FXML
+    Tile line2BuildGauge;
+    @FXML
+    Tile line3BuildGauge;
+    @FXML
+    Tile line4BuildGauge;
+
+    @FXML
+    Tile line1Differential;
+    @FXML
+    Tile line2Differential;
+    @FXML
+    Tile line3Differential;
+    @FXML
+    Tile line4Differential;
+
+    int line1Total;
+    int line2Total;
+    int line3Total;
+    int line4Total;
 
     HBox myBox;
     HBox hbox;
@@ -106,7 +146,7 @@ public class posBuildOverviewController implements Initializable
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -120,7 +160,7 @@ public class posBuildOverviewController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -128,14 +168,14 @@ public class posBuildOverviewController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.334))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -143,10 +183,179 @@ public class posBuildOverviewController implements Initializable
                 .description(useDate)
                 .build();
 
+        dept  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(Color.valueOf("#54B948"))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .description("Retail")
+                .roundedCorners(false)
+                .build();
+
+        line1  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 1")
+                .description(Integer.toString(line1Total))
+                .roundedCorners(false)
+                .build();
+
+        line1BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+        line1Differential  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+
+
+        line2  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 2")
+                .description(Integer.toString(line2Total))
+                .roundedCorners(false)
+                .build();
+        line2BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        line2Differential  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+
+        line3  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 3")
+                .description(Integer.toString(line3Total))
+                .roundedCorners(false)
+                .build();
+
+        line3BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        line3Differential  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+
+        line4  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 4")
+                .description("").description(Integer.toString(line4Total))
+                .roundedCorners(false)
+                .build();
+
+        line4BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit("")
+                .valueVisible(false)
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        line4Differential  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .titleAlignment(TextAlignment.CENTER)
+                .description("")
+                .roundedCorners(false)
+                .build();
+
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
-        pane.add(stopLight,0,2,1,1);
-        pane.add(daySince,0,3,1,1);
+        pane.add(dept,0,2,1,1);
+        pane.add(stopLight,0,3,1,2);
+        pane.add(daySince,0,5,1,1);
+
+        pane.add(line1,1,0,1,1);
+        pane.add(line1BuildGauge,1,1,1,1);
+        pane.add(line1Differential,1,2,1,1);
+
+        pane.add(line2,2,0,1,1);
+        pane.add(line2BuildGauge,2,1,1,1);
+        pane.add(line2Differential,2,2,1,1);
+
+        pane.add(line3,1,3,1,1);
+        pane.add(line3BuildGauge,1,4,1,1);
+        pane.add(line3Differential,1,5,1,1);
+
+        pane.add(line4,2,3,2,1);
+        pane.add(line4BuildGauge,2,4,1,1);
+        pane.add(line4Differential,2,5,1,1);
 
         tiles.add(logo);
         tiles.add(stopLight);

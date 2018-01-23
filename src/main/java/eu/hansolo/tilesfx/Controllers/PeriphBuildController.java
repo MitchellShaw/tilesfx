@@ -183,11 +183,11 @@ public class PeriphBuildController implements Initializable {
 
         //---------------------------------Creating the Bar Chart Items for Periph-------------------------------------
         periphBar1Data = new BarChartItem("1635", periphBar1Total, periphBar1Goal, Tile.BLUE);
-        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.RED);
+        periphBar2Data = new BarChartItem("1642/1924", periphBar2Total, periphBar2Goal, Tile.ORANGE);
         periphBar3Data = new BarChartItem("1646/1651", periphBar3Total, periphBar3Goal, Tile.GREEN);
         //---------------------------------Creating the Bar Chart Items for Periph-------------------------------------
         periphBar1DataTest = new BarChartItem("1635",periphBar1Total,periphBar1Goal, Tile.BLUE);
-        periphBar2DataTest = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.RED);
+        periphBar2DataTest = new BarChartItem("1642/1924",periphBar2Total,periphBar2Goal, Tile.ORANGE);
         periphBar3DataTest = new BarChartItem("1646/1651",periphBar3Total,periphBar3Goal, Tile.GREEN);
 
         periphBuild = TileBuilder.create()
