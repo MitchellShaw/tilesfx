@@ -79,15 +79,6 @@ public class OpticBuildController implements Initializable
     @FXML
     Tile opticTestFTT;
 
-    @FXML
-    Tile filler1;
-    @FXML
-    Tile filler2;
-    @FXML
-    Tile filler3;
-    @FXML
-    Tile filler4;
-
     HBox myBox;
     HBox hbox;
 
@@ -191,8 +182,7 @@ public class OpticBuildController implements Initializable
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -208,8 +198,7 @@ public class OpticBuildController implements Initializable
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -226,8 +215,8 @@ public class OpticBuildController implements Initializable
         }
 
         pane.add(opticBuild, 1, 0, 1, 2);
-        pane.add(opticBuildGauge, 2, 0, 1, 1);
-        pane.add(opticFTT, 3, 0, 1, 1);
+        pane.add(opticBuildGauge, 2, 0, 1, 2);
+        pane.add(opticFTT, 3, 0, 1, 2);
 
         opticTest = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
@@ -328,46 +317,13 @@ public class OpticBuildController implements Initializable
                 .description(useDate)
                 .build();
 
-        filler1  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler2 = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-        filler3  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler4 = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-
         pane.add(opticTest, 1, 2, 1, 2);
-        pane.add(opticTestGauge, 2, 2, 1, 1);
-        pane.add(opticTestFTT, 3, 2, 1, 1);
+        pane.add(opticTestGauge, 2, 2, 1, 2);
+        pane.add(opticTestFTT, 3, 2, 1, 2);
         pane.add(logo, 0, 0, 1, 1);
         pane.add(clock, 0, 1, 1, 1);
         pane.add(stopLight, 0, 2, 1, 1);
         pane.add(daySince, 0, 3, 1, 1);
-        pane.add(filler1, 2, 1, 1, 1);
-        pane.add(filler2, 3, 1, 1, 1);
-        pane.add(filler3, 2, 3, 1, 1);
-        pane.add(filler4, 3, 3, 1, 1);
 
         tiles = new ArrayList<>();
 
@@ -380,8 +336,6 @@ public class OpticBuildController implements Initializable
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
-        tiles.add(filler1);
-        tiles.add(filler3);
 
         createActions();
         if (pane != null) {
@@ -446,128 +400,88 @@ public class OpticBuildController implements Initializable
         });
     }
 
-    private void buildDifferential()
-    {
-        double theGoal = opticGoalTotalBuild/540;
+    ArrayList<Tile> gauges;
+
+    private void buildDifferential() {
+        gauges = new ArrayList<>();
+
+        double theGoal = opticGoalTotalBuild / 540;
         double modifier = 0;
         double currentGoal = 0;
         double minute = 0;
         ZonedDateTime currentTime = clock.getTime();
-        if(currentTime.getHour() ==7)
-        {
+        if (currentTime.getHour() == 7) {
             modifier = 0;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==8)
-        {
+        if (currentTime.getHour() == 8) {
             modifier = 60;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==9)
-        {
+        if (currentTime.getHour() == 9) {
             modifier = 120;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==10)
-        {
+        if (currentTime.getHour() == 10) {
             modifier = 180;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 11)
-        {
+        if (currentTime.getHour() == 11) {
             modifier = 240;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 12 )
-        {
+        if (currentTime.getHour() == 12) {
             modifier = 300;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 13)
-        {
+        if (currentTime.getHour() == 13) {
             modifier = 360;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==14)
-        {
+        if (currentTime.getHour() == 14) {
             modifier = 420;
             minute = currentTime.getMinute();
-
             currentGoal = theGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 15) {
-            if(currentTime.getMinute()< 30)
-            {
+            if (currentTime.getMinute() < 30) {
                 modifier = 480;
                 minute = currentTime.getMinute();
-                currentGoal = theGoal * (modifier + (minute*2));
-            }
-            else
-            {
+                currentGoal = theGoal * (modifier + (minute * 2));
+            } else {
                 currentGoal = opticGoalTotalBuild;
             }
         }
-        if(currentTime.getHour() >15)
-        {
+        if (currentTime.getHour() > 15) {
             currentGoal = opticGoalTotalBuild;
         }
+        opticBuildGauge.setValue(opticCurrentTotalBuild - currentGoal);
+        opticTestGauge.setValue(opticCurrentTotalTest - currentGoal);
 
-        opticBuildGauge.setValue(opticCurrentTotalBuild-currentGoal);
-        opticTestGauge.setValue(opticCurrentTotalTest-currentGoal);
+        gauges.add(opticTestGauge);
+        gauges.add(opticBuildGauge);
 
-        int displayBuildValue = (int) (opticCurrentTotalBuild-currentGoal);
-        int displayTestValue = (int) (opticCurrentTotalTest-currentGoal);
-        String returnBuildString = "";
-        String returnTestString = "";
-
-        if(displayBuildValue > 0)
-        {
-            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.valueOf("#54B948"));
+        for (int i = 0; i < gauges.size(); i++) {
+            if (gauges.get(i).getValue() > 0) {
+                gauges.get(i).setValueColor(Color.valueOf("#54B948"));
+                gauges.get(i).setUnitColor(Color.valueOf("#54B948"));
+            }
+            if (gauges.get(i).getValue() == 0) {
+                gauges.get(i).setValueColor(Color.WHITE);
+                gauges.get(i).setUnitColor(Color.WHITE);
+            }
+            if (gauges.get(i).getValue() < 0) {
+                gauges.get(i).setValueColor(Tile.RED);
+                gauges.get(i).setUnitColor(Tile.RED);
+            }
         }
-        if(displayBuildValue == 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.WHITE);
-        }
-
-        if(displayBuildValue < 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Tile.RED);
-        }
-        if(displayTestValue > 0)
-        {
-            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayTestValue == 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.WHITE);
-        }
-        if(displayTestValue < 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Tile.RED);
-        }
-        filler1.setDescription(returnBuildString);
-        filler3.setDescription(returnTestString);
-
-
     }
     private void createActions() {
         pane.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -615,12 +529,6 @@ public class OpticBuildController implements Initializable
             }
         });
         opticBuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());
-            }
-        });
-        filler1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());

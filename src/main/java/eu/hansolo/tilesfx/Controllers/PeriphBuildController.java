@@ -76,17 +76,6 @@ public class PeriphBuildController implements Initializable {
     @FXML
     Tile periphTestFTT;
 
-    @FXML
-    Tile message;
-    @FXML
-    Tile filler1;
-    @FXML
-    Tile filler2;
-    @FXML
-    Tile filler3;
-    @FXML
-    Tile filler4;
-
     HBox myBox;
     HBox hbox;
 
@@ -319,41 +308,11 @@ public class PeriphBuildController implements Initializable {
                 .description(useDate)
                 .build();
 
-        filler1  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler2  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-        filler3  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler4  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-
         periphBuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -369,8 +328,7 @@ public class PeriphBuildController implements Initializable {
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -383,19 +341,15 @@ public class PeriphBuildController implements Initializable {
                 .build();
 
         pane.add(periphBuild, 1, 0, 1, 2);
-        pane.add(periphBuildGauge, 2, 0, 1, 1);
-        pane.add(periphFTT, 3, 0, 1, 1);
+        pane.add(periphBuildGauge, 2, 0, 1, 2);
+        pane.add(periphFTT, 3, 0, 1, 2);
         pane.add(periphTest, 1, 2, 1, 2);
-        pane.add(periphTestGauge, 2, 2, 1, 1);
-        pane.add(periphTestFTT, 3, 2, 1, 1);
+        pane.add(periphTestGauge, 2, 2, 1, 2);
+        pane.add(periphTestFTT, 3, 2, 1, 2);
         pane.add(logo, 0, 0, 1, 1);
         pane.add(clock, 0, 1, 1, 1);
         pane.add(stopLight, 0, 2, 1, 1);
         pane.add(daySince, 0, 3, 1, 1);
-        pane.add(filler1,2,1,1,1);
-        pane.add(filler2,3,1,1,1);
-        pane.add(filler3,2,3,1,1);
-        pane.add(filler4,3,3,1,1);
 
         tiles.add(periphBuild);
         tiles.add(periphBuildGauge);
@@ -406,9 +360,6 @@ public class PeriphBuildController implements Initializable {
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
-        tiles.add(filler1);
-        tiles.add(filler3);
-
         createActions();
         if(pane != null)
         {
@@ -533,12 +484,6 @@ public class PeriphBuildController implements Initializable {
                 messenger.getPrimaryStage().setScene(messenger.getPeriphBuildOverview());
             }
         });
-        filler1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                messenger.getPrimaryStage().setScene(messenger.getPeriphBuildOverview());
-            }
-        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -600,120 +545,88 @@ public class PeriphBuildController implements Initializable {
             });
         }
     }
-    private void buildDifferential()
-    {
-        double theGoal = periphGoalTotalBuild/540;
+    ArrayList<Tile> gauges;
+
+    private void buildDifferential() {
+        gauges = new ArrayList<>();
+
+        double theGoal = periphGoalTotalBuild / 540;
         double modifier = 0;
         double currentGoal = 0;
         double minute = 0;
         ZonedDateTime currentTime = clock.getTime();
-        if(currentTime.getHour() ==7)
-        {
+        if (currentTime.getHour() == 7) {
             modifier = 0;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==8)
-        {
+        if (currentTime.getHour() == 8) {
             modifier = 60;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==9)
-        {
+        if (currentTime.getHour() == 9) {
             modifier = 120;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==10)
-        {
+        if (currentTime.getHour() == 10) {
             modifier = 180;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 11)
-        {
+        if (currentTime.getHour() == 11) {
             modifier = 240;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 12 )
-        {
+        if (currentTime.getHour() == 12) {
             modifier = 300;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 13)
-        {
+        if (currentTime.getHour() == 13) {
             modifier = 360;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==14)
-        {
+        if (currentTime.getHour() == 14) {
             modifier = 420;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 15) {
-            if(currentTime.getMinute()< 30)
-            {
+            if (currentTime.getMinute() < 30) {
                 modifier = 480;
                 minute = currentTime.getMinute();
-                currentGoal = theGoal * (modifier + (minute*2));
-            }
-            else
-            {
+                currentGoal = theGoal * (modifier + (minute * 2));
+            } else {
                 currentGoal = periphGoalTotalBuild;
             }
         }
-        if(currentTime.getHour() >15)
-        {
+        if (currentTime.getHour() > 15) {
             currentGoal = periphGoalTotalBuild;
         }
+        periphBuildGauge.setValue(periphCurrentTotalBuild - currentGoal);
+        periphTestGauge.setValue(periphCurrentTotalTest - currentGoal);
 
-        periphBuildGauge.setValue(periphCurrentTotalBuild-currentGoal);
-        periphTestGauge.setValue(periphCurrentTotalTest-currentGoal);
+        gauges.add(periphTestGauge);
+        gauges.add(periphBuildGauge);
 
-        int displayBuildValue = (int) (periphCurrentTotalBuild-currentGoal);
-        int displayTestValue = (int) (periphCurrentTotalTest-currentGoal);
-        String returnBuildString = "";
-        String returnTestString = "";
-
-        if(displayBuildValue > 0)
-        {
-            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.valueOf("#54B948"));
+        for (int i = 0; i < gauges.size(); i++) {
+            if (gauges.get(i).getValue() > 0) {
+                gauges.get(i).setValueColor(Color.valueOf("#54B948"));
+                gauges.get(i).setUnitColor(Color.valueOf("#54B948"));
+            }
+            if (gauges.get(i).getValue() == 0) {
+                gauges.get(i).setValueColor(Color.WHITE);
+                gauges.get(i).setUnitColor(Color.WHITE);
+            }
+            if (gauges.get(i).getValue() < 0) {
+                gauges.get(i).setValueColor(Tile.RED);
+                gauges.get(i).setUnitColor(Tile.RED);
+            }
         }
-        if(displayBuildValue == 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.WHITE);
-        }
-
-        if(displayBuildValue < 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Tile.RED);
-        }
-        if(displayTestValue > 0)
-        {
-            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayTestValue == 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.WHITE);
-        }
-        if(displayTestValue < 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Tile.RED);
-        }
-
-        filler1.setDescription(returnBuildString);
-        filler3.setDescription(returnTestString);
     }
     private Bounds computeAllScreenBounds() {
         double minX = Double.POSITIVE_INFINITY;
@@ -838,14 +751,6 @@ public class PeriphBuildController implements Initializable {
 
     public void setPeriphTestFTT(Tile periphTestFTT) {
         this.periphTestFTT = periphTestFTT;
-    }
-
-    public Tile getMessage() {
-        return message;
-    }
-
-    public void setMessage(Tile message) {
-        this.message = message;
     }
 
     public Messenger getMessenger() {

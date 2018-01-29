@@ -48,14 +48,12 @@ public class Resolutionizer
 
         return paneWidth;
     }
-    public void setImageViewWidth(ImageView image, double modifier)
+    public void setColumnWidth(double width)
     {
-        double width = image.getFitWidth() * modifier;
-        image.setFitWidth(width);
+
     }
-    public void setImageViewHeight(ImageView image, double modifier)
+    public void setRowHeight(double width)
     {
-        double height = image.getFitHeight() * modifier;
-        image.setFitHeight(height);
+
     }
 }

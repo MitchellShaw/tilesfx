@@ -21,7 +21,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -29,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -47,6 +50,8 @@ public class posBuildOverviewController implements Initializable
     Tile daySince;
     @FXML
     Tile dept;
+    @FXML
+    Tile filler;
 
     @FXML
     Tile line1;
@@ -56,6 +61,10 @@ public class posBuildOverviewController implements Initializable
     Tile line3;
     @FXML
     Tile line4;
+    @FXML
+    Tile line5;
+    @FXML
+    Tile line6;
 
     @FXML
     Tile line1BuildGauge;
@@ -65,20 +74,31 @@ public class posBuildOverviewController implements Initializable
     Tile line3BuildGauge;
     @FXML
     Tile line4BuildGauge;
-
     @FXML
-    Tile line1Differential;
+    Tile line5BuildGauge;
     @FXML
-    Tile line2Differential;
+    Tile line6BuildGauge;
     @FXML
-    Tile line3Differential;
+    HBox middleRow;
     @FXML
-    Tile line4Differential;
+    VBox leftColumn;
+    @FXML
+    VBox rightColumn;
+    @FXML
+    Line leftLine;
+    @FXML
+    Line rightLine;
+    @FXML
+    Line middleLine;
 
     int line1Total;
     int line2Total;
     int line3Total;
     int line4Total;
+    int line5Total;
+    int line6Total;
+
+
 
     HBox myBox;
     HBox hbox;
@@ -112,13 +132,13 @@ public class posBuildOverviewController implements Initializable
         tiles = new ArrayList<>();
 
         logoView.setImage(logoImage);
-        logoView.setFitHeight(270);
-        logoView.setFitWidth(384);
+        logoView.setFitHeight(messenger.getResolutionizer().setTileWidth(.25));
+        logoView.setFitWidth(messenger.getResolutionizer().setTileHeight(.25));
         logoView.setPreserveRatio(true);
 
         hbox = new HBox(logoView);
-        hbox.setPrefWidth(384);
-        hbox.setPrefHeight(270);
+        hbox.setPrefWidth(messenger.getResolutionizer().setTileWidth(.25));
+        hbox.setPrefHeight(messenger.getResolutionizer().setTileHeight(.25));
         hbox.setAlignment(Pos.CENTER);
         hbox.setStyle("-fx-background-color:#54B948");
 
@@ -134,19 +154,19 @@ public class posBuildOverviewController implements Initializable
         if (Integer.parseInt(useDate) >= 60) {
             stopView.setImage(greenImage);
         }
-        stopView.setFitHeight(270);
-        stopView.setFitWidth(384);
-        stopView.setPreserveRatio(true);
+        stopView.setFitHeight(messenger.getResolutionizer().setTileWidth(.25));
+        stopView.setFitWidth(messenger.getResolutionizer().setTileHeight(.25));
+        stopView.setPreserveRatio(false);
 
         HBox myBox = new HBox(stopView);
-        myBox.setPrefWidth(384);
-        myBox.setPrefHeight(270);
+        myBox.setPrefWidth(messenger.getResolutionizer().setTileWidth(.25));
+        myBox.setPrefHeight(messenger.getResolutionizer().setTileHeight(.25));
         myBox.setAlignment(Pos.CENTER);
         myBox.setStyle("-fx-background-color:#54B948");
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -160,7 +180,7 @@ public class posBuildOverviewController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -168,14 +188,14 @@ public class posBuildOverviewController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.334))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -186,7 +206,7 @@ public class posBuildOverviewController implements Initializable
         dept  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.20), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("Retail")
                 .roundedCorners(false)
@@ -195,7 +215,7 @@ public class posBuildOverviewController implements Initializable
         line1  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 1")
                 .description(Integer.toString(line1Total))
@@ -204,10 +224,9 @@ public class posBuildOverviewController implements Initializable
 
         line1BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -218,20 +237,11 @@ public class posBuildOverviewController implements Initializable
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
-        line1Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
 
         line2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 2")
                 .description(Integer.toString(line2Total))
@@ -239,10 +249,9 @@ public class posBuildOverviewController implements Initializable
                 .build();
         line2BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -254,19 +263,10 @@ public class posBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line2Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line3  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 3")
                 .description(Integer.toString(line3Total))
@@ -275,10 +275,9 @@ public class posBuildOverviewController implements Initializable
 
         line3BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -290,19 +289,10 @@ public class posBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line3Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 4")
                 .description("").description(Integer.toString(line4Total))
@@ -311,10 +301,9 @@ public class posBuildOverviewController implements Initializable
 
         line4BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -326,46 +315,106 @@ public class posBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line4Differential  = TileBuilder.create()
+        line5  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.4), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
-                .description("")
+                .title("T1000")
+                .description(Integer.toString(line5Total))
                 .roundedCorners(false)
+                .build();
+
+        line5BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit(" units")
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        line6  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Quest")
+                .description(Integer.toString(line6Total))
+                .roundedCorners(false)
+                .build();
+
+        line6BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit(" units")
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-20)
+                .maxValue(20)
+                .threshold(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .subText("What is happening")
                 .build();
 
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
-        pane.add(dept,0,2,1,1);
-        pane.add(stopLight,0,3,1,2);
-        pane.add(daySince,0,5,1,1);
+        pane.add(stopLight,0,2,1,1);
+        pane.add(daySince,0,3,1,1);
 
         pane.add(line1,1,0,1,1);
         pane.add(line1BuildGauge,1,1,1,1);
-        pane.add(line1Differential,1,2,1,1);
-
         pane.add(line2,2,0,1,1);
         pane.add(line2BuildGauge,2,1,1,1);
-        pane.add(line2Differential,2,2,1,1);
+        pane.add(line3,3,0,1,1);
+        pane.add(line3BuildGauge,3,1,1,1);
+        pane.add(line4,1,2,1,1);
+        pane.add(line4BuildGauge,1,3,1,1);
+        pane.add(line5,2,2,1,1);
+        pane.add(line5BuildGauge,2,3,1,1);
+        pane.add(line6,3,2,1,1);
+        pane.add(line6BuildGauge,3,3,1,1);
+        leftLine.toFront();
+        rightLine.toFront();
+        middleLine.toFront();
 
-        pane.add(line3,1,3,1,1);
-        pane.add(line3BuildGauge,1,4,1,1);
-        pane.add(line3Differential,1,5,1,1);
 
-        pane.add(line4,2,3,2,1);
-        pane.add(line4BuildGauge,2,4,1,1);
-        pane.add(line4Differential,2,5,1,1);
 
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
+        tiles.add(dept);
+        tiles.add(line1);
+        tiles.add(line1BuildGauge);
+        tiles.add(line2);
+        tiles.add(line2BuildGauge);
+        tiles.add(line3);
+        tiles.add(line3BuildGauge);
+        tiles.add(line4);
+        tiles.add(line4BuildGauge);
+        tiles.add(line5);
+        tiles.add(line5BuildGauge);
+        tiles.add(line6);
+        tiles.add(line6BuildGauge);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
+           buildDifferential();
         }
+        System.out.println("****************************");
     }
     public void refresh()
     {
@@ -395,7 +444,143 @@ public class posBuildOverviewController implements Initializable
 
             stopLight.setGraphic(myBox);
 
+            line1.setDescription(Integer.toString(line1Total));
+            line2.setDescription(Integer.toString(line2Total));
+            line3.setDescription(Integer.toString(line3Total));
+            line4.setDescription(Integer.toString(line4Total));
+            line5.setDescription(Integer.toString(line5Total));
+            line6.setDescription(Integer.toString(line6Total));
+
+            buildDifferential();
+
         });
+    }
+    ArrayList<Tile> conversionList;
+    private void buildDifferential()
+    {
+        conversionList = new ArrayList<>();
+
+        double theGoal = ((messenger.getMainBuildController().getPosTotalGoalBuild()-messenger.getMainBuildController().getQuestGoalBuild()-messenger.getMainBuildController().getT1000sGoalBuild()) / 540)/4;
+        double questGoal = (messenger.getMainBuildController().getQuestGoalBuild() / 540);
+        double t1000Goal = (messenger.getMainBuildController().getT1000sGoalBuild() / 540);
+        double modifier = 0;
+        double currentGoal = 0;
+        double currentQuest = 0;
+        double currentT1000 = 0;
+        double minute = 0;
+        ZonedDateTime currentTime = clock.getTime();
+        if (currentTime.getHour() == 7) {
+            modifier = 0;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 8) {
+            modifier = 60;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 9) {
+            modifier = 120;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 10) {
+            modifier = 180;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 11) {
+            modifier = 240;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 12) {
+            modifier = 300;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 13) {
+            modifier = 360;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 14) {
+            modifier = 420;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentQuest = questGoal * (modifier + minute);
+            currentT1000 = t1000Goal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 15) {
+            if(currentTime.getMinute()< 30)
+            {
+                modifier = 480;
+                minute = currentTime.getMinute();
+                currentGoal = theGoal * (modifier + (minute*2));
+                currentQuest = questGoal * (modifier + (minute*2));
+                currentT1000 = t1000Goal * (modifier + (minute*2));
+            }
+            else
+            {
+                currentGoal = (messenger.getMainBuildController().getPosTotalGoalBuild()-messenger.getMainBuildController().getQuestGoalBuild()-messenger.getMainBuildController().getT1000sGoalBuild())/4;
+                currentQuest = (messenger.getMainBuildController().getQuestGoalBuild());
+                currentT1000 = (messenger.getMainBuildController().getT1000sGoalBuild());
+            }
+        }
+        if (currentTime.getHour() > 15)
+        {
+            currentGoal = (messenger.getMainBuildController().getPosTotalGoalBuild()-messenger.getMainBuildController().getQuestGoalBuild()-messenger.getMainBuildController().getT1000sGoalBuild())/4;
+            currentQuest = (messenger.getMainBuildController().getQuestGoalBuild());
+            currentT1000 = (messenger.getMainBuildController().getT1000sGoalBuild());
+        }
+
+        line1BuildGauge.setValue(line1Total - currentGoal);
+        line2BuildGauge.setValue(line2Total - currentGoal);
+        line3BuildGauge.setValue(line3Total - currentGoal);
+        line4BuildGauge.setValue(line4Total - currentGoal);
+        line5BuildGauge.setValue(line5Total - currentT1000);
+        line6BuildGauge.setValue(line6Total - currentQuest);
+
+        conversionList.add(line1BuildGauge);
+        conversionList.add(line2BuildGauge);
+        conversionList.add(line3BuildGauge);
+        conversionList.add(line4BuildGauge);
+        conversionList.add(line5BuildGauge);
+        conversionList.add(line6BuildGauge);
+
+        for(int i = 0;i<conversionList.size();i++)
+        {
+            if(conversionList.get(i).getValue() > 0)
+            {
+                conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
+                conversionList.get(i).setUnitColor(Color.valueOf("#54B948"));
+            }
+            if(conversionList.get(i).getValue() == 0)
+            {
+                conversionList.get(i).setValueColor(Color.WHITE);
+                conversionList.get(i).setUnitColor(Color.WHITE);
+            }
+            if(conversionList.get(i).getValue() < 0)
+            {
+                conversionList.get(i).setValueColor(Tile.RED);
+                conversionList.get(i).setUnitColor(Tile.RED);
+            }
+
+        }
     }
     private void createActions()
     {
@@ -576,5 +761,53 @@ public class posBuildOverviewController implements Initializable
 
     public void setUseDate(String useDate) {
         this.useDate = useDate;
+    }
+
+    public int getLine1Total() {
+        return line1Total;
+    }
+
+    public void setLine1Total(int line1Total) {
+        this.line1Total = line1Total;
+    }
+
+    public int getLine2Total() {
+        return line2Total;
+    }
+
+    public void setLine2Total(int line2Total) {
+        this.line2Total = line2Total;
+    }
+
+    public int getLine3Total() {
+        return line3Total;
+    }
+
+    public void setLine3Total(int line3Total) {
+        this.line3Total = line3Total;
+    }
+
+    public int getLine4Total() {
+        return line4Total;
+    }
+
+    public void setLine4Total(int line4Total) {
+        this.line4Total = line4Total;
+    }
+
+    public int getLine5Total() {
+        return line5Total;
+    }
+
+    public void setLine5Total(int line5Total) {
+        this.line5Total = line5Total;
+    }
+
+    public int getLine6Total() {
+        return line6Total;
+    }
+
+    public void setLine6Total(int line6Total) {
+        this.line6Total = line6Total;
     }
 }

@@ -22,9 +22,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -82,19 +82,18 @@ public class retailBuildOverviewController implements Initializable
     Tile line5BuildGauge;
     @FXML
     Tile line6BuildGauge;
-
     @FXML
-    Tile line1Differential;
+    HBox middleRow;
     @FXML
-    Tile line2Differential;
+    VBox leftColumn;
     @FXML
-    Tile line3Differential;
+    VBox rightColumn;
     @FXML
-    Tile line4Differential;
+    Line leftLine;
     @FXML
-    Tile line5Differential;
+    Line rightLine;
     @FXML
-    Tile line6Differential;
+    Line middleLine;
 
     int line1Total;
     int line2Total;
@@ -137,13 +136,13 @@ public class retailBuildOverviewController implements Initializable
         tiles = new ArrayList<>();
 
         logoView.setImage(logoImage);
-        logoView.setFitHeight(270);
-        logoView.setFitWidth(384);
+        logoView.setFitHeight(messenger.getResolutionizer().setTileWidth(.25));
+        logoView.setFitWidth(messenger.getResolutionizer().setTileHeight(.25));
         logoView.setPreserveRatio(true);
 
         hbox = new HBox(logoView);
-        hbox.setPrefWidth(384);
-        hbox.setPrefHeight(270);
+        hbox.setPrefWidth(messenger.getResolutionizer().setTileWidth(.25));
+        hbox.setPrefHeight(messenger.getResolutionizer().setTileHeight(.25));
         hbox.setAlignment(Pos.CENTER);
         hbox.setStyle("-fx-background-color:#54B948");
 
@@ -159,19 +158,19 @@ public class retailBuildOverviewController implements Initializable
         if (Integer.parseInt(useDate) >= 60) {
             stopView.setImage(greenImage);
         }
-        stopView.setFitHeight(270);
-        stopView.setFitWidth(384);
-        stopView.setPreserveRatio(true);
+        stopView.setFitHeight(messenger.getResolutionizer().setTileWidth(.25));
+        stopView.setFitWidth(messenger.getResolutionizer().setTileHeight(.25));
+        stopView.setPreserveRatio(false);
 
         HBox myBox = new HBox(stopView);
-        myBox.setPrefWidth(384);
-        myBox.setPrefHeight(270);
+        myBox.setPrefWidth(messenger.getResolutionizer().setTileWidth(.25));
+        myBox.setPrefHeight(messenger.getResolutionizer().setTileHeight(.25));
         myBox.setAlignment(Pos.CENTER);
         myBox.setStyle("-fx-background-color:#54B948");
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -185,7 +184,7 @@ public class retailBuildOverviewController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -193,14 +192,14 @@ public class retailBuildOverviewController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.334))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -211,24 +210,16 @@ public class retailBuildOverviewController implements Initializable
         dept  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .description("Retail")
-                .roundedCorners(false)
-                .build();
-
-        filler  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
                 .roundedCorners(false)
                 .build();
 
         line1  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 1")
                 .description(Integer.toString(line1Total))
@@ -237,10 +228,9 @@ public class retailBuildOverviewController implements Initializable
 
         line1BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -251,20 +241,11 @@ public class retailBuildOverviewController implements Initializable
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
-        line1Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
 
         line2  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 2")
                 .description(Integer.toString(line2Total))
@@ -272,10 +253,9 @@ public class retailBuildOverviewController implements Initializable
                 .build();
         line2BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -287,19 +267,10 @@ public class retailBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line2Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line3  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 3")
                 .description(Integer.toString(line3Total))
@@ -308,10 +279,9 @@ public class retailBuildOverviewController implements Initializable
 
         line3BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -323,19 +293,10 @@ public class retailBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line3Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line4  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 4")
                 .description("").description(Integer.toString(line4Total))
@@ -344,10 +305,9 @@ public class retailBuildOverviewController implements Initializable
 
         line4BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -359,19 +319,10 @@ public class retailBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line4Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line5  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Line 5")
                 .description(Integer.toString(line5Total))
@@ -380,10 +331,9 @@ public class retailBuildOverviewController implements Initializable
 
         line5BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -395,19 +345,10 @@ public class retailBuildOverviewController implements Initializable
                 .thresholdColor(Color.valueOf("#54B948"))
                 .build();
 
-        line5Differential  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-
         line6  = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
                 .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Next Gen Display")
                 .description(Integer.toString(line6Total))
@@ -416,10 +357,9 @@ public class retailBuildOverviewController implements Initializable
 
         line6BuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                //.valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-20)
@@ -429,42 +369,30 @@ public class retailBuildOverviewController implements Initializable
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
-                .subText("What is happening")
-                .build();
-
-        line6Differential= TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.167))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
                 .build();
 
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
-        pane.add(dept,0,2,1,1);
-        pane.add(stopLight,0,3,1,2);
-        pane.add(daySince,0,5,1,1);
+        pane.add(stopLight,0,2,1,1);
+        pane.add(daySince,0,3,1,1);
 
         pane.add(line1,1,0,1,1);
         pane.add(line1BuildGauge,1,1,1,1);
-        pane.add(line1Differential,1,2,1,1);
         pane.add(line2,2,0,1,1);
         pane.add(line2BuildGauge,2,1,1,1);
-        pane.add(line2Differential,2,2,1,1);
         pane.add(line3,3,0,1,1);
         pane.add(line3BuildGauge,3,1,1,1);
-        pane.add(line3Differential,3,2,1,1);
-        pane.add(line4,1,3,1,1);
-        pane.add(line4BuildGauge,1,4,1,1);
-        pane.add(line4Differential,1,5,1,1);
-        pane.add(line5,2,3,1,1);
-        pane.add(line5BuildGauge,2,4,1,1);
-        pane.add(line5Differential,2,5,1,1);
-        pane.add(line6,3,3,1,1);
-        pane.add(line6BuildGauge,3,4,1,1);
-        pane.add(line6Differential,3,5,1,1);
+        pane.add(line4,1,2,1,1);
+        pane.add(line4BuildGauge,1,3,1,1);
+        pane.add(line5,2,2,1,1);
+        pane.add(line5BuildGauge,2,3,1,1);
+        pane.add(line6,3,2,1,1);
+        pane.add(line6BuildGauge,3,3,1,1);
+        leftLine.toFront();
+        rightLine.toFront();
+        middleLine.toFront();
+
+
 
         tiles.add(logo);
         tiles.add(stopLight);
@@ -472,22 +400,16 @@ public class retailBuildOverviewController implements Initializable
         tiles.add(dept);
         tiles.add(line1);
         tiles.add(line1BuildGauge);
-        tiles.add(line1Differential);
         tiles.add(line2);
         tiles.add(line2BuildGauge);
-        tiles.add(line2Differential);
         tiles.add(line3);
         tiles.add(line3BuildGauge);
-        tiles.add(line3Differential);
         tiles.add(line4);
         tiles.add(line4BuildGauge);
-        tiles.add(line4Differential);
         tiles.add(line5);
         tiles.add(line5BuildGauge);
-        tiles.add(line5Differential);
         tiles.add(line6);
         tiles.add(line6BuildGauge);
-        tiles.add(line6Differential);
 
         createActions();
         if(pane != null)
@@ -495,6 +417,7 @@ public class retailBuildOverviewController implements Initializable
             tilesListeners(tiles);
            buildDifferential();
         }
+        System.out.println("****************************");
     }
     public void refresh()
     {
@@ -535,15 +458,12 @@ public class retailBuildOverviewController implements Initializable
 
         });
     }
-    ArrayList<Integer> conversionList;
+    ArrayList<Tile> conversionList;
     private void buildDifferential()
     {
         conversionList = new ArrayList<>();
 
-
-
         double theGoal = (messenger.getMainBuildController().getRetailBar1Goal() / 540)/5;
-        System.out.println("This is the Goal: "+theGoal);
         double theDisplayGoal = (messenger.getMainBuildController().getNextGenDisplayGoalsBuild() / 540);
         double modifier = 0;
         double currentGoal = 0;
@@ -614,7 +534,7 @@ public class retailBuildOverviewController implements Initializable
         }
         if (currentTime.getHour() > 15)
         {
-            currentGoal = messenger.getMainBuildController().getRetailBar1Goal();
+            currentGoal = messenger.getMainBuildController().getRetailBar1Goal()/5;
             currentDisplayGoal = messenger.getMainBuildController().getNextGenDisplayGoalsBuild();
         }
 
@@ -625,136 +545,32 @@ public class retailBuildOverviewController implements Initializable
         line5BuildGauge.setValue(line5Total - currentGoal);
         line6BuildGauge.setValue(line6Total - currentDisplayGoal);
 
-        int line1Display = (int)(line1Total - currentGoal);
-        int line2Display = (int)(line2Total - currentGoal);
-        int line3Display = (int)(line3Total - currentGoal);
-        int line4Display = (int)(line4Total - currentGoal);
-        int line5Display = (int)(line5Total - currentGoal);
-        int line6Display = (int)(line6Total - currentDisplayGoal);
-
-        conversionList.add(line1Display);
-        conversionList.add(line2Display);
-        conversionList.add(line3Display);
-        conversionList.add(line4Display);
-        conversionList.add(line5Display);
-        conversionList.add(line6Display);
-
-        String line1Return = "";
-        String line2Return = "";
-        String line3Return = "";
-        String line4Return = "";
-        String line5Return = "";
-        String line6Return = "";
+        conversionList.add(line1BuildGauge);
+        conversionList.add(line2BuildGauge);
+        conversionList.add(line3BuildGauge);
+        conversionList.add(line4BuildGauge);
+        conversionList.add(line5BuildGauge);
+        conversionList.add(line6BuildGauge);
 
         for(int i = 0;i<conversionList.size();i++)
         {
-            if(conversionList.get(i) > 0)
+            if(conversionList.get(i).getValue() > 0)
             {
-                if(i ==0)
-                {
-                    line1Return = "+" + Integer.toString(line1Display) + " units" + "\n\n";
-                    line1Differential.setTextColor(Color.valueOf("#54B948"));
-                }
-                if(i ==1)
-                {
-                    line2Return = "+" + Integer.toString(line2Display) + " units" + "\n\n";
-                    line2Differential.setTextColor(Color.valueOf("#54B948"));
-                }
-                if(i ==2)
-                {
-                    line3Return = "+" + Integer.toString(line3Display) + " units" + "\n\n";
-                    line3Differential.setTextColor(Color.valueOf("#54B948"));
-                }
-                if(i ==3)
-                {
-                    line4Return = "+" + Integer.toString(line4Display) + " units" + "\n\n";
-                    line4Differential.setTextColor(Color.valueOf("#54B948"));
-                }
-                if(i ==4)
-                {
-                    line5Return = "+" + Integer.toString(line5Display) + " units" + "\n\n";
-                    line5Differential.setTextColor(Color.valueOf("#54B948"));
-                }
-                if(i ==5)
-                {
-                    line6Return = "+" + Integer.toString(line6Display) + " units" + "\n\n";
-                    line6Differential.setTextColor(Color.valueOf("#54B948"));
-                }
+                conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
+                conversionList.get(i).setUnitColor(Color.valueOf("#54B948"));
             }
-            if(conversionList.get(i) == 0)
+            if(conversionList.get(i).getValue() == 0)
             {
-                if(i ==0)
-                {
-                    line1Return =Integer.toString(line1Display) + " units" + "\n\n";
-                    line1Differential.setTextColor(Color.WHITE);
-                }
-                if(i ==1)
-                {
-                    line2Return =Integer.toString(line2Display) + " units" + "\n\n";
-                    line2Differential.setTextColor(Color.WHITE);
-                }
-                if(i ==2)
-                {
-                    line3Return =Integer.toString(line3Display) + " units" + "\n\n";
-                    line3Differential.setTextColor(Color.WHITE);
-                }
-                if(i ==3)
-                {
-                    line4Return =Integer.toString(line4Display) + " units" + "\n\n";
-                    line4Differential.setTextColor(Color.WHITE);
-                }
-                if(i ==4)
-                {
-                    line5Return =Integer.toString(line5Display) + " units" + "\n\n";
-                    line5Differential.setTextColor(Color.WHITE);
-                }
-                if(i ==5)
-                {
-                    line6Return =Integer.toString(line6Display) + " units" + "\n\n";
-                    line6Differential.setTextColor(Color.WHITE);
-                }
+                conversionList.get(i).setValueColor(Color.WHITE);
+                conversionList.get(i).setUnitColor(Color.WHITE);
             }
-            if(conversionList.get(i) < 0)
+            if(conversionList.get(i).getValue() < 0)
             {
-                if(i ==0)
-                {
-                    line1Return = Integer.toString(line1Display) + " units" + "\n\n";
-                    line1Differential.setTextColor(Tile.RED);
-                }
-                if(i ==1)
-                {
-                    line2Return = Integer.toString(line2Display) + " units" + "\n\n";
-                    line2Differential.setTextColor(Tile.RED);
-                }
-                if(i ==2)
-                {
-                    line3Return = Integer.toString(line3Display) + " units" + "\n\n";
-                    line3Differential.setTextColor(Tile.RED);
-                }
-                if(i ==3)
-                {
-                    line4Return = Integer.toString(line4Display) + " units" + "\n\n";
-                    line4Differential.setTextColor(Tile.RED);
-                }
-                if(i ==4)
-                {
-                    line5Return = Integer.toString(line5Display) + " units" + "\n\n";
-                    line5Differential.setTextColor(Tile.RED);
-                }
-                if(i ==5)
-                {
-                    line6Return = Integer.toString(line6Display) + " units" + "\n\n";
-                    line6Differential.setTextColor(Tile.RED);
-                }
+                conversionList.get(i).setValueColor(Tile.RED);
+                conversionList.get(i).setUnitColor(Tile.RED);
             }
-        }
 
-        line1Differential.setDescription(line1Return);
-        line2Differential.setDescription(line2Return);
-        line3Differential.setDescription(line3Return);
-        line4Differential.setDescription(line4Return);
-        line5Differential.setDescription(line5Return);
-        line6Differential.setDescription(line6Return);
+        }
     }
     private void createActions()
     {

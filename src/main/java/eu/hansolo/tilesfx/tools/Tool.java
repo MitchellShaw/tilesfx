@@ -376,15 +376,20 @@ public class Tool {
                 lineMap.put("MIDLAND.ED_B",0);
                 lineMap.put("MIDLAND.POS_A",0);
                 lineMap.put("MIDLAND.POS_B",0);
-                lineMap.put("MIDLAND.POS_C",0);
                 lineMap.put("MIDLAND.POS_D",0);
                 lineMap.put("MIDLAND.POS_E",0);
+                lineMap.put("MIDLAND.QUEST",0);
+                lineMap.put("MIDLAND.T1000",0);
                 lineMap.put("MIDLAND.POS_NG1",0);
                 lineMap.put("MIDLAND.POS_NG2",0);
                 lineMap.put("MIDLAND.POS_NG3",0);
                 lineMap.put("MIDLAND.POS_NG4",0);
                 lineMap.put("MIDLAND.POS_NG5",0);
                 lineMap.put("MIDLAND.SERVERS",0);
+                lineMap.put("MIDLAND.OPTIC_1",0);
+                lineMap.put("MIDLAND.OPTIC_2",0);
+                lineMap.put("MIDLAND.OPTIC_3",0);
+                lineMap.put("MIDLAND.OPTIC_4",0);
             }
             else
             {

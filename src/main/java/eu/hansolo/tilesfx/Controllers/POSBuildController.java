@@ -76,17 +76,6 @@ public class POSBuildController implements Initializable
     @FXML
     Tile posTestFTT;
 
-    @FXML
-    Tile message;
-    @FXML
-    Tile filler1;
-    @FXML
-    Tile filler2;
-    @FXML
-    Tile filler3;
-    @FXML
-    Tile filler4;
-
     HBox myBox;
     HBox hbox;
 
@@ -319,41 +308,11 @@ public class POSBuildController implements Initializable
                 .description(useDate)
                 .build();
 
-        filler1  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler2  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-        filler3  = TileBuilder.create()
-                .skinType(Tile.SkinType.CHARACTER)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .titleAlignment(TextAlignment.CENTER)
-                .description("")
-                .roundedCorners(false)
-                .build();
-        filler4  = TileBuilder.create()
-                .skinType(Tile.SkinType.CUSTOM)
-                .backgroundColor(rgb(42, 42, 42))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
-                .roundedCorners(false)
-                .build();
-
         posBuildGauge = TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -369,8 +328,7 @@ public class POSBuildController implements Initializable
                 .skinType(Tile.SkinType.GAUGE)
                 .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(rgb(42, 42, 42))
-                .unit("")
-                .valueVisible(false)
+                .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
                 .minValue(-100)
@@ -383,19 +341,15 @@ public class POSBuildController implements Initializable
                 .build();
 
         pane.add(posBuild,1,0,1,2);
-        pane.add(posBuildGauge,2,0,1,1);
-        pane.add(posFTT,3,0,1,1);
+        pane.add(posBuildGauge,2,0,1,2);
+        pane.add(posFTT,3,0,1,2);
         pane.add(posTest,1,2,1,2);
-        pane.add(posTestGauge,2,2,1,1);
-        pane.add(posTestFTT,3,2,1,1);
+        pane.add(posTestGauge,2,2,1,2);
+        pane.add(posTestFTT,3,2,1,2);
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
-        pane.add(filler1,2,1,1,1);
-        pane.add(filler2,3,1,1,1);
-        pane.add(filler3,2,3,1,1);
-        pane.add(filler4,3,3,1,1);
 
         tiles.add(posBuild);
         tiles.add(posBuildGauge);
@@ -406,10 +360,6 @@ public class POSBuildController implements Initializable
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
-        tiles.add(filler1);
-        tiles.add(filler2);
-        tiles.add(filler3);
-        tiles.add(filler4);
 
         createActions();
         if(pane != null)
@@ -489,122 +439,88 @@ public class POSBuildController implements Initializable
 
         });
     }
-    private void buildDifferential()
-    {
-        double theGoal = posTotalGoalBuild/540;
+    ArrayList<Tile> gauges;
+
+    private void buildDifferential() {
+        gauges = new ArrayList<>();
+
+        double theGoal = posTotalGoalBuild / 540;
         double modifier = 0;
         double currentGoal = 0;
         double minute = 0;
         ZonedDateTime currentTime = clock.getTime();
-        if(currentTime.getHour() ==7)
-        {
+        if (currentTime.getHour() == 7) {
             modifier = 0;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==8)
-        {
+        if (currentTime.getHour() == 8) {
             modifier = 60;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==9)
-        {
+        if (currentTime.getHour() == 9) {
             modifier = 120;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==10)
-        {
+        if (currentTime.getHour() == 10) {
             modifier = 180;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 11)
-        {
+        if (currentTime.getHour() == 11) {
             modifier = 240;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 12 )
-        {
+        if (currentTime.getHour() == 12) {
             modifier = 300;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() == 13)
-        {
+        if (currentTime.getHour() == 13) {
             modifier = 360;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
-        if(currentTime.getHour() ==14)
-        {
+        if (currentTime.getHour() == 14) {
             modifier = 420;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 15) {
-            if(currentTime.getMinute()< 30)
-            {
+            if (currentTime.getMinute() < 30) {
                 modifier = 480;
                 minute = currentTime.getMinute();
-                currentGoal = theGoal * (modifier + (minute*2));
-            }
-            else
-            {
+                currentGoal = theGoal * (modifier + (minute * 2));
+            } else {
                 currentGoal = posTotalGoalBuild;
             }
         }
-        if(currentTime.getHour() >15)
-        {
+        if (currentTime.getHour() > 15) {
             currentGoal = posTotalGoalBuild;
         }
+        posBuildGauge.setValue(posTotalCurrentBuild - currentGoal);
+        posTestGauge.setValue(posTotalCurrentTest - currentGoal);
 
-        posBuildGauge.setValue(posTotalCurrentBuild-currentGoal);
-        posTestGauge.setValue(posTotalCurrentTest- currentGoal);
+        gauges.add(posTestGauge);
+        gauges.add(posBuildGauge);
 
-        int displayBuildValue = (int) (posTotalCurrentBuild-currentGoal);
-        int displayTestValue = (int) (posTotalCurrentTest-currentGoal);
-
-        String returnBuildString = "";
-        String returnTestString = "";
-
-        if(displayBuildValue > 0)
-        {
-            returnBuildString = "+"+Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.valueOf("#54B948"));
+        for (int i = 0; i < gauges.size(); i++) {
+            if (gauges.get(i).getValue() > 0) {
+                gauges.get(i).setValueColor(Color.valueOf("#54B948"));
+                gauges.get(i).setUnitColor(Color.valueOf("#54B948"));
+            }
+            if (gauges.get(i).getValue() == 0) {
+                gauges.get(i).setValueColor(Color.WHITE);
+                gauges.get(i).setUnitColor(Color.WHITE);
+            }
+            if (gauges.get(i).getValue() < 0) {
+                gauges.get(i).setValueColor(Tile.RED);
+                gauges.get(i).setUnitColor(Tile.RED);
+            }
         }
-        if(displayBuildValue == 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Color.WHITE);
-        }
-
-        if(displayBuildValue < 0)
-        {
-            returnBuildString = Integer.toString(displayBuildValue)+" units"+"\n\n";
-            filler1.setTextColor(Tile.RED);
-        }
-        if(displayTestValue > 0)
-        {
-            returnTestString = "+"+Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.valueOf("#54B948"));
-        }
-        if(displayTestValue == 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Color.WHITE);
-        }
-        if(displayTestValue < 0)
-        {
-            returnTestString = Integer.toString(displayTestValue)+" units"+"\n\n";
-            filler3.setTextColor(Tile.RED);
-        }
-        filler1.setDescription(returnBuildString);
-        filler3.setDescription(returnTestString);
-
-
     }
     private void createActions()
     {
@@ -658,13 +574,6 @@ public class POSBuildController implements Initializable
                 messenger.getPrimaryStage().setScene(messenger.getPosBuildOverview());
             }
         });
-        filler1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                messenger.getPrimaryStage().setScene(messenger.getPosBuildOverview());
-            }
-        });
-
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -821,10 +730,6 @@ public class POSBuildController implements Initializable
 
     public Tile getPosTestFTT() {
         return posTestFTT;
-    }
-
-    public Tile getMessage() {
-        return message;
     }
 
     public String getUseDate() {

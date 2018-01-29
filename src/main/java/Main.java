@@ -450,10 +450,10 @@ public class Main extends Application {
 
 
                         //---------------------------------Percent Calculation and Update for POS-------------------------------
-                        buildController.setPosTotalGoalBuild(buildController.getP1x30GoalBuild() + buildController.getPosBar1Goal() + buildController.getT1000sGoalBuild());
-                        buildController.setPosTotalCurrentBuild(buildController.getPosBar1Total() + buildController.getP1x30CurrentBuild() + buildController.getT1000sCurrentBuild());
+                        buildController.setPosTotalGoalBuild(buildController.getP1x30GoalBuild() + buildController.getPosBar1Goal() + buildController.getT1000sGoalBuild()+buildController.getQuestGoalBuild());
+                        buildController.setPosTotalCurrentBuild(buildController.getPosBar1Total() + buildController.getP1x30CurrentBuild() + buildController.getT1000sCurrentBuild()+buildController.getQuestCurrentBuild());
 
-                        testController.setPosTotalCurrentTest(testController.getPosBar1Total() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest());
+                        testController.setPosTotalCurrentTest(testController.getPosBar1Total() + testController.getP1x30CurrentTest() + testController.getT1000sCurrentTest()+testController.getQuestsCurrentTest());
                         testController.setPosTotalGoalBuild(buildController.getPosTotalGoalBuild());
 
                         stageController.setPosTotalGoalStage(stageController.getPosBar1Goal()+ stageController.getP1x30GoalStage() + stageController.getQuestsGoalStage() + stageController.getT1000sGoalStage());
@@ -557,6 +557,7 @@ public class Main extends Application {
 
                         System.out.println("\n***********Running Line Block.**************\n");
                         lineMap = dataBaseTool.buildLineQuery();
+
                         retailBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG1",lineMap));
                         retailBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG2",lineMap));
                         retailBuildOverviewController.setLine3Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG3",lineMap));
@@ -564,6 +565,20 @@ public class Main extends Application {
                         retailBuildOverviewController.setLine5Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_NG5",lineMap));
                         retailBuildOverviewController.setLine6Total((int) mapTool.getCurrentSingleValue("MIDLAND.DISPLAY_NG1",lineMap));
 
+                        posBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_B",lineMap));
+                        posBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_E",lineMap));
+                        posBuildOverviewController.setLine3Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_D",lineMap));
+                        posBuildOverviewController.setLine4Total((int) mapTool.getCurrentSingleValue("MIDLAND.POS_A",lineMap));
+                        posBuildOverviewController.setLine5Total((int) mapTool.getCurrentSingleValue("MIDLAND.T1000",lineMap));
+                        posBuildOverviewController.setLine6Total((int) mapTool.getCurrentSingleValue("MIDLAND.QUEST",lineMap));
+
+                        periphBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.ED_A",lineMap));
+                        periphBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.ED_B",lineMap));
+
+                        opticBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_1",lineMap));
+                        opticBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_2",lineMap));
+                        opticBuildOverviewController.setLine3Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_3",lineMap));
+                        opticBuildOverviewController.setLine4Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_4",lineMap));
 
 
                         //---------------------------------This is some hacky shit-------------------------------------------

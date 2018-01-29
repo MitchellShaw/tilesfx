@@ -528,12 +528,8 @@ public class PeriphStageController implements Initializable {
         {
             sortedByValue.put(entry.getKey(), entry.getValue());
         }
-        System.out.println("HashMap after sorting entries by values ");
         Set<Map.Entry<String, Integer>> entrySetSortedByValue = sortedByValue.entrySet();
-        for(Map.Entry<String, Integer> mapping : entrySetSortedByValue)
-        {
-            System.out.println(mapping.getKey() + " ==> " + mapping.getValue());
-        }
+
     }
     private void createActions()
     {
