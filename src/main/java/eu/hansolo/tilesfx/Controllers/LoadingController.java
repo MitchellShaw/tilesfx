@@ -8,6 +8,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
@@ -19,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -36,6 +38,9 @@ public class LoadingController implements Initializable
     private GridPane pane;
     @FXML
     private ImageView logo;
+
+    @FXML
+    private Label label;
 
     @FXML
     private HBox progressBox;
@@ -57,10 +62,12 @@ public class LoadingController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        image.fitWidthProperty().bind(pane.widthProperty());
-       // image.fitHeightProperty().bind(pane.heightProperty());
-        pane.setCenterShape(true);
+        messenger.getResolutionizer().setImageHeight(image);
+        messenger.getResolutionizer().setImageWidth(image);
 
+        messenger.getResolutionizer().setLabelSize(label);
+
+        messenger.getResolutionizer().setLoader(loadingBar);
         createActions();
     }
 
@@ -93,8 +100,9 @@ public class LoadingController implements Initializable
                     pane.getScene().getWindow().setX(allScreenBounds.getMinX());
 
                 }
-                if (pane.getScene().getWindow().getX() > (allScreenBounds.getMaxX() - 1920)) {
-                    pane.getScene().getWindow().setX(allScreenBounds.getMaxX() - 1920);
+                if (pane.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
+                {
+                    pane.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                 }
             }
         });

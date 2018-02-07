@@ -1,6 +1,9 @@
 package eu.hansolo.tilesfx.Controllers;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 import java.awt.*;
 
@@ -48,12 +51,35 @@ public class Resolutionizer
 
         return paneWidth;
     }
-    public void setColumnWidth(double width)
+    public void setImageWidth(ImageView image)
     {
+        if(screenWidth != 1080)
+        {
+            image.setFitWidth(image.getFitWidth()*.6);
+        }
 
     }
-    public void setRowHeight(double width)
+    public void setImageHeight(ImageView image)
     {
+        if(screenHeight != 1080)
+        {
+            image.setFitHeight(image.getFitHeight()*.6);
+        }
+    }
+    public void setLabelSize(Label label)
+    {
+        if(screenWidth != 1920)
+        {
 
+            label.setStyle("-fx-font-size: 48px");
+        }
+    }
+    public void setLoader(ProgressIndicator indicator)
+    {
+        if (screenWidth != 1920)
+        {
+           indicator.setPrefHeight(indicator.getPrefHeight()*.6);
+           indicator.setPrefWidth(indicator.getPrefWidth()*.6);
+        }
     }
 }

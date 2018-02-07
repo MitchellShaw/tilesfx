@@ -1,5 +1,6 @@
 package eu.hansolo.tilesfx.tools;
 
+import eu.hansolo.tilesfx.Controllers.timeOrb;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -19,6 +20,49 @@ import java.util.HashMap;
  * Created by Mitchell on 12/4/2017.
  */
 public class Tool {
+
+    HashMap<String,Integer> displayMap;
+    HashMap<String,Integer> ng1Map;
+    HashMap<String,Integer> ng2Map;
+    HashMap<String,Integer> ng3Map;
+    HashMap<String,Integer> ng4Map;
+    HashMap<String,Integer> ng5Map;
+    HashMap<String,Integer> optic1Map;
+    HashMap<String,Integer> optic2Map;
+    HashMap<String,Integer> optic3Map;
+    HashMap<String,Integer> optic4Map;
+    HashMap<String,Integer> edAMap;
+    HashMap<String,Integer> edBMap;
+    HashMap<String,Integer> posAMap;
+    HashMap<String,Integer> posBMap;
+    HashMap<String,Integer> posCMap;
+    HashMap<String,Integer> posDMap;
+    HashMap<String,Integer> posEMap;
+    HashMap<String,Integer> questMap;
+    HashMap<String,Integer> t1000Map;
+    HashMap<String,Integer> servers1Map;
+    HashMap<String,Integer> servers2Map;
+
+    timeOrb display;
+    timeOrb edA;
+    timeOrb edB;
+    timeOrb posA;
+    timeOrb posB;
+    timeOrb posD;
+    timeOrb posE;
+    timeOrb quest;
+    timeOrb t1000;
+    timeOrb ng1;
+    timeOrb ng2;
+    timeOrb ng3;
+    timeOrb ng4;
+    timeOrb ng5;
+    timeOrb optic1;
+    timeOrb optic2;
+    timeOrb optic3;
+    timeOrb optic4;
+    timeOrb servers1;
+    timeOrb servers2;
 
     HashMap<String,Integer> hospMap;
     HashMap<String,Integer> retailMap;
@@ -41,6 +85,117 @@ public class Tool {
 
     ArrayList<HashMap<String,Integer>> returnList;
     ArrayList<HashMap<String,Integer>> returnStageList;
+
+    ArrayList<HashMap<String,Integer>> mapList;
+    ArrayList<timeOrb> orbList;
+
+    public void tableSetUp()
+    {
+        mapList = new ArrayList<>();
+        orbList = new ArrayList<>();
+
+        displayMap = new HashMap<>();
+        ng1Map = new HashMap<>();
+        ng2Map = new HashMap<>();
+        ng3Map = new HashMap<>();
+        ng4Map = new HashMap<>();
+        ng5Map = new HashMap<>();
+        optic1Map = new HashMap<>();
+        optic2Map = new HashMap<>();
+        optic3Map = new HashMap<>();
+        optic4Map = new HashMap<>();
+        edAMap = new HashMap<>();
+        edBMap = new HashMap<>();
+        posAMap = new HashMap<>();
+        posBMap = new HashMap<>();
+        posCMap = new HashMap<>();
+        posDMap = new HashMap<>();
+        posEMap = new HashMap<>();
+        questMap = new HashMap<>();
+        t1000Map = new HashMap<>();
+        servers1Map = new HashMap<>();
+        servers2Map = new HashMap<>();
+
+        mapList.add(displayMap);
+        mapList.add(ng1Map);
+        mapList.add(ng2Map);
+        mapList.add(ng3Map);
+        mapList.add(ng4Map);
+        mapList.add(ng5Map);
+        mapList.add(optic1Map);
+        mapList.add(optic2Map);
+        mapList.add(optic3Map);
+        mapList.add(optic4Map);
+        mapList.add(edAMap);
+        mapList.add(edBMap);
+        mapList.add(posAMap);
+        mapList.add(posBMap);
+        mapList.add(posCMap);
+        mapList.add(posDMap);
+        mapList.add(posEMap);
+        mapList.add(questMap);
+        mapList.add(t1000Map);
+        mapList.add(servers1Map);
+        mapList.add(servers2Map);
+
+        for(int i = 0; i<mapList.size();i++)
+        {
+            mapList.get(i).put("7",0);
+            mapList.get(i).put("8",0);
+            mapList.get(i).put("9",0);
+            mapList.get(i).put("10",0);
+            mapList.get(i).put("11",0);
+            mapList.get(i).put("12",0);
+            mapList.get(i).put("1",0);
+            mapList.get(i).put("2",0);
+            mapList.get(i).put("3",0);
+            mapList.get(i).put("4",0);
+            mapList.get(i).put("5",0);
+        }
+
+        display = new timeOrb("MIDLAND.DISPLAY_NG1",displayMap);
+        edA = new timeOrb("MIDLAND.ED_A",edAMap);
+        edB = new timeOrb("MIDLAND.ED_B",edBMap);
+        posA = new timeOrb("MIDLAND.POS_A",posAMap);
+        posB = new timeOrb("MIDLAND.POS_B",posBMap);
+        posD = new timeOrb("MIDLAND.POS_D",posDMap);
+        posE = new timeOrb("MIDLAND.POS_E",posEMap);
+        quest = new timeOrb("MIDLAND.QUEST",questMap);
+        t1000 = new timeOrb("MIDLAND.T1000",t1000Map);
+        ng1 = new timeOrb("MIDLAND.POS_NG1",ng1Map);
+        ng2 = new timeOrb("MIDLAND.POS_NG2",ng2Map);
+        ng3 = new timeOrb("MIDLAND.POS_NG3",ng3Map);
+        ng4 = new timeOrb("MIDLAND.POS_NG4",ng4Map);
+        ng5 = new timeOrb("MIDLAND.POS_NG5",ng5Map);
+        optic1 = new timeOrb("MIDLAND.OPTIC_1",optic1Map);
+        optic2 = new timeOrb("MIDLAND.OPTIC_2",optic2Map);
+        optic3 = new timeOrb("MIDLAND.OPTIC_3",optic3Map);
+        optic4 = new timeOrb("MIDLAND.OPTIC_4",optic4Map);
+        servers1 = new timeOrb("MIDLAND.SERVERS",servers1Map);
+        servers2 = new timeOrb("MIDLAND.SERVERS_2",servers2Map);
+
+        orbList.add(display);
+        orbList.add(edA);
+        orbList.add(edB );
+        orbList.add(posA);
+        orbList.add(posB);
+        orbList.add(posD);
+        orbList.add(posE);
+        orbList.add(quest);
+        orbList.add(t1000 );
+        orbList.add(ng1 );
+        orbList.add(ng2 );
+        orbList.add(ng3 );
+        orbList.add(ng4 );
+        orbList.add(ng5 );
+        orbList.add(optic1);
+        orbList.add(optic2);
+        orbList.add(optic3);
+        orbList.add(optic4);
+        orbList.add(servers1);
+        orbList.add(servers2);
+
+    }
 
     public String incidentReader() throws IOException, SAXException, ParserConfigurationException
     {
@@ -315,6 +470,7 @@ public class Tool {
                     }
                 }
         }
+        System.out.println(returnMap);
 
         return returnMap;
     }
@@ -352,6 +508,7 @@ public class Tool {
                 String model = resultSet.getString("ItemID");
                 String line = resultSet.getString("Line");
 
+
                 //String sub = model.substring(0, model.indexOf('-'));
                 lineLoc.add(line);
 
@@ -385,11 +542,12 @@ public class Tool {
                 lineMap.put("MIDLAND.POS_NG3",0);
                 lineMap.put("MIDLAND.POS_NG4",0);
                 lineMap.put("MIDLAND.POS_NG5",0);
-                lineMap.put("MIDLAND.SERVERS",0);
                 lineMap.put("MIDLAND.OPTIC_1",0);
                 lineMap.put("MIDLAND.OPTIC_2",0);
                 lineMap.put("MIDLAND.OPTIC_3",0);
                 lineMap.put("MIDLAND.OPTIC_4",0);
+                lineMap.put("MIDLAND.SERVERS",0);
+                lineMap.put("MIDLAND.SERVERS_2",0);
             }
             else
             {
@@ -405,6 +563,86 @@ public class Tool {
         }
         return lineMap;
     }
+    public ArrayList<timeOrb> buildTimeQuery() throws ClassNotFoundException, SQLException
+    {
+
+        tableSetUp();
+        Connection conn = null;
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        String query = "SELECT * FROM [ERP].[dbo].[BuildQuery]\n" +
+                "ORDER BY [Line],[time] ASC";
+
+
+        try
+        {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String URL = "jdbc:sqlserver://WUSMS185594-8PO\\SUSMID8001;database=ERP;encrypt=false";
+            String User = "MidlandMFG";
+            String Pass = "Midland";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next())
+            {
+                String line = resultSet.getString("Line");
+                String time = resultSet.getString("time");
+
+                for(int i=0;i<orbList.size();i++)
+                {
+                    String checkLine = orbList.get(i).getLine();
+                    if(line.equalsIgnoreCase(checkLine))
+                    {
+                        if(time.equals("1") || time.equals("2") || time.equals("3") || time.equals("4") || time.equals("5") || time.equals("6"))
+                        {
+                            break;
+                        }
+                        if(time.equals("13"))
+                        {
+                            time = "1";
+                        }
+                        if(time.equals("14"))
+                        {
+                            time = "2";
+                        }
+                        if(time.equals("15"))
+                        {
+                            time = "3";
+                        }
+                        if(time.equals("16"))
+                        {
+                            time = "4";
+                        }
+                        if(time.equals("17"))
+                        {
+                            time = "5";
+                        }
+                        orbList.get(i).getTimeMap().put(time,orbList.get(i).getTimeMap().get(time)+1);
+                        break;
+                    }
+                }
+            }
+        }finally
+        {
+            try
+            {
+                System.out.println("Closing connection");
+                resultSet.close();
+                statement.close();
+                conn.close();
+            }
+            catch(SQLException e)
+            {
+                System.out.println(e);
+                e.printStackTrace();
+            }
+        }
+        return orbList;
+    }
     //---------------------------------Hosp Test Query-------------------------------------------------------------------
     public HashMap<String,Integer> hospTestDataBase() throws ClassNotFoundException, SQLException
     {
@@ -413,7 +651,7 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
+        String query = "SELECT DISTINCT [Assembly],[ScheduleNo]  ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                 \n" +
@@ -596,8 +834,7 @@ public class Tool {
 
         ////EDIT COLUMN
 
-        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
-                "\t\t\t\tdatepart(HH, TestDate)+1 AS TestDate\n" +
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID \n" +
                 "FROM UnitTest AS ut\n" +
                 "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
                 "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
@@ -754,7 +991,7 @@ public class Tool {
 
         ////EDIT COLUMN
 
-        String query = "SELECT [Assembly] ,[MfgPassDate]\n" +
+        String query = "SELECT DISTINCT [Assembly] ,[ScheduleNo] , [MfgPassDate]\n" +
                 "\n" +
                 "  FROM [ERP].[dbo].[MidlandERP] AS ut\n" +
                 "\n" +
@@ -978,8 +1215,8 @@ public class Tool {
 
         ////EDIT COLUMN
 
-        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
-                "                                datepart(HH, TestDate)+1 AS TestDate  \n" +
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID \n" +
+                "                                \n" +
                 "                                FROM UnitTest AS ut  \n" +
                 "                                                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID  \n" +
                 "                                                JOIN Item AS i ON i.RQSID = unit.ItemRQSID  \n" +
@@ -1082,7 +1319,7 @@ public class Tool {
         returnMap = new HashMap<>();
 
 
-        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
+        String query = "SELECT DISTINCT [Assembly] ,[ScheduleNo]  ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
@@ -1319,7 +1556,7 @@ public class Tool {
 
         ////EDIT COLUMN
 
-        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID,TestDate\n" +
+        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID\n" +
                 "                FROM UnitTest AS ut \n" +
                 "\n" +
                 "                                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID \n" +
@@ -1471,11 +1708,11 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
+        String query = "SELECT DISTINCT [Assembly] ,[ScheduleNo]  ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                  Where Cast(MfgPassDate AS DATE) >= Cast(GetDate() AS DATE) \n" +
-                "                  And(ut.[Assembly] LIKE '1656MC[0-9]%'\n" +
+                "                  And(ut.[Assembly] LIKE '1656MCC[0-9]%'\n" +
                 "\t\t\t\t  \n" +
                 "\t\t\t\t  OR ut.[Assembly] LIKE '1930MCC[0-9]%' \n" +
                 "\t\t\t\t  \n" +
@@ -1640,111 +1877,111 @@ public class Tool {
         return returnMap;
     }
 
-    public HashMap<String,Integer> serverStageDataBaseUsers() throws ClassNotFoundException, SQLException
-    {
-        dummyMap = new HashMap<>();
-        returnMap = new HashMap<>();
-
-        ////EDIT COLUMN
-
-        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
-                "\t\t\t\tdatepart(HH, TestDate)+1 AS TestDate\n" +
-                "FROM UnitTest AS ut\n" +
-                "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
-                "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
-                "                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID\n" +
-                "                JOIN Location AS f ON f.RQSID = l.FacilityRQSID\n" +
-                "                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID\n" +
-                "                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)\n" +
-                "\t\t\t\t--Remove Second Shift:\n" +
-                "                --where cast(ut.TestDate as smalldatetime) \n" +
-                "\t\t\t\t--between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))\n" +
-                "\t\t\t\t--and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))\n" +
-                "\t\t\t\t--where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)\n" +
-                "                AND f.LocationID = 'MIDLAND'\n" +
-                "                AND ut.Type = 'Checkout'\n" +
-                "\t\t\t\tAND ut.IsPass = '1'\n" +
-                "\t\t\t\tAND (i.ItemID LIKE '1656-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1930-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1657-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1611-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1612-%')\n" +
-                "\n" +
-                "\t\t\t\tORDER BY UserID,ItemID";
-
-        Connection conn = null;
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
-            String User = "rqs_read_only";
-            String Pass = "rqsr3qadonly";
-            conn = DriverManager.getConnection(URL, User, Pass);
-
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            System.out.println("Connection established.");
-
-            while (resultSet.next()) {
-                String staging = resultSet.getString("ItemID");
-
-                String user = resultSet.getString("UserID");
-
-                String sub = staging.substring(0, staging.indexOf('-'));
-
-                if (dummyMap.isEmpty()) {
-                    ArrayList<String> temp = new ArrayList<>();
-                    temp.add(sub);
-                    dummyMap.put(user, temp);
-                }
-                if (dummyMap.containsKey(user)) {
-                    ArrayList<String> temp = dummyMap.get(user);
-                    temp.add(sub);
-                    dummyMap.put(user, temp);
-                }
-                if (!dummyMap.containsKey(user)) {
-                    ArrayList<String> temp = new ArrayList<>();
-                    temp.add(sub);
-                    dummyMap.put(user, temp);
-                }
-            }
-        } finally {
-            try {
-                System.out.println("Closing connection");
-                resultSet.close();
-                statement.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-        if (dummyMap.isEmpty()) {
-            returnMap.put("", 0);
-        } else {
-            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
-
-            for (int i = 0; i < users.size(); i++) {
-                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
-
-                int tempValue = 0;
-
-                for (int x = 0; x < tempList.size(); x++) {
-                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
-                    tempList.removeAll(Collections.singleton(tempList.get(0)));
-                }
-                returnMap.put(users.get(i), tempValue);
-            }
-        }
-        return returnMap;
-    }
+//    public HashMap<String,Integer> serverStageDataBaseUsers() throws ClassNotFoundException, SQLException
+//    {
+//        dummyMap = new HashMap<>();
+//        returnMap = new HashMap<>();
+//
+//        ////EDIT COLUMN
+//
+//        String query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID, \n" +
+//                "\t\t\t\tdatepart(HH, TestDate)+1 AS TestDate\n" +
+//                "FROM UnitTest AS ut\n" +
+//                "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
+//                "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
+//                "                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID\n" +
+//                "                JOIN Location AS f ON f.RQSID = l.FacilityRQSID\n" +
+//                "                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID\n" +
+//                "                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)\n" +
+//                "\t\t\t\t--Remove Second Shift:\n" +
+//                "                --where cast(ut.TestDate as smalldatetime) \n" +
+//                "\t\t\t\t--between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))\n" +
+//                "\t\t\t\t--and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))\n" +
+//                "\t\t\t\t--where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)\n" +
+//                "                AND f.LocationID = 'MIDLAND'\n" +
+//                "                AND ut.Type = 'Checkout'\n" +
+//                "\t\t\t\tAND ut.IsPass = '1'\n" +
+//                "\t\t\t\tAND (i.ItemID LIKE '1656-%'\n" +
+//                "\t\t\t\tOR i.ItemID LIKE '1930-%'\n" +
+//                "\t\t\t\tOR i.ItemID LIKE '1657-%'\n" +
+//                "\t\t\t\tOR i.ItemID LIKE '1611-%'\n" +
+//                "\t\t\t\tOR i.ItemID LIKE '1612-%')\n" +
+//                "\n" +
+//                "\t\t\t\tORDER BY UserID,ItemID";
+//
+//        Connection conn = null;
+//
+//        Statement statement = null;
+//        ResultSet resultSet = null;
+//
+//
+//        try {
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//            String URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+//            String User = "rqs_read_only";
+//            String Pass = "rqsr3qadonly";
+//            conn = DriverManager.getConnection(URL, User, Pass);
+//
+//            statement = conn.createStatement();
+//            resultSet = statement.executeQuery(query);
+//
+//            System.out.println("Connection established.");
+//
+//            while (resultSet.next()) {
+//                String staging = resultSet.getString("ItemID");
+//
+//                String user = resultSet.getString("UserID");
+//
+//                String sub = staging.substring(0, staging.indexOf('-'));
+//
+//                if (dummyMap.isEmpty()) {
+//                    ArrayList<String> temp = new ArrayList<>();
+//                    temp.add(sub);
+//                    dummyMap.put(user, temp);
+//                }
+//                if (dummyMap.containsKey(user)) {
+//                    ArrayList<String> temp = dummyMap.get(user);
+//                    temp.add(sub);
+//                    dummyMap.put(user, temp);
+//                }
+//                if (!dummyMap.containsKey(user)) {
+//                    ArrayList<String> temp = new ArrayList<>();
+//                    temp.add(sub);
+//                    dummyMap.put(user, temp);
+//                }
+//            }
+//        } finally {
+//            try {
+//                System.out.println("Closing connection");
+//                resultSet.close();
+//                statement.close();
+//                conn.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//
+//
+//        if (dummyMap.isEmpty()) {
+//            returnMap.put("", 0);
+//        } else {
+//            ArrayList<String> users = new ArrayList<>(dummyMap.keySet());
+//
+//            for (int i = 0; i < users.size(); i++) {
+//                ArrayList<String> tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+//
+//                int tempValue = 0;
+//
+//                for (int x = 0; x < tempList.size(); x++) {
+//                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+//                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+//                }
+//                returnMap.put(users.get(i), tempValue);
+//            }
+//        }
+//        return returnMap;
+//    }
 
     public double serversFTTDataBase() throws ClassNotFoundException, SQLException
     {
@@ -1801,7 +2038,7 @@ public class Tool {
 
         ////EDIT THE COLUMN NAME
 
-        String query = "SELECT [Assembly] ,[MfgPassDate] \n" +
+        String query = "SELECT DISTINCT [Assembly] ,[ScheduleNo]   ,[MfgPassDate] \n" +
                 "                 \n" +
                 "                  FROM [ERP].[dbo].[MidlandERP] AS ut \n" +
                 "                 \n" +

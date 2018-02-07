@@ -131,10 +131,10 @@ public class CustomTileSkin extends TileSkin {
             pane.setPrefSize(width, height);
 
             if (containerWidth > 0 && containerHeight > 0) {
-                graphicContainer.setMinSize(containerWidth, containerHeight);
-                graphicContainer.setMaxSize(containerWidth, containerHeight);
-                graphicContainer.setPrefSize(containerWidth, containerHeight);
-                graphicContainer.relocate(contentBounds.getX(), contentBounds.getY());
+                graphicContainer.setMinSize(width, height);
+                graphicContainer.setMaxSize(width, height);
+                graphicContainer.setPrefSize(width, height);
+                //graphicContainer.relocate(contentBounds.getX(), contentBounds.getY());
 
                 if (null != tile) {
                     Node graphic = tile.getGraphic();

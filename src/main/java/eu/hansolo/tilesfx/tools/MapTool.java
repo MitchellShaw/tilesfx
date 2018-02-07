@@ -44,4 +44,8 @@ public class MapTool {
 
         return toReturn;
     }
+//    public ArrayList<String> getAllLineValues(String line, HashMap<String,Integer> map)
+//    {
+//
+//    }
 }

@@ -613,19 +613,28 @@ public class PeriphBuildController implements Initializable {
         gauges.add(periphTestGauge);
         gauges.add(periphBuildGauge);
 
-        for (int i = 0; i < gauges.size(); i++) {
-            if (gauges.get(i).getValue() > 0) {
+        boolean flag = false;
+
+        for(int i = 0;i<gauges.size();i++)
+        {
+            flag = false;
+            if(gauges.get(i).getValue() > 0)
+            {
                 gauges.get(i).setValueColor(Color.valueOf("#54B948"));
-                gauges.get(i).setUnitColor(Color.valueOf("#54B948"));
+                flag = true;
             }
-            if (gauges.get(i).getValue() == 0) {
+            if(gauges.get(i).getValue() == 0 && !flag)
+            {
                 gauges.get(i).setValueColor(Color.WHITE);
-                gauges.get(i).setUnitColor(Color.WHITE);
+                flag = true;
             }
-            if (gauges.get(i).getValue() < 0) {
+            if(gauges.get(i).getValue() < 0 && !flag)
+            {
                 gauges.get(i).setValueColor(Tile.RED);
-                gauges.get(i).setUnitColor(Tile.RED);
+                flag = true;
             }
+            gauges.get(i).setUnitColor(gauges.get(i).getValueColor());
+
         }
     }
     private Bounds computeAllScreenBounds() {

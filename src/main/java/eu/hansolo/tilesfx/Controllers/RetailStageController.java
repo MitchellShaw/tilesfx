@@ -671,9 +671,9 @@ public class RetailStageController implements Initializable {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                     {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
                 }
             });

@@ -661,6 +661,41 @@ public class MainTestController implements Initializable
                 }
             }
         });
+        posTestPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
+            }
+        });
+        retailTestPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
+            }
+        });
+        serversTestPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
+            }
+        });
+        periphTestPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
+            }
+        });
+        opticTestPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
+            }
+        });
         posTest.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -693,6 +728,41 @@ public class MainTestController implements Initializable
             public void handle(MouseEvent event) {
                 messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
 
+            }
+        });
+        posFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
+            }
+        });
+        retailFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
+            }
+        });
+        serversFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
+            }
+        });
+        periphFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
+            }
+        });
+        opticFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
             }
         });
     }
@@ -749,9 +819,9 @@ public class MainTestController implements Initializable
                         temp.getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
                 }
             });

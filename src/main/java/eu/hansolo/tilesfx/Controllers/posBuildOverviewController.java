@@ -5,6 +5,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,6 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
@@ -229,8 +232,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -254,8 +257,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -280,8 +283,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -306,8 +309,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -332,8 +335,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -358,8 +361,8 @@ public class posBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-75)
+                .maxValue(75)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -388,6 +391,8 @@ public class posBuildOverviewController implements Initializable
         leftLine.toFront();
         rightLine.toFront();
         middleLine.toFront();
+        stopLight.toFront();
+        daySince.toFront();
 
 
 
@@ -562,23 +567,27 @@ public class posBuildOverviewController implements Initializable
         conversionList.add(line5BuildGauge);
         conversionList.add(line6BuildGauge);
 
+        boolean flag = false;
+
         for(int i = 0;i<conversionList.size();i++)
         {
+            flag = false;
             if(conversionList.get(i).getValue() > 0)
             {
                 conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
-                conversionList.get(i).setUnitColor(Color.valueOf("#54B948"));
+                flag = true;
             }
-            if(conversionList.get(i).getValue() == 0)
+            if(conversionList.get(i).getValue() == 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Color.WHITE);
-                conversionList.get(i).setUnitColor(Color.WHITE);
+                flag = true;
             }
-            if(conversionList.get(i).getValue() < 0)
+            if(conversionList.get(i).getValue() < 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Tile.RED);
-                conversionList.get(i).setUnitColor(Tile.RED);
+                flag = true;
             }
+            conversionList.get(i).setUnitColor(conversionList.get(i).getValueColor());
 
         }
     }
@@ -622,7 +631,78 @@ public class posBuildOverviewController implements Initializable
                 }
             }
         });
-
+        line1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine1());
+            }
+        });
+        line1BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine1());
+            }
+        });
+        line2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine2());
+            }
+        });
+        line2BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine2());
+            }
+        });
+        line3.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine3());
+            }
+        });
+        line3BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine3());
+            }
+        });
+        line4.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine4());
+            }
+        });
+        line4BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosLine4());
+            }
+        });
+        line5.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosT1000());
+            }
+        });
+        line5BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosT1000());
+            }
+        });
+        line6.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosQuest());
+            }
+        });
+        line6BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPosQuest());
+            }
+        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -657,6 +737,29 @@ public class posBuildOverviewController implements Initializable
                     {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
                 }
             });
         }

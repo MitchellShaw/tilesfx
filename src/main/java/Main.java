@@ -1,48 +1,21 @@
 import eu.hansolo.tilesfx.Controllers.*;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.tools.*;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.*;
-import javafx.scene.chart.BarChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -58,6 +31,8 @@ public class Main extends Application {
     double y = 0;
     boolean flag;
     Messenger messenger;
+
+    ArrayList<timeOrb> orbList;
 
     HashMap<String, Integer> buildMap;
     //---------------------------------Variables for Map Creation for POS Database Call----------------------------
@@ -111,11 +86,38 @@ public class Main extends Application {
     serversBuildOverviewController serversBuildOverviewController;
     opticBuildOverviewController opticBuildOverviewController;
 
+    nextGenDisplayLineController nextGenDisplayLineController;
+    nextGenLine1Controller nextGenLine1Controller;
+    nextGenLine2Controller nextGenLine2Controller;
+    nextGenLine3Controller nextGenLine3Controller;
+    nextGenLine4Controller nextGenLine4Controller;
+    nextGenLine5Controller nextGenLine5Controller;
+
+    opticLine1Controller opticLine1Controller;
+    opticLine2Controller opticLine2Controller;
+    opticLine3Controller opticLine3Controller;
+    opticLine4Controller opticLine4Controller;
+
+    periphLine1Controller periphLine1Controller;
+    periphLine2Controller periphLine2Controller;
+
+    posLine1Controller posLine1Controller;
+    posLine2Controller posLine2Controller;
+    posLine3Controller posLine3Controller;
+    posLine4Controller posLine4Controller;
+    posQuestController posQuestController;
+    posT1000Controller posT1000Controller;
+
+    serversLine1Controller serversLine1Controller;
+    serversLine2Controller serversLine2Controller;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
         Tool dataBaseTool = new Tool();
+
         MapTool mapTool = new MapTool();
         GoalTool goalTool = new GoalTool();
 
@@ -143,7 +145,7 @@ public class Main extends Application {
         xrProdList.add("7703");
 
         ArrayList<String> nextGenProdList = new ArrayList<>();
-        nextGenProdList.add("5968");
+        nextGenProdList.add("497");
         nextGenProdList.add("5985");
 
         ArrayList<String> s500ProdList = new ArrayList<>();
@@ -177,6 +179,31 @@ public class Main extends Application {
         periphBuildOverviewController = new periphBuildOverviewController();
         opticBuildOverviewController = new opticBuildOverviewController();
 
+        nextGenDisplayLineController = new nextGenDisplayLineController();
+        nextGenLine1Controller = new nextGenLine1Controller();
+        nextGenLine2Controller = new nextGenLine2Controller();
+        nextGenLine3Controller = new nextGenLine3Controller();
+        nextGenLine4Controller = new nextGenLine4Controller();
+        nextGenLine5Controller = new nextGenLine5Controller();
+
+        opticLine1Controller = new opticLine1Controller();
+        opticLine2Controller = new opticLine2Controller();
+        opticLine3Controller = new opticLine3Controller();
+        opticLine4Controller = new opticLine4Controller();
+
+        periphLine1Controller = new periphLine1Controller();
+        periphLine2Controller = new periphLine2Controller();
+
+        posLine1Controller = new posLine1Controller();
+        posLine2Controller = new posLine2Controller();
+        posLine3Controller = new posLine3Controller();
+        posLine4Controller = new posLine4Controller();
+        posQuestController = new posQuestController();
+        posT1000Controller = new posT1000Controller();
+
+        serversLine1Controller = new serversLine1Controller();
+        serversLine2Controller = new serversLine2Controller();
+
         messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
 
         messenger.setPosBuildOverviewController(posBuildOverviewController);
@@ -184,6 +211,8 @@ public class Main extends Application {
         messenger.setServersBuildOverviewController(serversBuildOverviewController);
         messenger.setPeriphBuildOverviewController(periphBuildOverviewController);
         messenger.setOpticBuildOverviewController(opticBuildOverviewController);
+
+        messenger.setServersLine1Controller(serversLine1Controller);
 
         messenger.setResolutionizer(resolutionizer);
 
@@ -207,6 +236,31 @@ public class Main extends Application {
         periphBuildOverviewController.setMessenger(messenger);
         opticBuildOverviewController.setMessenger(messenger);
 
+        nextGenDisplayLineController.setMessenger(messenger);
+        nextGenLine1Controller.setMessenger(messenger);
+        nextGenLine2Controller.setMessenger(messenger);
+        nextGenLine3Controller.setMessenger(messenger);
+        nextGenLine4Controller.setMessenger(messenger);
+        nextGenLine5Controller.setMessenger(messenger);
+
+        opticLine1Controller.setMessenger(messenger);
+        opticLine2Controller.setMessenger(messenger);
+        opticLine3Controller.setMessenger(messenger);
+        opticLine4Controller.setMessenger(messenger);
+
+        periphLine1Controller.setMessenger(messenger);
+        periphLine2Controller.setMessenger(messenger);
+
+        posLine1Controller.setMessenger(messenger);
+        posLine2Controller.setMessenger(messenger);
+        posLine3Controller.setMessenger(messenger);
+        posLine4Controller.setMessenger(messenger);
+        posQuestController.setMessenger(messenger);
+        posT1000Controller.setMessenger(messenger);
+
+        serversLine1Controller.setMessenger(messenger);
+        serversLine2Controller.setMessenger(messenger);
+
         root = new FXMLLoader(getClass().getResource("FXML/timeLine.fxml"));
         root.setController(timeLineController);
         GridPane timePane = root.load();
@@ -222,6 +276,7 @@ public class Main extends Application {
         root.setController(navigationController);
         GridPane navigationPane = root.load();
         Scene navigationScene = new Scene(navigationPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        navigationScene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/LoadCSS.css").toExternalForm());
         messenger.setNavigationScene(navigationScene);
 
         root = new FXMLLoader(getClass().getResource("FXML/mainTestScreen.fxml"));
@@ -321,6 +376,145 @@ public class Main extends Application {
         Scene opticBuildOverviewScene = new Scene(opticBuildOverviewPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setOpticBuildOverview(opticBuildOverviewScene);
 
+        root = new FXMLLoader(getClass().getResource("FXML/serversLine1.fxml"));
+        root.setController(serversLine1Controller);
+        GridPane serversLine1Pane = root.load();
+        Scene serversLine1Scene = new Scene(serversLine1Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        serversLine1Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setServersLine1(serversLine1Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/serversLine2.fxml"));
+        root.setController(serversLine2Controller);
+        GridPane serversLine2Pane = root.load();
+        Scene serversLine2Scene = new Scene(serversLine2Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        serversLine2Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setServersLine2(serversLine2Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenDisplay.fxml"));
+        root.setController(nextGenDisplayLineController);
+        GridPane nextGenDisplayPane = root.load();
+        Scene nextGenDisplayScene = new Scene(nextGenDisplayPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenDisplayScene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenDisplay(nextGenDisplayScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenLine1.fxml"));
+        root.setController(nextGenLine1Controller);
+        GridPane nextGenLine1Pane = root.load();
+        Scene nextGenLine1Scene = new Scene(nextGenLine1Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenLine1Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenLine1(nextGenLine1Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenLine2.fxml"));
+        root.setController(nextGenLine2Controller);
+        GridPane nextGenLine2Pane = root.load();
+        Scene nextGenLine2Scene = new Scene(nextGenLine2Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenLine2Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenLine2(nextGenLine2Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenLine3.fxml"));
+        root.setController(nextGenLine3Controller);
+        GridPane nextGenLine3Pane = root.load();
+        Scene nextGenLine3Scene = new Scene(nextGenLine3Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenLine3Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenLine3(nextGenLine3Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenLine4.fxml"));
+        root.setController(nextGenLine4Controller);
+        GridPane nextGenLine4Pane = root.load();
+        Scene nextGenLine4Scene = new Scene(nextGenLine4Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenLine4Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenLine4(nextGenLine4Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/nextGenLine5.fxml"));
+        root.setController(nextGenLine5Controller);
+        GridPane nextGenLine5Pane = root.load();
+        Scene nextGenLine5Scene = new Scene(nextGenLine5Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        nextGenLine5Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setNextGenLine5(nextGenLine5Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/opticLine1.fxml"));
+        root.setController(opticLine1Controller);
+        GridPane opticLine1Pane = root.load();
+        Scene opticLine1Scene = new Scene(opticLine1Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        opticLine1Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setOpticLine1(opticLine1Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/opticLine2.fxml"));
+        root.setController(opticLine2Controller);
+        GridPane opticLine2Pane = root.load();
+        Scene opticLine2Scene = new Scene(opticLine2Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        opticLine2Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setOpticLine2(opticLine2Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/opticLine3.fxml"));
+        root.setController(opticLine3Controller);
+        GridPane opticLine3Pane = root.load();
+        Scene opticLine3Scene = new Scene(opticLine3Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        opticLine3Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setOpticLine3(opticLine3Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/opticLine4.fxml"));
+        root.setController(opticLine4Controller);
+        GridPane opticLine4Pane = root.load();
+        Scene opticLine4Scene = new Scene(opticLine4Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        opticLine4Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setOpticLine4(opticLine4Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/periphLine1.fxml"));
+        root.setController(periphLine1Controller);
+        GridPane periphLine1Pane = root.load();
+        Scene periphLine1Scene = new Scene(periphLine1Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        periphLine1Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPeriphLine1(periphLine1Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/periphLine2.fxml"));
+        root.setController(periphLine2Controller);
+        GridPane periphLine2Pane = root.load();
+        Scene periphLine2Scene = new Scene(periphLine2Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        periphLine2Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPeriphLine2(periphLine2Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posLine1.fxml"));
+        root.setController(posLine1Controller);
+        GridPane posLine1Pane = root.load();
+        Scene posLine1Scene = new Scene(posLine1Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posLine1Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosLine1(posLine1Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posLine2.fxml"));
+        root.setController(posLine2Controller);
+        GridPane posLine2Pane = root.load();
+        Scene posLine2Scene = new Scene(posLine2Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posLine2Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosLine2(posLine2Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posLine3.fxml"));
+        root.setController(posLine3Controller);
+        GridPane posLine3Pane = root.load();
+        Scene posLine3Scene = new Scene(posLine3Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posLine3Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosLine3(posLine3Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posLine1.fxml"));
+        root.setController(posLine4Controller);
+        GridPane posLine4Pane = root.load();
+        Scene posLine4Scene = new Scene(posLine4Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posLine4Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosLine4(posLine4Scene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posQuest.fxml"));
+        root.setController(posQuestController);
+        GridPane posQuestPane = root.load();
+        Scene posQuestScene = new Scene(posQuestPane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posQuestScene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosQuest(posQuestScene);
+
+        root = new FXMLLoader(getClass().getResource("FXML/posLine1.fxml"));
+        root.setController(posT1000Controller);
+        GridPane posT1000Pane = root.load();
+        Scene posT1000Scene = new Scene(posT1000Pane,  resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        posT1000Scene.getStylesheets().add(getClass().getResource("eu/hansolo/tilesfx/BasicStyle.css").toExternalForm());
+        messenger.setPosT1000(posT1000Scene);
 
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -580,6 +774,13 @@ public class Main extends Application {
                         opticBuildOverviewController.setLine3Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_3",lineMap));
                         opticBuildOverviewController.setLine4Total((int) mapTool.getCurrentSingleValue("MIDLAND.OPTIC_4",lineMap));
 
+                        serversBuildOverviewController.setLine1Total((int) mapTool.getCurrentSingleValue("MIDLAND.SERVERS",lineMap));
+                        serversBuildOverviewController.setLine2Total((int) mapTool.getCurrentSingleValue("MIDLAND.SERVERS_2",lineMap));
+
+                        orbList = dataBaseTool.buildTimeQuery();
+                        System.out.println("Made it");
+
+                        messenger.setOrbList(orbList);
 
                         //---------------------------------This is some hacky shit-------------------------------------------
                         System.out.println("\n***********Dynamic Creation Block***********\n");
@@ -626,6 +827,31 @@ public class Main extends Application {
                         periphBuildOverviewController.setUseDate(useDate);
                         opticBuildOverviewController.setUseDate(useDate);
 
+                        serversLine1Controller.setUseDate(useDate);
+                        serversLine2Controller.setUseDate(useDate);
+
+                        nextGenDisplayLineController.setUseDate(useDate);
+                        nextGenLine1Controller.setUseDate(useDate);
+                        nextGenLine2Controller.setUseDate(useDate);
+                        nextGenLine3Controller.setUseDate(useDate);
+                        nextGenLine4Controller.setUseDate(useDate);
+                        nextGenLine5Controller.setUseDate(useDate);
+
+                        opticLine1Controller.setUseDate(useDate);
+                        opticLine2Controller.setUseDate(useDate);
+                        opticLine3Controller.setUseDate(useDate);
+                        opticLine4Controller.setUseDate(useDate);
+
+                        periphLine1Controller.setUseDate(useDate);
+                        periphLine2Controller.setUseDate(useDate);
+
+                        posLine1Controller.setUseDate(useDate);
+                        posLine2Controller.setUseDate(useDate);
+                        posLine3Controller.setUseDate(useDate);
+                        posLine4Controller.setUseDate(useDate);
+                        posQuestController.setUseDate(useDate);
+                        posT1000Controller.setUseDate(useDate);
+
                         Platform.runLater(() -> buildController.refresh());
                         Platform.runLater(() -> testController.refresh());
                         Platform.runLater(() -> stageController.refresh());
@@ -639,11 +865,37 @@ public class Main extends Application {
                         Platform.runLater( ()->periphStageController.refresh());
                         Platform.runLater( ()->posStageController.refresh());
                         Platform.runLater( ()->retailStageController.refresh());
+
                         Platform.runLater( ()->posBuildOverviewController.refresh());
                         Platform.runLater( ()->retailBuildOverviewController.refresh());
                         Platform.runLater( ()->serversBuildOverviewController.refresh());
                         Platform.runLater( ()->periphBuildOverviewController.refresh());
                         Platform.runLater( ()->opticBuildOverviewController.refresh());
+
+                        Platform.runLater( ()->serversLine1Controller.refresh());
+                        Platform.runLater( ()->serversLine2Controller.refresh());
+
+                        Platform.runLater( ()->nextGenLine1Controller.refresh());
+                        Platform.runLater( ()->nextGenLine2Controller.refresh());
+                        Platform.runLater( ()->nextGenLine3Controller.refresh());
+                        Platform.runLater( ()->nextGenLine4Controller.refresh());
+                        Platform.runLater( ()->nextGenLine5Controller.refresh());
+                        Platform.runLater( ()->nextGenDisplayLineController.refresh());
+
+                        Platform.runLater( ()->opticLine1Controller.refresh());
+                        Platform.runLater( ()->opticLine2Controller.refresh());
+                        Platform.runLater( ()->opticLine3Controller.refresh());
+                        Platform.runLater( ()->opticLine4Controller.refresh());
+
+                        Platform.runLater( ()->periphLine1Controller.refresh());
+                        Platform.runLater( ()->periphLine2Controller.refresh());
+
+                        Platform.runLater( ()->posLine1Controller.refresh());
+                        Platform.runLater( ()->posLine2Controller.refresh());
+                        Platform.runLater( ()->posLine3Controller.refresh());
+                        Platform.runLater( ()->posLine4Controller.refresh());
+                        Platform.runLater( ()->posQuestController.refresh());
+                        Platform.runLater( ()->posT1000Controller.refresh());
 
 
                         if (primaryStage.getScene() == loadingScene)

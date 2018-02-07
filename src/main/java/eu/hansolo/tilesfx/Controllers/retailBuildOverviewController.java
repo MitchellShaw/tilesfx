@@ -233,9 +233,10 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
+                .value(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
@@ -258,9 +259,10 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
+                .value(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
@@ -284,9 +286,10 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
+                .value(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
@@ -310,9 +313,10 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
+                .value(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
@@ -336,10 +340,11 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-125)
+                .maxValue(125)
                 .threshold(0)
                 .thresholdVisible(false)
+                .value(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
@@ -362,10 +367,11 @@ public class retailBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-75)
+                .maxValue(75)
                 .threshold(0)
                 .thresholdVisible(false)
+                .value(0)
                 .titleAlignment(TextAlignment.CENTER)
                 .title("Hourly Build Difference")
                 .thresholdColor(Color.valueOf("#54B948"))
@@ -391,6 +397,7 @@ public class retailBuildOverviewController implements Initializable
         leftLine.toFront();
         rightLine.toFront();
         middleLine.toFront();
+        stopLight.toFront();
 
 
 
@@ -415,7 +422,6 @@ public class retailBuildOverviewController implements Initializable
         if(pane != null)
         {
             tilesListeners(tiles);
-           buildDifferential();
         }
         System.out.println("****************************");
     }
@@ -552,22 +558,25 @@ public class retailBuildOverviewController implements Initializable
         conversionList.add(line5BuildGauge);
         conversionList.add(line6BuildGauge);
 
+        boolean flag = false;
+
         for(int i = 0;i<conversionList.size();i++)
         {
+            flag = false;
             if(conversionList.get(i).getValue() > 0)
             {
                 conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
-                conversionList.get(i).setUnitColor(Color.valueOf("#54B948"));
+                flag = true;
             }
-            if(conversionList.get(i).getValue() == 0)
+            if(conversionList.get(i).getValue() == 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Color.WHITE);
-                conversionList.get(i).setUnitColor(Color.WHITE);
+                flag = true;
             }
-            if(conversionList.get(i).getValue() < 0)
+            if(conversionList.get(i).getValue() < 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Tile.RED);
-                conversionList.get(i).setUnitColor(Tile.RED);
+                flag = true;
             }
 
         }
@@ -612,43 +621,124 @@ public class retailBuildOverviewController implements Initializable
                 }
             }
         });
+        line1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine1());
+            }
+        });
+        line1BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine1());
+            }
+        });
+        line2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine2());
+            }
+        });
+        line2BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine2());
+            }
+        });
+        line3.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine3());
+            }
+        });
+        line3BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine3());
+            }
+        });
+        line4.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine4());
+            }
+        });
+        line4BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine4());
+            }
+        });
+        line5.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine5());
+            }
+        });
+        line5BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenLine5());
+            }
+        });
+        line6.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenDisplay());
+            }
+        });
+        line6BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getNextGenDisplay());
+            }
+        });
 
     }
 
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
-
-        for(int i =0;i<tileList.size();i++)
-        {
+    private void tilesListeners(ArrayList<Tile> tileList) {
+        for (int i = 0; i < tileList.size(); i++) {
             tileList.get(i).setAnimated(true);
             tileList.get(i).setAnimationDuration(3000);
-
             tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     x = event.getSceneX();
                     y = event.getSceneY();
-
-                }
-            });
+                }});
             int finalI = i;
             tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event)
-                {
+                public void handle(MouseEvent event) {
                     tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
                     tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
+                    if (tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX()) {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
-
                     }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
+                    if (tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX() - messenger.getResolutionizer().screenWidth)) {
+                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX() - messenger.getResolutionizer().screenWidth);
+                    } }});
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
                     {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    });
+                }});
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                }});
         }
     }
 

@@ -31,6 +31,31 @@ public class Messenger {
     periphBuildOverviewController periphBuildOverviewController;
     opticBuildOverviewController opticBuildOverviewController;
 
+    nextGenDisplayLineController nextGenDisplayLineController;
+    nextGenLine1Controller nextGenLine1Controller;
+    nextGenLine2Controller nextGenLine2Controller;
+    nextGenLine3Controller nextGenLine3Controller;
+    nextGenLine4Controller nextGenLine4Controller;
+    nextGenLine5Controller nextGenLine5Controller;
+
+    opticLine1Controller opticLine1Controller;
+    opticLine2Controller opticLine2Controller;
+    opticLine3Controller opticLine3Controller;
+    opticLine4Controller opticLine4Controller;
+
+    periphLine1Controller periphLine1Controller;
+    periphLine2Controller periphLine2Controller;
+
+    posLine1Controller posLine1Controller;
+    posLine2Controller posLine2Controller;
+    posLine3Controller posLine3Controller;
+    posLine4Controller posLine4Controller;
+    posQuestController posQuestController;
+    posT1000Controller posT1000Controller;
+
+    serversLine1Controller serversLine1Controller;
+    serversLine2Controller serversLine2Controller;
+
 
     Scene navigationScene;
     Scene timelineScene;
@@ -53,10 +78,40 @@ public class Messenger {
     Scene periphBuildOverview;
     Scene opticBuildOverview;
 
+    Scene nextGenDisplay;
+    Scene nextGenLine1;
+    Scene nextGenLine2;
+    Scene nextGenLine3;
+    Scene nextGenLine4;
+    Scene nextGenLine5;
+
+    Scene opticLine1;
+    Scene opticLine2;
+    Scene opticLine3;
+    Scene opticLine4;
+
+    Scene periphLine1;
+    Scene periphLine2;
+
+    Scene posLine1;
+    Scene posLine2;
+    Scene posLine3;
+
+    Scene posLine4;
+    Scene posQuest;
+    Scene posT1000;
+
+    Scene serversLine1;
+    Scene serversLine2;
+
+
+
 
     Stage primaryStage;
 
     Resolutionizer resolutionizer;
+
+    ArrayList<timeOrb> orbList;
 
     public Messenger(LoadingController loadingController, NavigationController navigationController, TimeLineController timeLineController, MainBuildController mainBuildController, MainTestController mainTestController, MainStageController mainStageController, POSBuildController posBuildController, RetailBuildController retailBuildController, ServersBuildController serversBuildController, PeriphBuildController periphBuildController, OpticBuildController opticBuildController, POSStageController posStageController, RetailStageController retailStageController, PeriphStageController periphStageController, Stage primaryStage) {
         this.loadingController = loadingController;
@@ -393,6 +448,334 @@ public class Messenger {
 
     public void setOpticBuildOverview(Scene opticBuildOverview) {
         this.opticBuildOverview = opticBuildOverview;
+    }
+
+    public serversLine1Controller getServersLine1Controller() {
+        return serversLine1Controller;
+    }
+
+    public void setServersLine1Controller(serversLine1Controller serversLine1Controller) {
+        this.serversLine1Controller = serversLine1Controller;
+    }
+
+    public Scene getServersLine1() {
+        return serversLine1;
+    }
+
+    public void setServersLine1(Scene serversLine1) {
+        this.serversLine1 = serversLine1;
+    }
+
+    public ArrayList<timeOrb> getOrbList() {
+        return orbList;
+    }
+
+    public void setOrbList(ArrayList<timeOrb> orbList) {
+        this.orbList = orbList;
+    }
+
+    public Scene getNextGenDisplay() {
+        return nextGenDisplay;
+    }
+
+    public void setNextGenDisplay(Scene nextGenDisplay) {
+        this.nextGenDisplay = nextGenDisplay;
+    }
+
+    public Scene getNextGenLine1() {
+        return nextGenLine1;
+    }
+
+    public void setNextGenLine1(Scene nextGenLine1) {
+        this.nextGenLine1 = nextGenLine1;
+    }
+
+    public Scene getNextGenLine2() {
+        return nextGenLine2;
+    }
+
+    public void setNextGenLine2(Scene nextGenLine2) {
+        this.nextGenLine2 = nextGenLine2;
+    }
+
+    public Scene getNextGenLine3() {
+        return nextGenLine3;
+    }
+
+    public void setNextGenLine3(Scene nextGenLine3) {
+        this.nextGenLine3 = nextGenLine3;
+    }
+
+    public Scene getNextGenLine4() {
+        return nextGenLine4;
+    }
+
+    public void setNextGenLine4(Scene nextGenLine4) {
+        this.nextGenLine4 = nextGenLine4;
+    }
+
+    public Scene getNextGenLine5() {
+        return nextGenLine5;
+    }
+
+    public void setNextGenLine5(Scene nextGenLine5) {
+        this.nextGenLine5 = nextGenLine5;
+    }
+
+    public Scene getOpticLine1() {
+        return opticLine1;
+    }
+
+    public void setOpticLine1(Scene opticLine1) {
+        this.opticLine1 = opticLine1;
+    }
+
+    public Scene getOpticLine2() {
+        return opticLine2;
+    }
+
+    public void setOpticLine2(Scene opticLine2) {
+        this.opticLine2 = opticLine2;
+    }
+
+    public Scene getOpticLine3() {
+        return opticLine3;
+    }
+
+    public void setOpticLine3(Scene opticLine3) {
+        this.opticLine3 = opticLine3;
+    }
+
+    public Scene getOpticLine4() {
+        return opticLine4;
+    }
+
+    public void setOpticLine4(Scene opticLine4) {
+        this.opticLine4 = opticLine4;
+    }
+
+    public Scene getPeriphLine1() {
+        return periphLine1;
+    }
+
+    public void setPeriphLine1(Scene periphLine1) {
+        this.periphLine1 = periphLine1;
+    }
+
+    public Scene getPeriphLine2() {
+        return periphLine2;
+    }
+
+    public void setPeriphLine2(Scene periphLine2) {
+        this.periphLine2 = periphLine2;
+    }
+
+    public Scene getPosLine1() {
+        return posLine1;
+    }
+
+    public void setPosLine1(Scene posLine1) {
+        this.posLine1 = posLine1;
+    }
+
+    public Scene getPosLine2() {
+        return posLine2;
+    }
+
+    public void setPosLine2(Scene posLine2) {
+        this.posLine2 = posLine2;
+    }
+
+    public Scene getPosLine3() {
+        return posLine3;
+    }
+
+    public void setPosLine3(Scene posLine3) {
+        this.posLine3 = posLine3;
+    }
+
+    public Scene getPosLine4() {
+        return posLine4;
+    }
+
+    public void setPosLine4(Scene posLine4) {
+        this.posLine4 = posLine4;
+    }
+
+    public Scene getPosQuest() {
+        return posQuest;
+    }
+
+    public void setPosQuest(Scene posQuest) {
+        this.posQuest = posQuest;
+    }
+
+    public Scene getPosT1000() {
+        return posT1000;
+    }
+
+    public void setPosT1000(Scene posT1000) {
+        this.posT1000 = posT1000;
+    }
+
+    public Scene getServersLine2() {
+        return serversLine2;
+    }
+
+    public void setServersLine2(Scene serversLine2) {
+        this.serversLine2 = serversLine2;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenDisplayLineController getNextGenDisplayLineController() {
+        return nextGenDisplayLineController;
+    }
+
+    public void setNextGenDisplayLineController(eu.hansolo.tilesfx.Controllers.nextGenDisplayLineController nextGenDisplayLineController) {
+        this.nextGenDisplayLineController = nextGenDisplayLineController;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenLine1Controller getNextGenLine1Controller() {
+        return nextGenLine1Controller;
+    }
+
+    public void setNextGenLine1Controller(eu.hansolo.tilesfx.Controllers.nextGenLine1Controller nextGenLine1Controller) {
+        this.nextGenLine1Controller = nextGenLine1Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenLine2Controller getNextGenLine2Controller() {
+        return nextGenLine2Controller;
+    }
+
+    public void setNextGenLine2Controller(eu.hansolo.tilesfx.Controllers.nextGenLine2Controller nextGenLine2Controller) {
+        this.nextGenLine2Controller = nextGenLine2Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenLine3Controller getNextGenLine3Controller() {
+        return nextGenLine3Controller;
+    }
+
+    public void setNextGenLine3Controller(eu.hansolo.tilesfx.Controllers.nextGenLine3Controller nextGenLine3Controller) {
+        this.nextGenLine3Controller = nextGenLine3Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenLine4Controller getNextGenLine4Controller() {
+        return nextGenLine4Controller;
+    }
+
+    public void setNextGenLine4Controller(eu.hansolo.tilesfx.Controllers.nextGenLine4Controller nextGenLine4Controller) {
+        this.nextGenLine4Controller = nextGenLine4Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.nextGenLine5Controller getNextGenLine5Controller() {
+        return nextGenLine5Controller;
+    }
+
+    public void setNextGenLine5Controller(eu.hansolo.tilesfx.Controllers.nextGenLine5Controller nextGenLine5Controller) {
+        this.nextGenLine5Controller = nextGenLine5Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.opticLine1Controller getOpticLine1Controller() {
+        return opticLine1Controller;
+    }
+
+    public void setOpticLine1Controller(eu.hansolo.tilesfx.Controllers.opticLine1Controller opticLine1Controller) {
+        this.opticLine1Controller = opticLine1Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.opticLine2Controller getOpticLine2Controller() {
+        return opticLine2Controller;
+    }
+
+    public void setOpticLine2Controller(eu.hansolo.tilesfx.Controllers.opticLine2Controller opticLine2Controller) {
+        this.opticLine2Controller = opticLine2Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.opticLine3Controller getOpticLine3Controller() {
+        return opticLine3Controller;
+    }
+
+    public void setOpticLine3Controller(eu.hansolo.tilesfx.Controllers.opticLine3Controller opticLine3Controller) {
+        this.opticLine3Controller = opticLine3Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.opticLine4Controller getOpticLine4Controller() {
+        return opticLine4Controller;
+    }
+
+    public void setOpticLine4Controller(eu.hansolo.tilesfx.Controllers.opticLine4Controller opticLine4Controller) {
+        this.opticLine4Controller = opticLine4Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.periphLine1Controller getPeriphLine1Controller() {
+        return periphLine1Controller;
+    }
+
+    public void setPeriphLine1Controller(eu.hansolo.tilesfx.Controllers.periphLine1Controller periphLine1Controller) {
+        this.periphLine1Controller = periphLine1Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.periphLine2Controller getPeriphLine2Controller() {
+        return periphLine2Controller;
+    }
+
+    public void setPeriphLine2Controller(eu.hansolo.tilesfx.Controllers.periphLine2Controller periphLine2Controller) {
+        this.periphLine2Controller = periphLine2Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posLine1Controller getPosLine1Controller() {
+        return posLine1Controller;
+    }
+
+    public void setPosLine1Controller(eu.hansolo.tilesfx.Controllers.posLine1Controller posLine1Controller) {
+        this.posLine1Controller = posLine1Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posLine2Controller getPosLine2Controller() {
+        return posLine2Controller;
+    }
+
+    public void setPosLine2Controller(eu.hansolo.tilesfx.Controllers.posLine2Controller posLine2Controller) {
+        this.posLine2Controller = posLine2Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posLine3Controller getPosLine3Controller() {
+        return posLine3Controller;
+    }
+
+    public void setPosLine3Controller(eu.hansolo.tilesfx.Controllers.posLine3Controller posLine3Controller) {
+        this.posLine3Controller = posLine3Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posLine4Controller getPosLine4Controller() {
+        return posLine4Controller;
+    }
+
+    public void setPosLine4Controller(eu.hansolo.tilesfx.Controllers.posLine4Controller posLine4Controller) {
+        this.posLine4Controller = posLine4Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posQuestController getPosQuestController() {
+        return posQuestController;
+    }
+
+    public void setPosQuestController(eu.hansolo.tilesfx.Controllers.posQuestController posQuestController) {
+        this.posQuestController = posQuestController;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.posT1000Controller getPosT1000Controller() {
+        return posT1000Controller;
+    }
+
+    public void setPosT1000Controller(eu.hansolo.tilesfx.Controllers.posT1000Controller posT1000Controller) {
+        this.posT1000Controller = posT1000Controller;
+    }
+
+    public eu.hansolo.tilesfx.Controllers.serversLine2Controller getServersLine2Controller() {
+        return serversLine2Controller;
+    }
+
+    public void setServersLine2Controller(eu.hansolo.tilesfx.Controllers.serversLine2Controller serversLine2Controller) {
+        this.serversLine2Controller = serversLine2Controller;
     }
 
 }

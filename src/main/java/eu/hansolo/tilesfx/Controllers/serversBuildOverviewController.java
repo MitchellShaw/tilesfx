@@ -5,6 +5,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -22,23 +24,50 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.rgb;
+
 public class serversBuildOverviewController implements Initializable
 {
+    @FXML
     Tile logo;
+    @FXML
     Tile clock;
+    @FXML
     Tile stopLight;
+    @FXML
     Tile daySince;
+    @FXML
+    Tile dept;
+
+    @FXML
+    Tile line1;
+    @FXML
+    Tile line2;
+
+    @FXML
+    Tile line1BuildGauge;
+    @FXML
+    Tile line2BuildGauge;
+
+    @FXML
+    Line middleLine;
+
+    int line1Total;
+    int line2Total;
 
     HBox myBox;
     HBox hbox;
@@ -106,7 +135,7 @@ public class serversBuildOverviewController implements Initializable
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.25))
                 .title("Current Time")
                 .titleAlignment(TextAlignment.CENTER)
                 .locale(Locale.US)
@@ -120,7 +149,7 @@ public class serversBuildOverviewController implements Initializable
         logo = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(hbox)
                 .build();
@@ -128,14 +157,14 @@ public class serversBuildOverviewController implements Initializable
         stopLight = TileBuilder.create()
                 .skinType(Tile.SkinType.CUSTOM)
                 .backgroundColor(Color.valueOf("#54B948"))
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.25))
                 .roundedCorners(false)
                 .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.25), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.25))
                 .backgroundColor(Color.valueOf("#54B948"))
                 .title("Days Since Last Safety Incident")
                 .titleAlignment(TextAlignment.CENTER)
@@ -143,19 +172,197 @@ public class serversBuildOverviewController implements Initializable
                 .description(useDate)
                 .build();
 
+        line1  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.5))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 1")
+                .description(Integer.toString(line1Total))
+                .roundedCorners(false)
+                .build();
+
+        line1BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.5))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit(" units")
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-75)
+                .maxValue(75)
+                .threshold(0)
+                .value(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+        line2  = TileBuilder.create()
+                .skinType(Tile.SkinType.CHARACTER)
+                .backgroundColor(rgb(42, 42, 42))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.5))
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Line 2")
+                .description(Integer.toString(line2Total))
+                .roundedCorners(false)
+                .build();
+        line2BuildGauge = TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .prefSize(messenger.getResolutionizer().setTileWidth(.34), messenger.getResolutionizer().setTileHeight(.5))
+                .backgroundColor(rgb(42, 42, 42))
+                .unit(" units")
+                .roundedCorners(false)
+                .barColor(Tile.RED)
+                .minValue(-75)
+                .maxValue(75)
+                .threshold(0)
+                .value(0)
+                .thresholdVisible(false)
+                .titleAlignment(TextAlignment.CENTER)
+                .title("Hourly Build Difference")
+                .thresholdColor(Color.valueOf("#54B948"))
+                .build();
+
+
         pane.add(logo,0,0,1,1);
         pane.add(clock,0,1,1,1);
         pane.add(stopLight,0,2,1,1);
         pane.add(daySince,0,3,1,1);
 
+        pane.add(line1,1,0,1,2);
+        pane.add(line1BuildGauge,1,2,1,2);
+
+        pane.add(line2,2,0,1,2);
+        pane.add(line2BuildGauge,2,2,1,2);
+        middleLine.toFront();
+
         tiles.add(logo);
         tiles.add(stopLight);
         tiles.add(daySince);
+        tiles.add(line1);
+        tiles.add(line1BuildGauge);
+        tiles.add(line2);
+        tiles.add(line2BuildGauge);
 
         createActions();
         if(pane != null)
         {
             tilesListeners(tiles);
+            buildDifferential();
+        }
+    }
+
+    ArrayList<Tile> conversionList;
+    private void buildDifferential()
+    {
+        conversionList = new ArrayList<>();
+
+        double theGoal = (messenger.getMainBuildController().getServerBar1Goal()/ 540);
+        double theBigGoal = (messenger.getMainBuildController().getServerBar2Goal()/ 540);
+        double modifier = 0;
+        double currentGoal = 0;
+        double currentBigGoal = 0;
+        double minute = 0;
+        ZonedDateTime currentTime = clock.getTime();
+        if (currentTime.getHour() == 7) {
+            modifier = 0;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+
+        }
+        if (currentTime.getHour() == 8) {
+            modifier = 60;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 9) {
+            modifier = 120;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 10) {
+            modifier = 180;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 11) {
+            modifier = 240;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 12) {
+            modifier = 300;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 13) {
+            modifier = 360;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 14) {
+            modifier = 420;
+            minute = currentTime.getMinute();
+            currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
+        }
+        if (currentTime.getHour() == 15) {
+            if(currentTime.getMinute()< 30)
+            {
+                modifier = 480;
+                minute = currentTime.getMinute();
+                currentGoal = theGoal * (modifier + (minute*2));
+                currentBigGoal = theBigGoal * (modifier + (minute*2));
+            }
+            else
+            {
+                currentGoal = messenger.getMainBuildController().getServerBar1Goal();
+                currentBigGoal = messenger.getMainBuildController().getServerBar2Goal();
+            }
+        }
+        if (currentTime.getHour() > 15)
+        {
+            currentGoal = messenger.getMainBuildController().getServerBar1Goal();
+            currentBigGoal = messenger.getMainBuildController().getServerBar2Goal();
+        }
+
+        line1BuildGauge.setValue(line1Total - currentGoal);
+        line2BuildGauge.setValue(line2Total - currentBigGoal);
+
+        conversionList.add(line1BuildGauge);
+        conversionList.add(line2BuildGauge);
+
+        boolean flag = false;
+
+        for(int i = 0;i<conversionList.size();i++)
+        {
+            flag = false;
+            if(conversionList.get(i).getValue() > 0)
+            {
+                conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
+                flag = true;
+            }
+            if(conversionList.get(i).getValue() == 0 && !flag)
+            {
+                conversionList.get(i).setValueColor(Color.WHITE);
+                flag = true;
+            }
+            if(conversionList.get(i).getValue() < 0 && !flag)
+            {
+                conversionList.get(i).setValueColor(Tile.RED);
+                flag = true;
+            }
+            conversionList.get(i).setUnitColor(conversionList.get(i).getValueColor());
+
         }
     }
     public void refresh()
@@ -183,8 +390,12 @@ public class serversBuildOverviewController implements Initializable
             myBox.setAlignment(Pos.CENTER);
             myBox.setStyle("-fx-background-color:#54B948");
 
+            line1.setDescription(Integer.toString(line1Total));
+            line2.setDescription(Integer.toString(line2Total));
+
 
             stopLight.setGraphic(myBox);
+            buildDifferential();
 
         });
     }
@@ -228,7 +439,30 @@ public class serversBuildOverviewController implements Initializable
                 }
             }
         });
-
+        line1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getServersLine1());
+            }
+        });
+        line1BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getServersLine1());
+            }
+        });
+        line2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getServersLine2());
+            }
+        });
+        line2BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getServersLine2());
+            }
+        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -263,6 +497,29 @@ public class serversBuildOverviewController implements Initializable
                     {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
                 }
             });
         }
@@ -367,5 +624,21 @@ public class serversBuildOverviewController implements Initializable
 
     public void setUseDate(String useDate) {
         this.useDate = useDate;
+    }
+
+    public int getLine1Total() {
+        return line1Total;
+    }
+
+    public void setLine1Total(int line1Total) {
+        this.line1Total = line1Total;
+    }
+
+    public int getLine2Total() {
+        return line2Total;
+    }
+
+    public void setLine2Total(int line2Total) {
+        this.line2Total = line2Total;
     }
 }

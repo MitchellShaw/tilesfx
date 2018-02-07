@@ -233,7 +233,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(posBar1Data, p1x30Data, t1000Data, questData)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -242,7 +242,7 @@ public class MainBuildController implements Initializable
         pane.add(posBuild, 0, 0, 1, 2);
 
         posPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -256,7 +256,7 @@ public class MainBuildController implements Initializable
 
 
         posFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -273,7 +273,7 @@ public class MainBuildController implements Initializable
         retailBuild = TileBuilder.create()
                 .skinType(Tile.SkinType.BAR_CHART)
                 .title("Retail Build")
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(retailBar1Data, nextGenDisplays)
                 .decimals(0)
                 .animated(true)
@@ -285,7 +285,7 @@ public class MainBuildController implements Initializable
         pane.add(retailBuild, 1, 0, 1, 2);
 
         retailPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -299,7 +299,7 @@ public class MainBuildController implements Initializable
 
         retailFTT = TileBuilder.create()
                 .skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -324,7 +324,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(serverBar1, serverBar2)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -333,7 +333,7 @@ public class MainBuildController implements Initializable
         pane.add(serversBuild, 2, 0, 1, 2);
 
         serversPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -346,7 +346,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         serversFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -371,7 +371,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(periphBar1Data, periphBar2Data, periphBar3Data)
                 .decimals(0)
                 .titleAlignment(TextAlignment.CENTER)
@@ -380,7 +380,7 @@ public class MainBuildController implements Initializable
         pane.add(periphBuild, 3, 0, 1, 2);
 
         periphPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -393,7 +393,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         periphFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .title("FTT")
                 .titleAlignment(TextAlignment.CENTER)
@@ -418,7 +418,7 @@ public class MainBuildController implements Initializable
                 .animated(true)
                 .animationDuration(3000)
                 .roundedCorners(false)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.5))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.5))
                 .barChartItems(optic5Data, optic12Data)
                 .maxValue(opticGoalTotalBuild)
                 .decimals(0)
@@ -428,7 +428,7 @@ public class MainBuildController implements Initializable
         pane.add(opticBuild, 4, 0, 1, 2);
 
         opticPercent = TileBuilder.create()
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .skinType(Tile.SkinType.CIRCULAR_PROGRESS)
                 .textAlignment(TextAlignment.CENTER)
                 .text("Percentage to Goal")
@@ -441,7 +441,7 @@ public class MainBuildController implements Initializable
                 .build();
 
         opticFTT = TileBuilder.create().skinType(Tile.SkinType.CHARACTER)
-                .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.25))
+                .prefSize(messenger.getResolutionizer().setTileWidth(.21), messenger.getResolutionizer().setTileHeight(.25))
                 .subText("FTT Rating")
                 .titleAlignment(TextAlignment.CENTER)
                 .title("FTT")
@@ -678,11 +678,39 @@ public class MainBuildController implements Initializable
                 }
             }
         });
-        retailPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        posPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event)
             {
                 messenger.getPrimaryStage().setScene(messenger.getPosBuild());
+            }
+        });
+        retailPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
+            }
+        });
+        serversPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
+            }
+        });
+        periphPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
+            }
+        });
+        opticPercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
             }
         });
         posBuild.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -720,6 +748,41 @@ public class MainBuildController implements Initializable
             messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
         }
     });
+        posFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
+            }
+        });
+        retailFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
+            }
+        });
+        serversFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
+            }
+        });
+        periphFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
+            }
+        });
+        opticFTT.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
+            }
+        });
     }
     private void tilesListeners(ArrayList<Tile> tileList)
     {
@@ -777,9 +840,9 @@ public class MainBuildController implements Initializable
                         temp.getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
                 }
             });

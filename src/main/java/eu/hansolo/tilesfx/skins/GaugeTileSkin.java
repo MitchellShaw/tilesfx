@@ -147,7 +147,7 @@ public class GaugeTileSkin extends TileSkin {
         Helper.enableNode(valueText, tile.isValueVisible() && !tile.isAlert());
 
         unitText = new Text(tile.getUnit());
-        unitText.setFill(tile.getUnitColor());
+        unitText.setFill(tile.getValueColor());
         unitText.setTextOrigin(VPos.BASELINE);
         Helper.enableNode(unitText, tile.isValueVisible() && !tile.isAlert());
 
@@ -545,6 +545,7 @@ public class GaugeTileSkin extends TileSkin {
         thresholdRect.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getValue() > tile.getThreshold() ? tile.getThresholdColor() : Tile.GRAY);
         thresholdText.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getBackgroundColor());
         valueText.setFill(tile.getValueColor());
+        unitText.setFill(tile.getValueColor());
 
         drawSections();
         highlightSections(tile.getValue());

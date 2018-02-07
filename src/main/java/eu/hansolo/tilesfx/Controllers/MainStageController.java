@@ -350,6 +350,14 @@ public class MainStageController implements Initializable
        tiles.add(serversStage);
        tiles.add(retailStage);
        tiles.add(periphStage);
+       tiles.add(posStagePercent);
+       tiles.add(retailStagePercent);
+       tiles.add(periphStagePercent);
+       tiles.add(serversStagePercent);
+       tiles.add(posTotal);
+       tiles.add(retailTotal);
+       tiles.add(periphTotal);
+       tiles.add(serversTotal);
 
        refresh();
        createActions();
@@ -557,6 +565,62 @@ public class MainStageController implements Initializable
                 messenger.getPrimaryStage().setScene(messenger.getPeriphStage());
             }
         });
+        posStagePercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosStage());
+            }
+        });
+        retailStagePercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailStage());
+            }
+        });
+        serversStagePercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosStage());
+            }
+        });
+        periphStagePercent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphStage());
+            }
+        });
+        posTotal.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosStage());
+            }
+        });
+        retailTotal.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailStage());
+            }
+        });
+        serversTotal.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerStage());
+            }
+        });
+        periphTotal.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphStage());
+            }
+        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -612,9 +676,9 @@ public class MainStageController implements Initializable
                         temp.getScene().getWindow().setX(allScreenBounds.getMinX());
 
                     }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                     {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
                 }
             });

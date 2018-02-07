@@ -12,6 +12,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyCode;
@@ -20,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.*;
 
 import java.awt.*;
@@ -46,6 +48,10 @@ public class NavigationController implements Initializable
     private ImageView logo;
     @FXML
     private GridPane pane;
+    @FXML
+    private Label label;
+    @FXML
+    private HBox textBox;
 
     Messenger messenger;
 
@@ -58,8 +64,31 @@ public class NavigationController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        logo.fitWidthProperty().bind(pane.widthProperty());
-        pane.setCenterShape(true);
+        messenger.getResolutionizer().setImageHeight(logo);
+        messenger.getResolutionizer().setImageWidth(logo);
+
+        messenger.getResolutionizer().setImageHeight(buildIcon);
+        messenger.getResolutionizer().setImageWidth(buildIcon);
+
+        messenger.getResolutionizer().setImageHeight(testIcon);
+        messenger.getResolutionizer().setImageWidth(testIcon);
+
+        messenger.getResolutionizer().setImageHeight(stageIcon);
+        messenger.getResolutionizer().setImageWidth(stageIcon);
+
+        messenger.getResolutionizer().setImageHeight(safetyIcon);
+        messenger.getResolutionizer().setImageWidth(safetyIcon);
+
+        messenger.getResolutionizer().setImageHeight(qualityIcon);
+        messenger.getResolutionizer().setImageWidth(qualityIcon);
+
+        messenger.getResolutionizer().setImageHeight(exitIcon);
+        messenger.getResolutionizer().setImageWidth(exitIcon);
+
+        messenger.getResolutionizer().setLabelSize(label);
+
+//        logo.fitWidthProperty().bind(pane.widthProperty());
+//        pane.setCenterShape(true);
         createActions();
     }
 
@@ -109,9 +138,9 @@ public class NavigationController implements Initializable
                    pane.getScene().getWindow().setX(allScreenBounds.getMinX());
 
                 }
-                if(pane.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-1920))
+                if(pane.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
                 {
-                    pane.getScene().getWindow().setX(allScreenBounds.getMaxX()-1920);
+                    pane.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                 }
             }
         });

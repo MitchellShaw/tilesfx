@@ -5,6 +5,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Messenger;
 import eu.hansolo.tilesfx.tools.Tool;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -28,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
@@ -186,8 +189,8 @@ public class periphBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-200)
+                .maxValue(200)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -211,8 +214,8 @@ public class periphBuildOverviewController implements Initializable
                 .unit(" units")
                 .roundedCorners(false)
                 .barColor(Tile.RED)
-                .minValue(-20)
-                .maxValue(20)
+                .minValue(-75)
+                .maxValue(75)
                 .threshold(0)
                 .thresholdVisible(false)
                 .titleAlignment(TextAlignment.CENTER)
@@ -254,50 +257,60 @@ public class periphBuildOverviewController implements Initializable
     {
         conversionList = new ArrayList<>();
 
-        double theGoal = (messenger.getMainBuildController().getPeriphGoalTotalBuild()/ 540)/2;
+        double theGoal = ((messenger.getMainBuildController().getPeriphGoalTotalBuild()+(messenger.getMainBuildController().getKiwi2XsGoalBuild()))/ 540);
+        double theBigGoal = (messenger.getMainBuildController().getPeriphBar3Goal()/ 540);
         double modifier = 0;
         double currentGoal = 0;
+        double currentBigGoal = 0;
         double minute = 0;
         ZonedDateTime currentTime = clock.getTime();
         if (currentTime.getHour() == 7) {
             modifier = 0;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 8) {
             modifier = 60;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 9) {
             modifier = 120;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 10) {
             modifier = 180;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 11) {
             modifier = 240;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 12) {
             modifier = 300;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 13) {
             modifier = 360;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 14) {
             modifier = 420;
             minute = currentTime.getMinute();
             currentGoal = theGoal * (modifier + minute);
+            currentBigGoal = theBigGoal * (modifier + minute);
         }
         if (currentTime.getHour() == 15) {
             if(currentTime.getMinute()< 30)
@@ -305,40 +318,51 @@ public class periphBuildOverviewController implements Initializable
                 modifier = 480;
                 minute = currentTime.getMinute();
                 currentGoal = theGoal * (modifier + (minute*2));
+                currentBigGoal = theBigGoal * (modifier + (minute*2));
             }
             else
             {
-                currentGoal = messenger.getMainBuildController().getPeriphGoalTotalBuild()/2;
+                currentGoal = messenger.getMainBuildController().getPeriphGoalTotalBuild()+messenger.getMainBuildController().getKiwi2XsGoalBuild();
+                currentBigGoal = messenger.getMainBuildController().getPeriphBar3Goal();
+
             }
         }
         if (currentTime.getHour() > 15)
         {
-            currentGoal = messenger.getMainBuildController().getPeriphGoalTotalBuild()/2;
+            currentGoal = messenger.getMainBuildController().getPeriphGoalTotalBuild()+messenger.getMainBuildController().getKiwi2XsGoalBuild();
+            currentBigGoal = messenger.getMainBuildController().getPeriphBar3Goal();
         }
 
         line1BuildGauge.setValue(line1Total - currentGoal);
-        line2BuildGauge.setValue(line2Total - currentGoal);
+        line2BuildGauge.setValue(line2Total - currentBigGoal);
+        System.out.println(line2Total);
+        System.out.println(currentBigGoal);
+        System.out.println(line2BuildGauge.getValue());
 
         conversionList.add(line1BuildGauge);
         conversionList.add(line2BuildGauge);
 
+        boolean flag = false;
+
         for(int i = 0;i<conversionList.size();i++)
         {
+            flag = false;
             if(conversionList.get(i).getValue() > 0)
             {
                 conversionList.get(i).setValueColor(Color.valueOf("#54B948"));
-                conversionList.get(i).setUnitColor(Color.valueOf("#54B948"));
+                flag = true;
             }
-            if(conversionList.get(i).getValue() == 0)
+            if(conversionList.get(i).getValue() == 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Color.WHITE);
-                conversionList.get(i).setUnitColor(Color.WHITE);
+                flag = true;
             }
-            if(conversionList.get(i).getValue() < 0)
+            if(conversionList.get(i).getValue() < 0 && !flag)
             {
                 conversionList.get(i).setValueColor(Tile.RED);
-                conversionList.get(i).setUnitColor(Tile.RED);
+                flag = true;
             }
+            conversionList.get(i).setUnitColor(conversionList.get(i).getValueColor());
 
         }
     }
@@ -416,7 +440,30 @@ public class periphBuildOverviewController implements Initializable
                 }
             }
         });
-
+        line1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphLine1());
+            }
+        });
+        line1BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphLine1());
+            }
+        });
+        line2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphLine2());
+            }
+        });
+        line2BuildGauge.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphLine2());
+            }
+        });
     }
 
     private void tilesListeners(ArrayList<Tile> tileList)
@@ -451,6 +498,29 @@ public class periphBuildOverviewController implements Initializable
                     {
                         tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
                     }
+                }
+            });
+            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
+                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                        tileList.get(finalI).setCursor(Cursor.HAND);
+                        idle.playFromStart();
+                        tileList.get(finalI).setBorderColor(Tile.GRAY);
+                    });
+                    idle.setOnFinished(e ->
+                    {
+                        tileList.get(finalI).setCursor(Cursor.NONE);
+                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
+                    });
+                }
+            });
+            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
                 }
             });
         }
