@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.weather;
+package main.java.eu.hansolo.tilesfx.weather;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

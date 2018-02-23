@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx;
+package main.java.eu.hansolo.tilesfx;
 
 /**
  * Created by hansolo on 21.12.16.

@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.weather.DarkSky;
-import eu.hansolo.tilesfx.weather.DarkSky.ConditionAndIcon;
-import eu.hansolo.tilesfx.weather.DarkSky.Unit;
-import eu.hansolo.tilesfx.weather.DataPoint;
-import eu.hansolo.tilesfx.weather.WeatherSymbol;
+
+import eu.hansolo.medusa.Fonts;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.weather.DarkSky;
+import main.java.eu.hansolo.tilesfx.weather.DataPoint;
+import main.java.eu.hansolo.tilesfx.weather.WeatherSymbol;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.normalize;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.normalize;
+import static main.java.eu.hansolo.tilesfx.weather.DarkSky.ConditionAndIcon;
+import static main.java.eu.hansolo.tilesfx.weather.DarkSky.Unit;
 
 
 /**
@@ -43,15 +44,15 @@ public class WeatherTileSkin extends TileSkin {
     private              Text          titleText;
     private              Text          valueText;
     private              Text          unitText;
-    private              WeatherSymbol weatherSymbol;
+    private WeatherSymbol weatherSymbol;
     private              Text          text;
-    private              WeatherSymbol sunriseSymbol;
-    private              WeatherSymbol sunsetSymbol;
+    private WeatherSymbol sunriseSymbol;
+    private WeatherSymbol sunsetSymbol;
     private              Text          sunriseText;
     private              Text          sunsetText;
     private              HBox          sunriseBox;
     private              HBox          sunsetBox;
-    private              DarkSky       darkSky;
+    private DarkSky darkSky;
 
 
     // ******************** Constructors **************************************

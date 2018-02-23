@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java.eu.hansolo.tilesfx.chart;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.ChartDataEvent;
-import eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.tools.Location;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -29,6 +24,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEvent;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.tools.Location;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -37,70 +36,75 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
 
 
 /**
  * Created by hansolo on 17.02.17.
  */
 public class ChartData implements Comparable<ChartData> {
-    private final ChartDataEvent               UPDATE_EVENT   = new ChartDataEvent(EventType.UPDATE, ChartData.this);
-    private final ChartDataEvent               FINISHED_EVENT = new ChartDataEvent(EventType.FINISHED, ChartData.this);
+    private final ChartDataEvent UPDATE_EVENT   = new ChartDataEvent(ChartDataEvent.EventType.UPDATE, ChartData.this);
+    private final ChartDataEvent FINISHED_EVENT = new ChartDataEvent(ChartDataEvent.EventType.FINISHED, ChartData.this);
     private       String                       name;
     private       double                       value;
+    private       double                       maxValue;
     private       double                       oldValue;
     private       Color                        fillColor;
     private       Color                        strokeColor;
     private       Color                        textColor;
     private       Instant                      timestamp;
-    private       Location                     location;
+    private Location location;
     private       boolean                      animated;
     private       long                         animationDuration;
     private       List<ChartDataEventListener> listenerList = new CopyOnWriteArrayList<>();
     private       DoubleProperty               currentValue;
+    private       DoubleProperty               currentMaxValue;
     private       Timeline                     timeline;
 
 
     // ******************** Constructors **************************************
     public ChartData() {
-        this("", 0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this("", 0,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
     public ChartData(final String NAME) {
-        this(NAME, 0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this(NAME, 0,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
     public ChartData(double VALUE) {
-        this("", VALUE, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this("", VALUE,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
     public ChartData(final double VALUE, final Instant TIMESTAMP) {
-        this("", VALUE, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
+        this("", VALUE,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
     }
     public ChartData(final String NAME, final Instant TIMESTAMP) {
-        this(NAME, 0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
+        this(NAME, 0,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
     }
     public ChartData(final String NAME, final Color FILL_COLOR) {
-        this(NAME, 0, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this(NAME, 0,0, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
     public ChartData(final String NAME, final double VALUE) {
-        this(NAME, VALUE, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this(NAME, VALUE,0, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
-    public ChartData(final String NAME, final double VALUE, final Instant TIMESTAMP) {
-        this(NAME, VALUE, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
+    public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Instant TIMESTAMP) {
+        this(NAME, VALUE, MAXVALUE, Tile.BLUE, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
     }
     public ChartData(final String NAME, final double VALUE, final Color FILL_COLOR) {
-        this(NAME, VALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+        this(NAME, VALUE, 0, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
+    }public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Color FILL_COLOR) {
+        this(NAME, VALUE, MAXVALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, Instant.now(), true, 800);
     }
-    public ChartData(final String NAME, final double VALUE, final Color FILL_COLOR, final Instant TIMESTAMP) {
-        this(NAME, VALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
+    public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Color FILL_COLOR, final Instant TIMESTAMP) {
+        this(NAME, VALUE, MAXVALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, true, 800);
     }
-    public ChartData(final String NAME, final double VALUE, final Color FILL_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
-        this(NAME, VALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, ANIMATED, ANIMATION_DURATION);
+    public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Color FILL_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
+        this(NAME, VALUE, MAXVALUE, FILL_COLOR, Color.TRANSPARENT, Tile.FOREGROUND, TIMESTAMP, ANIMATED, ANIMATION_DURATION);
     }
-    public ChartData(final String NAME, final double VALUE, final Color FILL_COLOR, final Color STROKE_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
-        this(NAME, VALUE, FILL_COLOR, STROKE_COLOR, Tile.FOREGROUND, TIMESTAMP, ANIMATED, ANIMATION_DURATION);
+    public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Color FILL_COLOR, final Color STROKE_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
+        this(NAME, VALUE, MAXVALUE, FILL_COLOR, STROKE_COLOR, Tile.FOREGROUND, TIMESTAMP, ANIMATED, ANIMATION_DURATION);
     }
-    public ChartData(final String NAME, final double VALUE, final Color FILL_COLOR, final Color STROKE_COLOR, final Color TEXT_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
+    public ChartData(final String NAME, final double VALUE, final double MAXVALUE, final Color FILL_COLOR, final Color STROKE_COLOR, final Color TEXT_COLOR, final Instant TIMESTAMP, final boolean ANIMATED, final long ANIMATION_DURATION) {
         name              = NAME;
         value             = VALUE;
+        maxValue          = MAXVALUE;
         oldValue          = 0;
         fillColor         = FILL_COLOR;
         strokeColor       = STROKE_COLOR;
@@ -114,6 +118,14 @@ public class ChartData implements Comparable<ChartData> {
             }
             @Override public Object getBean() { return ChartData.this; }
             @Override public String getName() { return "currentValue"; }
+        };
+        currentMaxValue      = new DoublePropertyBase(maxValue) {
+            @Override protected void invalidated() {
+                maxValue    = get();
+                fireChartDataEvent(UPDATE_EVENT);
+            }
+            @Override public Object getBean() { return ChartData.this; }
+            @Override public String getName() { return "currentMaxValue"; }
         };
         timeline          = new Timeline();
         animated          = ANIMATED;
@@ -132,7 +144,9 @@ public class ChartData implements Comparable<ChartData> {
     }
 
     public double getValue() { return value; }
-    public void setValue(final double VALUE) {
+    public double getMaxValue() { return maxValue; }
+    public void setValue(final double VALUE)
+    {
         if (animated) {
             timeline.stop();
             KeyValue kv1 = new KeyValue(currentValue, value, Interpolator.EASE_BOTH);
@@ -147,8 +161,13 @@ public class ChartData implements Comparable<ChartData> {
             fireChartDataEvent(FINISHED_EVENT);
         }
     }
+    public void setMaxValue(final double MAXVALUE) {
+            maxValue    = MAXVALUE;
+            fireChartDataEvent(FINISHED_EVENT);
+    }
 
     public double getOldValue() { return oldValue; }
+
 
     public Color getFillColor() { return fillColor; }
     public void setFillColor(final Color COLOR) {
@@ -199,6 +218,7 @@ public class ChartData implements Comparable<ChartData> {
         return new StringBuilder().append("{\n")
                                   .append("  \"name\":").append(name).append(",\n")
                                   .append("  \"value\":").append(value).append(",\n")
+                                  .append("  \"maxValue\":").append(maxValue).append(",\n")
                                   .append("  \"fillColor\":").append(fillColor.toString().replace("0x", "#")).append(",\n")
                                   .append("  \"strokeColor\":").append(strokeColor.toString().replace("0x", "#")).append(",\n")
                                   .append("  \"timestamp\":").append(timestamp.toEpochMilli()).append(",\n")

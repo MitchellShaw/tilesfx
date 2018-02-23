@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.TreeNodeEvent;
-import eu.hansolo.tilesfx.events.TreeNodeEvent.EventType;
-import eu.hansolo.tilesfx.events.TreeNodeEventListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.TreeNodeEvent;
+import main.java.eu.hansolo.tilesfx.events.TreeNodeEvent.EventType;
+import main.java.eu.hansolo.tilesfx.events.TreeNodeEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,7 +33,7 @@ import java.util.stream.Stream;
 public class TreeNode {
     private final TreeNodeEvent PARENT_CHANGED   = new TreeNodeEvent(TreeNode.this, EventType.PARENT_CHANGED);
     private final TreeNodeEvent CHILDREN_CHANGED = new TreeNodeEvent(TreeNode.this, EventType.CHILDREN_CHANGED);
-    private ChartData                   data;
+    private ChartData data;
     private TreeNode                    parent;
     private TreeNode                    myRoot;
     private TreeNode                    treeRoot;

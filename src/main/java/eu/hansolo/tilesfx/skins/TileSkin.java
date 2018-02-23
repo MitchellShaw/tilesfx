@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Section;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.TextSize;
-import eu.hansolo.tilesfx.events.TileEventListener;
-import eu.hansolo.tilesfx.tools.CtxBounds;
-import eu.hansolo.tilesfx.tools.NotifyRegion;
 import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
@@ -30,21 +24,21 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import main.java.eu.hansolo.tilesfx.Section;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.Tile.TextSize;
+import main.java.eu.hansolo.tilesfx.events.TileEventListener;
+import main.java.eu.hansolo.tilesfx.tools.CtxBounds;
+import main.java.eu.hansolo.tilesfx.tools.NotifyRegion;
 
 import java.util.List;
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
-import static eu.hansolo.tilesfx.tools.Helper.enableNode;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.enableNode;
+
 
 
 /**
@@ -78,10 +72,10 @@ public class TileSkin extends SkinBase<Tile> implements Skin<Tile> {
     protected              Locale                   locale;
     protected              List<Section>            sections;
     protected              boolean                  sectionsVisible;
-    protected              TextSize                 textSize;
+    protected TextSize textSize;
     protected              DropShadow               shadow;
     protected              InvalidationListener     sizeListener;
-    protected              TileEventListener        tileEventListener;
+    protected TileEventListener tileEventListener;
     protected              InvalidationListener     currentValueListener;
     protected              InvalidationListener     timeListener;
     protected              Tile                     tile;

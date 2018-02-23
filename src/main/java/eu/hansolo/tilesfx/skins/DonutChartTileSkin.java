@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -36,11 +30,18 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+
 
 
 /**
@@ -54,7 +55,7 @@ public class DonutChartTileSkin extends TileSkin {
     private Canvas                        legendCanvas;
     private GraphicsContext               legendCtx;
     private ListChangeListener<ChartData> chartDataListener;
-    private ChartDataEventListener        chartEventListener;
+    private ChartDataEventListener chartEventListener;
     private double                        centerX;
     private double                        centerY;
     private double                        innerRadius;
@@ -117,7 +118,7 @@ public class DonutChartTileSkin extends TileSkin {
                     selectionTooltip.setY(popupLocation.getY());
                     selectionTooltip.show(tile.getScene().getWindow());
 
-                    tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, data)); break;
+                    tile.fireTileEvent(new TileEvent(TileEvent.EventType.SELECTED_CHART_DATA, data)); break;
                 }
             }
         };

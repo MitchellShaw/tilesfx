@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.events;
+package main.java.eu.hansolo.tilesfx.events;
 
 import java.time.ZonedDateTime;
-import java.util.EventObject;
 
 
 /**

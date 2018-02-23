@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Section;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.VPos;
@@ -27,19 +23,19 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import main.java.eu.hansolo.tilesfx.Section;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.List;
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.enableNode;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.enableNode;
 
 
 /**
@@ -58,6 +54,7 @@ public class CircularProgressTileSkin extends TileSkin {
     private Text                 percentageUnitText;
     private TextFlow             percentageFlow;
     private Text                 valueText;
+    private Text                 subText;
     private Text                 unitText;
     private TextFlow             valueUnitFlow;
     private double               minValue;
@@ -135,7 +132,8 @@ public class CircularProgressTileSkin extends TileSkin {
         percentageFlow = new TextFlow(percentageValueText, percentageUnitText);
         percentageFlow.setTextAlignment(TextAlignment.CENTER);
 
-        valueText = new Text(String.format(locale, formatString, tile.getCurrentValue()));
+        valueText = new Text(tile.getSubText());
+        valueText = new Text("");
         valueText.setFont(Fonts.latoRegular(PREFERRED_WIDTH * 0.27333));
         valueText.setFill(tile.getValueColor());
         valueText.setTextOrigin(VPos.CENTER);
@@ -143,9 +141,15 @@ public class CircularProgressTileSkin extends TileSkin {
 
         unitText = new Text(tile.getUnit());
         unitText = new Text("\u0025");
-        unitText.setFont(Fonts.latoLight(PREFERRED_WIDTH * 0.08));
+        unitText.setFont(Fonts.latoLight(PREFERRED_WIDTH * 0.3));
         unitText.setFill(tile.getUnitColor());
         enableNode(unitText, !tile.getUnit().isEmpty());
+
+        subText = new Text(tile.getSubText());
+        subText = new Text("");
+        subText.setFont(Fonts.latoLight(PREFERRED_WIDTH * 0.3));
+        subText.setFill(tile.getUnitColor());
+        enableNode(subText, !tile.getSubText().isEmpty());
 
         valueUnitFlow = new TextFlow(valueText, unitText);
         valueUnitFlow.setTextAlignment(TextAlignment.CENTER);
@@ -185,6 +189,7 @@ public class CircularProgressTileSkin extends TileSkin {
             enableNode(titleText, !tile.getTitle().isEmpty());
             enableNode(text, tile.isTextVisible());
             enableNode(unitText, !tile.getUnit().isEmpty());
+            enableNode(subText, !tile.getSubText().isEmpty());
             enableNode(valueText, tile.isValueVisible());
         }
     }
@@ -198,7 +203,6 @@ public class CircularProgressTileSkin extends TileSkin {
         setBarColor(VALUE);
 
         percentageValueText.setText(String.format(locale, formatString, VALUE / range * 100.0));
-        valueText.setText(String.format(locale, formatString, VALUE));
     }
     
     private void setBarColor(final double VALUE) {
@@ -263,7 +267,8 @@ public class CircularProgressTileSkin extends TileSkin {
 
         fontSize = graphicContainer.isVisible() ? chartSize * 0.035 : chartSize * 0.04;
         unitText.setFont(Fonts.latoLight(fontSize));
-        if (unitText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(unitText, maxWidth, fontSize); }
+        subText.setFont(Fonts.latoLight(fontSize));
+        //if (unitText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(unitText, maxWidth, fontSize); Helper.adjustTextSize(subText, maxWidth, fontSize); }
     }
 
     @Override protected void resize() {
@@ -352,6 +357,7 @@ public class CircularProgressTileSkin extends TileSkin {
         percentageValueText.setFill(tile.getValueColor());
         percentageUnitText.setFill(tile.getUnitColor());
         valueText.setFill(tile.getValueColor());
+        subText.setFill(tile.getValueColor());
         unitText.setFill(tile.getUnitColor());
         titleText.setFill(tile.getTitleColor());
         text.setFill(tile.getTextColor());
@@ -359,6 +365,7 @@ public class CircularProgressTileSkin extends TileSkin {
 
         titleText.setText(tile.getTitle());
         text.setText(tile.getText());
+        subText.setText(tile.getSubText());
         unitText.setText(tile.getUnit());
 
         resizeStaticText();

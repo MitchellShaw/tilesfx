@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
 public class CatmullRom {
     private CatmullRomSpline splineXValues;

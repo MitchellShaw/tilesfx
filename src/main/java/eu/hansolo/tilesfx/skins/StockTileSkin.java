@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.MovingAverage;
-import eu.hansolo.tilesfx.tools.Statistics;
+
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -31,22 +27,17 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.ClosePath;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBoundsType;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.MovingAverage;
+import main.java.eu.hansolo.tilesfx.tools.Statistics;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,7 +45,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
 
 
 /**

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
-import eu.hansolo.tilesfx.Tile.TileColor;
-import eu.hansolo.tilesfx.events.LocationEvent;
-import eu.hansolo.tilesfx.events.LocationEventListener;
 import javafx.scene.paint.Color;
+import main.java.eu.hansolo.tilesfx.events.LocationEvent;
+import main.java.eu.hansolo.tilesfx.events.LocationEventListener;
 import org.json.simple.JSONObject;
 
 import java.time.Instant;
@@ -29,7 +28,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.Tile.TileColor.BLUE;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
 
 
 /**
@@ -77,28 +77,28 @@ public class Location {
 
     // ******************** Constructors **************************************
     public Location() {
-        this(0, 0, 0, Instant.now(), "", "", TileColor.BLUE.color);
+        this(0, 0, 0, Instant.now(), "", "", BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE) {
-        this(LATITUDE, LONGITUDE, 0, Instant.now(), "", "", TileColor.BLUE.color);
+        this(LATITUDE, LONGITUDE, 0, Instant.now(), "", "", BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final String NAME) {
-        this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, "", TileColor.BLUE.color);
+        this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, "", BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final String NAME, final Color COLOR) {
         this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, "", COLOR);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final String NAME, final String INFO) {
-        this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, INFO, TileColor.BLUE.color);
+        this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, INFO, BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final String NAME, final String INFO, final Color COLOR) {
         this(LATITUDE, LONGITUDE, 0, Instant.now() ,NAME, INFO, COLOR);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final double ALTITUDE, final String NAME) {
-        this(LATITUDE, LONGITUDE, ALTITUDE, Instant.now(), NAME, "", TileColor.BLUE.color);
+        this(LATITUDE, LONGITUDE, ALTITUDE, Instant.now(), NAME, "", BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final double ALTITUDE, final Instant TIMESTAMP, final String NAME) {
-        this(LATITUDE, LONGITUDE, ALTITUDE, TIMESTAMP, NAME, "", TileColor.BLUE.color);
+        this(LATITUDE, LONGITUDE, ALTITUDE, TIMESTAMP, NAME, "", BLUE.color);
     }
     public Location(final double LATITUDE, final double LONGITUDE, final double ALTITUDE, final Instant TIMESTAMP, final String NAME, final String INFO, final Color COLOR) {
         name         = NAME;

@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.SmoothedChart;
-import eu.hansolo.tilesfx.events.SmoothedChartEvent;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.chart.Axis;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.chart.SmoothedChart;
+import main.java.eu.hansolo.tilesfx.events.SmoothedChartEvent;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.stream.Collectors;
 
 
+
 public class SmoothedChartTileSkin extends TileSkin {
     private Text                             titleText;
-    private SmoothedChart<String, Number>    chart;
+    private SmoothedChart<String, Number> chart;
     private Axis                             xAxis;
     private Axis                             yAxis;
     private EventHandler<SmoothedChartEvent> chartEventEventHandler;

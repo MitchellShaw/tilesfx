@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.ChartType;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Point;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -41,22 +33,26 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.ClosePath;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.Point;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import static main.java.eu.hansolo.tilesfx.Tile.ChartType;
+import static main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
 
 
 /**
@@ -83,7 +79,7 @@ public class SmoothAreaChartTileSkin extends TileSkin {
     private SequentialTransition          fadeInFadeOut;
     private Rectangle                     fillClip;
     private Rectangle                     strokeClip;
-    private ChartDataEventListener        chartEventListener;
+    private ChartDataEventListener chartEventListener;
     private ListChangeListener<ChartData> chartDataListener;
     private EventHandler<MouseEvent>      clickHandler;
     private EventHandler<ActionEvent>     endOfTransformationHandler;

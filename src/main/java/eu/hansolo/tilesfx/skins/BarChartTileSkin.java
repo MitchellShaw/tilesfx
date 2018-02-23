@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.WeakListChangeListener;
@@ -29,12 +23,19 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 
 /**
@@ -44,7 +45,7 @@ public class BarChartTileSkin extends TileSkin {
     private Text                                        titleText;
     private Text                                        text;
     private Pane                                        barChartPane;
-    private ChartDataEventListener                      updateHandler;
+    private ChartDataEventListener updateHandler;
     private InvalidationListener                        paneSizeListener;
     private Map<BarChartItem, EventHandler<MouseEvent>> handlerMap;
 
@@ -72,7 +73,7 @@ public class BarChartTileSkin extends TileSkin {
             EventHandler<MouseEvent> clickHandler = e -> tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, item.getChartData()));
             handlerMap.put(item, clickHandler);
             item.addEventHandler(MouseEvent.MOUSE_PRESSED, clickHandler);
-            item.setMaxValue(tile.getMaxValue());
+            item.setMaxValue(item.getMaxValue());
             if (null == item.getFormatString() || item.getFormatString().isEmpty()) {
                 item.setFormatString(formatString);
             }
@@ -147,19 +148,18 @@ public class BarChartTileSkin extends TileSkin {
     // ******************** Resizing ******************************************
     private void updateChart() {
         Platform.runLater(() -> {
-            if (tile.isSortedData()) {
-                tile.getBarChartItems().sort(Comparator.comparing(BarChartItem::getValue).reversed());
-            }
+            //if (tile.isSortedData()) {
+                //tile.getBarChartItems().sort(Comparator.comparing(BarChartItem::getValue).reversed());
+            //}
             List<BarChartItem> items     = tile.getBarChartItems();
             int                noOfItems = items.size();
             if (noOfItems == 0) return;
-            double maxValue = tile.getMaxValue();
             double maxY     = height - size * 0.25;
             for (int i = 0 ; i < noOfItems ; i++) {
                 BarChartItem item = items.get(i);
-                double y = i * 0.175 * size; //size * 0.18 + i * 0.175 * size;
+                double maxValue = item.getMaxValue();
+                double y = i * 0.24 * size; //size * 0.18 + i * 0.175 * size;
                 if (y < maxY) {
-                    item.setMaxValue(maxValue);
                     item.setManaged(true);
                     item.setVisible(true);
                     item.relocate(0, y);
@@ -175,12 +175,12 @@ public class BarChartTileSkin extends TileSkin {
         double maxWidth = width - size * 0.1;
         double fontSize = size * textSize.factor;
 
-        titleText.setFont(Fonts.latoRegular(fontSize));
+        titleText.setFont(Fonts.latoRegular(fontSize*1.1));
         if (titleText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(titleText, maxWidth, fontSize); }
         switch(tile.getTitleAlignment()) {
             default    :
             case LEFT  : titleText.relocate(size * 0.05, size * 0.05); break;
-            case CENTER: titleText.relocate((width - titleText.getLayoutBounds().getWidth()) * 0.5, size * 0.05); break;
+            case CENTER: titleText.relocate((width - titleText.getLayoutBounds().getWidth()) * 0.5, size * 0.03); break;
             case RIGHT : titleText.relocate(width - (size * 0.05) - titleText.getLayoutBounds().getWidth(), size * 0.05); break;
         }
 
@@ -221,6 +221,7 @@ public class BarChartTileSkin extends TileSkin {
         tile.getBarChartItems().forEach(item -> {
             item.setNameColor(tile.getTextColor());
             item.setValueColor(tile.getValueColor());
+            item.setMaxValueColor(tile.getValueColor());
         });
 
         resizeDynamicText();

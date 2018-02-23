@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.ChartDataEvent;
-import eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
+import eu.hansolo.medusa.Fonts;
+import javafx.application.Platform;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
@@ -29,18 +25,18 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEvent;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
 
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
 
 
 /**
@@ -64,30 +60,33 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
     private              double                parentHeight;
     private              Text                  nameText;
     private              Text                  valueText;
+    private              Text                  maxValueText;
     private              Rectangle             barBackground;
     private              Rectangle             bar;
     private              Pane                  pane;
     private              ObjectProperty<Color> nameColor;
     private              ObjectProperty<Color> valueColor;
+    private              ObjectProperty<Color> maxValueColor;
     private              ObjectProperty<Color> barBackgroundColor;
     private              String                formatString;
     private              Locale                locale;
     private              double                maxValue;
     private              double                stepSize;
-    private              ChartData             chartData;
+    private ChartData chartData;
 
 
     // ******************** Constructors **************************************
     public BarChartItem() {
-        this("", 0, Tile.BLUE);
+        this("", 0,0, Tile.BLUE);
     }
     public BarChartItem(final String NAME) {
-        this(NAME, 0, Tile.BLUE);
+        this(NAME, 0, 0, Tile.BLUE);
     }
     public BarChartItem(final String NAME, final double VALUE) {
-        this(NAME, VALUE, Tile.BLUE);
+        this(NAME, VALUE, 0, Tile.BLUE);
     }
-    public BarChartItem(final String NAME, final double VALUE, final Color COLOR) {
+    public BarChartItem(final String NAME, final double VALUE, final double MAX_VALUE) { this(NAME, VALUE, MAX_VALUE, Tile.BLUE);}
+    public BarChartItem(final String NAME, final double VALUE, final double MAX_VALUE, final Color COLOR) {
         nameColor          = new ObjectPropertyBase<Color>(Tile.FOREGROUND) {
             @Override protected void invalidated() { nameText.setFill(get()); }
             @Override public Object getBean() { return BarChartItem.this; }
@@ -97,6 +96,10 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
             @Override protected void invalidated() {  valueText.setFill(get()); }
             @Override public Object getBean() { return BarChartItem.this; }
             @Override public String getName() { return "valueColor"; }
+        };maxValueColor         = new ObjectPropertyBase<Color>(Tile.FOREGROUND) {
+            @Override protected void invalidated() {  maxValueText.setFill(get()); }
+            @Override public Object getBean() { return BarChartItem.this; }
+            @Override public String getName() { return "maxValueColor"; }
         };
         barBackgroundColor = new ObjectPropertyBase<Color>(Color.rgb(72, 72, 72)) {
             @Override protected void invalidated() { barBackground.setFill(get()); }
@@ -105,8 +108,8 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
         };
         formatString       = "%.0f";
         locale             = Locale.US;
-        maxValue           = 100;
-        chartData          = new ChartData(NAME, VALUE, COLOR);
+        maxValue           = MAX_VALUE;
+        chartData          = new ChartData(NAME, VALUE, MAX_VALUE, COLOR);
         stepSize           = PREFERRED_WIDTH * 0.85 / maxValue;
         parentWidth        = 250;
         parentHeight       = 250;
@@ -132,14 +135,21 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
         valueText = new Text(String.format(locale, formatString, getValue()));
         valueText.setTextOrigin(VPos.TOP);
 
+        maxValueText = new Text(String.format(locale,formatString, getMaxValue()));
+        //maxValueText);
+        maxValueText.setTextOrigin(VPos.BOTTOM);
+
         barBackground = new Rectangle();
 
         bar = new Rectangle();
 
-        pane = new Pane(nameText, valueText, barBackground, bar);
+        pane = new Pane(nameText, valueText, maxValueText, barBackground, bar);
         pane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 
         getChildren().setAll(pane);
+
+        setMaxValue(maxValue);
+
     }
 
     private void registerListeners() {
@@ -162,7 +172,7 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
     public void setName(final String NAME) { chartData.setName(NAME); }
 
     public double getValue() { return chartData.getValue(); }
-    public void setValue(final double VALUE) { chartData.setValue(VALUE); }
+    public void setValue(final double VALUE) { updateBar(VALUE,maxValue);chartData.setValue(VALUE); }
 
     public Color getNameColor() { return nameColor.get(); }
     public void setNameColor(final Color COLOR) { nameColor.set(COLOR); }
@@ -171,6 +181,10 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
     public Color getValueColor() { return valueColor.get(); }
     public void setValueColor(final Color COLOR) { valueColor.set(COLOR); }
     public ObjectProperty<Color> valueColorProperty() { return valueColor; }
+
+    public Color getMaxValueColor() { return maxValueColor.get(); }
+    public void setMaxValueColor(final Color COLOR) { maxValueColor.set(COLOR); }
+    public ObjectProperty<Color> maxValueColorProperty() { return maxValueColor; }
 
     public ChartData getChartData() { return chartData; }
     public void setChartData(final ChartData DATA) {
@@ -189,24 +203,28 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
 
     public void setStepSize(final double STEP_SIZE) {
         stepSize = STEP_SIZE;
-        updateBar(getValue());
+        updateBar(getValue(),getMaxValue());
     }
 
+    public double getMaxValue(){return chartData.getMaxValue();}
     public void setMaxValue(final double MAX_VALUE) {
         maxValue = MAX_VALUE;
-        stepSize = (parentWidth - size * 0.15) / maxValue;
-        updateBar(getValue());
+        maxValueText.setText(String.format(locale, formatString, MAX_VALUE));
+        chartData.setMaxValue(MAX_VALUE);
+        resize();
     }
 
     public void setLocale(final Locale LOCALE) {
         locale = LOCALE;
         valueText.setText(String.format(locale, formatString, getValue()));
+        maxValueText.setText(String.format(locale, formatString, getMaxValue()));
     }
 
     public String getFormatString() { return formatString; }
     public void setFormatString(final String FORMAT_STRING) {
         formatString = FORMAT_STRING;
         valueText.setText(String.format(locale, formatString, getValue()));
+        maxValueText.setText(String.format(locale, formatString, getMaxValue()));
     }
 
     protected void setParentSize(final double WIDTH, final double HEIGHT) {
@@ -215,10 +233,12 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
         resize();
     }
 
-    private void updateBar(final double VALUE) {
+    private void updateBar(final double VALUE,final double MAX_VALUE) {
+
         valueText.setText(String.format(locale, formatString, VALUE));
         valueText.setX((parentWidth - size * 0.05) - valueText.getLayoutBounds().getWidth());
-        bar.setWidth(clamp(0, (parentWidth - size * 0.15), VALUE * stepSize));
+        maxValueText.setText(String.format(locale, formatString, MAX_VALUE));
+        maxValueText.setX((parentWidth - size * 0.05) - maxValueText.getLayoutBounds().getWidth());
         bar.setFill(getBarColor());
     }
 
@@ -231,47 +251,63 @@ public class BarChartItem extends Region implements Comparable<BarChartItem>{
 
     // ******************** Resizing ******************************************
     private void resize() {
-        width  = getWidth() - getInsets().getLeft() - getInsets().getRight();
-        height = getHeight() - getInsets().getTop() - getInsets().getBottom();
-        size   = parentWidth < parentHeight ? parentWidth : parentHeight;
+        Platform.runLater(()->
+        {
+            width = getWidth() - getInsets().getLeft() - getInsets().getRight();
+            height = getHeight() - getInsets().getTop() - getInsets().getBottom();
+            size = parentWidth < parentHeight ? parentWidth : parentHeight;
 
-        if (ASPECT_RATIO * width > height) {
-            width = 1 / (ASPECT_RATIO / height);
-        } else if (1 / (ASPECT_RATIO / height) > width) {
-            height = ASPECT_RATIO * width;
-        }
+            if (ASPECT_RATIO * width > height) {
+                width = 1 / (ASPECT_RATIO / height);
+            } else if (1 / (ASPECT_RATIO / height) > width) {
+                height = ASPECT_RATIO * width;
+            }
 
-        if (width > 0 && height > 0) {
-            stepSize = (parentWidth - size * 0.15) / maxValue;
+            if (width > 0 && height > 0) {
+                stepSize = (parentWidth - size * 0.15) / maxValue;
 
-            pane.setMaxSize(parentWidth, height * 0.12);
-            pane.setPrefSize(parentWidth, height * 0.12);
+                pane.setMaxSize(parentWidth, height * 0.12);
+                pane.setPrefSize(parentWidth, height * 0.12);
 
-            nameText.setFont(Fonts.latoRegular(size * 0.06));
-            nameText.setX(size * 0.05);
-            nameText.setY(0);
+                nameText.setFont(Fonts.latoRegular(size * 0.06));
+                nameText.setX(size * 0.05);
+                nameText.setY(0);
 
-            valueText.setFont(Fonts.latoRegular(size * 0.06));
-            valueText.setX((parentWidth - size * 0.05) - valueText.getLayoutBounds().getWidth());
-            valueText.setY(0);
+                valueText.setFont(Fonts.latoRegular(size * 0.06));
+                valueText.setX((parentWidth - size * 0.05) - valueText.getLayoutBounds().getWidth());
+                valueText.setY(0);
 
-            barBackground.setX(size * 0.075);
-            barBackground.setY(size * 0.10333333);
-            barBackground.setWidth(parentWidth - size * 0.15);
-            barBackground.setHeight(size * 0.01);
+                maxValueText.setFont(Fonts.latoRegular(size * 0.06));
+                maxValueText.setX((parentWidth - size * 0.05) - maxValueText.getLayoutBounds().getWidth());
+                maxValueText.setY((size * 0.275) - maxValueText.getLayoutBounds().getHeight());
 
-            bar.setX(size * 0.075);
-            bar.setY(size * 0.09666667);
-            bar.setWidth(clamp(0, (parentWidth - size * 0.15), getValue() * stepSize));
-            bar.setHeight(size * 0.02333333);
+                barBackground.setX(size * 0.075);
+                barBackground.setY(size * 0.10333333);
+                barBackground.setWidth(parentWidth - size * 0.15);
+                barBackground.setHeight(size * 0.01);
 
-            redraw();
-        }
+                bar.setX(size * 0.075);
+                bar.setY(size * 0.09666667);
+
+                double scale;
+
+                scale = barBackground.getWidth() / getMaxValue();
+                if (getValue() <= getMaxValue()) {
+                    bar.setWidth(scale * getValue());
+                } else {
+                    bar.setWidth(barBackground.getWidth());
+                }
+                bar.setHeight(size * 0.02333333);
+
+                redraw();
+            }
+        });
     }
 
-    private void redraw() {
+    public void redraw() {
         nameText.setFill(getNameColor());
         valueText.setFill(getValueColor());
+        maxValueText.setFill(getMaxValueColor());
         barBackground.setFill(getBarBackgroundColor());
         bar.setFill(getBarColor());
     }

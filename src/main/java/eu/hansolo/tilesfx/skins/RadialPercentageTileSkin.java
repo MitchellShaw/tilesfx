@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.VPos;
@@ -34,11 +30,17 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.List;
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.enableNode;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.enableNode;
+
 
 
 public class RadialPercentageTileSkin extends TileSkin {
@@ -65,7 +67,7 @@ public class RadialPercentageTileSkin extends TileSkin {
     private              Locale                        locale;
     private              double                        sum;
     private              List<ChartData>               dataList;
-    private              ChartDataEventListener        chartEventListener;
+    private ChartDataEventListener chartEventListener;
     private              ListChangeListener<ChartData> chartDataListener;
     private              InvalidationListener          currentValueListener;
 

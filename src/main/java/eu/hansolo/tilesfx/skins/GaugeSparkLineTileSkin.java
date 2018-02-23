@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Section;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.GradientLookup;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.MovingAverage;
-import eu.hansolo.tilesfx.tools.NiceScale;
-import eu.hansolo.tilesfx.tools.Point;
-import eu.hansolo.tilesfx.tools.Statistics;
 import javafx.beans.InvalidationListener;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
@@ -34,33 +25,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.util.Pair;
+import main.java.eu.hansolo.tilesfx.Section;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
-import static eu.hansolo.tilesfx.tools.Helper.enableNode;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.enableNode;
+
 
 
 /**

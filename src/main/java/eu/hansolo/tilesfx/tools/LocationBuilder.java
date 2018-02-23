@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

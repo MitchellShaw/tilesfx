@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java.eu.hansolo.tilesfx.chart;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Point;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.BooleanPropertyBase;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.StringPropertyBase;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -42,27 +28,21 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static eu.hansolo.tilesfx.tools.Helper.adjustTextSize;
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
-import static eu.hansolo.tilesfx.tools.Helper.getContrastColor;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.*;
 
 
 /**

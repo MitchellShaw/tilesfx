@@ -1,0 +1,76 @@
+<info>
+<optic model = "6001" goal = "250"/>
+<optic model = "6002" goal = "50"/>
+<optic model = "6003(C)" goal = "0"/>
+<optic model = "6003(P)" goal = "0"/>
+
+<hosp model = "7734" goal = "100"/>
+<hosp model = "7743" goal = "100"/>
+<hosp model = "7744" goal = "80"/>
+<hosp model = "7745" goal = "50"/>
+<hosp model = "7754" goal = "0"/>
+<hosp model = "7761" goal = "150"/>
+<hosp model = "7791" goal = "10"/>
+
+
+<periph model = "5938" goal = "10"/>
+<periph model = "5943" goal = "10"/>
+<periph model = "5967" goal = "10"/>
+<periph model = "1635" goal = "150"/>
+<periph model = "1640" goal = "0"/>
+<periph model = "1641" goal = "0"/>
+<periph model = "1642" goal = "60"/>
+<periph model = "1924" goal = "240"/>
+<periph model = "1930" goal = "0"/>
+<periph model = "1646" goal = "30"/>
+<periph model = "1651" goal = "30"/>
+<retail model = "7701" goal = "50"/>
+<retail model = "7702" goal = "450"/>
+<retail model = "7703" goal = "100"/>
+<retail model = "5968" goal = "25"/>
+<retail model = "5985" goal = "25"/>
+
+
+<server model = "1611" goal = "15"/>
+<server model = "1612" goal = "25"/>
+<server model = "1656" goal = "15"/>
+<server model = "1657" goal = "30"/>
+<server model = "1930" goal = "0"/>
+
+<safety incident="2017-07-31"/>
+
+<hospStage model = "7734" goal = "100"/>
+<hospStage model = "7743" goal = "100"/>
+<hospStage model = "7744" goal = "80"/>
+<hospStage model = "7745" goal = "50"/>
+<hospStage model = "7754" goal = "0"/>
+<hospStage model = "7761" goal = "150"/>
+<hospStage model = "7791" goal = "10"/>
+
+
+<periphStage model = "5938" goal = "10"/>
+<periphStage model = "5943" goal = "10"/>
+<periphStage model = "5967" goal = "10"/>
+<periphStage model = "1635" goal = "150"/>
+<periphStage model = "1640" goal = "0"/>
+<periphStage model = "1641" goal = "0"/>
+<periphStage model = "1642" goal = "60"/>
+<periphStage model = "1924" goal = "240"/>
+<periphStage model = "1930" goal = "0"/>
+<periphStage model = "1646" goal = "30"/>
+<periphStage model = "1651" goal = "30"/>
+
+<retailStage model = "7701" goal = "50"/>
+<retailStage model = "7702" goal = "450"/>
+<retailStage model = "7703" goal = "100"/>
+<retailStage model = "5968" goal = "25"/>
+<retailStage model = "5985" goal = "25"/>
+
+
+<serverStage model = "1611" goal = "15"/>
+<serverStage model = "1612" goal = "25"/>
+<serverStage model = "1656" goal = "30"/>
+<serverStage model = "1657" goal = "30"/>
+<serverStage model = "1930" goal = "0"/>
+
+</info>

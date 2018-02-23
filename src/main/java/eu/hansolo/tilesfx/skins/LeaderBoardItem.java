@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.ChartDataEvent;
-import eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
+import eu.hansolo.medusa.Fonts;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
@@ -29,20 +24,18 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ClosePath;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEvent;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
 
 import java.util.Locale;
+
+import static main.java.eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
 
 
 /**
@@ -82,7 +75,7 @@ public class LeaderBoardItem extends Region implements Comparable<LeaderBoardIte
     private              Path                  triangle;
     private              Line                  separator;
     private              Pane                  pane;
-    private              ChartData             chartData;
+    private ChartData chartData;
     private              ObjectProperty<Color> nameColor;
     private              ObjectProperty<Color> valueColor;
     private              ObjectProperty<Color> separatorColor;

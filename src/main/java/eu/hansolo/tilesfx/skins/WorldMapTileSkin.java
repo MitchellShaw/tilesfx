@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.tools.Country;
-import eu.hansolo.tilesfx.tools.CountryPath;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.TextSize;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.LocationEvent;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Location;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableMap;
@@ -40,13 +29,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.events.LocationEvent;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Country;
+import main.java.eu.hansolo.tilesfx.tools.CountryPath;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.Location;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.Tile.*;
+import static main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
 
 
 /**

@@ -14,42 +14,15 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx;
+package main.java.eu.hansolo.tilesfx;
 
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.RadarChart;
-import eu.hansolo.tilesfx.chart.RadarChart.Mode;
-import eu.hansolo.tilesfx.chart.SunburstChart;
-import eu.hansolo.tilesfx.chart.TilesFXSeries;
-import eu.hansolo.tilesfx.events.AlarmEvent;
-import eu.hansolo.tilesfx.events.AlarmEventListener;
-import eu.hansolo.tilesfx.events.SwitchEvent;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.events.TileEventListener;
-import eu.hansolo.tilesfx.events.TimeEvent;
-import eu.hansolo.tilesfx.events.TimeEvent.TimeEventType;
-import eu.hansolo.tilesfx.events.TimeEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.skins.*;
-import eu.hansolo.tilesfx.tools.Country;
-import eu.hansolo.tilesfx.tools.CountryGroup;
-import eu.hansolo.tilesfx.tools.CountryPath;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Location;
-import eu.hansolo.tilesfx.tools.MovingAverage;
-import eu.hansolo.tilesfx.tools.SectionComparator;
-import eu.hansolo.tilesfx.tools.TimeData;
-import eu.hansolo.tilesfx.tools.TimeSectionComparator;
-import eu.hansolo.tilesfx.weather.DarkSky;
+import eu.hansolo.medusa.Fonts;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -70,6 +43,15 @@ import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.chart.RadarChart.Mode;
+import main.java.eu.hansolo.tilesfx.chart.SunburstChart;
+import main.java.eu.hansolo.tilesfx.chart.TilesFXSeries;
+import main.java.eu.hansolo.tilesfx.events.*;
+import main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
+import main.java.eu.hansolo.tilesfx.skins.*;
+import main.java.eu.hansolo.tilesfx.tools.*;
+import main.java.eu.hansolo.tilesfx.weather.DarkSky;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,25 +60,14 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Queue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
-import static eu.hansolo.tilesfx.tools.MovingAverage.MAX_PERIOD;
+import static main.java.eu.hansolo.tilesfx.events.TimeEvent.*;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
+import static main.java.eu.hansolo.tilesfx.tools.MovingAverage.MAX_PERIOD;
+
 
 
 /**
@@ -104,6 +75,7 @@ import static eu.hansolo.tilesfx.tools.MovingAverage.MAX_PERIOD;
  */
 public class Tile extends Control {
     public enum SkinType { SMOOTHED_CHART("ChartTileSkin"), BAR_CHART("BarChartTileSkin"),
+                           DOUBLE_CHART("DoubleBarChartTileSkin"),
                            CLOCK("ClockTileSkin"), GAUGE("GaugeTileSkin"),
                            HIGH_LOW("HighLowTileSkin)"), PERCENTAGE("PercentageTileSkin"),
                            PLUS_MINUS("PlusMinusTileSkin"), SLIDER("SliderTileSkin"),
@@ -183,47 +155,43 @@ public class Tile extends Control {
     public  static final Color       GREEN                 = TileColor.GREEN.color;
     public  static final Color       LIGHT_GREEN           = TileColor.LIGHT_GREEN.color;
     public  static final Color       BLUE                  = TileColor.BLUE.color;
-    public  static final Color       DARK_BLUE             = TileColor.DARK_BLUE.color;
     public  static final Color       ORANGE                = TileColor.ORANGE.color;
     public  static final Color       YELLOW_ORANGE         = TileColor.YELLOW_ORANGE.color;
     public  static final Color       YELLOW                = TileColor.YELLOW.color;
-    public  static final Color       MAGENTA               = TileColor.MAGENTA.color;
     public  static final Color       PINK                  = TileColor.PINK.color;
     public  static final int         SHORT_INTERVAL        = 20;
     public  static final int         LONG_INTERVAL         = 1000;
     private static final int         MAX_NO_OF_DECIMALS    = 3;
 
-    private        final TileEvent   SHOW_NOTIFIER_EVENT   = new TileEvent(EventType.SHOW_NOTIFIER);
-    private        final TileEvent   HIDE_NOTIFIER_EVENT   = new TileEvent(EventType.HIDE_NOTIFIER);
-    private        final TileEvent   EXCEEDED_EVENT        = new TileEvent(EventType.THRESHOLD_EXCEEDED);
-    private        final TileEvent   UNDERRUN_EVENT        = new TileEvent(EventType.THRESHOLD_UNDERRUN);
-    private        final TileEvent   MAX_VALUE_EXCEEDED    = new TileEvent(EventType.MAX_VALUE_EXCEEDED);
-    private        final TileEvent   MIN_VALUE_UNDERRUN    = new TileEvent(EventType.MIN_VALUE_UNDERRUN);
-    private        final TileEvent   VALUE_IN_RANGE        = new TileEvent(EventType.VALUE_IN_RANGE);
-    private        final TileEvent   RECALC_EVENT          = new TileEvent(EventType.RECALC);
-    private        final TileEvent   REDRAW_EVENT          = new TileEvent(EventType.REDRAW);
-    private        final TileEvent   RESIZE_EVENT          = new TileEvent(EventType.RESIZE);
-    private        final TileEvent   VISIBILITY_EVENT      = new TileEvent(EventType.VISIBILITY);
-    private        final TileEvent   SECTION_EVENT         = new TileEvent(EventType.SECTION);
-    private        final TileEvent   SERIES_EVENT          = new TileEvent(EventType.SERIES);
-    private        final TileEvent   DATA_EVENT            = new TileEvent(EventType.DATA);
-    private        final TileEvent   ALERT_EVENT           = new TileEvent(EventType.ALERT);
-    private        final TileEvent   VALUE_EVENT           = new TileEvent(EventType.VALUE);
-    private        final TileEvent   FINISHED_EVENT        = new TileEvent(EventType.FINISHED);
-    private        final TileEvent   GRAPHIC_EVENT         = new TileEvent(EventType.GRAPHIC);
-    private        final TileEvent   AVERAGING_EVENT       = new TileEvent(EventType.AVERAGING);
-    private        final TileEvent   LOCATION_EVENT        = new TileEvent(EventType.LOCATION);
-    private        final TileEvent   TRACK_EVENT           = new TileEvent(EventType.TRACK);
-    private        final TileEvent   MAP_PROVIDER_EVENT    = new TileEvent(EventType.MAP_PROVIDER);
-    private        final TileEvent   FLIP_START_EVENT      = new TileEvent(EventType.FLIP_START);
+    private        final TileEvent SHOW_NOTIFIER_EVENT   = new TileEvent(EventType.SHOW_NOTIFIER);
+    private        final TileEvent HIDE_NOTIFIER_EVENT   = new TileEvent(EventType.HIDE_NOTIFIER);
+    private        final TileEvent EXCEEDED_EVENT        = new TileEvent(EventType.THRESHOLD_EXCEEDED);
+    private        final TileEvent UNDERRUN_EVENT        = new TileEvent(EventType.THRESHOLD_UNDERRUN);
+    private        final TileEvent MAX_VALUE_EXCEEDED    = new TileEvent(EventType.MAX_VALUE_EXCEEDED);
+    private        final TileEvent MIN_VALUE_UNDERRUN    = new TileEvent(EventType.MIN_VALUE_UNDERRUN);
+    private        final TileEvent VALUE_IN_RANGE        = new TileEvent(EventType.VALUE_IN_RANGE);
+    private        final TileEvent RECALC_EVENT          = new TileEvent(EventType.RECALC);
+    private        final TileEvent REDRAW_EVENT          = new TileEvent(EventType.REDRAW);
+    private        final TileEvent RESIZE_EVENT          = new TileEvent(EventType.RESIZE);
+    private        final TileEvent VISIBILITY_EVENT      = new TileEvent(EventType.VISIBILITY);
+    private        final TileEvent SECTION_EVENT         = new TileEvent(EventType.SECTION);
+    private        final TileEvent SERIES_EVENT          = new TileEvent(EventType.SERIES);
+    private        final TileEvent DATA_EVENT            = new TileEvent(EventType.DATA);
+    private        final TileEvent ALERT_EVENT           = new TileEvent(EventType.ALERT);
+    private        final TileEvent VALUE_EVENT           = new TileEvent(EventType.VALUE);
+    private        final TileEvent FINISHED_EVENT        = new TileEvent(EventType.FINISHED);
+    private        final TileEvent GRAPHIC_EVENT         = new TileEvent(EventType.GRAPHIC);
+    private        final TileEvent AVERAGING_EVENT       = new TileEvent(EventType.AVERAGING);
+    private        final TileEvent LOCATION_EVENT        = new TileEvent(EventType.LOCATION);
+    private        final TileEvent TRACK_EVENT           = new TileEvent(EventType.TRACK);
+    private        final TileEvent MAP_PROVIDER_EVENT    = new TileEvent(EventType.MAP_PROVIDER);
+    private        final TileEvent FLIP_START_EVENT      = new TileEvent(EventType.FLIP_START);
     
     // Tile events
-    private              Queue<TileEvent>         tileEventQueue      = new LinkedBlockingQueue<>();
-    private              List<TileEventListener>  tileEventListeners  = new CopyOnWriteArrayList<>();
-    private              List<AlarmEventListener> alarmEventListeners = new CopyOnWriteArrayList<>();
-    private              List<TimeEventListener>  timeEventListeners  = new CopyOnWriteArrayList<>();
+    private List<TileEventListener>  tileEventListeners    = new CopyOnWriteArrayList<>();
+    private List<AlarmEventListener> alarmEventListeners   = new CopyOnWriteArrayList<>();
+    private List<TimeEventListener>  timeEventListeners    = new CopyOnWriteArrayList<>();
 
-    BooleanBinding       showing                                      = Bindings.selectBoolean(sceneProperty(), "window", "showing");
 
     // Data related
     private              DoubleProperty                                value;
@@ -252,6 +220,8 @@ public class Tile extends Control {
     private              ObjectProperty<Pos>                           descriptionAlignment;
     private              String                                        _unit;
     private              StringProperty                                unit;
+    private              String                                        _subText;
+    private              StringProperty                                subText;
     private              String                                        oldFlipText;
     private              String                                        _flipText;
     private              StringProperty                                flipText;
@@ -265,7 +235,7 @@ public class Tile extends Control {
     private              BooleanProperty                               averagingEnabled;
     private              int                                           _averagingPeriod;
     private              IntegerProperty                               averagingPeriod;
-    private              MovingAverage                                 movingAverage;
+    private MovingAverage movingAverage;
     private              ObservableList<Section>                       sections;
     private              ObservableList<TilesFXSeries<String, Number>> series;
     private              List<Stop>                                    gradientStops;
@@ -279,7 +249,7 @@ public class Tile extends Control {
     private              ObservableList<BarChartItem>                  barChartItems;
     private              ObservableList<LeaderBoardItem>               leaderBoardItems;
     private              ObjectProperty<Node>                          graphic;
-    private              Location                                      _currentLocation;
+    private Location _currentLocation;
     private              ObjectProperty<Location>                      currentLocation;
     private              ObservableList<Location>                      poiList;
     private              ObservableList<ChartData>                     chartDataList;
@@ -290,7 +260,7 @@ public class Tile extends Control {
     private              ObjectProperty<MapProvider>                   mapProvider;
     private              List<String>                                  characterList;
     private              long                                          flipTimeInMS;
-    private              SunburstChart                                 sunburstChart;
+    private SunburstChart sunburstChart;
 
     // UI related
     private              SkinType                                      skinType;
@@ -448,7 +418,7 @@ public class Tile extends Control {
     private              BooleanProperty                               strokeWithGradient;
     private              boolean                                       _fillWithGradient;
     private              BooleanProperty                               fillWithGradient;
-    private              DarkSky                                       darkSky;
+    private DarkSky darkSky;
     private              String                                        _tooltipText;
     private              StringProperty                                tooltipText;
     private              Tooltip                                       tooltip;
@@ -456,13 +426,13 @@ public class Tile extends Control {
     private              ObjectProperty<Axis>                          xAxis;
     private              Axis                                          _yAxis;
     private              ObjectProperty<Axis>                          yAxis;
-    private              RadarChart.Mode                               _radarChartMode;
-    private              ObjectProperty<RadarChart.Mode>               radarChartMode;
+    private Mode _radarChartMode;
+    private              ObjectProperty<Mode>               radarChartMode;
     private              Color                                         _chartGridColor;
     private              ObjectProperty<Color>                         chartGridColor;
-    private              Country                                       _country;
+    private Country _country;
     private              ObjectProperty<Country>                       country;
-    private              CountryGroup                                  _countryGroup;
+    private CountryGroup _countryGroup;
     private              ObjectProperty<CountryGroup>                  countryGroup;
     private              boolean                                       _sortedData;
     private              BooleanProperty                               sortedData;
@@ -699,14 +669,6 @@ public class Tile extends Control {
                 fireTileEvent(MIN_VALUE_UNDERRUN);
             } else {
                 fireTileEvent(VALUE_IN_RANGE);
-            }
-        });
-        showing.addListener((o, ov, nv) -> {
-            if (nv) {
-                while(tileEventQueue.peek() != null) {
-                    TileEvent event = tileEventQueue.poll();
-                    for (TileEventListener listener : tileEventListeners) { listener.onTileEvent(event); }
-                }
             }
         });
     }
@@ -1160,6 +1122,29 @@ public class Tile extends Control {
         }
         return unit;
     }
+    public String getSubText(){return null == subText ? _subText : subText.get();}
+
+    public void setSubText(final String SUB_TEXT) {
+        if (null == subText) {
+            _subText = SUB_TEXT;
+            fireTileEvent(VISIBILITY_EVENT);
+            fireTileEvent(REDRAW_EVENT);
+        } else {
+            subText.set(SUB_TEXT);
+        }
+    }
+    public StringProperty subTextProperty() {
+        if (null == subText) {
+            subText  = new StringPropertyBase(_subText) {
+                @Override protected void invalidated() { fireTileEvent(VISIBILITY_EVENT); }
+                @Override public Object getBean() { return Tile.this; }
+                @Override public String getName() { return "subText"; }
+            };
+            _subText = null;
+        }
+        return subText;
+    }
+
 
     /**
      * Returns the text that will be used to visualized the FlipTileSkin
@@ -1459,6 +1444,7 @@ public class Tile extends Control {
         if (null == barChartItems) { barChartItems = FXCollections.observableArrayList(); }
         return barChartItems;
     }
+
     public void setBarChartItems(final List<BarChartItem> ITEMS) {
         getBarChartItems().setAll(ITEMS);
         fireTileEvent(DATA_EVENT);
@@ -2046,7 +2032,7 @@ public class Tile extends Control {
         }
         return foregroundColor;
     }
-    
+
     /**
      * Returns the Paint object that will be used to fill the gauge background.
      * This is usally a Color object.
@@ -2461,7 +2447,7 @@ public class Tile extends Control {
         }
         return shadowsEnabled;
     }
-    
+
     public Locale getLocale() { return null == locale ? _locale : locale.get(); }
     public void setLocale(final Locale LOCALE) {
         if (null == locale) {
@@ -2597,7 +2583,7 @@ public class Tile extends Control {
         }
         return tickLabelDecimals;
     }
-    
+
     /**
      * Returns the color that will be used to colorize the needle of
      * the radial gauges.
@@ -2886,7 +2872,7 @@ public class Tile extends Control {
         if (null == checkSectionsForValue) { checkSectionsForValue = new SimpleBooleanProperty(Tile.this, "checkSectionsForValue", _checkSectionsForValue); }
         return checkSectionsForValue;
     }
-    
+
     /**
      * Returns true if the value of the gauge should be checked against
      * the threshold. If a value crosses the threshold it will fire an
@@ -3163,7 +3149,7 @@ public class Tile extends Control {
         }
         return highlightSections;
     }
-    
+
     /**
      * Returns the orientation of the control. This feature
      * will only be used in the BulletChartSkin and LinearSkin.
@@ -3198,7 +3184,7 @@ public class Tile extends Control {
         }
         return orientation;
     }
-    
+
     /**
      * Returns true if the control should keep it's aspect. This is
      * in principle only needed if the control has different width and
@@ -3351,7 +3337,7 @@ public class Tile extends Control {
                         long animationDuration = getAnimationDuration();
                         timeline.stop();
                         final KeyValue KEY_VALUE = new KeyValue(currentTime, now.toEpochSecond());
-                        final KeyFrame KEY_FRAME = new KeyFrame(javafx.util.Duration.millis(animationDuration), KEY_VALUE);
+                        final KeyFrame KEY_FRAME = new KeyFrame(Duration.millis(animationDuration), KEY_VALUE);
                         timeline.getKeyFrames().setAll(KEY_FRAME);
                         timeline.setOnFinished(e -> fireTileEvent(FINISHED_EVENT));
                         timeline.play();
@@ -3390,7 +3376,7 @@ public class Tile extends Control {
         return zoneId;
     }
 
-    
+
     /**
      * Returns the text that was defined for the clock.
      * This text could be used for additional information.
@@ -3517,7 +3503,7 @@ public class Tile extends Control {
         getTimeSections().clear();
         fireTileEvent(SECTION_EVENT);
     }
-    
+
     /**
      * Returns true if the second hand of the clock should move
      * in discrete steps of 1 second. Otherwise it will move continuously like
@@ -4206,14 +4192,14 @@ public class Tile extends Control {
      * There are Mode.POLYGON and Mode.SECTOR.
      * @return the mode of the RadarChartTileSkin
      */
-    public RadarChart.Mode getRadarChartMode() { return null == radarChartMode ? _radarChartMode : radarChartMode.get(); }
+    public Mode getRadarChartMode() { return null == radarChartMode ? _radarChartMode : radarChartMode.get(); }
     /**
      * Defines the mode that is used in the RadarChartTileSkin
      * to visualize the data in the RadarChart.
      * There are Mode.POLYGON and Mode.SECTOR.
      * @param MODE
      */
-    public void setRadarChartMode(final RadarChart.Mode MODE) {
+    public void setRadarChartMode(final Mode MODE) {
         if (null == radarChartMode) {
             _radarChartMode = MODE;
             fireTileEvent(RECALC_EVENT);
@@ -4221,7 +4207,7 @@ public class Tile extends Control {
             radarChartMode.set(MODE);
         }
     }
-    public ObjectProperty<RadarChart.Mode> radarChartModeProperty() {
+    public ObjectProperty<Mode> radarChartModeProperty() {
         if (null == radarChartMode) {
             radarChartMode = new ObjectPropertyBase<Mode>(_radarChartMode) {
                 @Override protected void invalidated() { fireTileEvent(RECALC_EVENT); }
@@ -4581,7 +4567,7 @@ public class Tile extends Control {
         if (darkSky.update()) {
             fireTileEvent(REDRAW_EVENT);
         } else {
-            //System.out.println("Wrong or missing DarkSky API key");
+            //"Wrong or missing DarkSky API key");
             throw new IllegalArgumentException("Do you use a valid DarkSKY API key?");
         }
     }
@@ -4678,11 +4664,12 @@ public class Tile extends Control {
     }
 
     private void tick() { Platform.runLater(() -> {
+        if (isAnimated()) return;
         ZonedDateTime oldTime = getTime();
         setTime(getTime().plus(java.time.Duration.ofMillis(updateInterval)));
         ZonedDateTime now = time.get();
         if (isAlarmsEnabled()) checkAlarms(now);
-        if (getCheckSectionsForValue() && timeSections != null) {
+        if (getCheckSectionsForValue()) {
             for (TimeSection timeSection : timeSections) { timeSection.checkForTimeAndDate(now); }
         }
 
@@ -4741,11 +4728,7 @@ public class Tile extends Control {
     public void removeAllTileEventListeners() { tileEventListeners.clear(); }
 
     public void fireTileEvent(final TileEvent EVENT) {
-        if (showing.get()) {
-            for (TileEventListener listener : tileEventListeners) { listener.onTileEvent(EVENT); }
-        } else {
-            tileEventQueue.add(EVENT);
-        }
+        for (TileEventListener listener : tileEventListeners) { listener.onTileEvent(EVENT); }
     }
 
     
@@ -4819,7 +4802,7 @@ public class Tile extends Control {
         }
     }
 
-    @Override public String getUserAgentStylesheet() { return getClass().getResource("tilesfx.css").toExternalForm(); }
+    @Override public String getUserAgentStylesheet() { return getClass().getResource("/tilesfx.css").toExternalForm(); }
 
     private void presetTileParameters(final SkinType SKIN_TYPE) {
         switch (SKIN_TYPE) {

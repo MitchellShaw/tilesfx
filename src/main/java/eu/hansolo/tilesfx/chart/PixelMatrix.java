@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java.eu.hansolo.tilesfx.chart;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.PixelMatrixEvent;
-import eu.hansolo.tilesfx.events.PixelMatrixEventListener;
-import eu.hansolo.tilesfx.tools.CtxBounds;
-import eu.hansolo.tilesfx.tools.CtxCornerRadii;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.beans.DefaultProperty;
 import javafx.beans.InvalidationListener;
 import javafx.collections.ObservableList;
@@ -33,8 +28,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.PixelMatrixEvent;
+import main.java.eu.hansolo.tilesfx.events.PixelMatrixEventListener;
+import main.java.eu.hansolo.tilesfx.tools.CtxBounds;
+import main.java.eu.hansolo.tilesfx.tools.CtxCornerRadii;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.concurrent.CopyOnWriteArrayList;
+
 
 
 /**
@@ -63,7 +65,7 @@ public class PixelMatrix extends Region {
     private              int                                            cols;
     private              int                                            rows;
     private              int[][]                                        matrix;
-    private              MatrixFont                                     matrixFont;
+    private MatrixFont matrixFont;
     private              int                                            characterWidth;
     private              int                                            characterHeight;
     private              int                                            characterWidthMinusOne;

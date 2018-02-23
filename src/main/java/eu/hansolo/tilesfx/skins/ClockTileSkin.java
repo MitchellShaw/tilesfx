@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
 import javafx.geometry.VPos;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 
 /**
@@ -54,13 +55,10 @@ public class ClockTileSkin extends TileSkin {
     @Override protected void initGraphics() {
         super.initGraphics();
 
-        currentValueListener = o -> {
-            if (tile.isRunning()) { return; } // Update time only if clock is not already running
-            updateTime(ZonedDateTime.ofInstant(Instant.ofEpochSecond(tile.getCurrentTime()), ZoneId.of(ZoneId.systemDefault().getId())));
-        };
+        currentValueListener = o -> updateTime(ZonedDateTime.ofInstant(Instant.ofEpochSecond(tile.getCurrentTime()), ZoneId.of(ZoneId.systemDefault().getId())));
         timeListener         = o -> updateTime(tile.getTime());
 
-        timeFormatter      = DateTimeFormatter.ofPattern("HH:mm", tile.getLocale());
+        timeFormatter      = DateTimeFormatter.ofPattern("h:mm", tile.getLocale());
         dateFormatter      = DateTimeFormatter.ofPattern("dd MMM YYYY", tile.getLocale());
         dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", tile.getLocale());
 
@@ -82,11 +80,17 @@ public class ClockTileSkin extends TileSkin {
         dayOfWeekText = new Text(dayOfWeekFormatter.format(tile.getTime()));
 
         getPane().getChildren().addAll(titleText, text, timeRect, timeText, dateText, dayOfWeekText);
+        dayOfWeekText.setVisible(false);
+        dateText.setVisible(false);
     }
 
     @Override protected void registerListeners() {
         super.registerListeners();
-        if (!tile.isAnimated()) { tile.timeProperty().addListener(timeListener); }
+        if (tile.isAnimated()) {
+            tile.currentTimeProperty().addListener(timeListener);
+        } else {
+            tile.timeProperty().addListener(timeListener);
+        }
     }
 
 
@@ -102,17 +106,21 @@ public class ClockTileSkin extends TileSkin {
     public void updateTime(final ZonedDateTime TIME) {
         timeText.setText(timeFormatter.format(tile.getTime()));
         timeText.setX((width - timeText.getLayoutBounds().getWidth()) * 0.5);
-        timeText.setY(height * 0.35);
+        timeText.setY(height * 0.5);
 
         dayOfWeekText.setText(dayOfWeekFormatter.format(TIME));
-        dayOfWeekText.setX(size * 0.05);
+        dayOfWeekText.setX(size * 0.1);
 
         dateText.setText(dateFormatter.format(TIME));
-        dateText.setX(size * 0.05);
+        dateText.setX(size * 0.1);
     }
 
     @Override public void dispose() {
-        if (!tile.isAnimated()) { tile.timeProperty().removeListener(timeListener); }
+        if (tile.isAnimated()) {
+            tile.currentTimeProperty().removeListener(timeListener);
+        } else {
+            tile.timeProperty().removeListener(timeListener);
+        }
         super.dispose();
     }
 
@@ -120,46 +128,47 @@ public class ClockTileSkin extends TileSkin {
     // ******************** Resizing ******************************************
     @Override protected void resizeDynamicText() {
         double maxWidth = width - size * 0.1;
-        double fontSize = size * 0.3;
+        double fontSize = size * 0.6;
 
-        timeText.setFont(Fonts.latoRegular(fontSize));
+        timeText.setFont(Fonts.latoLight(fontSize));
         timeText.setText(timeFormatter.format(tile.getTime()));
         Helper.adjustTextSize(timeText, maxWidth, fontSize);
         timeText.setX((width - timeText.getLayoutBounds().getWidth()) * 0.5);
-        timeText.setY(size * 0.35);
+        timeText.setY(height * 0.5);
 
         //maxWidth = width - size * 0.1;
         fontSize = size * 0.1;
-        dayOfWeekText.setFont(Fonts.latoRegular(fontSize));
+        dayOfWeekText.setFont(Fonts.latoLight(fontSize));
         if (dayOfWeekText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(dayOfWeekText, maxWidth, fontSize); }
         dayOfWeekText.setX(size * 0.05);
         dayOfWeekText.setY(height - size * 0.275);
-        dayOfWeekText.setY(timeRect.getLayoutBounds().getMaxY() + size * 0.11);
+        dayOfWeekText.setY(timeRect.getLayoutBounds().getMaxY() + size * 0.2);
 
         //maxWidth = width - size * 0.1;
-        dateText.setFont(Fonts.latoRegular(fontSize));
+        dateText.setFont(Fonts.latoLight(fontSize));
         if (dateText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(dateText, maxWidth, fontSize); }
-        dateText.setX(size * 0.05);
+        dateText.setX(size * 0.15);
         dateText.setY(height - size * 0.15);
-        dateText.setY(timeRect.getLayoutBounds().getMaxY() + size * 0.235);
+        dateText.setY(timeRect.getLayoutBounds().getMaxY() + size * 0.2);
     }
     @Override protected void resizeStaticText() {
         double maxWidth = size * 0.9;
-        double fontSize = size * textSize.factor;
+        double fontSize = size * textSize.factor * 2;
 
         titleText.setFont(Fonts.latoRegular(fontSize));
         if (titleText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(titleText, maxWidth, fontSize); }
         switch(tile.getTitleAlignment()) {
             default    :
             case LEFT  : titleText.relocate(size * 0.05, size * 0.05); break;
-            case CENTER: titleText.relocate((width - titleText.getLayoutBounds().getWidth()) * 0.5, size * 0.05); break;
+            case CENTER: titleText.relocate((width - titleText.getLayoutBounds().getWidth()) * 0.5, size * 0.02); break;
             case RIGHT : titleText.relocate(width - (size * 0.05) - titleText.getLayoutBounds().getWidth(), size * 0.05); break;
         }
 
+        //titleText.toFront();
         maxWidth = size * 0.9;
         fontSize = size * textSize.factor;
         text.setText(tile.getText());
-        text.setFont(Fonts.latoRegular(fontSize));
+        text.setFont(Fonts.latoLight(fontSize));
         if (text.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(text, maxWidth, fontSize); }
         switch(tile.getTextAlignment()) {
             default    :
@@ -184,7 +193,7 @@ public class ClockTileSkin extends TileSkin {
 
         titleText.setText(tile.getTitle());
         text.setText(tile.getText());
-        timeFormatter      = DateTimeFormatter.ofPattern("HH:mm", tile.getLocale());
+        timeFormatter      = DateTimeFormatter.ofPattern("h:mm", tile.getLocale());
         dateFormatter      = DateTimeFormatter.ofPattern("dd MMM YYYY", tile.getLocale());
         dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", tile.getLocale());
 
@@ -197,7 +206,7 @@ public class ClockTileSkin extends TileSkin {
 
         titleText.setFill(tile.getTitleColor());
         text.setFill(tile.getTextColor());
-        timeRect.setFill(tile.getBackgroundColor().darker());
+        timeRect.setFill(tile.getBackgroundColor());
         timeText.setFill(tile.getTitleColor());
         dateText.setFill(tile.getDateColor());
         dayOfWeekText.setFill(tile.getDateColor());

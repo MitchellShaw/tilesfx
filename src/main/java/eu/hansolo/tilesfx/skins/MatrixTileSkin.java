@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.PixelMatrix;
-import eu.hansolo.tilesfx.chart.PixelMatrix.PixelShape;
-import eu.hansolo.tilesfx.chart.PixelMatrixBuilder;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.events.PixelMatrixEventListener;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -34,8 +24,18 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.chart.PixelMatrix;
+import main.java.eu.hansolo.tilesfx.chart.PixelMatrixBuilder;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.events.PixelMatrixEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.List;
+
 
 
 /**
@@ -44,11 +44,11 @@ import java.util.List;
 public class MatrixTileSkin extends TileSkin {
     private Text                          titleText;
     private Text                          text;
-    private PixelMatrix                   matrix;
+    private PixelMatrix matrix;
     private ListChangeListener<ChartData> chartDataListener;
-    private ChartDataEventListener        chartEventListener;
+    private ChartDataEventListener chartEventListener;
     private Tooltip                       selectionTooltip;
-    private PixelMatrixEventListener      matrixListener;
+    private PixelMatrixEventListener matrixListener;
     private EventHandler<MouseEvent>      mouseHandler;
 
 
@@ -63,7 +63,7 @@ public class MatrixTileSkin extends TileSkin {
         super.initGraphics();
 
         matrix = PixelMatrixBuilder.create()
-                                   .pixelShape(PixelShape.SQUARE)
+                                   .pixelShape(PixelMatrix.PixelShape.SQUARE)
                                    .useSpacer(true)
                                    .squarePixels(false)
                                    .colsAndRows(tile.getMatrixSize())
@@ -106,7 +106,7 @@ public class MatrixTileSkin extends TileSkin {
             selectionTooltip.setY(popupLocation.getY());
             selectionTooltip.show(tile.getScene().getWindow());
 
-            tile.fireTileEvent(new TileEvent(EventType.SELECTED_CHART_DATA, data));
+            tile.fireTileEvent(new TileEvent(TileEvent.EventType.SELECTED_CHART_DATA, data));
         };
         mouseHandler = e -> {
             final javafx.event.EventType<? extends MouseEvent> TYPE = e.getEventType();

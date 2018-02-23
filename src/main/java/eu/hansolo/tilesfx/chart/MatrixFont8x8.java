@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java.eu.hansolo.tilesfx.chart;
 
 /**
  * Created by hansolo on 19.03.17.

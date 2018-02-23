@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.fonts;
+package main.java.eu.hansolo.tilesfx.fonts;
 
 import javafx.scene.text.Font;
 

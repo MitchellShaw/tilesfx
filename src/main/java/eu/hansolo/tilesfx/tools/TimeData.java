@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
-import eu.hansolo.tilesfx.chart.ChartData;
+
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
 
 import java.time.Instant;
 

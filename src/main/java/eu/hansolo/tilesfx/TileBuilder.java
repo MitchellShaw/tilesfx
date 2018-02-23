@@ -14,42 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx;
+package main.java.eu.hansolo.tilesfx;
 
-import eu.hansolo.tilesfx.Tile.ChartType;
-import eu.hansolo.tilesfx.Tile.MapProvider;
-import eu.hansolo.tilesfx.Tile.SkinType;
-import eu.hansolo.tilesfx.Tile.TextSize;
-import eu.hansolo.tilesfx.Tile.TileColor;
-import eu.hansolo.tilesfx.chart.RadarChart;
-import eu.hansolo.tilesfx.chart.SunburstChart.TextOrientation;
-import eu.hansolo.tilesfx.chart.SunburstChart.VisibleData;
-import eu.hansolo.tilesfx.chart.TilesFXSeries;
-import eu.hansolo.tilesfx.events.AlarmEventListener;
-import eu.hansolo.tilesfx.events.TileEventListener;
-import eu.hansolo.tilesfx.events.TimeEventListener;
-import eu.hansolo.tilesfx.skins.BarChartItem;
-import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.tools.Country;
-import eu.hansolo.tilesfx.tools.CountryGroup;
-import eu.hansolo.tilesfx.tools.Location;
-import eu.hansolo.tilesfx.tools.TreeNode;
-import eu.hansolo.tilesfx.weather.DarkSky;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -61,6 +29,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import main.java.eu.hansolo.tilesfx.Tile.*;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.chart.RadarChart;
+import main.java.eu.hansolo.tilesfx.chart.SunburstChart.TextOrientation;
+import main.java.eu.hansolo.tilesfx.chart.SunburstChart.VisibleData;
+import main.java.eu.hansolo.tilesfx.chart.TilesFXSeries;
+import main.java.eu.hansolo.tilesfx.events.AlarmEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEventListener;
+import main.java.eu.hansolo.tilesfx.events.TimeEventListener;
+import main.java.eu.hansolo.tilesfx.skins.BarChartItem;
+import main.java.eu.hansolo.tilesfx.skins.LeaderBoardItem;
+import main.java.eu.hansolo.tilesfx.tools.Country;
+import main.java.eu.hansolo.tilesfx.tools.CountryGroup;
+import main.java.eu.hansolo.tilesfx.tools.Location;
+import main.java.eu.hansolo.tilesfx.tools.TreeNode;
+import main.java.eu.hansolo.tilesfx.weather.DarkSky;
 
 import java.text.NumberFormat;
 import java.time.LocalTime;
@@ -68,6 +52,8 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import static main.java.eu.hansolo.tilesfx.Tile.*;
 
 
 /**
@@ -153,6 +139,11 @@ public class TileBuilder<B extends TileBuilder<B>> {
 
     public final B unit(final String UNIT) {
         properties.put("unit", new SimpleStringProperty(UNIT));
+        return (B)this;
+    }
+
+    public final B subText(final String SUBTEXT) {
+        properties.put("subText", new SimpleStringProperty(SUBTEXT));
         return (B)this;
     }
 
@@ -341,7 +332,7 @@ public class TileBuilder<B extends TileBuilder<B>> {
         return (B)this;
     }
 
-    public final B chartType(final ChartType TYPE) {
+    public final B chartType(final  ChartType TYPE) {
         properties.put("chartType", new SimpleObjectProperty(TYPE));
         return (B)this;
     }
@@ -850,11 +841,6 @@ public class TileBuilder<B extends TileBuilder<B>> {
         return (B)this;
     }
 
-    public final B showNotifier(final boolean SHOW) {
-        properties.put("showNotifier", new SimpleBooleanProperty(SHOW));
-        return (B)this;
-    }
-
     public final B prefSize(final double WIDTH, final double HEIGHT) {
         properties.put("prefSize", new SimpleObjectProperty<>(new Dimension2D(WIDTH, HEIGHT)));
         return (B)this;
@@ -937,13 +923,15 @@ public class TileBuilder<B extends TileBuilder<B>> {
                     break;
                 case BAR_CHART:
                     break;
+                case DOUBLE_CHART:
+                    break;
                 case CLOCK:
                     break;
                 case GAUGE:
                     CONTROL.setAnimated(true);
                     CONTROL.setTickLabelDecimals(0);
-                    CONTROL.setBarColor(Tile.FOREGROUND);
-                    CONTROL.setThresholdColor(Tile.BLUE);
+                    CONTROL.setBarColor(FOREGROUND);
+                    CONTROL.setThresholdColor(BLUE);
                     CONTROL.setThresholdVisible(true);
                     break;
                 case HIGH_LOW:
@@ -953,13 +941,13 @@ public class TileBuilder<B extends TileBuilder<B>> {
                     break;
                 case PERCENTAGE:
                     CONTROL.setAnimated(true);
-                    CONTROL.setThresholdColor(Tile.GRAY);
+                    CONTROL.setThresholdColor(GRAY);
                     CONTROL.setTickLabelDecimals(0);
                     break;
                 case PLUS_MINUS:
                     break;
                 case SLIDER:
-                    CONTROL.setBarBackgroundColor(Tile.FOREGROUND);
+                    CONTROL.setBarBackgroundColor(FOREGROUND);
                     break;
                 case SPARK_LINE:
                     CONTROL.setTextVisible(false);
@@ -1009,11 +997,11 @@ public class TileBuilder<B extends TileBuilder<B>> {
                     CONTROL.setAveragingEnabled(true);
                     CONTROL.setDecimals(2);
                     CONTROL.setTickLabelDecimals(2);
-                    CONTROL.setThresholdColor(Tile.GRAY);
+                    CONTROL.setThresholdColor(GRAY);
                     CONTROL.setTextVisible(false);
                     break;
                 case GAUGE_SPARK_LINE:
-                    CONTROL.setBarColor(Tile.BLUE);
+                    CONTROL.setBarColor(BLUE);
                     CONTROL.setAngleRange(270);
                     break;
                 case SMOOTH_AREA_CHART:
@@ -1031,7 +1019,7 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 case FLIP:
                     break;
                 case SWITCH_SLIDER:
-                    CONTROL.setBarBackgroundColor(Tile.FOREGROUND);
+                    CONTROL.setBarBackgroundColor(FOREGROUND);
                     break;
                 case DATE:
                     CONTROL.setTitleAlignment(TextAlignment.CENTER);
@@ -1208,6 +1196,8 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 CONTROL.setDescriptionAlignment(((ObjectProperty<Pos>) properties.get(key)).get());
             } else if("unit".equals(key)) {
                 CONTROL.setUnit(((StringProperty) properties.get(key)).get());
+            } else if("subText".equals(key)) {
+                CONTROL.setSubText(((StringProperty) properties.get(key)).get());
             } else if ("selected".equals(key)) {
                 CONTROL.setActive(((BooleanProperty) properties.get(key)).get());
             } else if("averagingEnabled".equals(key)) {
@@ -1438,8 +1428,6 @@ public class TileBuilder<B extends TileBuilder<B>> {
                 CONTROL.setNotificationBackgroundColor(((ObjectProperty<Color>) properties.get(key)).get());
             } else if ("notificationForegroundColor".equals(key)) {
                 CONTROL.setNotificationForegroundColor(((ObjectProperty<Color>) properties.get(key)).get());
-            } else if ("showNotifier".equals(key)) {
-                CONTROL.showNotifier(((BooleanProperty) properties.get(key)).get());
             }
         }
         properties.clear();

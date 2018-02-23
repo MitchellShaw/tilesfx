@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.MapProvider;
-import eu.hansolo.tilesfx.events.LocationEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Location;
+
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Worker;
@@ -30,10 +25,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.LocationEventListener;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.Location;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static main.java.eu.hansolo.tilesfx.Tile.*;
 
 
 /**
@@ -48,7 +50,7 @@ public class MapTileSkin extends TileSkin {
     private              WebEngine                    webEngine;
     private              boolean                      readyToGo;
     private              EventHandler<MouseEvent>     mouseHandler;
-    private              LocationEventListener        locationListener;
+    private LocationEventListener locationListener;
     private              ListChangeListener<Location> poiListener;
 
 

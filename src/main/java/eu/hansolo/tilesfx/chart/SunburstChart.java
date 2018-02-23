@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java. eu.hansolo.tilesfx.chart;
 
-import eu.hansolo.tilesfx.events.TreeNodeEvent;
-import eu.hansolo.tilesfx.events.TreeNodeEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.TreeNode;
 import javafx.beans.DefaultProperty;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.BooleanPropertyBase;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.event.WeakEventHandler;
 import javafx.geometry.Insets;
@@ -37,32 +27,19 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
+import main.java.eu.hansolo.tilesfx.events.TreeNodeEvent;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.TreeNode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-import static eu.hansolo.tilesfx.tools.Helper.clamp;
+import static eu.hansolo.medusa.Fonts.latoRegular;
+import static main.java.eu.hansolo.tilesfx.tools.Helper.clamp;
 
 
 /**
@@ -628,7 +605,7 @@ public class SunburstChart extends Region {
         chartCtx.setFill(isInteractive ? Color.TRANSPARENT : bkgColor);
         chartCtx.fillRect(0, 0, size, size);
 
-        chartCtx.setFont(Fonts.latoRegular(barWidth * 0.2));
+        chartCtx.setFont(latoRegular(barWidth * 0.2));
         chartCtx.setTextBaseline(VPos.CENTER);
         chartCtx.setTextAlign(TextAlignment.CENTER);
         chartCtx.setLineCap(StrokeLineCap.BUTT);
@@ -745,7 +722,7 @@ public class SunburstChart extends Region {
         String tooltipText = new StringBuilder(NODE.getData().getName()).append("\n").append(String.format(Locale.US, formatString, NODE.getData().getValue())).toString();
         Tooltip.install(path, new Tooltip(tooltipText));
 
-        path.setOnMousePressed(new WeakEventHandler<>(e -> NODE.getTreeRoot().fireTreeNodeEvent(new TreeNodeEvent(NODE, EventType.NODE_SELECTED))));
+        path.setOnMousePressed(new WeakEventHandler<>(e -> NODE.getTreeRoot().fireTreeNodeEvent(new TreeNodeEvent(NODE, TreeNodeEvent.EventType.NODE_SELECTED))));
 
         return path;
     }

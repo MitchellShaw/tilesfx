@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.colors;
+package main.java.eu.hansolo.tilesfx.colors;
 
 import javafx.scene.paint.Color;
 

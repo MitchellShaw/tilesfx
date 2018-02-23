@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.weather;
+package main.java.eu.hansolo.tilesfx.weather;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.weather.DarkSky.ConditionAndIcon;
+
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.collections.ObservableList;
-import javafx.css.CssMetaData;
-import javafx.css.Styleable;
-import javafx.css.StyleableObjectProperty;
-import javafx.css.StyleableProperty;
-import javafx.css.StyleablePropertyFactory;
+import javafx.css.*;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import main.java.eu.hansolo.tilesfx.Tile;
 
 import java.util.List;
+
+import static main.java.eu.hansolo.tilesfx.weather.DarkSky.*;
 
 
 /**

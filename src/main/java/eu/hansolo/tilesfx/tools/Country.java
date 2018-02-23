@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.tools;
+package main.java.eu.hansolo.tilesfx.tools;
 
-import eu.hansolo.tilesfx.ValueObject;
 import javafx.scene.paint.Color;
+import main.java.eu.hansolo.tilesfx.ValueObject;
 
 
 /**

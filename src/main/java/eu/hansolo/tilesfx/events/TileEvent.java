@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.events;
+package main.java.eu.hansolo.tilesfx.events;
 
 
-import eu.hansolo.tilesfx.chart.ChartData;
-
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
 
 /**
  * Created by hansolo on 19.12.16.

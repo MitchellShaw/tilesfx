@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx;
+package main.java.eu.hansolo.tilesfx;
 
-import eu.hansolo.tilesfx.Alarm.Repetition;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+
+import static main.java.eu.hansolo.tilesfx.Alarm.*;
 
 
 /**

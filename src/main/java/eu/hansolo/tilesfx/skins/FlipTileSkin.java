@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.CtxBounds;
-import eu.hansolo.tilesfx.tools.CtxCornerRadii;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -36,12 +30,20 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.events.TileEvent.EventType;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.CtxBounds;
+import main.java.eu.hansolo.tilesfx.tools.CtxCornerRadii;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.List;
 
 
+
 public class FlipTileSkin extends TileSkin {
-    private final TileEvent       FLIP_FINISHED = new TileEvent(EventType.FLIP_FINISHED);
+    private final TileEvent FLIP_FINISHED = new TileEvent(EventType.FLIP_FINISHED);
     private       List<String>    characters;
     private       int             currentSelectionIndex;
     private       int             nextSelectionIndex;

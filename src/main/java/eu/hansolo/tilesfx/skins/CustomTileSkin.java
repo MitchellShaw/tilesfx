@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 
 /**
@@ -131,10 +131,10 @@ public class CustomTileSkin extends TileSkin {
             pane.setPrefSize(width, height);
 
             if (containerWidth > 0 && containerHeight > 0) {
-                graphicContainer.setMinSize(containerWidth, containerHeight);
-                graphicContainer.setMaxSize(containerWidth, containerHeight);
-                graphicContainer.setPrefSize(containerWidth, containerHeight);
-                graphicContainer.relocate(contentBounds.getX(), contentBounds.getY());
+                graphicContainer.setMinSize(width, height);
+                graphicContainer.setMaxSize(width, height);
+                graphicContainer.setPrefSize(width, height);
+                //graphicContainer.relocate(contentBounds.getX(), contentBounds.getY());
 
                 if (null != tile) {
                     Node graphic = tile.getGraphic();
@@ -152,11 +152,8 @@ public class CustomTileSkin extends TileSkin {
 		                    graphic.setScaleY(scale);
 	                    }
                     } else if (tile.getGraphic() instanceof ImageView) {
-                        ImageView imgView = (ImageView) graphic;
-                        imgView.setPreserveRatio(true);
-                        imgView.setFitHeight(containerHeight);
-                        //((ImageView) graphic).setFitWidth(containerWidth);
-                        //((ImageView) graphic).setFitHeight(containerHeight);
+                        ((ImageView) graphic).setFitWidth(containerWidth);
+                        ((ImageView) graphic).setFitHeight(containerHeight);
                     }
                 }
             }

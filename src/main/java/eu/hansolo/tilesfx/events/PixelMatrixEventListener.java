@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.events;
+package main.java.eu.hansolo.tilesfx.events;
 
 @FunctionalInterface
 public interface PixelMatrixEventListener {

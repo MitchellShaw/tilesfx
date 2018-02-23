@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Section;
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+import eu.hansolo.medusa.Fonts;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.ClosePath;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.scene.transform.Rotate;
+import main.java.eu.hansolo.tilesfx.Section;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +63,7 @@ public class GaugeTileSkin extends TileSkin {
     private Map<Section, Arc> sectionMap;
     private Color             barColor;
     private Color             thresholdColor;
+    private Format            myFormat;
 
 
     // ******************** Constructors **************************************
@@ -138,24 +131,27 @@ public class GaugeTileSkin extends TileSkin {
         titleText.setFill(tile.getTitleColor());
         Helper.enableNode(titleText, !tile.getTitle().isEmpty());
 
-        valueText = new Text(String.format(locale, formatString, tile.getCurrentValue()));
+        valueText = new Text(String.format("%.0f",tile.getCurrentValue()));
         valueText.setFill(tile.getValueColor());
         valueText.setTextOrigin(VPos.BASELINE);
         Helper.enableNode(valueText, tile.isValueVisible() && !tile.isAlert());
 
         unitText = new Text(tile.getUnit());
-        unitText.setFill(tile.getUnitColor());
+        unitText.setFill(tile.getValueColor());
         unitText.setTextOrigin(VPos.BASELINE);
         Helper.enableNode(unitText, tile.isValueVisible() && !tile.isAlert());
 
         valueUnitFlow = new TextFlow(valueText, unitText);
         valueUnitFlow.setTextAlignment(TextAlignment.CENTER);
 
+
         minValueText = new Text(String.format(locale, "%." + tile.getTickLabelDecimals() + "f", tile.getMinValue()));
         minValueText.setFill(tile.getTitleColor());
+        minValueText.setVisible(false);
 
         maxValueText = new Text(String.format(locale, "%." + tile.getTickLabelDecimals() + "f", tile.getMaxValue()));
         maxValueText.setFill(tile.getTitleColor());
+        maxValueText.setVisible(false);
 
         thresholdRect = new Rectangle();
         thresholdRect.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getValue() > tile.getThreshold() ? tile.getThresholdColor() : Tile.GRAY);
@@ -164,6 +160,7 @@ public class GaugeTileSkin extends TileSkin {
         thresholdText = new Text(String.format(locale, "%." + tile.getTickLabelDecimals() + "f", tile.getThreshold()));
         thresholdText.setFill(sectionsVisible ? Color.TRANSPARENT : Tile.GRAY);
         Helper.enableNode(thresholdText, tile.isThresholdVisible());
+
 
         getPane().getChildren().addAll(barBackground, thresholdBar, sectionPane, alertIcon, needleRect, needle, titleText, valueUnitFlow, minValueText, maxValueText, thresholdRect, thresholdText);
     }
@@ -203,7 +200,9 @@ public class GaugeTileSkin extends TileSkin {
         targetAngle = Helper.clamp(-needleStartAngle, -needleStartAngle + angleRange, targetAngle);
         needleRotate.setAngle(targetAngle);
         needleRectRotate.setAngle(targetAngle);
-        valueText.setText(String.format(locale, formatString, VALUE));
+
+        valueText.setText(String.format("%.0f",tile.getCurrentValue()));
+        //valueText.setText(String.format(locale, formatString, VALUE));
         thresholdRect.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getValue() > tile.getThreshold() ? tile.getThresholdColor() : Tile.GRAY);
         resizeDynamicText();
         highlightSections(VALUE);
@@ -222,8 +221,8 @@ public class GaugeTileSkin extends TileSkin {
         sectionPane.getChildren().clear();
         if (!sectionsVisible || sections.isEmpty()) return;
 
-        double     centerX      = width * 0.5;
-        double     centerY      = height * 0.5;
+        double     centerX      = width*0.5;
+        double     centerY      = height*0.5;
         double     innerRadius  = size * 0.2775;
         double     outerRadius  = size * 0.3225;
         int        noOfSections = sections.size();
@@ -385,12 +384,12 @@ public class GaugeTileSkin extends TileSkin {
     // ******************** Resizing ******************************************
     @Override protected void resizeDynamicText() {
         double maxWidth = unitText.isManaged() ? width - size * 0.275 : width - size * 0.1;
-        double fontSize = size * 0.24;
-        valueText.setFont(Fonts.latoRegular(fontSize));
+        double fontSize = size * 0.20;
+        valueText.setFont(Fonts.latoLight(fontSize));
         if (valueText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(valueText, maxWidth, fontSize); }
 
         fontSize = size * 0.1;
-        unitText.setFont(Fonts.latoRegular(fontSize));
+        unitText.setFont(Fonts.latoLight(fontSize));
         if (unitText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(unitText, maxWidth, fontSize); }
 
         thresholdText.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getBackgroundColor());
@@ -412,10 +411,10 @@ public class GaugeTileSkin extends TileSkin {
         double textX;
         double textY;
 
-        titleText.setFont(Fonts.latoRegular(fontSize));
+        titleText.setFont(Fonts.latoRegular(fontSize*2));
         if (titleText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(titleText, maxWidth, fontSize); }
         switch(tile.getTitleAlignment()) {
-            default    :
+            default:
             case LEFT  : titleText.relocate(size * 0.05, size * 0.05); break;
             case CENTER: titleText.relocate((width - titleText.getLayoutBounds().getWidth()) * 0.5, size * 0.05); break;
             case RIGHT : titleText.relocate(width - (size * 0.05) - titleText.getLayoutBounds().getWidth(), size * 0.05); break;
@@ -440,6 +439,7 @@ public class GaugeTileSkin extends TileSkin {
         cosValue  = Math.cos(Math.toRadians(-90 - (180 - angleRange) * 0.5));
         textX     = width * 0.5 + textRadius * sinValue;
         //textY     = barBackground.getLayoutBounds().getMaxY() + size * 0.05 + textRadius * cosValue;
+        textY     = barBackground.getLayoutBounds().getMaxY() + size * 0.05 + textRadius * cosValue;
         minValueText.setTranslateX(-minValueText.getLayoutBounds().getWidth() * 0.5);
         minValueText.setTranslateY(-minValueText.getLayoutBounds().getHeight() * 0.5);
         minValueText.relocate(textX, textY);
@@ -458,7 +458,7 @@ public class GaugeTileSkin extends TileSkin {
     @Override protected void resize() {
         super.resize();
         double centerX   = width * 0.5;
-        double centerY   = height * 0.5;
+        double centerY   = height * 0.35;
         double barRadius = size * 0.3;
         double barWidth  = size * 0.045;
 
@@ -493,6 +493,7 @@ public class GaugeTileSkin extends TileSkin {
 
         drawNeedle();
 
+        //needle.relocate((width - needle.getLayoutBounds().getWidth()) * 0.5, centerY - size * 0.025);
         needle.relocate((width - needle.getLayoutBounds().getWidth()) * 0.5, centerY - size * 0.025);
         needleRotate.setPivotX(needle.getLayoutBounds().getWidth() * 0.5);
         needleRotate.setPivotY(needle.getLayoutBounds().getHeight() - needle.getLayoutBounds().getWidth() * 0.5);
@@ -500,15 +501,16 @@ public class GaugeTileSkin extends TileSkin {
         resizeStaticText();
         resizeDynamicText();
 
-        valueUnitFlow.setPrefWidth(width * 0.9);
-        valueUnitFlow.relocate(size * 0.05, contentBounds.getY());
+        valueUnitFlow.setPrefWidth(width);
+        valueUnitFlow.relocate(thresholdBar.getLayoutX(), (size - centerY * 0.8));
 
         thresholdRect.setWidth(thresholdText.getLayoutBounds().getWidth() + size * 0.05);
         thresholdRect.setHeight(thresholdText.getLayoutBounds().getHeight());
         thresholdRect.setX((width - thresholdRect.getWidth()) * 0.5);
-        thresholdRect.setY(centerY + size * 0.35);
+        //thresholdRect.setY(centerY + size * 0.35);
+        thresholdRect.setY(centerY + size * 0.5);
         thresholdRect.setArcWidth(size * 0.025);
-        thresholdRect.setArcHeight(size * 0.025);
+        thresholdRect.setArcHeight(size * 0.045);
     }
 
     @Override protected void redraw() {
@@ -533,6 +535,7 @@ public class GaugeTileSkin extends TileSkin {
         thresholdRect.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getValue() > tile.getThreshold() ? tile.getThresholdColor() : Tile.GRAY);
         thresholdText.setFill(sectionsVisible ? Color.TRANSPARENT : tile.getBackgroundColor());
         valueText.setFill(tile.getValueColor());
+        unitText.setFill(tile.getValueColor());
 
         drawSections();
         highlightSections(tile.getValue());

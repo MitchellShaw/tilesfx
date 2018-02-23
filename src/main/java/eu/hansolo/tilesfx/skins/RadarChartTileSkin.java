@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.RadarChart;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.collections.ListChangeListener;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.chart.ChartData;
+import main.java.eu.hansolo.tilesfx.chart.RadarChart;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 
 /**
@@ -32,9 +33,9 @@ import javafx.scene.text.Text;
 public class RadarChartTileSkin extends TileSkin {
     private Text                          titleText;
     private Text                          text;
-    private RadarChart                    radarChart;
+    private RadarChart radarChart;
     private ListChangeListener<ChartData> chartDataListener;
-    private ChartDataEventListener        chartEventListener;
+    private ChartDataEventListener chartEventListener;
 
 
     // ******************** Constructors **************************************

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.weather;
+package main.java.eu.hansolo.tilesfx.weather;
 
-import eu.hansolo.tilesfx.weather.DarkSky.ConditionAndIcon;
-import eu.hansolo.tilesfx.weather.DarkSky.PrecipType;
 import org.json.simple.JSONObject;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
+
+import static main.java.eu.hansolo.tilesfx.weather.DarkSky.*;
 
 
 /**

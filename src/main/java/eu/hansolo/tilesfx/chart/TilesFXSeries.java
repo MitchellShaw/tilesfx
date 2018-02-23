@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.chart;
+package main.java.eu.hansolo.tilesfx.chart;
 
 import javafx.geometry.Insets;
 import javafx.scene.chart.XYChart.Series;

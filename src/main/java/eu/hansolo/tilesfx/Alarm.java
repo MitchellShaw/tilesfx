@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx;
+package main.java.eu.hansolo.tilesfx;
 
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;

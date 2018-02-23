@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.TextSize;
-import eu.hansolo.tilesfx.Tile.TileColor;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.SunMoonCalculator;
-import eu.hansolo.tilesfx.weather.DarkSky.ConditionAndIcon;
-import eu.hansolo.tilesfx.weather.WeatherSymbol;
+
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.Tile.TextSize;
+import main.java.eu.hansolo.tilesfx.Tile.TileColor;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
+import main.java.eu.hansolo.tilesfx.tools.SunMoonCalculator;
+import main.java.eu.hansolo.tilesfx.weather.DarkSky;
+import main.java.eu.hansolo.tilesfx.weather.WeatherSymbol;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 
 public class EphemerisTileSkin extends TileSkin {
@@ -50,7 +52,7 @@ public class EphemerisTileSkin extends TileSkin {
     private VBox              blueHourSunriseTextBox;
     private HBox              blueHourSunriseBox;
 
-    private WeatherSymbol     sunriseSymbol;
+    private WeatherSymbol sunriseSymbol;
     private Text              sunriseTitle;
     private Text              sunriseText;
     private VBox              sunriseTextBox;
@@ -68,7 +70,7 @@ public class EphemerisTileSkin extends TileSkin {
     private VBox              goldenHourSunsetTextBox;
     private HBox              goldenHourSunsetBox;
 
-    private WeatherSymbol     sunsetSymbol;
+    private WeatherSymbol sunsetSymbol;
     private Text              sunsetTitle;
     private Text              sunsetText;
     private VBox              sunsetTextBox;
@@ -115,7 +117,7 @@ public class EphemerisTileSkin extends TileSkin {
         blueHourSunriseBox       = new HBox(blueHourDotMorning, blueHourSunriseTextBox);
         blueHourSunriseBox.setAlignment(Pos.CENTER_LEFT);
 
-        sunriseSymbol            = new WeatherSymbol(ConditionAndIcon.SUNRISE, 22, tile.getForegroundColor());
+        sunriseSymbol            = new WeatherSymbol(DarkSky.ConditionAndIcon.SUNRISE, 22, tile.getForegroundColor());
         sunriseTitle             = new Text("Sunrise");
         sunriseText              = new Text("--:--");
         sunriseTextBox           = new VBox(sunriseTitle, sunriseText);
@@ -136,7 +138,7 @@ public class EphemerisTileSkin extends TileSkin {
         goldenHourSunsetBox      = new HBox(goldenHourDotEvening, goldenHourSunsetTextBox);
         goldenHourSunsetBox.setAlignment(Pos.CENTER_LEFT);
 
-        sunsetSymbol             = new WeatherSymbol(ConditionAndIcon.SUNSET, 22, tile.getForegroundColor());
+        sunsetSymbol             = new WeatherSymbol(DarkSky.ConditionAndIcon.SUNSET, 22, tile.getForegroundColor());
         sunsetTitle              = new Text("Sunset");
         sunsetText               = new Text("--:--");
         sunsetTextBox            = new VBox(sunsetTitle, sunsetText);

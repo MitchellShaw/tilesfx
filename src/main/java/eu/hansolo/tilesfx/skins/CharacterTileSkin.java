@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 
 public class CharacterTileSkin extends TileSkin {
@@ -50,9 +50,9 @@ public class CharacterTileSkin extends TileSkin {
         description.setAlignment(Pos.CENTER);
         description.setTextAlignment(TextAlignment.CENTER);
         description.setWrapText(true);
-        description.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
+        description.setTextOverrun(OverrunStyle.CLIP);
         description.setTextFill(tile.getTextColor());
-        description.setPrefSize(PREFERRED_WIDTH * 0.9, PREFERRED_HEIGHT * 0.795);
+        description.setPrefSize(PREFERRED_WIDTH * 0.5, PREFERRED_HEIGHT * 0.6 );
         Helper.enableNode(description, tile.isTextVisible());
 
         text = new Text(tile.getText());
@@ -81,14 +81,14 @@ public class CharacterTileSkin extends TileSkin {
 
     // ******************** Resizing ******************************************
     @Override protected void resizeDynamicText() {
-        double fontSize = size * 0.65;
+        double fontSize = size * 0.30;
         description.setFont(Fonts.latoLight(fontSize));
     }
     @Override protected void resizeStaticText() {
         double maxWidth = width - size * 0.1;
         double fontSize = size * textSize.factor;
 
-        titleText.setFont(Fonts.latoRegular(fontSize));
+        titleText.setFont(Fonts.latoRegular(fontSize*2));
         if (titleText.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(titleText, maxWidth, fontSize); }
         switch(tile.getTitleAlignment()) {
             default    :
@@ -99,7 +99,7 @@ public class CharacterTileSkin extends TileSkin {
 
         fontSize = size * textSize.factor;
         text.setText(tile.getText());
-        text.setFont(Fonts.latoRegular(fontSize));
+        text.setFont(Fonts.latoLight(fontSize));
         if (text.getLayoutBounds().getWidth() > maxWidth) { Helper.adjustTextSize(text, maxWidth, fontSize); }
         switch(tile.getTextAlignment()) {
             default    :
@@ -113,11 +113,11 @@ public class CharacterTileSkin extends TileSkin {
     @Override protected void resize() {
         super.resize();
 
-        description.setPrefSize(contentBounds.getWidth(), height - size * 0.255);
+        description.setPrefSize(contentBounds.getWidth(), height - size * 0.2);
         description.relocate(contentBounds.getX(), height * 0.1125);
     }
 
-    @Override protected void redraw() {
+    @Override public void redraw() {
         super.redraw();
         titleText.setText(tile.getTitle());
         text.setText(tile.getText());

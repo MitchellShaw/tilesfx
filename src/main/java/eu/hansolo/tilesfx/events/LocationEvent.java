@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.events;
+package main.java.eu.hansolo.tilesfx.events;
 
-import eu.hansolo.tilesfx.tools.Location;
+import main.java.eu.hansolo.tilesfx.tools.Location;
 
 
 /**

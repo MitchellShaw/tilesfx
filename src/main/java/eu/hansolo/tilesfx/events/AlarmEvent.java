@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.events;
+package main.java.eu.hansolo.tilesfx.events;
 
-import eu.hansolo.tilesfx.Alarm;
 
-import java.util.EventObject;
-
+import main.java.eu.hansolo.tilesfx.Alarm;
 
 /**
  * Created by hansolo on 19.12.16.

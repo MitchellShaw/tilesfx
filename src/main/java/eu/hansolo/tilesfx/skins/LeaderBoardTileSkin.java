@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package eu.hansolo.tilesfx.skins;
+package main.java.eu.hansolo.tilesfx.skins;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
-import eu.hansolo.tilesfx.events.ChartDataEventListener;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.fonts.Fonts;
-import eu.hansolo.tilesfx.tools.Helper;
+
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import main.java.eu.hansolo.tilesfx.Tile;
+import main.java.eu.hansolo.tilesfx.events.ChartDataEventListener;
+import main.java.eu.hansolo.tilesfx.events.TileEvent;
+import main.java.eu.hansolo.tilesfx.fonts.Fonts;
+import main.java.eu.hansolo.tilesfx.tools.Helper;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static main.java.eu.hansolo.tilesfx.events.ChartDataEvent.EventType;
 
 /**
  * Created by hansolo on 19.12.16.
@@ -43,7 +44,7 @@ public class LeaderBoardTileSkin extends TileSkin {
     private Text                                           titleText;
     private Text                                           text;
     private Pane                                           leaderBoardPane;
-    private ChartDataEventListener                         updateHandler;
+    private ChartDataEventListener updateHandler;
     private InvalidationListener                           paneSizeListener;
     private Map<LeaderBoardItem, EventHandler<MouseEvent>> handlerMap;
 
