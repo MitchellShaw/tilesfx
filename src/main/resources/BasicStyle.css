@@ -1,0 +1,86 @@
+.pane
+{
+    -fx-background-color: rgb(42, 42, 42);
+}
+
+.table-column
+{
+    -fx-alignment: CENTER;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.table-view:row-selection:constrained-resize .column-header-background .filler
+{
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+}
+.pane-grid{
+    -fx-background-color: #54B948;
+}
+.progress-indicator{
+    -fx-progress-color: WHITE;
+
+}
+.label{
+    -fx-font-size: 68px;
+    -fx-text-fill: WHITE;
+    -fx-font-family: OpenSans;
+}
+.ImageView:hover {
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+    -fx-scale-z: 1.3;
+}
+.table-view
+{
+    -fx-background-color: transparent;
+}
+.table-row-cell:empty .table-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+
+/*.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column:last-visible .label .text*/
+/*{*/
+    /*-fx-font-size: 20px;*/
+/*}*/
+
+/* Spaltenköpfe
+    Struktur column-header-background -> column-header */
+
+.table-view .column-header-background .label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 36px;
+}
+
+.table-view .column-header
+{
+    -fx-background-color:  rgb(42, 42, 42);
+}
+
+.table-view .table-cell
+{
+    -fx-text-fill: white;
+}
+
+.table-row-cell
+{
+    -fx-background-color: -fx-table-cell-border-color, #525252;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.table-row-cell:odd
+{
+    -fx-background-color:  transparent;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}

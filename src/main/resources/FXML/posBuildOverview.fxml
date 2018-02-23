@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
+<?import main.java.eu.hansolo.tilesfx.*?>
+<GridPane fx:id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="25.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="25.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="25.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="25.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" percentHeight="25.0" vgrow="SOMETIMES" />
+        <RowConstraints />
+    </rowConstraints>
+   <children>
+      <Tile fx:id="line1" GridPane.columnIndex="1" />
+      <Tile fx:id="line1BuildGauge" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Tile fx:id="line4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Tile fx:id="line4BuildGauge" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Line fx:id="leftLine" endY="1080.0" stroke="#54b948" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowSpan="2147483647" />
+      <Tile fx:id="clock" GridPane.rowIndex="1" />
+      <Tile fx:id="stopLight" GridPane.rowIndex="2" />
+      <Tile fx:id="daySince" GridPane.rowIndex="3" />
+      <Tile fx:id="line2" GridPane.columnIndex="2" />
+      <Tile fx:id="line2BuildGauge" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Tile fx:id="line5" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Tile fx:id="line5BuildGauge" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Tile fx:id="line3" GridPane.columnIndex="3" />
+      <Tile fx:id="line3BuildGauge" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <Tile fx:id="line6" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Tile fx:id="line6BuildGauge" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Line fx:id="rightLine" endY="1920.0" stroke="#54b948" strokeWidth="2.0" GridPane.columnIndex="3" />
+      <Line fx:id="middleLine" endX="1080.0" startX="-1080.0" stroke="#54b948" strokeWidth="2.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+      <Tile fx:id="logo" layoutX="10.0" layoutY="820.0" />
+   </children>
+</GridPane>
