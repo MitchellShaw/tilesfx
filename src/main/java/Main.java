@@ -149,13 +149,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Logger logger = Logger.getLogger("Log");
-        FileHandler fh;
-        fh = new FileHandler("log.txt");
-        SimpleFormatter formatter = new SimpleFormatter();
-        fh.setFormatter(formatter);
-        logger.addHandler(fh);
-        logger.log(Level.INFO,"");
+//        Logger logger = Logger.getLogger("Log");
+//        FileHandler fh;
+//        fh = new FileHandler("log.txt");
+//        SimpleFormatter formatter = new SimpleFormatter();
+//        fh.setFormatter(formatter);
+//        logger.addHandler(fh);
+//        logger.log(Level.INFO,"");
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
         Tool dataBaseTool = new Tool();
 
@@ -635,7 +635,7 @@ public class Main extends Application {
                             System.out.println("Max heap size: "+heapMaxSize);
                             System.out.println("Free heap size: "+heapFreeSize);
 
-                            logger.info("Current heap size: "+heapSize);
+                            //logger.info("Current heap size: "+heapSize);
 
                             buildMap = dataBaseTool.buildQuery();
 
@@ -1050,7 +1050,7 @@ public class Main extends Application {
 
                         }catch(OutOfMemoryError e)
                         {
-                            logger.info(e.toString());
+                            //logger.info(e.toString());
                             rt = Runtime.getRuntime();
                             rt.exec("java -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
                                     "pause");
@@ -1058,7 +1058,8 @@ public class Main extends Application {
                          }
                          catch(Exception e)
                          {
-                             logger.info(e.toString());
+                             //logger.info(e.toString());
+                             System.out.println("Exception: "+e);
                          }
                         return null;
                     }

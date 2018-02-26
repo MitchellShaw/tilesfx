@@ -50,7 +50,7 @@ jar
             manifest
                     {
                         sourceSets.main.java.srcDirs = ['src']
-                        attributes 'Main-Class': 'eu.hansolo.tilesfx.Main'
+                        attributes 'Main-Class': 'main.java.Main'
                     }
 
             archiveName = 'Metrics Dashboard Version 2.jar'
