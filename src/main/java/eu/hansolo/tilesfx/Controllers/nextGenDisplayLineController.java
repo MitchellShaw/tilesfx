@@ -301,7 +301,7 @@ public class nextGenDisplayLineController extends Controller implements Initiali
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }

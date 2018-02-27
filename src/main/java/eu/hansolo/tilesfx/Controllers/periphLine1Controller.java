@@ -297,7 +297,7 @@ public class periphLine1Controller extends Controller implements Initializable,M
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }

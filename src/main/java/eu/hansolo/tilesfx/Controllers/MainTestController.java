@@ -513,7 +513,7 @@ public class MainTestController extends Controller implements Initializable,Meth
             retailFTT.setDescription(hundred.format(messenger.getMainBuildController().getRetailThrough())+"%");
         }
 
-        tilesListeners(tiles);
+        super.tilesListeners(tiles,messenger);
         refresh();
     }
 

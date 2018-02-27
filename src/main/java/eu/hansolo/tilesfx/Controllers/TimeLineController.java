@@ -37,65 +37,65 @@ public class TimeLineController extends Controller implements Initializable,Meth
     @FXML
     private Text assertText;
 
-    Stage myStage;
+    private Stage myStage;
 
 
-    final String mainBuildScene = "Build Overview";
-    final String mainTestScene = "Test Overview";
-    final String mainStageScene = "Stage Overview";
+    private final String mainBuildScene = "Build Overview";
+    private final String mainTestScene = "Test Overview";
+    private final String mainStageScene = "Stage Overview";
 
-    final String opticBuildScene = "Optic Build/Test";
-    final String posBuildScene = "POS Build/Test";
-    final String retailBuildScene = "Retail Build/Test";
-    final String serversBuildScene = "Servers Build/Test";
-    final String periphBuildScene = "Periph Build/Test";
+    private final String opticBuildScene = "Optic Build/Test";
+    private final String posBuildScene = "POS Build/Test";
+    private final String retailBuildScene = "Retail Build/Test";
+    private final String serversBuildScene = "Servers Build/Test";
+    private final String periphBuildScene = "Periph Build/Test";
 
-    final String posStageScene = "POS/Servers Stage";
-    final String retailStageScene = "Retail Stage";
-    final String periphStageScene = "Periph Stage";
+    private final String posStageScene = "POS/Servers Stage";
+    private final String retailStageScene = "Retail Stage";
+    private final String periphStageScene = "Periph Stage";
 
-    final String posLineOverview = "POS Build Lines";
-    final String retailLineOverview = "Retail Build Lines";
-    final String serversLineOverview = "Servers Build Lines";
-    final String periphLineOverview = "Periph Build Lines";
-    final String opticLineOverview = "Optic Build Lines";
+    private final String posLineOverview = "POS Build Lines";
+    private final String retailLineOverview = "Retail Build Lines";
+    private final String serversLineOverview = "Servers Build Lines";
+    private final String periphLineOverview = "Periph Build Lines";
+    private final String opticLineOverview = "Optic Build Lines";
 
-    final String posLine1 = "POS Line 1";
-    final String posLine2 = "POS Line 2";
-    final String posLine3 = "POS Line 3";
-    final String posLine4 = "POS Line 4";
-    final String posQuest = "POS Quest";
-    final String posT1000 = "POS T1000";
+    private final String posLine1 = "POS Line 1";
+    private final String posLine2 = "POS Line 2";
+    private final String posLine3 = "POS Line 3";
+    private final String posLine4 = "POS Line 4";
+    private final String posQuest = "POS Quest";
+    private final String posT1000 = "POS T1000";
 
-    final String nextGenLine1 = "Retail Line 1";
-    final String nextGenLine2 = "Retail Line 2";
-    final String nextGenLine3 = "Retail Line 3";
-    final String nextGenLine4 = "Retail Line 4";
-    final String nextGenLine5 = "Retail Line 5";
-    final String nextGenDisplay = "Retail Display";
+    private final String nextGenLine1 = "Retail Line 1";
+    private final String nextGenLine2 = "Retail Line 2";
+    private final String nextGenLine3 = "Retail Line 3";
+    private final String nextGenLine4 = "Retail Line 4";
+    private final String nextGenLine5 = "Retail Line 5";
+    private final String nextGenDisplay = "Retail Display";
 
-    final String serversLine1 = "Servers Line 1";
-    final String serversLine2 = "Servers Line 2";
+    private final String serversLine1 = "Servers Line 1";
+    private final String serversLine2 = "Servers Line 2";
 
-    final String periphLine1 = "Periph Line 1";
-    final String periphLine2 = "Periph Line 2";
+    private final String periphLine1 = "Periph Line 1";
+    private final String periphLine2 = "Periph Line 2";
 
-    final String opticLine1 = "Optic Line 1";
-    final String opticLine2 = "Optic Line 2";
-    final String opticLine3 = "Optic Line 3";
-    final String opticLine4 = "Optic Line 4";
+    private final String opticLine1 = "Optic Line 1";
+    private final String opticLine2 = "Optic Line 2";
+    private final String opticLine3 = "Optic Line 3";
+    private final String opticLine4 = "Optic Line 4";
 
-    final String posTestUser = "POS Test by User";
-    final String retailTestUser = "Retail Test by User";
-    final String periphTestUser = "Periph Test by User";
-    final String serversTestUser = "Servers Test by User";
-    final String opticTestUser = "Optic Test by User";
+    private final String posTestUser = "POS Test by User";
+    private final String retailTestUser = "Retail Test by User";
+    private final String periphTestUser = "Periph Test by User";
+    private final String serversTestUser = "Servers Test by User";
+    private final String opticTestUser = "Optic Test by User";
 
-    final String selectAll = "Select All";
+    private final String selectAll = "Select All";
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    Timeline timeline;
+    private Timeline timeline;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

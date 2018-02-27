@@ -488,7 +488,7 @@ public class MainBuildController extends Controller implements Initializable, Me
         }
 
 
-        tilesListeners(tiles);
+        super.tilesListeners(tiles,messenger);
         refresh();
     }
 

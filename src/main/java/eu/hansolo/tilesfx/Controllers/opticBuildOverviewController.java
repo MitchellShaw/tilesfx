@@ -335,7 +335,7 @@ public class opticBuildOverviewController extends Controller implements Initiali
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
     }

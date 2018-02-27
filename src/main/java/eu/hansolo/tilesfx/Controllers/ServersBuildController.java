@@ -66,56 +66,56 @@ public class ServersBuildController extends Controller implements Initializable,
     @FXML
     Tile serversTestFTT;
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    DecimalFormat df = new DecimalFormat("#.0");
-    DecimalFormat hundred = new DecimalFormat("#");
+    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat hundred = new DecimalFormat("#");
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    double mediaPlayerCurrentBuild;
-    double mediaPlayerGoalBuild;
-    double n3000CurrentBuild;
-    double n3000GoalBuild;
-    double s500CurrentBuild;
-    double s500GoalBuild;
-    double serverGoalTotalBuild;
-    double serverCurrentBuild;
-    double serversThrough;
-    double serverBar1Total;
-    double serverBar1Goal;
-    double serverBar2Total;
-    double serverBar2Goal;
-    double serversPercentTotalBuild;
-    double mediaPlayerCurrentTest;
-    double n3000CurrentTest;
-    double s500CurrentTest;
-    double serverCurrentTest;
-    double serversPercentTotalTest;
+    private double mediaPlayerCurrentBuild;
+    private double mediaPlayerGoalBuild;
+    private double n3000CurrentBuild;
+    private double n3000GoalBuild;
+    private double s500CurrentBuild;
+    private double s500GoalBuild;
+    private double serverGoalTotalBuild;
+    private double serverCurrentBuild;
+    private double serversThrough;
+    private double serverBar1Total;
+    private double serverBar1Goal;
+    private double serverBar2Total;
+    private double serverBar2Goal;
+    private double serversPercentTotalBuild;
+    private double mediaPlayerCurrentTest;
+    private double n3000CurrentTest;
+    private double s500CurrentTest;
+    private double serverCurrentTest;
+    private double serversPercentTotalTest;
 
 
-    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem serverBar1;
-    BarChartItem serverBar2;
-    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem serverBar1DataTest;
-    BarChartItem serverBar2DataTest;
+     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    private BarChartItem serverBar1;
+    private BarChartItem serverBar2;
+     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    private BarChartItem serverBar1DataTest;
+    private BarChartItem serverBar2DataTest;
 
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
     @FXML
     private GridPane pane;
@@ -341,7 +341,7 @@ public class ServersBuildController extends Controller implements Initializable,
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
 

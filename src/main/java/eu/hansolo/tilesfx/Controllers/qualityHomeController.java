@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 
 public class qualityHomeController extends Controller implements Initializable,Methods
 {
-    Messenger messenger;
+    private Messenger messenger;
 
     @FXML
     private Tile posFTT;
@@ -45,31 +45,31 @@ public class qualityHomeController extends Controller implements Initializable,M
     @FXML
     private Tile retailFTT;
 
-    double opticThrough;
-    double periphThrough;
-    double serversThrough;
-    double retailThrough;
-    double posThrough;
+    private double opticThrough;
+    private double periphThrough;
+    private double serversThrough;
+    private double retailThrough;
+    private double posThrough;
 
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
-    ArrayList<Tile> tiles;
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Tile> tiles;
 
-    DecimalFormat df = new DecimalFormat("#.0");
-    DecimalFormat hundred = new DecimalFormat("#");
+    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat hundred = new DecimalFormat("#");
 
     @FXML
     private GridPane pane;
@@ -167,7 +167,7 @@ public class qualityHomeController extends Controller implements Initializable,M
         tiles.add(periphFTT);
         tiles.add(opticFTT);
 
-        tilesListeners(tiles);
+        super.tilesListeners(tiles,messenger);
         createActions();
     }
     private void createActions()

@@ -69,7 +69,7 @@ public class Controller implements Initializable,Methods {
 
 
 
-    public void tilesListeners(ArrayList<Tile> tileList)
+    public void tilesListeners(ArrayList<Tile> tileList, Messenger messenger)
     {
         Bounds allScreenBounds = computeAllScreenBounds();
 

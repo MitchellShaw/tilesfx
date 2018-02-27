@@ -356,7 +356,7 @@ public class MainStageController extends Controller implements Initializable,Met
 
        refresh();
        createActions();
-       tilesListeners(tiles);
+       super.tilesListeners(tiles,messenger);
     }
 
     public void refresh()

@@ -44,63 +44,63 @@ import static javafx.scene.paint.Color.rgb;
 
 public class posQuestController extends Controller implements Initializable,Methods
 {
-    double sevenGoal;
-    double eightGoal;
-    double nineGoal;
-    double tenGoal;
-    double elevenGoal;
-    double twelveGoal;
-    double oneGoal;
-    double twoGoal;
-    double threeGoal;
-    double fourGoal;
-    double fiveGoal;
-    double totalGoal;
+    private double sevenGoal;
+    private double eightGoal;
+    private double nineGoal;
+    private double tenGoal;
+    private double elevenGoal;
+    private double twelveGoal;
+    private double oneGoal;
+    private double twoGoal;
+    private double threeGoal;
+    private double fourGoal;
+    private double fiveGoal;
+    private double totalGoal;
 
-    String sevenString;
-    String eightString;
-    String nineString;
-    String tenString;
-    String elevenString;
-    String twelveString;
-    String oneString;
-    String twoString;
-    String threeString;
-    String fourString;
-    String fiveString;
-    String totalString;
+    private String sevenString;
+    private String eightString;
+    private String nineString;
+    private String tenString;
+    private String elevenString;
+    private String twelveString;
+    private String oneString;
+    private String twoString;
+    private String threeString;
+    private String fourString;
+    private String fiveString;
+    private String totalString;
 
-    int sevenCurrent;
-    int eightCurrent;
-    int nineCurrent;
-    int tenCurrent;
-    int elevenCurrent;
-    int twelveCurrent;
-    int oneCurrent;
-    int twoCurrent;
-    int threeCurrent;
-    int fourCurrent;
-    int fiveCurrent;
-    int totalCurrent;
+    private int sevenCurrent;
+    private int eightCurrent;
+    private int nineCurrent;
+    private int tenCurrent;
+    private int elevenCurrent;
+    private int twelveCurrent;
+    private int oneCurrent;
+    private int twoCurrent;
+    private int threeCurrent;
+    private int fourCurrent;
+    private int fiveCurrent;
+    private int totalCurrent;
 
-    String sevenDifference;
-    String eightDifference;
-    String nineDifference;
-    String tenDifference;
-    String elevenDifference;
-    String twelveDifference;
-    String oneDifference;
-    String twoDifference;
-    String threeDifference;
-    String fourDifference;
-    String fiveDifference;
-    String totalDifference;
+    private String sevenDifference;
+    private String eightDifference;
+    private String nineDifference;
+    private String tenDifference;
+    private String elevenDifference;
+    private String twelveDifference;
+    private String oneDifference;
+    private String twoDifference;
+    private String threeDifference;
+    private String fourDifference;
+    private String fiveDifference;
+    private String totalDifference;
 
-    ArrayList<timeOrb> timeOrbs;
+    private ArrayList<timeOrb> timeOrbs;
 
-    DecimalFormat df;
-    DecimalFormat zeroFormat;
-    NumberFormat goalFormat;
+    private DecimalFormat df;
+    private DecimalFormat zeroFormat;
+    private NumberFormat goalFormat;
 
     private final ObservableList<dataOrb> orbList = FXCollections.observableArrayList
             (
@@ -118,7 +118,7 @@ public class posQuestController extends Controller implements Initializable,Meth
                     new dataOrb("Total",totalString,totalCurrent,totalDifference)
             );
 
-    HashMap<String,Integer> map;
+    private HashMap<String,Integer> map;
     @FXML
     Tile logo;
     @FXML
@@ -134,31 +134,31 @@ public class posQuestController extends Controller implements Initializable,Meth
     Tile table;
 
 
-    int line1Total;
-    int line2Total;
+    private int line1Total;
+    private int line2Total;
 
-    HBox myBox;
-    HBox hbox;
+    private HBox myBox;
+    private HBox hbox;
 
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
     private TableView<dataOrb> buildTable;
 
@@ -297,7 +297,7 @@ public class posQuestController extends Controller implements Initializable,Meth
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }

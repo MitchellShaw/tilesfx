@@ -351,7 +351,7 @@ public class PeriphBuildController extends Controller implements Initializable,M
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
         refresh();

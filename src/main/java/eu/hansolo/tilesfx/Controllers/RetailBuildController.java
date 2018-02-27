@@ -67,60 +67,60 @@ public class RetailBuildController extends Controller implements Initializable,M
     @FXML
     Tile retailTestGauge;
 
-    HBox hbox;
-    HBox myBox;
+    private HBox hbox;
+    private HBox myBox;
 
-    DecimalFormat df = new DecimalFormat("#.0");
-    DecimalFormat hundred = new DecimalFormat("#");
+    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat hundred = new DecimalFormat("#");
 
-    double xr7CurrentBuild;
-    double xr7GoalBuild;
-    double xr7PlusCurrentBuild;
-    double xr7PlusGoalBuild;
-    double xr5CurrentBuild;
-    double xr5GoalBuild;
-    double nextGenDisplayCurrentBuild;
-    double nextGenDisplayGoalsBuild;
-    double retailTotalGoalBuild;
-    double retailTotalCurrentBuild;
-    double retailThrough;
-    double retailBar1Total;
-    double retailBar1Goal;
-    double xr7CurrentTest;
-    double xr7PlusCurrentTest;
-    double xr5CurrentTest;
-    double nextGenDisplayCurrentTest;
-    double retailTotalCurrentTest;
-    double retailPercentTotalBuild;
-    double retailPercentTotalTest;
+    private double xr7CurrentBuild;
+    private double xr7GoalBuild;
+    private double xr7PlusCurrentBuild;
+    private double xr7PlusGoalBuild;
+    private double xr5CurrentBuild;
+    private double xr5GoalBuild;
+    private double nextGenDisplayCurrentBuild;
+    private double nextGenDisplayGoalsBuild;
+    private double retailTotalGoalBuild;
+    private double retailTotalCurrentBuild;
+    private double retailThrough;
+    private double retailBar1Total;
+    private double retailBar1Goal;
+    private double xr7CurrentTest;
+    private double xr7PlusCurrentTest;
+    private double xr5CurrentTest;
+    private double nextGenDisplayCurrentTest;
+    private double retailTotalCurrentTest;
+    private double retailPercentTotalBuild;
+    private double retailPercentTotalTest;
 
-    //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-    BarChartItem retailBar1Data;
-    BarChartItem nextGenDisplays;
-    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem retailBar1DataTest;
-    BarChartItem nextGenDisplaysTest;
+     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
+    private BarChartItem retailBar1Data;
+    private BarChartItem nextGenDisplays;
+     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    private BarChartItem retailBar1DataTest;
+    private BarChartItem nextGenDisplaysTest;
 
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
     @FXML
     private GridPane pane;
@@ -346,7 +346,7 @@ public class RetailBuildController extends Controller implements Initializable,M
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
 

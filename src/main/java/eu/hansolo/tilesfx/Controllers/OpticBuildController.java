@@ -334,7 +334,7 @@ public class OpticBuildController extends Controller implements Initializable,Me
 
         createActions();
         if (pane != null) {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
         refresh();

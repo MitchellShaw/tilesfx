@@ -298,7 +298,7 @@ public class nextGenLine4Controller extends Controller implements Initializable,
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }

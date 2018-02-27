@@ -253,7 +253,7 @@ public class periphBuildOverviewController extends Controller implements Initial
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
     }

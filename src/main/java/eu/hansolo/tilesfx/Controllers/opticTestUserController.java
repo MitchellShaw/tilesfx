@@ -478,7 +478,7 @@ public class opticTestUserController extends Controller implements Initializable
         refresh();
         if(pane !=null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
         }
 
     }

@@ -44,63 +44,58 @@ import static javafx.scene.paint.Color.rgb;
 
 public class posLine1Controller extends Controller implements Initializable,Methods
 {
-    double sevenGoal;
-    double eightGoal;
-    double nineGoal;
-    double tenGoal;
-    double elevenGoal;
-    double twelveGoal;
-    double oneGoal;
-    double twoGoal;
-    double threeGoal;
-    double fourGoal;
-    double fiveGoal;
-    double totalGoal;
-
-    String sevenString;
-    String eightString;
-    String nineString;
-    String tenString;
-    String elevenString;
-    String twelveString;
-    String oneString;
-    String twoString;
-    String threeString;
-    String fourString;
-    String fiveString;
-    String totalString;
-
-    int sevenCurrent;
-    int eightCurrent;
-    int nineCurrent;
-    int tenCurrent;
-    int elevenCurrent;
-    int twelveCurrent;
-    int oneCurrent;
-    int twoCurrent;
-    int threeCurrent;
-    int fourCurrent;
-    int fiveCurrent;
-    int totalCurrent;
-
-    String sevenDifference;
-    String eightDifference;
-    String nineDifference;
-    String tenDifference;
-    String elevenDifference;
-    String twelveDifference;
-    String oneDifference;
-    String twoDifference;
-    String threeDifference;
-    String fourDifference;
-    String fiveDifference;
-    String totalDifference;
-
-    ArrayList<timeOrb> timeOrbs;
-
-    DecimalFormat df;
-    DecimalFormat zeroFormat;
-    NumberFormat goalFormat;
+    private double sevenGoal;
+    private double eightGoal;
+    private double nineGoal;
+    private double tenGoal;
+    private double elevenGoal;
+    private double twelveGoal;
+    private double oneGoal;
+    private double twoGoal;
+    private double threeGoal;
+    private double fourGoal;
+    private double fiveGoal;
+    private double totalGoal;
+    private String sevenString;
+    private String eightString;
+    private String nineString;
+    private String tenString;
+    private String elevenString;
+    private String twelveString;
+    private String oneString;
+    private String twoString;
+    private String threeString;
+    private String fourString;
+    private String fiveString;
+    private String totalString;
+    private int sevenCurrent;
+    private int eightCurrent;
+    private int nineCurrent;
+    private int tenCurrent;
+    private int elevenCurrent;
+    private int twelveCurrent;
+    private int oneCurrent;
+    private int twoCurrent;
+    private int threeCurrent;
+    private int fourCurrent;
+    private int fiveCurrent;
+    private int totalCurrent;
+    private String sevenDifference;
+    private String eightDifference;
+    private String nineDifference;
+    private String tenDifference;
+    private String elevenDifference;
+    private String twelveDifference;
+    private String oneDifference;
+    private String twoDifference;
+    private String threeDifference;
+    private String fourDifference;
+    private String fiveDifference;
+    private String totalDifference;
+    private ArrayList<timeOrb> timeOrbs;
+    private DecimalFormat df;
+    private DecimalFormat zeroFormat;
+    private NumberFormat goalFormat;
 
     private final ObservableList<dataOrb> orbList = FXCollections.observableArrayList
             (
@@ -297,7 +292,7 @@ public class posLine1Controller extends Controller implements Initializable,Meth
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }

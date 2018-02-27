@@ -40,62 +40,62 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static javafx.scene.paint.Color.rgb;
 
 public class PeriphStageController extends Controller implements Initializable,Methods {
-    Tile logo;
-    Tile clock;
-    Tile dept;
-    Tile stopLight;
-    Tile daySince;
+    private Tile logo;
+    private Tile clock;
+    private Tile dept;
+    private Tile stopLight;
+    private Tile daySince;
 
-    Tile user1;
-    Tile user2;
-    Tile user3;
-    Tile user4;
-    Tile user5;
-    Tile user6;
-    Tile user7;
-    Tile user8;
-    Tile user9;
-    Tile user10;
-    Tile user11;
-    Tile user12;
-    Tile user13;
-    Tile user14;
-    Tile user15;
-    Tile user16;
-    Tile user17;
-    Tile user18;
-    Tile user19;
-    Tile user20;
+    private Tile user1;
+    private Tile user2;
+    private Tile user3;
+    private Tile user4;
+    private Tile user5;
+    private Tile user6;
+    private Tile user7;
+    private Tile user8;
+    private Tile user9;
+    private Tile user10;
+    private Tile user11;
+    private Tile user12;
+    private Tile user13;
+    private Tile user14;
+    private Tile user15;
+    private Tile user16;
+    private Tile user17;
+    private Tile user18;
+    private Tile user19;
+    private Tile user20;
 
-    HashMap<String,Integer> userMap;
-    LinkedHashMap<String,Integer> sortedByValue;
+    private HashMap<String,Integer> userMap;
+    private LinkedHashMap<String,Integer> sortedByValue;
 
-    Comparator<Map.Entry<String,Integer>> valueComparator;
+    private Comparator<Map.Entry<String,Integer>> valueComparator;
 
-    HBox hbox;
-    HBox myBox;
+    private HBox hbox;
+    private HBox myBox;
 
-    ArrayList<Tile> tileSort;
+    private ArrayList<Tile> tileSort;
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    ArrayList<Tile> users;
+    private ArrayList<Tile> users;
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
-    String useDate;
+    private String useDate;
 
-    ImageView stopView = new ImageView();
+    private ImageView stopView = new ImageView();
 
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     @FXML
     private GridPane pane;
@@ -486,7 +486,7 @@ public class PeriphStageController extends Controller implements Initializable,M
         refresh();
         if(pane !=null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
         }
 
     }

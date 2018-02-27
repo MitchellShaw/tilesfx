@@ -17,10 +17,9 @@ import main.java.eu.hansolo.tilesfx.tools.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 //import java.util.logging.FileHandler;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -36,14 +35,17 @@ import static java.time.temporal.ChronoUnit.DAYS;
  */
 public class Main extends Application {
     //------------------------------------Variables Block---------------------------------------------------------------
-    double x = 0;
-    double y = 0;
+    private Set<Thread> threadSet;
+    private Thread[] threadArray;
+    private double x = 0;
+    private double y = 0;
     private boolean flag;
     private Messenger messenger;
     private long daysBetween;
     private int counter;
     private String useDate;
 
+    private Thread.UncaughtExceptionHandler h;
     private long memoryBefore;
     private long memoryAfter;
 
@@ -185,7 +187,7 @@ public class Main extends Application {
         /*questProdList.add("7791");
         questProdList.add("7792");*/
 
-        ArrayList<String> kiwi2XsProdList = new ArrayList<>(Arrays.asList("1642", "1642"));
+        ArrayList<String> kiwi2XsProdList = new ArrayList<>(Arrays.asList("1642", "1924"));
         /*kiwi2XsProdList.add("1642");
         kiwi2XsProdList.add("1924");*/
 
@@ -1067,6 +1069,15 @@ public class Main extends Application {
                             {
                                 Platform.runLater(() -> primaryStage.setScene(navigationScene));
                                 flag = false;
+
+                                 threadSet = Thread.getAllStackTraces().keySet();
+                                 threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+
+                                for(int i = 0; i <threadSet.size();i++)
+                                {
+                                    threadArray[i].setUncaughtExceptionHandler(h);
+                                }
+
                             }
 
                             System.out.println("\n");
@@ -1099,5 +1110,22 @@ public class Main extends Application {
         buildVariables.setRestartOnFailure(true);
 
         buildVariables.start();
+
+        h = new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread th, Throwable ex) {
+                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                System.out.println(timeStamp);
+                System.out.println("Uncaught exception: " + ex);
+                ex.printStackTrace();
+                System.out.println("Restarting app...");
+                try {
+                    rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
+                            "pause\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.exit(0);
+            }
+        };
     }
 }

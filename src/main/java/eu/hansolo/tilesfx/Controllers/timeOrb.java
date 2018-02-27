@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class timeOrb {
 
-    String line;
-    HashMap<String,Integer> timeMap;
+    private String line;
+    private HashMap<String,Integer> timeMap;
 
     public timeOrb(String line, HashMap<String,Integer> timeMap)
     {

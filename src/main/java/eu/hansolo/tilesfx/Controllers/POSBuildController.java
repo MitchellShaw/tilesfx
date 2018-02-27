@@ -67,28 +67,21 @@ public class POSBuildController extends Controller implements Initializable,Meth
     @FXML
     Tile posTestFTT;
 
-    HBox myBox;
-    HBox hbox;
-
-    double x = 0;
-    double y = 0;
-
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
-
-    Messenger messenger;
-
-    ArrayList<Tile> tiles;
-
-    String useDate = "0";
-
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
-
-    ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private HBox myBox;
+    private HBox hbox;
+    private double x = 0;
+    private double y = 0;
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
+    private Messenger messenger;
+    private ArrayList<Tile> tiles;
+    private String useDate = "0";
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
     private double p1x30CurrentBuild;
     private double p1x30GoalBuild;
@@ -361,7 +354,7 @@ public class POSBuildController extends Controller implements Initializable,Meth
         createActions();
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             buildDifferential();
         }
 

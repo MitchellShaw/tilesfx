@@ -297,7 +297,7 @@ public class opticLine2Controller extends Controller implements Initializable,Me
 
         if(pane != null)
         {
-            tilesListeners(tiles);
+            super.tilesListeners(tiles,messenger);
             createTable();
         }
     }
