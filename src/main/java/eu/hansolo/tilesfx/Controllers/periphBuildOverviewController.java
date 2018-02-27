@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class periphBuildOverviewController implements Initializable
+public class periphBuildOverviewController extends Controller implements Initializable,Methods
 {
     @FXML
     Tile logo;
@@ -65,31 +65,31 @@ public class periphBuildOverviewController implements Initializable
     @FXML
     Line middleLine;
 
-    int line1Total;
-    int line2Total;
+    private int line1Total;
+    private int line2Total;
 
-    HBox myBox;
-    HBox hbox;
+    private HBox myBox;
+    private HBox hbox;
 
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
     @FXML
     private GridPane pane;
@@ -459,120 +459,6 @@ public class periphBuildOverviewController implements Initializable
             }
         });
     }
-
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
-
-        for(int i =0;i<tileList.size();i++)
-        {
-            tileList.get(i).setAnimated(true);
-            tileList.get(i).setAnimationDuration(3000);
-
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
-                }
-            });
-            int finalI = i;
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
-                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
-
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
-                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-                        tileList.get(finalI).setCursor(Cursor.HAND);
-                        idle.playFromStart();
-                        tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    });
-                    idle.setOnFinished(e ->
-                    {
-                        tileList.get(finalI).setCursor(Cursor.NONE);
-                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                    });
-                }
-            });
-            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                }
-            });
-        }
-    }
-
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY();
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY();
-            }
-        }
-        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-    }
-
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
     public Tile getLogo() {
         return logo;
     }
@@ -617,10 +503,6 @@ public class periphBuildOverviewController implements Initializable
         return useDate;
     }
 
-    public void setUseDate(String useDate) {
-        this.useDate = useDate;
-    }
-
     public int getLine1Total() {
         return line1Total;
     }
@@ -635,5 +517,10 @@ public class periphBuildOverviewController implements Initializable
 
     public void setLine2Total(int line2Total) {
         this.line2Total = line2Total;
+    }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 }

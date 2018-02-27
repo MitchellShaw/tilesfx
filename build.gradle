@@ -34,7 +34,7 @@ dependencies
             //https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc
             compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.3.0.jre8-preview'
            // https://mvnrepository.com/artifact/org.controlsfx/controlsfx
-            compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.13'
+            compile group: 'org.controlsfx', name: 'controlsfx', version: '9.0.0'
             compile 'com.googlecode.json-simple:json-simple:1.1.1'
             compile 'eu.hansolo:Medusa:7.9'
             compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.12.Final'

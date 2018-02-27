@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class MainStageController implements Initializable
+public class MainStageController extends Controller implements Initializable,Methods
 {
     @FXML
     private Tile posStage;
@@ -62,110 +62,109 @@ public class MainStageController implements Initializable
     private GridPane pane;
 
     //---------------------------------Variables for Query Data (POS)-----------------------------------------
-    double p1x30CurrentStage;
-    double p1x30GoalStage;
-    double p1x35CurrentStage;
-    double p1x35GoalStage;
-    double p1532CurrentStage;
-    double p1532GoalStage;
-    double t1000sCurrentStage;
-    double t1000sGoalStage;
-    double questsCurrentStage;
-    double questsGoalStage;
+    private double p1x30CurrentStage;
+    private double p1x30GoalStage;
+    private double p1x35CurrentStage;
+    private double p1x35GoalStage;
+    private double p1532CurrentStage;
+    private double p1532GoalStage;
+    private double t1000sCurrentStage;
+    private double t1000sGoalStage;
+    private double questsCurrentStage;
+    private double questsGoalStage;
 
-    double posBar1Total;
-    double posBar1Goal;
+    private double posBar1Total;
+    private double posBar1Goal;
 
-    double posTotalGoalStage;
-    double posTotalCurrentStage;
+    private double posTotalGoalStage;
+    private double posTotalCurrentStage;
 
 
-    //---------------------------------Variables for Query Data (Retail)-----------------------------------------
-    double xr7CurrentStage;
-    double xr7GoalStage;
-    double xr7PlusCurrentStage;
-    double xr7PlusGoalStage;
-    double xr5CurrentStage;
-    double xr5GoalStage;
-    double nextGenDisplayCurrentStage;
-    double nextGenDisplayGoalsStage;
+     //---------------------------------Variables for Query Data (Retail)-----------------------------------------
+    private double xr7CurrentStage;
+    private double xr7GoalStage;
+    private double xr7PlusCurrentStage;
+    private double xr7PlusGoalStage;
+    private double xr5CurrentStage;
+    private double xr5GoalStage;
+    private double nextGenDisplayCurrentStage;
+    private double nextGenDisplayGoalsStage;
 
-    double retailTotalGoalStage;
-    double retailTotalCurrentStage;
+    private double retailTotalGoalStage;
+    private double retailTotalCurrentStage;
 
-    //---------------------------------Variables for Query Data (Servers)-----------------------------------------
-    double mediaPlayerCurrentStage;
-    double mediaPlayerGoalStage;
-    double n3000CurrentStage;
-    double n3000GoalStage;
-    double s500CurrentStage;
-    double s500GoalStage;
-    double serverGoalTotalStage;
+     //---------------------------------Variables for Query Data (Servers)-----------------------------------------
+    private double mediaPlayerCurrentStage;
+    private double mediaPlayerGoalStage;
+    private double n3000CurrentStage;
+    private double n3000GoalStage;
+    private double s500CurrentStage;
+    private double s500GoalStage;
+    private double serverGoalTotalStage;
 
-    double serverCurrentStage;
+    private double serverCurrentStage;
 
-    //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
-    double kiwi4sCurrentStage;
-    double kiwi4sGoalStage;
-    double kiwi2XsCurrentStage;
-    double kiwi2XsGoalStage;
-    double bumpBarsCurrentStage;
-    double bumpBarsGoalStage;
+     //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
+    private double kiwi4sCurrentStage;
+    private double kiwi4sGoalStage;
+    private double kiwi2XsCurrentStage;
+    private double kiwi2XsGoalStage;
+    private double bumpBarsCurrentStage;
+    private double bumpBarsGoalStage;
 
-    double pantherEPC4sCurrentStage;
-    double pantherEPC4sGoalStage;
+    private double pantherEPC4sCurrentStage;
+    private double pantherEPC4sGoalStage;
 
-    double periphGoalTotalStage;
-    double periphCurrentTotalStage;
-    //---------------------------------Variables for Percentages --------------------------------------------------
-    double posPercentTotalStage;
-    double retailPercentTotalStage;
-    double serversPercentTotalStage;
-    double periphPercentTotalStage;
+    private double periphGoalTotalStage;
+    private double periphCurrentTotalStage;
+     //---------------------------------Variables for Percentages --------------------------------------------------
+    private double posPercentTotalStage;
+    private double retailPercentTotalStage;
+    private double serversPercentTotalStage;
+    private double periphPercentTotalStage;
 
-    //---------------------------------Creating the Bar Chart Items for Hosp-------------------------------------
-    BarChartItem posBar1DataStage;
-    BarChartItem p1x30DataStage;
-    BarChartItem t1000DataStage;
-    BarChartItem questDataStage;
-    //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
-    BarChartItem serverBar1DataStage;
-    BarChartItem serverBar2DataStage;
-    //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
-    BarChartItem periphBar1DataStage;
-    BarChartItem periphBar2DataStage;
-    BarChartItem periphBar3DataStage;
-    //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
-    BarChartItem nextGenDisplaysStage;
-    BarChartItem retailBar1Stage;
+     //---------------------------------Creating the Bar Chart Items for Hosp-------------------------------------
+    private BarChartItem posBar1DataStage;
+    private BarChartItem p1x30DataStage;
+    private BarChartItem t1000DataStage;
+    private BarChartItem questDataStage;
+     //---------------------------------Creating the Bar Chart Items for Servers-------------------------------------
+    private BarChartItem serverBar1DataStage;
+    private BarChartItem serverBar2DataStage;
+     //---------------------------------Creating the Bar Chart Items for Peripherals---------------------------------
+    private BarChartItem periphBar1DataStage;
+    private BarChartItem periphBar2DataStage;
+    private BarChartItem periphBar3DataStage;
+     //---------------------------------Creating the Bar Chart Items for Retail--------------------------------------
+    private BarChartItem nextGenDisplaysStage;
+    private BarChartItem retailBar1Stage;
 
-    double retailBar1Total;
-    double retailBar1Goal;
+    private double retailBar1Total;
+    private double retailBar1Goal;
 
-    double serverBar1Total;
-    double serverBar1Goal;
+    private double serverBar1Total;
+    private double serverBar1Goal;
 
-    double serverBar2Total;
-    double serverBar2Goal;
+    private double serverBar2Total;
+    private double serverBar2Goal;
 
-    double periphBar1Total;
-    double periphBar1Goal;
+    private double periphBar1Total;
+    private double periphBar1Goal;
 
-    double periphBar2Total;
-    double periphBar2Goal;
+    private double periphBar2Total;
+    private double periphBar2Goal;
 
-    double periphBar3Total;
-    double periphBar3Goal;
+    private double periphBar3Total;
+    private double periphBar3Goal;
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    ArrayList<Tile> tiles;
-
-    Messenger messenger;
+    private ArrayList<Tile> tiles;
+    private Messenger messenger;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -435,59 +434,9 @@ public class MainStageController implements Initializable
             main.setUnit(Double.toString(current) + "/" + Double.toString(goal));
         }
     }
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY ;
-        double minY = Double.POSITIVE_INFINITY ;
-        double maxX = Double.NEGATIVE_INFINITY ;
-        double maxY = Double.NEGATIVE_INFINITY ;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY() ;
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY() ;
-            }
-        }
-        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
-    }
 
-    public void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
 
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
+
 
     private void createActions()
     {
@@ -619,67 +568,7 @@ public class MainStageController implements Initializable
         });
     }
 
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
-        Bounds allScreenBounds = computeAllScreenBounds();
 
-        for(int i =0;i<tileList.size();i++)
-        {
-            Tile temp = tileList.get(i);
-
-            temp.setAnimated(true);
-            temp.setAnimationDuration(3000);
-
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
-                }
-            });
-            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    temp.setBorderColor(Tile.GRAY);
-                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
-                    temp.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-                        temp.setCursor(Cursor.HAND);
-                        idle.playFromStart();
-                        temp.setBorderColor(Tile.GRAY);
-                    });
-                    idle.setOnFinished(e ->
-                    {
-                        temp.setCursor(Cursor.NONE);
-                        temp.setBorderColor(Color.TRANSPARENT);
-                    });
-                }
-            });
-            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    temp.setBorderColor(Color.TRANSPARENT);
-                }
-            });
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    temp.getScene().getWindow().setX(event.getScreenX() - x);
-                    temp.getScene().getWindow().setY(event.getScreenY() - y);
-                    if(temp.getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMinX());
-
-                    }
-                    if(temp.getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        temp.getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-        }
-    }
     public Messenger getMessenger() {
         return messenger;
     }
@@ -687,6 +576,12 @@ public class MainStageController implements Initializable
     public void setMessenger(Messenger messenger) {
         this.messenger = messenger;
     }
+
+    @Override
+    public void setUseDate(String useDate) {
+
+    }
+
     public double getP1x30CurrentStage() {
         return p1x30CurrentStage;
     }
@@ -703,38 +598,6 @@ public class MainStageController implements Initializable
         this.p1x30GoalStage = p1x30GoalStage;
     }
 
-    public double getP1x35CurrentStage() {
-        return p1x35CurrentStage;
-    }
-
-    public void setP1x35CurrentStage(double p1x35CurrentStage) {
-        this.p1x35CurrentStage = p1x35CurrentStage;
-    }
-
-    public double getP1x35GoalStage() {
-        return p1x35GoalStage;
-    }
-
-    public void setP1x35GoalStage(double p1x35GoalStage) {
-        this.p1x35GoalStage = p1x35GoalStage;
-    }
-
-    public double getP1532CurrentStage() {
-        return p1532CurrentStage;
-    }
-
-    public void setP1532CurrentStage(double p1532CurrentStage) {
-        this.p1532CurrentStage = p1532CurrentStage;
-    }
-
-    public double getP1532GoalStage() {
-        return p1532GoalStage;
-    }
-
-    public void setP1532GoalStage(double p1532GoalStage) {
-        this.p1532GoalStage = p1532GoalStage;
-    }
-
     public double getT1000sCurrentStage() {
         return t1000sCurrentStage;
     }
@@ -749,10 +612,6 @@ public class MainStageController implements Initializable
 
     public void setT1000sGoalStage(double t1000sGoalStage) {
         this.t1000sGoalStage = t1000sGoalStage;
-    }
-
-    public double getQuestsCurrentStage() {
-        return questsCurrentStage;
     }
 
     public void setQuestsCurrentStage(double questsCurrentStage) {
@@ -782,55 +641,6 @@ public class MainStageController implements Initializable
     public void setPosTotalCurrentStage(double posTotalCurrentStage) {
         this.posTotalCurrentStage = posTotalCurrentStage;
     }
-
-    public double getXr7CurrentStage() {
-        return xr7CurrentStage;
-    }
-
-    public void setXr7CurrentStage(double xr7CurrentStage) {
-        this.xr7CurrentStage = xr7CurrentStage;
-    }
-
-    public double getXr7GoalStage() {
-        return xr7GoalStage;
-    }
-
-    public void setXr7GoalStage(double xr7GoalStage) {
-        this.xr7GoalStage = xr7GoalStage;
-    }
-
-    public double getXr7PlusCurrentStage() {
-        return xr7PlusCurrentStage;
-    }
-
-    public void setXr7PlusCurrentStage(double xr7PlusCurrentStage) {
-        this.xr7PlusCurrentStage = xr7PlusCurrentStage;
-    }
-
-    public double getXr7PlusGoalStage() {
-        return xr7PlusGoalStage;
-    }
-
-    public void setXr7PlusGoalStage(double xr7PlusGoalStage) {
-        this.xr7PlusGoalStage = xr7PlusGoalStage;
-    }
-
-    public double getXr5CurrentStage() {
-        return xr5CurrentStage;
-    }
-
-    public void setXr5CurrentStage(double xr5CurrentStage) {
-        this.xr5CurrentStage = xr5CurrentStage;
-    }
-
-    public double getXr5GoalStage() {
-        return xr5GoalStage;
-    }
-
-    public void setXr5GoalStage(double xr5GoalStage) {
-        this.xr5GoalStage = xr5GoalStage;
-    }
-
     public double getNextGenDisplayCurrentStage() {
         return nextGenDisplayCurrentStage;
     }
@@ -863,54 +673,6 @@ public class MainStageController implements Initializable
         this.retailTotalCurrentStage = retailTotalCurrentStage;
     }
 
-    public double getMediaPlayerCurrentStage() {
-        return mediaPlayerCurrentStage;
-    }
-
-    public void setMediaPlayerCurrentStage(double mediaPlayerCurrentStage) {
-        this.mediaPlayerCurrentStage = mediaPlayerCurrentStage;
-    }
-
-    public double getMediaPlayerGoalStage() {
-        return mediaPlayerGoalStage;
-    }
-
-    public void setMediaPlayerGoalStage(double mediaPlayerGoalStage) {
-        this.mediaPlayerGoalStage = mediaPlayerGoalStage;
-    }
-
-    public double getN3000CurrentStage() {
-        return n3000CurrentStage;
-    }
-
-    public void setN3000CurrentStage(double n3000CurrentStage) {
-        this.n3000CurrentStage = n3000CurrentStage;
-    }
-
-    public double getN3000GoalStage() {
-        return n3000GoalStage;
-    }
-
-    public void setN3000GoalStage(double n3000GoalStage) {
-        this.n3000GoalStage = n3000GoalStage;
-    }
-
-    public double getS500CurrentStage() {
-        return s500CurrentStage;
-    }
-
-    public void setS500CurrentStage(double s500CurrentStage) {
-        this.s500CurrentStage = s500CurrentStage;
-    }
-
-    public double getS500GoalStage() {
-        return s500GoalStage;
-    }
-
-    public void setS500GoalStage(double s500GoalStage) {
-        this.s500GoalStage = s500GoalStage;
-    }
-
     public double getServerGoalTotalStage() {
         return serverGoalTotalStage;
     }
@@ -925,70 +687,6 @@ public class MainStageController implements Initializable
 
     public void setServerCurrentStage(double serverCurrentStage) {
         this.serverCurrentStage = serverCurrentStage;
-    }
-
-    public double getKiwi4sCurrentStage() {
-        return kiwi4sCurrentStage;
-    }
-
-    public void setKiwi4sCurrentStage(double kiwi4sCurrentStage) {
-        this.kiwi4sCurrentStage = kiwi4sCurrentStage;
-    }
-
-    public double getKiwi4sGoalStage() {
-        return kiwi4sGoalStage;
-    }
-
-    public void setKiwi4sGoalStage(double kiwi4sGoalStage) {
-        this.kiwi4sGoalStage = kiwi4sGoalStage;
-    }
-
-    public double getKiwi2XsCurrentStage() {
-        return kiwi2XsCurrentStage;
-    }
-
-    public void setKiwi2XsCurrentStage(double kiwi2XsCurrentStage) {
-        this.kiwi2XsCurrentStage = kiwi2XsCurrentStage;
-    }
-
-    public double getKiwi2XsGoalStage() {
-        return kiwi2XsGoalStage;
-    }
-
-    public void setKiwi2XsGoalStage(double kiwi2XsGoalStage) {
-        this.kiwi2XsGoalStage = kiwi2XsGoalStage;
-    }
-
-    public double getBumpBarsCurrentStage() {
-        return bumpBarsCurrentStage;
-    }
-
-    public void setBumpBarsCurrentStage(double bumpBarsCurrentStage) {
-        this.bumpBarsCurrentStage = bumpBarsCurrentStage;
-    }
-
-    public double getBumpBarsGoalStage() {
-        return bumpBarsGoalStage;
-    }
-
-    public void setBumpBarsGoalStage(double bumpBarsGoalStage) {
-        this.bumpBarsGoalStage = bumpBarsGoalStage;
-    }
-
-    public double getPantherEPC4sCurrentStage() {
-        return pantherEPC4sCurrentStage;
-    }
-
-    public void setPantherEPC4sCurrentStage(double pantherEPC4sCurrentStage) {
-        this.pantherEPC4sCurrentStage = pantherEPC4sCurrentStage;
-    }
-
-    public double getPantherEPC4sGoalStage() {
-        return pantherEPC4sGoalStage;
-    }
-
-    public void setPantherEPC4sGoalStage(double pantherEPC4sGoalStage) {
-        this.pantherEPC4sGoalStage = pantherEPC4sGoalStage;
     }
 
     public double getPeriphGoalTotalStage() {
@@ -1007,32 +705,15 @@ public class MainStageController implements Initializable
         this.periphCurrentTotalStage = periphCurrentTotalStage;
     }
 
-    public double getPosPercentTotalStage() {
-        return posPercentTotalStage;
-    }
-
     public void setPosPercentTotalStage(double posPercentTotalStage) {
         this.posPercentTotalStage = posPercentTotalStage;
     }
-
-    public double getRetailPercentTotalStage() {
-        return retailPercentTotalStage;
-    }
-
     public void setRetailPercentTotalStage(double retailPercentTotalStage) {
         this.retailPercentTotalStage = retailPercentTotalStage;
     }
 
-    public double getServersPercentTotalStage() {
-        return serversPercentTotalStage;
-    }
-
     public void setServersPercentTotalStage(double serversPercentTotalStage) {
         this.serversPercentTotalStage = serversPercentTotalStage;
-    }
-
-    public double getPeriphPercentTotalStage() {
-        return periphPercentTotalStage;
     }
 
     public void setPeriphPercentTotalStage(double periphPercentTotalStage) {

@@ -20,73 +20,72 @@ import java.util.HashMap;
  */
 public class Tool {
 
-    HashMap<String,Integer> displayMap;
-    HashMap<String,Integer> ng1Map;
-    HashMap<String,Integer> ng2Map;
-    HashMap<String,Integer> ng3Map;
-    HashMap<String,Integer> ng4Map;
-    HashMap<String,Integer> ng5Map;
-    HashMap<String,Integer> optic1Map;
-    HashMap<String,Integer> optic2Map;
-    HashMap<String,Integer> optic3Map;
-    HashMap<String,Integer> optic4Map;
-    HashMap<String,Integer> edAMap;
-    HashMap<String,Integer> edBMap;
-    HashMap<String,Integer> posAMap;
-    HashMap<String,Integer> posBMap;
-    HashMap<String,Integer> posCMap;
-    HashMap<String,Integer> posDMap;
-    HashMap<String,Integer> posEMap;
-    HashMap<String,Integer> questMap;
-    HashMap<String,Integer> t1000Map;
-    HashMap<String,Integer> servers1Map;
-    HashMap<String,Integer> servers2Map;
+    private HashMap<String,Integer> displayMap;
+    private HashMap<String,Integer> ng1Map;
+    private HashMap<String,Integer> ng2Map;
+    private HashMap<String,Integer> ng3Map;
+    private HashMap<String,Integer> ng4Map;
+    private HashMap<String,Integer> ng5Map;
+    private HashMap<String,Integer> optic1Map;
+    private HashMap<String,Integer> optic2Map;
+    private HashMap<String,Integer> optic3Map;
+    private HashMap<String,Integer> optic4Map;
+    private HashMap<String,Integer> edAMap;
+    private HashMap<String,Integer> edBMap;
+    private HashMap<String,Integer> posAMap;
+    private HashMap<String,Integer> posBMap;
+    private HashMap<String,Integer> posCMap;
+    private HashMap<String,Integer> posDMap;
+    private HashMap<String,Integer> posEMap;
+    private HashMap<String,Integer> questMap;
+    private HashMap<String,Integer> t1000Map;
+    private HashMap<String,Integer> servers1Map;
+    private HashMap<String,Integer> servers2Map;
 
-    timeOrb display;
-    timeOrb edA;
-    timeOrb edB;
-    timeOrb posA;
-    timeOrb posB;
-    timeOrb posD;
-    timeOrb posE;
-    timeOrb quest;
-    timeOrb t1000;
-    timeOrb ng1;
-    timeOrb ng2;
-    timeOrb ng3;
-    timeOrb ng4;
-    timeOrb ng5;
-    timeOrb optic1;
-    timeOrb optic2;
-    timeOrb optic3;
-    timeOrb optic4;
-    timeOrb servers1;
-    timeOrb servers2;
+    private timeOrb display;
+    private timeOrb edA;
+    private timeOrb edB;
+    private timeOrb posA;
+    private timeOrb posB;
+    private timeOrb posD;
+    private timeOrb posE;
+    private timeOrb quest;
+    private timeOrb t1000;
+    private timeOrb ng1;
+    private timeOrb ng2;
+    private timeOrb ng3;
+    private timeOrb ng4;
+    private timeOrb ng5;
+    private timeOrb optic1;
+    private timeOrb optic2;
+    private timeOrb optic3;
+    private timeOrb optic4;
+    private timeOrb servers1;
+    private timeOrb servers2;
 
-    HashMap<String,Integer> hospMap;
-    HashMap<String,Integer> retailMap;
-    HashMap<String,Integer> serversMap;
-    HashMap<String,Integer> periphMap;
-    HashMap<String,Integer> opticMap;
-    HashMap<String,Integer> hospStageMap;
-    HashMap<String,Integer> retailStageMap;
-    HashMap<String,Integer> serversStageMap;
-    HashMap<String,Integer> periphStageMap;
-    HashMap<String,Integer> opticStageMap;
+    private HashMap<String,Integer> hospMap;
+    private HashMap<String,Integer> retailMap;
+    private HashMap<String,Integer> serversMap;
+    private HashMap<String,Integer> periphMap;
+    private HashMap<String,Integer> opticMap;
+    private HashMap<String,Integer> hospStageMap;
+    private HashMap<String,Integer> retailStageMap;
+    private HashMap<String,Integer> serversStageMap;
+    private HashMap<String,Integer> periphStageMap;
+    private HashMap<String,Integer> opticStageMap;
+    private HashMap<String,Integer> returnMap;
+    private HashMap<String,Integer> lineMap;
 
-    HashMap<String,Integer> returnMap;
-    HashMap<String,Integer> lineMap;
-    ArrayList<String> readMe;
-    ArrayList<String> strings;
-    ArrayList<String> itemIDS;
-    ArrayList<Integer> count;
-    HashMap<String, ArrayList<String>> dummyMap;
+    private ArrayList<String> readMe;
+    private ArrayList<String> strings;
+    private ArrayList<String> itemIDS;
+    private ArrayList<Integer> count;
+    private HashMap<String, ArrayList<String>> dummyMap;
+    private ArrayList<HashMap<String,Integer>> returnList;
+    private ArrayList<HashMap<String,Integer>> returnStageList;
 
-    ArrayList<HashMap<String,Integer>> returnList;
-    ArrayList<HashMap<String,Integer>> returnStageList;
-
-    ArrayList<HashMap<String,Integer>> mapList;
-    ArrayList<timeOrb> orbList;
+    private ArrayList<HashMap<String,Integer>> mapList;
+    private ArrayList<timeOrb> orbList;
 
     public void tableSetUp()
     {
@@ -218,21 +217,22 @@ public class Tool {
     }
 
 
-    NodeList hospNodeList;
-    NodeList retailNodeList;
-    NodeList periphNodeList;
-    NodeList serverNodeList;
-    NodeList opticNodeList;
-    String hospProduct;
-    String hospGoal;
-    String retailProduct;
-    String retailGoal;
-    String periphProduct;
-    String periphGoal;
-    String serverProduct;
-    String serverGoal;
-    String opticProduct;
-    String opticGoal;
+    private NodeList hospNodeList;
+    private NodeList retailNodeList;
+    private NodeList periphNodeList;
+    private NodeList serverNodeList;
+    private NodeList opticNodeList;
+    private String hospProduct;
+    private String hospGoal;
+    private String retailProduct;
+    private String retailGoal;
+    private String periphProduct;
+    private String periphGoal;
+    private String serverProduct;
+    private String serverGoal;
+    private String opticProduct;
+    private String opticGoal;
+
     public ArrayList<HashMap<String,Integer>> documentReader() throws IOException, SAXException, ParserConfigurationException
     {
         //--------------------------------Variables for Maps------------------------------------------------
@@ -391,20 +391,20 @@ public class Tool {
     }
 
 
-    Connection conn;
+    private Connection conn;
 
-    Statement statement;
-    ResultSet resultSet;
-    String URL;
-    String User;
-    String Pass;
-    String model;
+   private Statement statement;
+   private ResultSet resultSet;
+   private String URL;
+   private String User;
+   private String Pass;
+   private String model;
 
-    String sub;
+   private String sub;
 
-    String query;
-    String tempString;
-    int tempValue;
+   private String query;
+   private String tempString;
+   private int tempValue;
 
     //---------------------------------Database Queries----------------------------------------------------------------
     public HashMap<String,Integer> buildQuery() throws SQLException
@@ -501,9 +501,9 @@ public class Tool {
         return returnMap;
     }
 
-    ArrayList<String> lineProduct;
-    ArrayList<String> lineLoc;
-    String line;
+    private ArrayList<String> lineProduct;
+    private ArrayList<String> lineLoc;
+    private String line;
 
     public HashMap<String,Integer> buildLineQuery() throws ClassNotFoundException, SQLException
     {
@@ -592,8 +592,9 @@ public class Tool {
     }
 
 
-    String time;
-    String checkLine;
+    private String time;
+    private String checkLine;
+
     public ArrayList<timeOrb> buildTimeQuery() throws ClassNotFoundException, SQLException
     {
 
@@ -762,7 +763,7 @@ public class Tool {
         return returnMap;
     }
 
-    String staging;
+    private String staging;
 
     //---------------------------------Hosp Test Query-------------------------------------------------------------------
     public HashMap<String,Integer> hospTestDataBase() throws ClassNotFoundException, SQLException
@@ -944,10 +945,10 @@ public class Tool {
         return returnMap;
     }
 
-    String user;
-    ArrayList<String> temp;
-    ArrayList<String> tempList;
-    ArrayList<String> users;
+    private String user;
+    private ArrayList<String> temp;
+    private ArrayList<String> tempList;
+    private ArrayList<String> users;
 
     public HashMap<String,Integer> hospStageDataBaseUsers() throws ClassNotFoundException, SQLException
     {
@@ -1053,12 +1054,11 @@ public class Tool {
         return returnMap;
     }
 
-    boolean flag;
-    double percentages;
+    private boolean flag;
+    private double percentages;
+
     public double hospFTTDataBase() throws ClassNotFoundException, SQLException
     {
-
-
         itemIDS = new ArrayList<>();
         count = new ArrayList<>();
         percentages = 0.0;

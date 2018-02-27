@@ -39,7 +39,7 @@ public class GoalTool {
             {
                 toReturn = toReturn + inputMap.get(prodList.get(i));
             } else {
-                System.out.println("Did not find ' " + prodList.get(i) + " ' in info file. Returning zero.");
+                //System.out.println("Did not find ' " + prodList.get(i) + " ' in info file. Returning zero.");
             }
         }
         return toReturn;

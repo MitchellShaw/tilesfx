@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class TimeLineController implements Initializable {
+public class TimeLineController extends Controller implements Initializable,Methods {
     @FXML
     private GridPane pane;
     @FXML

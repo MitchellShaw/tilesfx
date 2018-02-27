@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class PeriphBuildController implements Initializable {
+public class PeriphBuildController extends Controller implements Initializable,Methods {
     @FXML
     Tile logo;
     @FXML
@@ -67,63 +67,53 @@ public class PeriphBuildController implements Initializable {
     @FXML
     Tile periphTestFTT;
 
-    HBox myBox;
-    HBox hbox;
-
-    double kiwi4sCurrentBuild;
-    double kiwi4sGoalBuild;
-    double kiwi2XsCurrentBuild;
-    double kiwi2XsGoalBuild;
-    double bumpBarsCurrentBuild;
-    double bumpBarsGoalBuild;
-    double pantherEPC4sCurrentBuild;
-    double pantherEPC4sGoalBuild;
-    double periphGoalTotalBuild;
-    double periphCurrentTotalBuild;
-    double periphThrough;
-    double periphPercentTotalBuild;
-    double periphBar1Total;
-    double periphBar1Goal;
-    double periphBar2Total;
-    double periphBar2Goal;
-    double periphBar3Total;
-    double periphBar3Goal;
-    double periphCurrentTotalTest;
-    double periphPercentTotalTest;
-    double kiwi4sCurrentTest;
-    double kiwi2XsCurrentTest;
-    double bumpBarsCurrentTest;
-    double pantherEPC4sCurrentTest;
-
-    BarChartItem periphBar1Data;
-    BarChartItem periphBar2Data;
-    BarChartItem periphBar3Data;
-    BarChartItem periphBar1DataTest;
-    BarChartItem periphBar2DataTest;
-    BarChartItem periphBar3DataTest;
-
-    double x = 0;
-    double y = 0;
-
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
-
-    Messenger messenger;
-
-    String useDate = "0";
-
-    ImageView stopView = new ImageView();
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
-
-    final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
-
-    ArrayList<Tile> tiles;
-
-    DecimalFormat df = new DecimalFormat("#.0");
-    DecimalFormat hundred = new DecimalFormat("#");
+    private HBox myBox;
+    private HBox hbox;
+    private double kiwi4sCurrentBuild;
+    private double kiwi4sGoalBuild;
+    private double kiwi2XsCurrentBuild;
+    private double kiwi2XsGoalBuild;
+    private double bumpBarsCurrentBuild;
+    private double bumpBarsGoalBuild;
+    private double pantherEPC4sCurrentBuild;
+    private double pantherEPC4sGoalBuild;
+    private double periphGoalTotalBuild;
+    private double periphCurrentTotalBuild;
+    private double periphThrough;
+    private double periphPercentTotalBuild;
+    private double periphBar1Total;
+    private double periphBar1Goal;
+    private double periphBar2Total;
+    private double periphBar2Goal;
+    private double periphBar3Total;
+    private double periphBar3Goal;
+    private double periphCurrentTotalTest;
+    private double periphPercentTotalTest;
+    private double kiwi4sCurrentTest;
+    private double kiwi2XsCurrentTest;
+    private double bumpBarsCurrentTest;
+    private double pantherEPC4sCurrentTest;
+    private BarChartItem periphBar1Data;
+    private BarChartItem periphBar2Data;
+    private BarChartItem periphBar3Data;
+    private BarChartItem periphBar1DataTest;
+    private BarChartItem periphBar2DataTest;
+    private BarChartItem periphBar3DataTest;
+    private double x = 0;
+    private double y = 0;
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
+    private Messenger messenger;
+    private String useDate = "0";
+    private ImageView stopView = new ImageView();
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private final ImageView logoView = new ImageView();
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private ArrayList<Tile> tiles;
+    private DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat hundred = new DecimalFormat("#");
 
     @FXML
     private GridPane pane;
@@ -486,65 +476,7 @@ public class PeriphBuildController implements Initializable {
         });
     }
 
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
 
-        for(int i =0;i<tileList.size();i++)
-        {
-            tileList.get(i).setAnimated(true);
-            tileList.get(i).setAnimationDuration(3000);
-
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-
-                }
-            });
-            int finalI = i;
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
-                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
-
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
-                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-                        tileList.get(finalI).setCursor(Cursor.HAND);
-                        idle.playFromStart();
-                        tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    });
-                    idle.setOnFinished(e ->
-                    {
-                        tileList.get(finalI).setCursor(Cursor.NONE);
-                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                    });
-                }
-            });
-            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                }
-            });
-        }
-    }
     ArrayList<Tile> gauges;
 
     private void buildDifferential() {
@@ -637,58 +569,8 @@ public class PeriphBuildController implements Initializable {
 
         }
     }
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY();
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY();
-            }
-        }
-        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-    }
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
 
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
+
 
     public Tile getLogo() {
         return logo;
@@ -730,38 +612,6 @@ public class PeriphBuildController implements Initializable {
         this.daySince = daySince;
     }
 
-    public Tile getPeriphBuild() {
-        return periphBuild;
-    }
-
-    public void setPeriphBuild(Tile periphBuild) {
-        this.periphBuild = periphBuild;
-    }
-
-    public Tile getPeriphFTT() {
-        return periphFTT;
-    }
-
-    public void setPeriphFTT(Tile periphFTT) {
-        this.periphFTT = periphFTT;
-    }
-
-    public Tile getPeriphTest() {
-        return periphTest;
-    }
-
-    public void setPeriphTest(Tile periphTest) {
-        this.periphTest = periphTest;
-    }
-
-    public Tile getPeriphTestFTT() {
-        return periphTestFTT;
-    }
-
-    public void setPeriphTestFTT(Tile periphTestFTT) {
-        this.periphTestFTT = periphTestFTT;
-    }
-
     public Messenger getMessenger() {
         return messenger;
     }
@@ -774,7 +624,9 @@ public class PeriphBuildController implements Initializable {
         return useDate;
     }
 
+    @Override
     public void setUseDate(String useDate) {
         this.useDate = useDate;
     }
+
 }

@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class serversLine1Controller implements Initializable
+public class serversLine1Controller extends Controller implements Initializable,Methods
 {
     double sevenGoal;
     double eightGoal;
@@ -697,96 +697,11 @@ public class serversLine1Controller implements Initializable
 
     }
 
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
 
-        for(int i =0;i<tileList.size();i++)
-        {
-            tileList.get(i).setAnimated(true);
-            tileList.get(i).setAnimationDuration(3000);
 
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
 
-                }
-            });
-            int finalI = i;
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
-                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-        }
-    }
 
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY();
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY();
-            }
-        }
-        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-    }
-
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
     public Tile getLogo() {
         return logo;
     }
@@ -831,10 +746,6 @@ public class serversLine1Controller implements Initializable
         return useDate;
     }
 
-    public void setUseDate(String useDate) {
-        this.useDate = useDate;
-    }
-
     public int getLine1Total() {
         return line1Total;
     }
@@ -857,5 +768,10 @@ public class serversLine1Controller implements Initializable
 
     public void setTimeOrbs(ArrayList<timeOrb> timeOrbs) {
         this.timeOrbs = timeOrbs;
+    }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 }

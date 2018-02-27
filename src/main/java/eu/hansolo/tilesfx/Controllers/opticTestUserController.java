@@ -33,68 +33,68 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class opticTestUserController implements Initializable {
-    Tile logo;
-    Tile clock;
-    Tile dept;
-    Tile stopLight;
-    Tile daySince;
+public class opticTestUserController extends Controller implements Initializable,Methods {
+    private Tile logo;
+    private Tile clock;
+    private Tile dept;
+    private Tile stopLight;
+    private Tile daySince;
 
-    Tile user1;
-    Tile user2;
-    Tile user3;
-    Tile user4;
-    Tile user5;
-    Tile user6;
-    Tile user7;
-    Tile user8;
-    Tile user9;
-    Tile user10;
-    Tile user11;
-    Tile user12;
-    Tile user13;
-    Tile user14;
-    Tile user15;
-    Tile user16;
-    Tile user17;
-    Tile user18;
-    Tile user19;
-    Tile user20;
+    private Tile user1;
+    private Tile user2;
+    private Tile user3;
+    private Tile user4;
+    private Tile user5;
+    private Tile user6;
+    private Tile user7;
+    private Tile user8;
+    private Tile user9;
+    private Tile user10;
+    private Tile user11;
+    private Tile user12;
+    private Tile user13;
+    private Tile user14;
+    private Tile user15;
+    private Tile user16;
+    private Tile user17;
+    private Tile user18;
+    private Tile user19;
+    private Tile user20;
 
-    HashMap<String,Integer> userMap;
-    LinkedHashMap<String,Integer> sortedByValue;
+    private HashMap<String,Integer> userMap;
+    private LinkedHashMap<String,Integer> sortedByValue;
 
-    Comparator<Map.Entry<String,Integer>> valueComparator;
+    private Comparator<Map.Entry<String,Integer>> valueComparator;
 
-    HBox hbox;
-    HBox myBox;
+    private HBox hbox;
+    private HBox myBox;
 
-    ArrayList<Tile> tileSort;
+    private ArrayList<Tile> tileSort;
 
-    double x = 0;
-    double y = 0;
+    private double x = 0;
+    private double y = 0;
 
-    ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    Bounds allScreenBounds = computeAllScreenBounds();
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
 
-    ArrayList<Tile> users;
+    private ArrayList<Tile> users;
 
-    Messenger messenger;
+    private Messenger messenger;
 
-    ArrayList<Tile> tiles;
+    private ArrayList<Tile> tiles;
 
-    String useDate = "0";
+    private String useDate = "0";
 
-    ImageView stopView = new ImageView();
-    ImageView logoView = new ImageView();
+    private ImageView stopView = new ImageView();
+    private ImageView logoView = new ImageView();
 
-    final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
-    final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
-    final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image redImage = new Image("/eu/hansolo/tilesfx/Red Light.PNG");
+    private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
+    private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
-    MainStageController stageController;
-    MainTestController testController;
+    private MainStageController stageController;
+    private MainTestController testController;
 
     @FXML
     private GridPane pane;
@@ -623,94 +623,9 @@ public class opticTestUserController implements Initializable {
             }
         });
     }
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
 
-        for(int i =0;i<tileList.size();i++)
-        {
-            tileList.get(i).setAnimated(true);
-            tileList.get(i).setAnimationDuration(3000);
 
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
 
-                }
-            });
-            int finalI = i;
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
-                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
-
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-        }
-    }
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY();
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY();
-            }
-        }
-        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-    }
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
 
     public Messenger getMessenger() {
         return messenger;
@@ -752,10 +667,6 @@ public class opticTestUserController implements Initializable {
         return useDate;
     }
 
-    public void setUseDate(String useDate) {
-        this.useDate = useDate;
-    }
-
 
     public HashMap<String, Integer> getUserMap() {
         return userMap;
@@ -763,6 +674,11 @@ public class opticTestUserController implements Initializable {
 
     public void setUserMap(HashMap<String, Integer> userMap) {
         this.userMap = userMap;
+    }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 
 }

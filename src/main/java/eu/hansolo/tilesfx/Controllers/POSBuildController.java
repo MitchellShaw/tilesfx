@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class POSBuildController implements Initializable
+public class POSBuildController extends Controller implements Initializable,Methods
 {
     @FXML
     Tile logo;
@@ -90,39 +90,39 @@ public class POSBuildController implements Initializable
     ImageView logoView = new ImageView();
     final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
 
-    double p1x30CurrentBuild;
-    double p1x30GoalBuild;
-    double p1x35CurrentBuild;
-    double p1x35GoalBuild;
-    double p1532CurrentBuild;
-    double p1532GoalBuild;
-    double t1000sCurrentBuild;
-    double t1000sGoalBuild;
-    double questGoalBuild;
-    double questCurrentBuild;
-    double posTotalGoalBuild;
-    double posTotalCurrentBuild;
-    double posPercentTotalBuild;
-    double posThrough;
-    double posBar1Total;
-    double posBar1Goal;
-    double posPercentTotalTest;
-    double p1x30CurrentTest;
-    double p1x35CurrentTest;
-    double p1532CurrentTest;
-    double t1000sCurrentTest;
-    double questsCurrentTest;
-    double posTotalCurrentTest;
+    private double p1x30CurrentBuild;
+    private double p1x30GoalBuild;
+    private double p1x35CurrentBuild;
+    private double p1x35GoalBuild;
+    private double p1532CurrentBuild;
+    private double p1532GoalBuild;
+    private double t1000sCurrentBuild;
+    private double t1000sGoalBuild;
+    private double questGoalBuild;
+    private double questCurrentBuild;
+    private double posTotalGoalBuild;
+    private double posTotalCurrentBuild;
+    private double posPercentTotalBuild;
+    private double posThrough;
+    private double posBar1Total;
+    private double posBar1Goal;
+    private double posPercentTotalTest;
+    private double p1x30CurrentTest;
+    private double p1x35CurrentTest;
+    private double p1532CurrentTest;
+    private double t1000sCurrentTest;
+    private double questsCurrentTest;
+    private double posTotalCurrentTest;
 
 
-    BarChartItem posBar1Data;
-    BarChartItem p1x30Data;
-    BarChartItem t1000Data;
-    BarChartItem questData;
-    BarChartItem posBar1DataTest;
-    BarChartItem p1x30DataTest;
-    BarChartItem t1000DataTest;
-    BarChartItem questDataTest;
+    private BarChartItem posBar1Data;
+    private BarChartItem p1x30Data;
+    private BarChartItem t1000Data;
+    private BarChartItem questData;
+    private BarChartItem posBar1DataTest;
+    private BarChartItem p1x30DataTest;
+    private BarChartItem t1000DataTest;
+    private BarChartItem questDataTest;
 
     DecimalFormat df = new DecimalFormat("#.0");
     DecimalFormat hundred = new DecimalFormat("#");
@@ -584,119 +584,11 @@ public class POSBuildController implements Initializable
         });
     }
 
-    private void tilesListeners(ArrayList<Tile> tileList)
-    {
 
-        for(int i =0;i<tileList.size();i++)
-        {
-            tileList.get(i).setAnimated(true);
-            tileList.get(i).setAnimationDuration(3000);
 
-            tileList.get(i).setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
 
-                }
-            });
-            int finalI = i;
-            tileList.get(i).setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    tileList.get(finalI).getScene().getWindow().setX(event.getScreenX() - x);
-                    tileList.get(finalI).getScene().getWindow().setY(event.getScreenY() - y);
-                    if(tileList.get(finalI).getScene().getWindow().getX() < allScreenBounds.getMinX())
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMinX());
 
-                    }
-                    if(tileList.get(finalI).getScene().getWindow().getX() > (allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth))
-                    {
-                        tileList.get(finalI).getScene().getWindow().setX(allScreenBounds.getMaxX()-messenger.getResolutionizer().screenWidth);
-                    }
-                }
-            });
-            tileList.get(i).setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    PauseTransition idle = new PauseTransition(Duration.millis(1000));
-                    tileList.get(finalI).addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-                        tileList.get(finalI).setCursor(Cursor.HAND);
-                        idle.playFromStart();
-                        tileList.get(finalI).setBorderColor(Tile.GRAY);
-                    });
-                    idle.setOnFinished(e ->
-                    {
-                        tileList.get(finalI).setCursor(Cursor.NONE);
-                        tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                    });
-                }
-            });
-            tileList.get(i).setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    tileList.get(finalI).setBorderColor(Color.TRANSPARENT);
-                }
-            });
-        }
-    }
 
-    private Bounds computeAllScreenBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Screen screen : Screen.getScreens()) {
-            Rectangle2D screenBounds = screen.getBounds();
-            if (screenBounds.getMinX() < minX) {
-                minX = screenBounds.getMinX();
-            }
-            if (screenBounds.getMinY() < minY) {
-                minY = screenBounds.getMinY();
-            }
-            if (screenBounds.getMaxX() > maxX) {
-                maxX = screenBounds.getMaxX();
-            }
-            if (screenBounds.getMaxY() > maxY) {
-                maxY = screenBounds.getMaxY();
-            }
-        }
-        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-    }
-
-    private void screenMove(Stage primaryStage, Bounds allScreenBounds, ArrayList<Screen> screens)
-    {
-        if (screens.size() == 1) {
-            primaryStage.setX(allScreenBounds.getMinX());
-            primaryStage.setY(allScreenBounds.getMinY());
-        }
-        if (screens.size() == 2) {
-
-            if (primaryStage.getX() < 0) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            } else {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        } else {
-            if (primaryStage.getX() < 0 && primaryStage.getX() < allScreenBounds.getMinX() + (primaryStage.getWidth() / 2)) {
-                primaryStage.setX(allScreenBounds.getMinX());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > allScreenBounds.getMinX() + (primaryStage.getWidth() / 2) && primaryStage.getX() < allScreenBounds.getMaxX() - (1.5 * (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMinX() + primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-            if (primaryStage.getX() > (allScreenBounds.getMaxX() - (primaryStage.getWidth() / 2) - (primaryStage.getWidth()))) {
-                primaryStage.setX(allScreenBounds.getMaxX() - primaryStage.getWidth());
-                primaryStage.setY(allScreenBounds.getMinY());
-            }
-        }
-    }
     public Messenger getMessenger() {
         return messenger;
     }
@@ -704,6 +596,12 @@ public class POSBuildController implements Initializable
     public void setMessenger(Messenger messenger) {
         this.messenger = messenger;
     }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
+    }
+
     public Tile getLogo() {
         return logo;
     }
@@ -744,7 +642,4 @@ public class POSBuildController implements Initializable
         return useDate;
     }
 
-    public void setUseDate(String useDate) {
-        this.useDate = useDate;
-    }
 }

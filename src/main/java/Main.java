@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -18,11 +19,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+//import java.util.logging.FileHandler;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import java.util.logging.SimpleFormatter;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -36,111 +38,121 @@ public class Main extends Application {
     //------------------------------------Variables Block---------------------------------------------------------------
     double x = 0;
     double y = 0;
-    boolean flag;
-    Messenger messenger;
-    long daysBetween;
-    int counter;
-    String useDate;
+    private boolean flag;
+    private Messenger messenger;
+    private long daysBetween;
+    private int counter;
+    private String useDate;
 
-    long heapSize;
-    long heapMaxSize;
-    long heapFreeSize;
+    private long memoryBefore;
+    private long memoryAfter;
 
-    ArrayList<timeOrb> orbList;
+    private long heapSize;
+    private long heapMaxSize;
+    private long heapFreeSize;
 
-    HashMap<String, Integer> buildMap;
+    private ArrayList<timeOrb> orbList;
+
+    private HashMap<String, Integer> buildMap;
     //---------------------------------Variables for Map Creation for POS Database Call----------------------------
-    HashMap<String, Integer> posTestMap;
-    HashMap<String, Integer> posTestUserMap;
-    HashMap<String, Integer> posStageMap;
-    HashMap<String, Integer> posUserStageMap;
+    private HashMap<String, Integer> posTestMap;
+    private HashMap<String, Integer> posTestUserMap;
+    private HashMap<String, Integer> posStageMap;
+    private HashMap<String, Integer> posUserStageMap;
     //---------------------------------Variables for Map Creation for Retail Database Call-------------------------
-    HashMap<String, Integer> retailTestMap;
-    HashMap<String, Integer> retailTestUserMap;
-    HashMap<String, Integer> retailStageMap;
-    HashMap<String, Integer> retailUserStageMap;
+    private HashMap<String, Integer> retailTestMap;
+    private HashMap<String, Integer> retailTestUserMap;
+    private HashMap<String, Integer> retailStageMap;
+    private HashMap<String, Integer> retailUserStageMap;
 
     //---------------------------------Variables for Map Creation for Servers Database Call------------------------
-    HashMap<String, Integer> serversTestMap;
-    HashMap<String, Integer> serversTestUserMap;
-    HashMap<String, Integer> serversStageMap;
-    HashMap<String, Integer> serversUserStageMap;
+    private HashMap<String, Integer> serversTestMap;
+    private HashMap<String, Integer> serversTestUserMap;
+    private HashMap<String, Integer> serversStageMap;
+    private HashMap<String, Integer> serversUserStageMap;
 
     //---------------------------------Variables for Map Creation for Peripherals Database Call--------------------
-    HashMap<String, Integer> periphTestMap;
-    HashMap<String, Integer> periphTestUserMap;
-    HashMap<String, Integer> periphStageMap;
-    HashMap<String, Integer> periphUserStageMap;
+    private HashMap<String, Integer> periphTestMap;
+    private HashMap<String, Integer> periphTestUserMap;
+    private HashMap<String, Integer> periphStageMap;
+    private HashMap<String, Integer> periphUserStageMap;
 
     //---------------------------------Variables for Map Creation for Optic Database Call----------------------------
-    HashMap<String, Integer> opticBuildMap;
-    HashMap<String, Integer> opticTestMap;
-    HashMap<String, Integer> opticTestUserMap;
+    private HashMap<String, Integer> opticBuildMap;
+    private HashMap<String, Integer> opticTestMap;
+    private HashMap<String, Integer> opticTestUserMap;
 
     //---------------------------------Variables for Map Creation for Document Reader---------------------------------
-    ArrayList<HashMap<String, Integer>> mapList;
-    ArrayList<HashMap<String, Integer>> stageMapList;
+    private ArrayList<HashMap<String, Integer>> mapList;
+    private ArrayList<HashMap<String, Integer>> stageMapList;
 
 
-    HashMap<String, Integer> lineMap;
+    private HashMap<String, Integer> lineMap;
 
-    FXMLLoader root;
+    private FXMLLoader root;
 
-    Runtime rt;
+    private Runtime rt;
 
-    LoadingController loadingController;
-    NavigationController navigationController;
-    TimeLineController timeLineController;
-    MainBuildController buildController;
-    MainTestController testController;
-    MainStageController stageController;
-    POSBuildController posBuildController;
-    RetailBuildController retailBuildController;
-    ServersBuildController serversBuildController;
-    PeriphBuildController periphBuildController;
-    OpticBuildController opticBuildController;
-    POSStageController posStageController;
-    RetailStageController retailStageController;
-    PeriphStageController periphStageController;
-    posBuildOverviewController posBuildOverviewController;
-    retailBuildOverviewController retailBuildOverviewController;
-    periphBuildOverviewController periphBuildOverviewController;
-    serversBuildOverviewController serversBuildOverviewController;
-    opticBuildOverviewController opticBuildOverviewController;
+    private LoadingController loadingController;
+    private NavigationController navigationController;
+    private TimeLineController timeLineController;
+    private MainBuildController buildController;
+    private MainTestController testController;
+    private MainStageController stageController;
+    private POSBuildController posBuildController;
+    private RetailBuildController retailBuildController;
+    private ServersBuildController serversBuildController;
+    private PeriphBuildController periphBuildController;
+    private OpticBuildController opticBuildController;
+    private POSStageController posStageController;
+    private RetailStageController retailStageController;
+    private PeriphStageController periphStageController;
+    private posBuildOverviewController posBuildOverviewController;
+    private retailBuildOverviewController retailBuildOverviewController;
+    private periphBuildOverviewController periphBuildOverviewController;
+    private serversBuildOverviewController serversBuildOverviewController;
+    private opticBuildOverviewController opticBuildOverviewController;
 
-    nextGenDisplayLineController nextGenDisplayLineController;
-    nextGenLine1Controller nextGenLine1Controller;
-    nextGenLine2Controller nextGenLine2Controller;
-    nextGenLine3Controller nextGenLine3Controller;
-    nextGenLine4Controller nextGenLine4Controller;
-    nextGenLine5Controller nextGenLine5Controller;
+    private nextGenDisplayLineController nextGenDisplayLineController;
+    private nextGenLine1Controller nextGenLine1Controller;
+    private nextGenLine2Controller nextGenLine2Controller;
+    private nextGenLine3Controller nextGenLine3Controller;
+    private nextGenLine4Controller nextGenLine4Controller;
+    private nextGenLine5Controller nextGenLine5Controller;
 
-    opticLine1Controller opticLine1Controller;
-    opticLine2Controller opticLine2Controller;
-    opticLine3Controller opticLine3Controller;
-    opticLine4Controller opticLine4Controller;
+    private opticLine1Controller opticLine1Controller;
+    private opticLine2Controller opticLine2Controller;
+    private opticLine3Controller opticLine3Controller;
+    private opticLine4Controller opticLine4Controller;
 
-    periphLine1Controller periphLine1Controller;
-    periphLine2Controller periphLine2Controller;
+    private periphLine1Controller periphLine1Controller;
+    private periphLine2Controller periphLine2Controller;
 
-    posLine1Controller posLine1Controller;
-    posLine2Controller posLine2Controller;
-    posLine3Controller posLine3Controller;
-    posLine4Controller posLine4Controller;
-    posQuestController posQuestController;
-    posT1000Controller posT1000Controller;
+    private posLine1Controller posLine1Controller;
+    private posLine2Controller posLine2Controller;
+    private posLine3Controller posLine3Controller;
+    private posLine4Controller posLine4Controller;
+    private posQuestController posQuestController;
+    private posT1000Controller posT1000Controller;
 
-    serversLine1Controller serversLine1Controller;
-    serversLine2Controller serversLine2Controller;
+    private serversLine1Controller serversLine1Controller;
+    private serversLine2Controller serversLine2Controller;
 
-    periphTestUserController periphTestUserController;
-    posTestUserController posTestUserController;
-    retailTestUserController retailTestUserController;
-    serversTestUserController serversTestUserController;
-    opticTestUserController opticTestUserController;
+    private periphTestUserController periphTestUserController;
+    private posTestUserController posTestUserController;
+    private retailTestUserController retailTestUserController;
+    private serversTestUserController serversTestUserController;
+    private opticTestUserController opticTestUserController;
 
-    qualityHomeController qualityHomeController;
+    private qualityHomeController qualityHomeController;
 
+    private String date;
+
+
+    private void setMessenger(Methods _class)
+    {
+        _class.setMessenger(messenger);
+    }
 
     public static void main(String[] args)
     {
@@ -157,45 +169,46 @@ public class Main extends Application {
 //        logger.addHandler(fh);
 //        logger.log(Level.INFO,"");
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
+        rt = Runtime.getRuntime();
         Tool dataBaseTool = new Tool();
 
         MapTool mapTool = new MapTool();
         GoalTool goalTool = new GoalTool();
 
         //---------------------------------List Storage Area for Running Group Values ----------------------------------
-        ArrayList<String> posBar1ProdList = new ArrayList<>();
-        posBar1ProdList.add("7734");
-        posBar1ProdList.add("7745");
-        posBar1ProdList.add("7761");
+        //posBar1ProdList.add("7734");
+        ArrayList<String> posBar1ProdList = new ArrayList<>(Arrays.asList("7734", "7745", "7761"));
+        /*posBar1ProdList.add("7745");
+        posBar1ProdList.add("7761");*/
 
-        ArrayList<String> questProdList = new ArrayList<>();
-        questProdList.add("7791");
-        questProdList.add("7792");
+        ArrayList<String> questProdList = new ArrayList<>(Arrays.asList("7791", "7792"));
+        /*questProdList.add("7791");
+        questProdList.add("7792");*/
 
-        ArrayList<String> kiwi2XsProdList = new ArrayList<>();
-        kiwi2XsProdList.add("1642");
-        kiwi2XsProdList.add("1924");
+        ArrayList<String> kiwi2XsProdList = new ArrayList<>(Arrays.asList("1642", "1642"));
+        /*kiwi2XsProdList.add("1642");
+        kiwi2XsProdList.add("1924");*/
 
-        ArrayList<String> pantherEPC4sProdList = new ArrayList<>();
-        pantherEPC4sProdList.add("1646");
-        pantherEPC4sProdList.add("1651");
+        ArrayList<String> pantherEPC4sProdList = new ArrayList<>(Arrays.asList("1646", "1651"));
+        /*pantherEPC4sProdList.add("1646");
+        pantherEPC4sProdList.add("1651");*/
 
-        ArrayList<String> xrProdList = new ArrayList<>();
-        xrProdList.add("7701");
+        ArrayList<String> xrProdList = new ArrayList<>(Arrays.asList("7701","7702","7703"));
+        /*xrProdList.add("7701");
         xrProdList.add("7702");
-        xrProdList.add("7703");
+        xrProdList.add("7703");*/
 
-        ArrayList<String> nextGenProdList = new ArrayList<>();
-        nextGenProdList.add("497");
-        nextGenProdList.add("5985");
+        ArrayList<String> nextGenProdList = new ArrayList<>(Arrays.asList("497","5985"));
+        /*nextGenProdList.add("497");
+        nextGenProdList.add("5985");*/
 
-        ArrayList<String> s500ProdList = new ArrayList<>();
-        s500ProdList.add("1611");
-        s500ProdList.add("1612");
+        ArrayList<String> s500ProdList = new ArrayList<>(Arrays.asList("1611","1612"));
+        /*s500ProdList.add("1611");
+        s500ProdList.add("1612");*/
 
-        ArrayList<String> mediaProdList = new ArrayList<>();
-        mediaProdList.add("1656");
-        mediaProdList.add("1657");
+        ArrayList<String> mediaProdList = new ArrayList<>(Arrays.asList("1656","1657"));
+        /*mediaProdList.add("1656");
+        mediaProdList.add("1657");*/
 
         loadingController = new LoadingController();
         navigationController = new NavigationController();
@@ -253,7 +266,67 @@ public class Main extends Application {
 
         qualityHomeController = new qualityHomeController();
 
+
+        System.out.println("\n");
+        System.out.println("Running garbage collector.");
+        System.out.println("Free memory before: " +rt.freeMemory());
+        rt.gc();
+        System.out.println("Free memory after: "+rt.freeMemory());
+
+        ArrayList<Controller> controllers = new ArrayList<>();
+
+        controllers.add(loadingController);
+        controllers.add(navigationController);
+        controllers.add(timeLineController);
+        controllers.add(buildController);
+        controllers.add(testController);
+        controllers.add(stageController);
+        controllers.add(posBuildController);
+        controllers.add(retailBuildController);
+        controllers.add(serversBuildController);
+        controllers.add(periphBuildController);
+        controllers.add(opticBuildController);
+        controllers.add(posStageController);
+        controllers.add(retailStageController);
+        controllers.add(periphStageController);
+        controllers.add(posBuildOverviewController);
+        controllers.add(retailBuildOverviewController);
+        controllers.add(periphBuildOverviewController);
+        controllers.add(serversBuildOverviewController);
+        controllers.add(opticBuildOverviewController);
+        controllers.add(nextGenDisplayLineController);
+        controllers.add(nextGenLine1Controller);
+        controllers.add(nextGenLine2Controller);
+        controllers.add(nextGenLine3Controller);
+        controllers.add(nextGenLine4Controller);
+        controllers.add(nextGenLine5Controller);
+        controllers.add(opticLine1Controller);
+        controllers.add(opticLine2Controller);
+        controllers.add(opticLine3Controller);
+        controllers.add(opticLine4Controller);
+        controllers.add(periphLine1Controller);
+        controllers.add(periphLine2Controller);
+        controllers.add(posLine1Controller);
+        controllers.add(posLine2Controller);
+        controllers.add(posLine3Controller);
+        controllers.add(posLine4Controller);
+        controllers.add(posQuestController);
+        controllers.add(posT1000Controller);
+        controllers.add(serversLine1Controller);
+        controllers.add(serversLine2Controller);
+        controllers.add(periphTestUserController);
+        controllers.add(posTestUserController);
+        controllers.add(retailTestUserController);
+        controllers.add(serversTestUserController);
+        controllers.add(opticTestUserController);
+        controllers.add(qualityHomeController);
+
+
         messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
+
+        Controller controller = new Controller();
+
+        controller.setMessenger(messenger);
 
         messenger.setPosBuildOverviewController(posBuildOverviewController);
         messenger.setRetailBuildOverviewController(retailBuildOverviewController);
@@ -322,6 +395,7 @@ public class Main extends Application {
         root.setController(timeLineController);
         GridPane timePane = root.load();
         Scene timeScene = new Scene(timePane, 800, 600);
+        timeScene.getStylesheets().add(getClass().getResource("/timeLine.css").toExternalForm());
         messenger.setTimelineScene(timeScene);
 
         root = new FXMLLoader(getClass().getResource("/FXML/LoadingScreen.fxml"));
@@ -623,7 +697,7 @@ public class Main extends Application {
                     @Override
                     protected Object call() throws Exception {
                         try {
-                            System.out.println("\n***********Running Build Block.***********\n");
+                            //System.out.println("\n***********Running Build Block.***********\n");
 
 
                             //---------------------------------Hosp Build---------------------------------------------------
@@ -631,9 +705,10 @@ public class Main extends Application {
                             heapMaxSize = Runtime.getRuntime().maxMemory();
                             heapFreeSize = Runtime.getRuntime().freeMemory();
 
-                            System.out.println("Current heap size: "+heapSize);
-                            System.out.println("Max heap size: "+heapMaxSize);
-                            System.out.println("Free heap size: "+heapFreeSize);
+//                            System.out.println("\n");
+//                            System.out.println("Current heap size: "+heapSize);
+//                            System.out.println("Max heap size: "+heapMaxSize);
+//                            System.out.println("Free heap size: "+heapFreeSize);
 
                             //logger.info("Current heap size: "+heapSize);
 
@@ -659,7 +734,7 @@ public class Main extends Application {
                             buildController.setKitsCurrentBuild(mapTool.getCurrentSingleValue("6003", buildMap));
 
 
-                            System.out.println("\n***********Running Test Block.***********\n");
+                            //System.out.println("\n***********Running Test Block.***********\n");
                             //---------------------------------Hosp Test-----------------------------------------------------------------------
                             posTestMap = dataBaseTool.hospTestDataBase();
 
@@ -715,7 +790,7 @@ public class Main extends Application {
                             testController.setKitsCurrentTest(mapTool.getCurrentSingleValue("6003", opticTestMap));
 
 
-                            System.out.println("\n***********Running Stage Block.***********\n");
+                            //System.out.println("\n***********Running Stage Block.***********\n");
 
                             //---------------------------------Hosp Staging-----------------------------------------------------------------------
                             posStageMap = dataBaseTool.hospStageDataBase();
@@ -750,7 +825,7 @@ public class Main extends Application {
                             stageController.setPeriphBar2Total(mapTool.getCurrentGroupValue(kiwi2XsProdList, periphStageMap));
                             stageController.setPeriphBar3Total(mapTool.getCurrentGroupValue(pantherEPC4sProdList, periphStageMap));
 
-                            System.out.println("\n***********Running Doc Block.***********\n");
+                            //System.out.println("\n***********Running Doc Block.***********\n");
                             mapList = dataBaseTool.documentReader();
                             stageMapList = dataBaseTool.stageDocumentReader();
 
@@ -874,7 +949,7 @@ public class Main extends Application {
                             buildController.setOpticPercentTotalBuild(goalTool.getPercentTotal(buildController.getOpticCurrentTotalBuild(), buildController.getOpticGoalTotalBuild()));
                             testController.setOpticPercentTotalTest(goalTool.getPercentTotal(testController.getOpticCurrentTotalTest(), buildController.getOpticGoalTotalBuild()));
 
-                            System.out.println("\n***********Running Line Block.**************\n");
+                            //System.out.println("\n***********Running Line Block.**************\n");
 
                             lineMap = dataBaseTool.buildLineQuery();
 
@@ -908,7 +983,7 @@ public class Main extends Application {
                             messenger.setOrbList(orbList);
 
                             //---------------------------------This is some hacky shit-------------------------------------------
-                            System.out.println("\n***********Dynamic Creation Block***********\n");
+                            //System.out.println("\n***********Dynamic Creation Block***********\n");
 
                             buildController.setOpticThrough(dataBaseTool.opticFTTDataBase());
                             buildController.setPeriphThrough(dataBaseTool.periphFTTDataBase());
@@ -920,7 +995,7 @@ public class Main extends Application {
                             retailStageController.setUserMap(retailUserStageMap);
                             periphStageController.setUserMap(periphUserStageMap);
 
-                            String date = null;
+                            date = null;
                             try {
                                 date = dataBaseTool.incidentReader();
                             } catch (IOException | ParserConfigurationException | SAXException e) {
@@ -936,124 +1011,75 @@ public class Main extends Application {
 
                             useDate = Integer.toString(counter);
 
-                            opticBuildController.setUseDate(useDate);
-                            retailBuildController.setUseDate(useDate);
-                            serversBuildController.setUseDate(useDate);
-                            periphBuildController.setUseDate(useDate);
-                            posBuildController.setUseDate(useDate);
-
-                            posStageController.setUseDate(useDate);
-                            periphStageController.setUseDate(useDate);
-                            retailStageController.setUseDate(useDate);
-
-                            posBuildOverviewController.setUseDate(useDate);
-                            retailBuildOverviewController.setUseDate(useDate);
-                            serversBuildOverviewController.setUseDate(useDate);
-                            periphBuildOverviewController.setUseDate(useDate);
-                            opticBuildOverviewController.setUseDate(useDate);
-
-                            serversLine1Controller.setUseDate(useDate);
-                            serversLine2Controller.setUseDate(useDate);
-
-                            nextGenDisplayLineController.setUseDate(useDate);
-                            nextGenLine1Controller.setUseDate(useDate);
-                            nextGenLine2Controller.setUseDate(useDate);
-                            nextGenLine3Controller.setUseDate(useDate);
-                            nextGenLine4Controller.setUseDate(useDate);
-                            nextGenLine5Controller.setUseDate(useDate);
-
-                            opticLine1Controller.setUseDate(useDate);
-                            opticLine2Controller.setUseDate(useDate);
-                            opticLine3Controller.setUseDate(useDate);
-                            opticLine4Controller.setUseDate(useDate);
-
-                            periphLine1Controller.setUseDate(useDate);
-                            periphLine2Controller.setUseDate(useDate);
-
-                            posLine1Controller.setUseDate(useDate);
-                            posLine2Controller.setUseDate(useDate);
-                            posLine3Controller.setUseDate(useDate);
-                            posLine4Controller.setUseDate(useDate);
-                            posQuestController.setUseDate(useDate);
-                            posT1000Controller.setUseDate(useDate);
-
-                            periphTestUserController.setUseDate(useDate);
-                            serversTestUserController.setUseDate(useDate);
-                            opticTestUserController.setUseDate(useDate);
-                            retailTestUserController.setUseDate(useDate);
-                            posTestUserController.setUseDate(useDate);
-
-                            Platform.runLater(() -> buildController.refresh());
-                            Platform.runLater(() -> testController.refresh());
-                            Platform.runLater(() -> stageController.refresh());
-
-                            Platform.runLater(() -> opticBuildController.refresh());
-                            Platform.runLater(() -> retailBuildController.refresh());
-                            Platform.runLater(() -> serversBuildController.refresh());
-                            Platform.runLater(() -> periphBuildController.refresh());
-                            Platform.runLater(() -> posBuildController.refresh());
-
-                            Platform.runLater(() -> periphStageController.refresh());
-                            Platform.runLater(() -> posStageController.refresh());
-                            Platform.runLater(() -> retailStageController.refresh());
-
-                            Platform.runLater(() -> posBuildOverviewController.refresh());
-                            Platform.runLater(() -> retailBuildOverviewController.refresh());
-                            Platform.runLater(() -> serversBuildOverviewController.refresh());
-                            Platform.runLater(() -> periphBuildOverviewController.refresh());
-                            Platform.runLater(() -> opticBuildOverviewController.refresh());
-
-                            Platform.runLater(() -> serversLine1Controller.refresh());
-                            Platform.runLater(() -> serversLine2Controller.refresh());
-
-                            Platform.runLater(() -> nextGenLine1Controller.refresh());
-                            Platform.runLater(() -> nextGenLine2Controller.refresh());
-                            Platform.runLater(() -> nextGenLine3Controller.refresh());
-                            Platform.runLater(() -> nextGenLine4Controller.refresh());
-                            Platform.runLater(() -> nextGenLine5Controller.refresh());
-                            Platform.runLater(() -> nextGenDisplayLineController.refresh());
-
-                            Platform.runLater(() -> opticLine1Controller.refresh());
-                            Platform.runLater(() -> opticLine2Controller.refresh());
-                            Platform.runLater(() -> opticLine3Controller.refresh());
-                            Platform.runLater(() -> opticLine4Controller.refresh());
-
-                            Platform.runLater(() -> periphLine1Controller.refresh());
-                            Platform.runLater(() -> periphLine2Controller.refresh());
-
-                            Platform.runLater(() -> posLine1Controller.refresh());
-                            Platform.runLater(() -> posLine2Controller.refresh());
-                            Platform.runLater(() -> posLine3Controller.refresh());
-                            Platform.runLater(() -> posLine4Controller.refresh());
-                            Platform.runLater(() -> posQuestController.refresh());
-                            Platform.runLater(() -> posT1000Controller.refresh());
-
-                            Platform.runLater(() -> periphTestUserController.refresh());
-                            Platform.runLater(() -> posTestUserController.refresh());
-                            Platform.runLater(() -> retailTestUserController.refresh());
-                            Platform.runLater(() -> serversTestUserController.refresh());
-                            Platform.runLater(() -> opticTestUserController.refresh());
-
-                            Platform.runLater(() -> qualityHomeController.refresh());
-
-
-                            if (primaryStage.getScene() == loadingScene) {
-
-                                Platform.runLater(() -> primaryStage.setScene(navigationScene));
-
-
-                                flag = false;
-
+                            for(int i = 0; i < controllers.size();i++)
+                            {
+                                controllers.get(i).setUseDate(useDate);
                             }
 
-                            System.gc();
+                            Platform.runLater(() ->
+                            {
+                                buildController.refresh();
+                                testController.refresh();
+                                stageController.refresh();
+                                opticBuildController.refresh();
+                                retailBuildController.refresh();
+                                serversBuildController.refresh();
+                                periphBuildController.refresh();
+                                posBuildController.refresh();
+                                periphStageController.refresh();
+                                posStageController.refresh();
+                                retailStageController.refresh();
+                                posBuildOverviewController.refresh();
+                                retailBuildOverviewController.refresh();
+                                serversBuildOverviewController.refresh();
+                                periphBuildOverviewController.refresh();
+                                opticBuildOverviewController.refresh();
+                                serversLine1Controller.refresh();
+                                serversLine2Controller.refresh();
+                                nextGenLine1Controller.refresh();
+                                nextGenLine2Controller.refresh();
+                                nextGenLine3Controller.refresh();
+                                nextGenLine4Controller.refresh();
+                                nextGenLine5Controller.refresh();
+                                nextGenDisplayLineController.refresh();
+                                opticLine1Controller.refresh();
+                                opticLine2Controller.refresh();
+                                opticLine3Controller.refresh();
+                                opticLine4Controller.refresh();
+                                periphLine1Controller.refresh();
+                                periphLine2Controller.refresh();
+                                posLine1Controller.refresh();
+                                posLine2Controller.refresh();
+                                posLine3Controller.refresh();
+                                posLine4Controller.refresh();
+                                posQuestController.refresh();
+                                posT1000Controller.refresh();
+                                periphTestUserController.refresh();
+                                posTestUserController.refresh();
+                                retailTestUserController.refresh();
+                                serversTestUserController.refresh();
+                                opticTestUserController.refresh();
+                                qualityHomeController.refresh();
+                            });
+
+
+                            if (primaryStage.getScene() == loadingScene)
+                            {
+                                Platform.runLater(() -> primaryStage.setScene(navigationScene));
+                                flag = false;
+                            }
+
+                            System.out.println("\n");
+                            System.out.println("Running garbage collector.");
+                            System.out.println("Free memory before: " +rt.freeMemory()/1000000);
+                            rt.gc();
+                            System.out.println("Free memory after: "+rt.freeMemory()/1000000);
 
                         }catch(OutOfMemoryError e)
                         {
                             //logger.info(e.toString());
-                            rt = Runtime.getRuntime();
-                            rt.exec("java -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
-                                    "pause");
+                            rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
+                                    "pause\n");
                             System.exit(0);
                          }
                          catch(Exception e)
@@ -1068,7 +1094,7 @@ public class Main extends Application {
         };
 
         //--------------------------------Scheduled State Params--------------------------------------------------------
-        buildVariables.setPeriod(Duration.seconds(10));
+        buildVariables.setPeriod(Duration.seconds(15));
 
         buildVariables.setRestartOnFailure(true);
 
