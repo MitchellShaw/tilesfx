@@ -37,8 +37,8 @@ public class Messenger {
 
     POSStageController posStageController;
     RetailStageController retailStageController;
-
     PeriphStageController periphStageController;
+    ServersStageController serversStageController;
 
     posBuildOverviewController posBuildOverviewController;
     retailBuildOverviewController retailBuildOverviewController;
@@ -899,6 +899,14 @@ public class Messenger {
 
     public void setQualityHome(Scene qualityHome) {
         this.qualityHome = qualityHome;
+    }
+
+    public ServersStageController getServersStageController() {
+        return serversStageController;
+    }
+
+    public void setServersStageController(ServersStageController serversStageController) {
+        this.serversStageController = serversStageController;
     }
 
 }

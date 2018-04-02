@@ -7,15 +7,12 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -31,7 +28,6 @@ import main.java.eu.hansolo.tilesfx.tools.Tool;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -40,7 +36,7 @@ import java.util.*;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static javafx.scene.paint.Color.rgb;
 
-public class POSStageController extends Controller implements Initializable,Methods {
+public class ServersStageController extends Controller implements Initializable,Methods {
     private Tile logo;
     private Tile clock;
     private Tile dept;
@@ -96,7 +92,8 @@ public class POSStageController extends Controller implements Initializable,Meth
     private Bounds allScreenBounds = computeAllScreenBounds();
 
     final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/POS.png");
+
+    final Image logoImage = new Image("/eu/hansolo/tilesfx/Servers.png");
 
     @FXML
     private GridPane pane;
@@ -152,7 +149,7 @@ public class POSStageController extends Controller implements Initializable,Meth
                 .titleAlignment(TextAlignment.CENTER)
                 .roundedCorners(false)
                 .title("Total Staged")
-                .description(Double.toString(stageController.getPosTotalCurrentStage()))
+                .description(Double.toString(stageController.getServerCurrentStage()))
                 .build();
 
         user1 = TileBuilder.create()

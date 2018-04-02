@@ -81,7 +81,7 @@ public class POSBuildController extends Controller implements Initializable,Meth
     private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
     private ImageView logoView = new ImageView();
-    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/POS.png");
 
     private double p1x30CurrentBuild;
     private double p1x30GoalBuild;

@@ -146,7 +146,7 @@ public class nextGenLine1Controller extends Controller implements Initializable,
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     private final ImageView logoView = new ImageView();
-    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/Retail.png");
 
     private String useDate = "0";
 
@@ -769,5 +769,10 @@ public class nextGenLine1Controller extends Controller implements Initializable,
 
     public void setTimeOrbs(ArrayList<timeOrb> timeOrbs) {
         this.timeOrbs = timeOrbs;
+    }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 }

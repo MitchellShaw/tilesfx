@@ -192,7 +192,6 @@ public class Tool {
         orbList.add(optic4);
         orbList.add(servers1);
         orbList.add(servers2);
-
     }
 
     DocumentBuilderFactory dbf;
@@ -973,11 +972,8 @@ public class Tool {
                 "                AND f.LocationID = 'MIDLAND'\n" +
                 "                AND ut.Type = 'Checkout'\n" +
                 "\t\t\t\tAND ut.IsPass = '1'\n" +
-                "\t\t\t\tAND(i.ItemID LIKE '1611-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '1612-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '7745-%'\n" +
+                "\t\t\t\tAND(i.ItemID LIKE '7745-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '7734-%'\n" +
-                "\t\t\t\tOR i.ItemID LIKE '7743-%'\n" +
                 "\t\t\t\tOR i.ItemID LIKE '7761-%')\n" +
                 "\n" +
                 "\t\t\t\tORDER BY UserID,ItemID";
@@ -2254,6 +2250,109 @@ public class Tool {
         }
 
 
+        return returnMap;
+    }
+
+    public HashMap<String,Integer> serverStageDataBaseUsers() throws ClassNotFoundException, SQLException
+    {
+        dummyMap = new HashMap<>();
+        returnMap = new HashMap<>();
+
+        ////EDIT COLUMN
+
+        query = "SELECT DISTINCT UnitRQSID, u.UserID, i.ItemID \n" +
+                "FROM UnitTest AS ut\n" +
+                "                JOIN Unit AS unit ON unit.RQSID = ut.UnitRQSID\n" +
+                "                JOIN Item AS i ON i.RQSID = unit.ItemRQSID\n" +
+                "                JOIN Location AS l ON l.RQSID = ut.EntryLocationRQSID\n" +
+                "                JOIN Location AS f ON f.RQSID = l.FacilityRQSID\n" +
+                "                JOIN [User] AS u ON u.RQSID = ut.EntryUserRQSID\n" +
+                "                WHERE cast(ut.TestDate AS DATE) >= cast(GETDATE() AS DATE)\n" +
+                "\t\t\t\t--Remove Second Shift:\n" +
+                "                --where cast(ut.TestDate as smalldatetime) \n" +
+                "\t\t\t\t--between DATEADD(HOUR, 5, cast(cast(GETDATE() as date) as smalldatetime))\n" +
+                "\t\t\t\t--and DATEADD(HOUR, 5, DATEADD(DAY, 1, cast(cast(GETDATE() as date) as smalldatetime)))\n" +
+                "\t\t\t\t--where ut.TestDate > dateadd(day, datediff(day, 0, getdate()),0)\n" +
+                "                AND f.LocationID = 'MIDLAND'\n" +
+                "                AND ut.Type = 'Checkout'\n" +
+                "\t\t\t\tAND ut.IsPass = '1'\n" +
+                "\t\t\t\tAND(i.ItemID LIKE '1611-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1612-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1656-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1930-%'\n" +
+                "\t\t\t\tOR i.ItemID LIKE '1657-%')\n" +
+                "\n" +
+                "\t\t\t\tORDER BY UserID,ItemID";
+
+        conn = null;
+
+        statement = null;
+        resultSet = null;
+
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            URL = "jdbc:sqlserver://SUSDAY5277\\RQS_ODS;database=RQS;encrypt=false";
+            User = "rqs_read_only";
+            Pass = "rqsr3qadonly";
+            conn = DriverManager.getConnection(URL, User, Pass);
+
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+
+
+
+            while (resultSet.next()) {
+                staging = resultSet.getString("ItemID");
+
+                user = resultSet.getString("UserID");
+
+                sub = staging.substring(0, staging.indexOf('-'));
+
+                if (dummyMap.isEmpty()) {
+                    temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (dummyMap.containsKey(user)) {
+                    temp = dummyMap.get(user);
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+                if (!dummyMap.containsKey(user)) {
+                    temp = new ArrayList<>();
+                    temp.add(sub);
+                    dummyMap.put(user, temp);
+                }
+            }
+        } finally {
+            try {
+                resultSet.close();
+                statement.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (dummyMap.isEmpty()) {
+            returnMap.put("", 0);
+        } else {
+            users = new ArrayList<>(dummyMap.keySet());
+
+            for (int i = 0; i < users.size(); i++) {
+                tempList = new ArrayList<>(dummyMap.get(users.get(i)));
+
+                tempValue = 0;
+
+                for (int x = 0; x < tempList.size(); x++) {
+                    tempValue = tempValue + Collections.frequency(tempList, tempList.get(0));
+                    tempList.removeAll(Collections.singleton(tempList.get(0)));
+                }
+                returnMap.put(users.get(i), tempValue);
+            }
+        }
         return returnMap;
     }
 

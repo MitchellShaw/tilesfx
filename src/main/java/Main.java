@@ -88,6 +88,7 @@ public class Main extends Application {
     private ArrayList<HashMap<String, Integer>> mapList;
     private ArrayList<HashMap<String, Integer>> stageMapList;
 
+    private static String argument;
 
     private HashMap<String, Integer> lineMap;
 
@@ -109,6 +110,7 @@ public class Main extends Application {
     private POSStageController posStageController;
     private RetailStageController retailStageController;
     private PeriphStageController periphStageController;
+    private ServersStageController serversStageController;
     private posBuildOverviewController posBuildOverviewController;
     private retailBuildOverviewController retailBuildOverviewController;
     private periphBuildOverviewController periphBuildOverviewController;
@@ -150,7 +152,6 @@ public class Main extends Application {
 
     private String date;
 
-
     private void setMessenger(Methods _class)
     {
         _class.setMessenger(messenger);
@@ -158,18 +159,15 @@ public class Main extends Application {
 
     public static void main(String[] args)
     {
+        System.out.println(args.length + " number of arguments.");
+        if(args.length >0)
+        {
+            argument = args[0];
+        }
         launch(args);
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-//        Logger logger = Logger.getLogger("Log");
-//        FileHandler fh;
-//        fh = new FileHandler("log.txt");
-//        SimpleFormatter formatter = new SimpleFormatter();
-//        fh.setFormatter(formatter);
-//        logger.addHandler(fh);
-//        logger.log(Level.INFO,"");
         //---------------------------------Creating the Tools for the graphs--------------------------------------------
         rt = Runtime.getRuntime();
         Tool dataBaseTool = new Tool();
@@ -226,6 +224,7 @@ public class Main extends Application {
         posStageController = new POSStageController();
         retailStageController = new RetailStageController();
         periphStageController = new PeriphStageController();
+        serversStageController = new ServersStageController();
 
         Resolutionizer resolutionizer = new Resolutionizer();
 
@@ -268,13 +267,6 @@ public class Main extends Application {
 
         qualityHomeController = new qualityHomeController();
 
-
-        System.out.println("\n");
-        System.out.println("Running garbage collector.");
-        System.out.println("Free memory before: " +rt.freeMemory());
-        rt.gc();
-        System.out.println("Free memory after: "+rt.freeMemory());
-
         ArrayList<Controller> controllers = new ArrayList<>();
 
         controllers.add(loadingController);
@@ -291,6 +283,7 @@ public class Main extends Application {
         controllers.add(posStageController);
         controllers.add(retailStageController);
         controllers.add(periphStageController);
+        controllers.add(serversStageController);
         controllers.add(posBuildOverviewController);
         controllers.add(retailBuildOverviewController);
         controllers.add(periphBuildOverviewController);
@@ -353,6 +346,7 @@ public class Main extends Application {
         posStageController.setMessenger(messenger);
         retailStageController.setMessenger(messenger);
         periphStageController.setMessenger(messenger);
+        serversStageController.setMessenger(messenger);
         loadingController.setMessenger(messenger);
         posBuildOverviewController.setMessenger(messenger);
         retailBuildOverviewController.setMessenger(messenger);
@@ -478,6 +472,12 @@ public class Main extends Application {
         GridPane retailStagePane = root.load();
         Scene retailStageScene = new Scene(retailStagePane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setRetailStage(retailStageScene);
+
+        root = new FXMLLoader(getClass().getResource("/FXML/serversStageScreen.fxml"));
+        root.setController(serversStageController);
+        GridPane serversStagePane = root.load();
+        Scene serversStageScene = new Scene(serversStagePane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        messenger.setServerStage(serversStageScene);
 
         root = new FXMLLoader(getClass().getResource("/FXML/posBuildOverview.fxml"));
         root.setController(posBuildOverviewController);
@@ -814,7 +814,8 @@ public class Main extends Application {
 
                             //---------------------------------Servers Stage-----------------------------------------------------------------------
                             serversStageMap = dataBaseTool.serversStageDataBase();
-                            //serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
+                            serversUserStageMap = dataBaseTool.serverStageDataBaseUsers();
+
                             stageController.setServerBar1Total(mapTool.getCurrentGroupValue(s500ProdList, serversStageMap));
                             stageController.setServerBar2Total(mapTool.getCurrentGroupValue(mediaProdList, serversStageMap));
 
@@ -996,6 +997,7 @@ public class Main extends Application {
                             posStageController.setUserMap(posUserStageMap);
                             retailStageController.setUserMap(retailUserStageMap);
                             periphStageController.setUserMap(periphUserStageMap);
+                            serversStageController.setUserMap(serversUserStageMap);
 
                             date = null;
                             try {
@@ -1031,6 +1033,7 @@ public class Main extends Application {
                                 periphStageController.refresh();
                                 posStageController.refresh();
                                 retailStageController.refresh();
+                                serversStageController.refresh();
                                 posBuildOverviewController.refresh();
                                 retailBuildOverviewController.refresh();
                                 serversBuildOverviewController.refresh();
@@ -1089,8 +1092,8 @@ public class Main extends Application {
                         }catch(OutOfMemoryError e)
                         {
                             //logger.info(e.toString());
-                            rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
-                                    "pause\n");
+                            rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Floor Version (Java 9)\\Metrics Dashboard Version 2.jar\"" + argument +"\n" +
+                                    "pause");
                             System.exit(0);
                          }
                          catch(Exception e)
@@ -1119,7 +1122,7 @@ public class Main extends Application {
                 ex.printStackTrace();
                 System.out.println("Restarting app...");
                 try {
-                    rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Metrics Dashboard Version 2.jar\"\n" +
+                    rt.exec("\\\\susmid8000\\d\\jre-9.0.4\\bin\\java.exe -XX:+UseG1GC -Xmx512m -jar \"\\\\SUSMID8000\\d\\Metrics Dashboard\\Metrics Dashboard V2\\app\\Floor Version (Java 9)\\Metrics Dashboard Version 2.jar\"\n" +
                             "pause\n");
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -26,7 +26,6 @@ import main.java.eu.hansolo.tilesfx.Tile;
 import main.java.eu.hansolo.tilesfx.TileBuilder;
 import main.java.eu.hansolo.tilesfx.skins.BarChartItem;
 import main.java.eu.hansolo.tilesfx.tools.Messenger;
-import javafx.scene.control.skin.*;
 
 import java.net.URL;
 import java.text.DecimalFormat;

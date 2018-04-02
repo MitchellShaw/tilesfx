@@ -147,7 +147,7 @@ public class nextGenDisplayLineController extends Controller implements Initiali
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     private final ImageView logoView = new ImageView();
-    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/Retail.png");
 
     private String useDate = "0";
 

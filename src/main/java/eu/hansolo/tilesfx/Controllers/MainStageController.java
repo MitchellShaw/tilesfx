@@ -64,10 +64,6 @@ public class MainStageController extends Controller implements Initializable,Met
     //---------------------------------Variables for Query Data (POS)-----------------------------------------
     private double p1x30CurrentStage;
     private double p1x30GoalStage;
-    private double p1x35CurrentStage;
-    private double p1x35GoalStage;
-    private double p1532CurrentStage;
-    private double p1532GoalStage;
     private double t1000sCurrentStage;
     private double t1000sGoalStage;
     private double questsCurrentStage;
@@ -81,12 +77,6 @@ public class MainStageController extends Controller implements Initializable,Met
 
 
      //---------------------------------Variables for Query Data (Retail)-----------------------------------------
-    private double xr7CurrentStage;
-    private double xr7GoalStage;
-    private double xr7PlusCurrentStage;
-    private double xr7PlusGoalStage;
-    private double xr5CurrentStage;
-    private double xr5GoalStage;
     private double nextGenDisplayCurrentStage;
     private double nextGenDisplayGoalsStage;
 
@@ -94,27 +84,10 @@ public class MainStageController extends Controller implements Initializable,Met
     private double retailTotalCurrentStage;
 
      //---------------------------------Variables for Query Data (Servers)-----------------------------------------
-    private double mediaPlayerCurrentStage;
-    private double mediaPlayerGoalStage;
-    private double n3000CurrentStage;
-    private double n3000GoalStage;
-    private double s500CurrentStage;
-    private double s500GoalStage;
     private double serverGoalTotalStage;
-
     private double serverCurrentStage;
 
      //---------------------------------Variables for Query Data (Peripherals)-------------------------------------
-    private double kiwi4sCurrentStage;
-    private double kiwi4sGoalStage;
-    private double kiwi2XsCurrentStage;
-    private double kiwi2XsGoalStage;
-    private double bumpBarsCurrentStage;
-    private double bumpBarsGoalStage;
-
-    private double pantherEPC4sCurrentStage;
-    private double pantherEPC4sGoalStage;
-
     private double periphGoalTotalStage;
     private double periphCurrentTotalStage;
      //---------------------------------Variables for Percentages --------------------------------------------------
@@ -363,7 +336,6 @@ public class MainStageController extends Controller implements Initializable,Met
     {
         Platform.runLater(() ->
         {
-
             posBar1DataStage.setValue(posBar1Total);
             posBar1DataStage.setMaxValue(posBar1Goal);
             p1x30DataStage.setValue(p1x30CurrentStage);
@@ -500,7 +472,7 @@ public class MainStageController extends Controller implements Initializable,Met
             @Override
             public void handle(MouseEvent event)
             {
-                messenger.getPrimaryStage().setScene(messenger.getPosStage());
+                messenger.getPrimaryStage().setScene(messenger.getServerStage());
             }
         });
         periphStage.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -528,7 +500,7 @@ public class MainStageController extends Controller implements Initializable,Met
             @Override
             public void handle(MouseEvent event)
             {
-                messenger.getPrimaryStage().setScene(messenger.getPosStage());
+                messenger.getPrimaryStage().setScene(messenger.getServerStage());
             }
         });
         periphStagePercent.setOnMouseClicked(new EventHandler<MouseEvent>() {

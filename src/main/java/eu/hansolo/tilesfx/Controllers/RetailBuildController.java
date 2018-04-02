@@ -120,7 +120,7 @@ public class RetailBuildController extends Controller implements Initializable,M
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     private final ImageView logoView = new ImageView();
-    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/Retail.png");
 
     @FXML
     private GridPane pane;

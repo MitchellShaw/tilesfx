@@ -146,7 +146,7 @@ public class periphLine1Controller extends Controller implements Initializable,M
     final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    final Image logoImage = new Image("/eu/hansolo/tilesfx/Periph.png");
 
     String useDate = "0";
 

@@ -18,7 +18,6 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 import main.java.eu.hansolo.tilesfx.tools.Messenger;
 import org.controlsfx.control.CheckComboBox;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -50,7 +49,8 @@ public class TimeLineController extends Controller implements Initializable,Meth
     private final String serversBuildScene = "Servers Build/Test";
     private final String periphBuildScene = "Periph Build/Test";
 
-    private final String posStageScene = "POS/Servers Stage";
+    private final String posStageScene = "POS Stage";
+    private final String serversStageScene = "Servers Stage";
     private final String retailStageScene = "Retail Stage";
     private final String periphStageScene = "Periph Stage";
 
@@ -112,6 +112,7 @@ public class TimeLineController extends Controller implements Initializable,Meth
         adding.add(periphBuildScene);
 
         adding.add(posStageScene);
+        adding.add(serversStageScene);
         adding.add(retailStageScene);
         adding.add(periphStageScene);
 
@@ -268,12 +269,22 @@ public class TimeLineController extends Controller implements Initializable,Meth
                                     }
                                 };
                             }
-                            if(boxes.get(i).equals("POS/Servers Stage"))
+                            if(boxes.get(i).equals("POS Stage"))
                             {
                                 myHandler = new EventHandler() {
                                     @Override
                                     public void handle(Event event) {
                                         messenger.getPrimaryStage().setScene(messenger.getPosStage());
+
+                                    }
+                                };
+                            }
+                            if(boxes.get(i).equals("Servers Stage"))
+                            {
+                                myHandler = new EventHandler() {
+                                    @Override
+                                    public void handle(Event event) {
+                                        messenger.getPrimaryStage().setScene(messenger.getServerStage());
 
                                     }
                                 };
@@ -677,5 +688,12 @@ public class TimeLineController extends Controller implements Initializable,Meth
     }
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
+    }
+    public void setRetailTimeline()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        ArrayList<KeyFrame> frames = new ArrayList<>();
+        Duration userDuration;
     }
 }

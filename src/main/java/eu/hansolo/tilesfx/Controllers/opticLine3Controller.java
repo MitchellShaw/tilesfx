@@ -146,7 +146,7 @@ public class opticLine3Controller extends Controller implements Initializable,Me
     final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     final ImageView logoView = new ImageView();
-    final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    final Image logoImage = new Image("/eu/hansolo/tilesfx/Optic.png");
 
     String useDate = "0";
 

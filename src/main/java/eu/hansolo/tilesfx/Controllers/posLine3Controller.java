@@ -145,7 +145,7 @@ public class posLine3Controller extends Controller implements Initializable,Meth
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
     private final ImageView logoView = new ImageView();
-    private final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
+    private final Image logoImage = new Image("/eu/hansolo/tilesfx/POS.png");
 
     private String useDate = "0";
 
@@ -765,5 +765,10 @@ public class posLine3Controller extends Controller implements Initializable,Meth
 
     public void setTimeOrbs(ArrayList<timeOrb> timeOrbs) {
         this.timeOrbs = timeOrbs;
+    }
+
+    @Override
+    public void setUseDate(String useDate) {
+        this.useDate = useDate;
     }
 }

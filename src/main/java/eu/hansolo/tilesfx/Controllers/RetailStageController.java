@@ -72,24 +72,11 @@ public class RetailStageController extends Controller implements Initializable,M
 
     private Comparator<Map.Entry<String,Integer>> valueComparator;
 
-    private HBox hbox;
-    private HBox myBox;
-
-    private ArrayList<Tile> tileSort;
-
     private double x = 0;
     private double y = 0;
-
-    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
-    private Bounds allScreenBounds = computeAllScreenBounds();
-
     private ArrayList<Tile> users;
 
-    private Messenger messenger;
-
-    private ArrayList<Tile> tiles;
-
-    private String useDate;
+    private String useDate = "0";
 
     private ImageView stopView = new ImageView();
 
@@ -97,7 +84,18 @@ public class RetailStageController extends Controller implements Initializable,M
     private final Image yellowImage = new Image("/eu/hansolo/tilesfx/Yellow Light.PNG");
     private final Image greenImage = new Image("/eu/hansolo/tilesfx/Green Light.PNG");
 
+    private Messenger messenger;
+
+    private ArrayList<Tile> tiles;
+    private ArrayList<Tile> tileSort;
+
     private MainStageController stageController;
+
+    private ArrayList<Screen> screens = new ArrayList<>(Screen.getScreens());
+    private Bounds allScreenBounds = computeAllScreenBounds();
+
+    final ImageView logoView = new ImageView();
+    final Image logoImage = new Image("/eu/hansolo/tilesfx/Retail.png");
 
     @FXML
     private GridPane pane;
@@ -108,56 +106,6 @@ public class RetailStageController extends Controller implements Initializable,M
         tileSort = new ArrayList<>();
 
         stageController = messenger.getMainStageController();
-
-        final ImageView logoView = new ImageView();
-        final Image logoImage = new Image("/eu/hansolo/tilesfx/NCR Brand Block Logo JPG.jpg");
-        logoView.setImage(logoImage);
-        logoView.setFitHeight(216);
-        logoView.setFitWidth(384);
-        logoView.setPreserveRatio(true);
-
-        hbox = new HBox(logoView);
-        hbox.setPrefWidth(384);
-        hbox.setPrefHeight(216);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.setStyle("-fx-background-color:#54B948");
-
-        Tool dataBaseTool = new Tool();
-
-        String date = null;
-        try {
-            date = dataBaseTool.incidentReader();
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        }
-
-        LocalDate currentDate = LocalDate.now();
-        LocalDate incidentDate = LocalDate.parse(date);
-
-        long daysBetween = DAYS.between(incidentDate, currentDate);
-
-        int counter = Math.toIntExact(daysBetween);
-
-        useDate = Integer.toString(counter);
-
-        if (counter < 30) {
-            stopView.setImage(redImage);
-        }
-        if (counter > 30 && counter < 60) {
-            stopView.setImage(yellowImage);
-        }
-        if (counter >= 60) {
-            stopView.setImage(greenImage);
-        }
-        stopView.setFitHeight(216);
-        stopView.setFitWidth(384);
-        stopView.setPreserveRatio(true);
-
-        myBox = new HBox(stopView);
-        myBox.setPrefWidth(384);
-        myBox.setPrefHeight(216);
-        myBox.setAlignment(Pos.CENTER);
-        myBox.setStyle("-fx-background-color:#54B948");
 
         clock = TileBuilder.create()
                 .skinType(Tile.SkinType.CLOCK)
@@ -177,7 +125,6 @@ public class RetailStageController extends Controller implements Initializable,M
                 .backgroundColor(Color.valueOf("#54B948"))
                 .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.2))
                 .roundedCorners(false)
-                .graphic(hbox)
                 .build();
 
         stopLight = TileBuilder.create()
@@ -185,7 +132,6 @@ public class RetailStageController extends Controller implements Initializable,M
                 .backgroundColor(Color.valueOf("#54B948"))
                 .prefSize(messenger.getResolutionizer().setTileWidth(.2), messenger.getResolutionizer().setTileHeight(.2))
                 .roundedCorners(false)
-                .graphic(myBox)
                 .build();
 
         daySince = TileBuilder.create()
@@ -414,6 +360,46 @@ public class RetailStageController extends Controller implements Initializable,M
                 .description("")
                 .build();
 
+        logoView.setImage(logoImage);
+        logoView.setPreserveRatio(true);
+
+        logoView.setFitHeight(logo.getPrefHeight());
+        logoView.setFitWidth(logo.getPrefWidth());
+
+        logo.setGraphic(logoView);
+
+        if (Integer.parseInt(useDate) < 30) {
+            stopView.setImage(redImage);
+        }
+        if (Integer.parseInt(useDate) > 30 && Integer.parseInt(useDate) < 60) {
+            stopView.setImage(yellowImage);
+        }
+        if (Integer.parseInt(useDate) >= 60) {
+            stopView.setImage(greenImage);
+        }
+
+        stopView.setFitWidth(stopLight.getPrefWidth());
+        stopView.setFitHeight(stopLight.getPrefHeight());
+
+        stopView.setPreserveRatio(true);
+
+        if (Integer.parseInt(useDate) < 30) {
+            stopView.setImage(redImage);
+        }
+        if (Integer.parseInt(useDate) > 30 && Integer.parseInt(useDate) < 60) {
+            stopView.setImage(yellowImage);
+        }
+        if (Integer.parseInt(useDate) >= 60) {
+            stopView.setImage(greenImage);
+        }
+
+        stopView.setFitWidth(stopLight.getPrefWidth());
+        stopView.setFitHeight(stopLight.getPrefHeight());
+
+        stopView.setPreserveRatio(true);
+
+        stopLight.setGraphic(stopView);
+
         pane.add(user1, 1, 0, 1, 1);
         pane.add(user2, 2, 0, 1, 1);
         pane.add(user3, 3, 0, 1, 1);
@@ -602,15 +588,10 @@ public class RetailStageController extends Controller implements Initializable,M
                     tileSort.get(i).setDescription("");
                 }
             }
-            if(dept !=null)
-            {
-                dept.setDescription(String.valueOf(total));
-            }
 
-            if(daySince != null)
-            {
-                daySince.setDescription(useDate);
-            }
+            dept.setDescription(String.valueOf(total));
+
+            daySince.setDescription(useDate);
 
             if (Integer.parseInt(useDate) < 30) {
                 stopView.setImage(redImage);
@@ -621,20 +602,8 @@ public class RetailStageController extends Controller implements Initializable,M
             if (Integer.parseInt(useDate) >= 60) {
                 stopView.setImage(greenImage);
             }
-            stopView.setFitHeight(216);
-            stopView.setFitWidth(384);
-            stopView.setPreserveRatio(true);
 
-            myBox = new HBox(stopView);
-            myBox.setPrefWidth(384);
-            myBox.setPrefHeight(216);
-            myBox.setAlignment(Pos.CENTER);
-            myBox.setStyle("-fx-background-color:#54B948");
-
-            if(stopLight != null)
-            {
-                stopLight.setGraphic(myBox);
-            }
+            stopLight.setGraphic(stopView);
         });
     }
 
