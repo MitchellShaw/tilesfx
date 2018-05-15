@@ -1,5 +1,6 @@
 package main.java.eu.hansolo.tilesfx.Controllers;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -645,6 +646,7 @@ public class TimeLineController extends Controller implements Initializable,Meth
                             KeyFrame tempFrame = new KeyFrame(userDuration,myHandler);
                             frames.add(tempFrame);
                         }
+
                         userDuration = Duration.seconds(convert);
                         KeyFrame buffer = new KeyFrame(userDuration);
                         frames.add(buffer);
@@ -689,11 +691,258 @@ public class TimeLineController extends Controller implements Initializable,Meth
     public void setTimeline(Timeline timeline) {
         this.timeline = timeline;
     }
+
     public void setRetailTimeline()
     {
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         ArrayList<KeyFrame> frames = new ArrayList<>();
         Duration userDuration;
+
+        userDuration  = Duration.seconds(12);
+
+        EventHandler myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuild());
+            }
+        };
+        KeyFrame scene1 = new KeyFrame(userDuration , myHandler);
+
+        userDuration  = Duration.seconds(24);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailBuildOverview());
+            }
+        };
+        KeyFrame scene2 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(36);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getRetailTestUser());
+            }
+        };
+        KeyFrame scene3 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(48);
+
+        KeyFrame buffer= new KeyFrame(userDuration);
+
+        frames.add(scene1);
+        frames.add(scene2);
+        frames.add(scene3);
+
+        timeline.getKeyFrames().addAll(frames);
+        timeline.play();
+    }
+    public void setPOSTimeline()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        ArrayList<KeyFrame> frames = new ArrayList<>();
+        Duration userDuration;
+
+        userDuration  = Duration.seconds(12);
+
+        EventHandler myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuild());
+            }
+        };
+        KeyFrame scene1 = new KeyFrame(userDuration , myHandler);
+
+        userDuration  = Duration.seconds(24);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosBuildOverview());
+            }
+        };
+        KeyFrame scene2 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(36);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPosTestUser());
+            }
+        };
+        KeyFrame scene3 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(48);
+
+        KeyFrame buffer= new KeyFrame(userDuration);
+
+        frames.add(scene1);
+        frames.add(scene2);
+        frames.add(scene3);
+
+        timeline.getKeyFrames().addAll(frames);
+        timeline.play();
+    }
+    public void setPeriphTimeline()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        ArrayList<KeyFrame> frames = new ArrayList<>();
+        Duration userDuration;
+
+        userDuration  = Duration.seconds(12);
+
+        EventHandler myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphBuild());
+            }
+        };
+        KeyFrame scene1 = new KeyFrame(userDuration , myHandler);
+
+        userDuration  = Duration.seconds(24);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getPeriphTestUser());
+            }
+        };
+        KeyFrame scene2 = new KeyFrame(userDuration, myHandler);
+
+        frames.add(scene1);
+        frames.add(scene2);
+
+        timeline.getKeyFrames().addAll(frames);
+        timeline.play();
+    }
+    public void setServersTimeline()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        ArrayList<KeyFrame> frames = new ArrayList<>();
+        Duration userDuration;
+
+        userDuration  = Duration.seconds(12);
+
+        EventHandler myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServerBuild());
+            }
+        };
+        KeyFrame scene1 = new KeyFrame(userDuration , myHandler);
+
+        userDuration  = Duration.seconds(24);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServersBuildOverview());
+            }
+        };
+        KeyFrame scene2 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(36);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getServersTestUser());
+            }
+        };
+        KeyFrame scene3 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(48);
+
+        KeyFrame buffer= new KeyFrame(userDuration);
+
+        frames.add(scene1);
+        frames.add(scene2);
+        frames.add(scene3);
+
+        timeline.getKeyFrames().addAll(frames);
+        timeline.play();
+    }
+    public void setOpticTimeline()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        ArrayList<KeyFrame> frames = new ArrayList<>();
+        Duration userDuration;
+
+        userDuration  = Duration.seconds(12);
+
+        EventHandler myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuild());
+            }
+        };
+        KeyFrame scene1 = new KeyFrame(userDuration , myHandler);
+
+        userDuration  = Duration.seconds(24);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticBuildOverview());
+            }
+        };
+        KeyFrame scene2 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(36);
+
+        myHandler = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                messenger.getPrimaryStage().setScene(messenger.getOpticTestUser());
+            }
+        };
+        KeyFrame scene3 = new KeyFrame(userDuration, myHandler);
+
+        userDuration  = Duration.seconds(48);
+
+        KeyFrame buffer= new KeyFrame(userDuration);
+
+        frames.add(scene1);
+        frames.add(scene2);
+        frames.add(scene3);
+
+        timeline.getKeyFrames().addAll(frames);
+        timeline.play();
     }
 }

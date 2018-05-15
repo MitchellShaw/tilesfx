@@ -40,7 +40,7 @@ public class Main extends Application {
     private double x = 0;
     private double y = 0;
     private boolean flag;
-    private Messenger messenger;
+    private static Messenger messenger;
     private long daysBetween;
     private int counter;
     private String useDate;
@@ -92,123 +92,105 @@ public class Main extends Application {
 
     private HashMap<String, Integer> lineMap;
 
-    private FXMLLoader root;
+    private static FXMLLoader root;
 
     private Runtime rt;
 
-    private LoadingController loadingController;
-    private NavigationController navigationController;
-    private TimeLineController timeLineController;
-    private MainBuildController buildController;
-    private MainTestController testController;
-    private MainStageController stageController;
-    private POSBuildController posBuildController;
-    private RetailBuildController retailBuildController;
-    private ServersBuildController serversBuildController;
-    private PeriphBuildController periphBuildController;
-    private OpticBuildController opticBuildController;
-    private POSStageController posStageController;
-    private RetailStageController retailStageController;
-    private PeriphStageController periphStageController;
-    private ServersStageController serversStageController;
-    private posBuildOverviewController posBuildOverviewController;
-    private retailBuildOverviewController retailBuildOverviewController;
-    private periphBuildOverviewController periphBuildOverviewController;
-    private serversBuildOverviewController serversBuildOverviewController;
-    private opticBuildOverviewController opticBuildOverviewController;
+    private static LoadingController loadingController;
+    private static NavigationController navigationController;
+    private static TimeLineController timeLineController;
+    private static MainBuildController buildController;
+    private static MainTestController testController;
+    private static MainStageController stageController;
+    private static POSBuildController posBuildController;
+    private static RetailBuildController retailBuildController;
+    private static ServersBuildController serversBuildController;
+    private static PeriphBuildController periphBuildController;
+    private static OpticBuildController opticBuildController;
+    private static POSStageController posStageController;
+    private static RetailStageController retailStageController;
+    private static PeriphStageController periphStageController;
+    private static ServersStageController serversStageController;
+    private static posBuildOverviewController posBuildOverviewController;
+    private static retailBuildOverviewController retailBuildOverviewController;
+    private static periphBuildOverviewController periphBuildOverviewController;
+    private static serversBuildOverviewController serversBuildOverviewController;
+    private static opticBuildOverviewController opticBuildOverviewController;
 
-    private nextGenDisplayLineController nextGenDisplayLineController;
-    private nextGenLine1Controller nextGenLine1Controller;
-    private nextGenLine2Controller nextGenLine2Controller;
-    private nextGenLine3Controller nextGenLine3Controller;
-    private nextGenLine4Controller nextGenLine4Controller;
-    private nextGenLine5Controller nextGenLine5Controller;
+    private static nextGenDisplayLineController nextGenDisplayLineController;
+    private static nextGenLine1Controller nextGenLine1Controller;
+    private static nextGenLine2Controller nextGenLine2Controller;
+    private static nextGenLine3Controller nextGenLine3Controller;
+    private static nextGenLine4Controller nextGenLine4Controller;
+    private static nextGenLine5Controller nextGenLine5Controller;
 
-    private opticLine1Controller opticLine1Controller;
-    private opticLine2Controller opticLine2Controller;
-    private opticLine3Controller opticLine3Controller;
-    private opticLine4Controller opticLine4Controller;
+    private static opticLine1Controller opticLine1Controller;
+    private static opticLine2Controller opticLine2Controller;
+    private static opticLine3Controller opticLine3Controller;
+    private static opticLine4Controller opticLine4Controller;
 
-    private periphLine1Controller periphLine1Controller;
-    private periphLine2Controller periphLine2Controller;
+    private static periphLine1Controller periphLine1Controller;
+    private static periphLine2Controller periphLine2Controller;
 
-    private posLine1Controller posLine1Controller;
-    private posLine2Controller posLine2Controller;
-    private posLine3Controller posLine3Controller;
-    private posLine4Controller posLine4Controller;
-    private posQuestController posQuestController;
-    private posT1000Controller posT1000Controller;
+    private static posLine1Controller posLine1Controller;
+    private static posLine2Controller posLine2Controller;
+    private static posLine3Controller posLine3Controller;
+    private static posLine4Controller posLine4Controller;
+    private static posQuestController posQuestController;
+    private static posT1000Controller posT1000Controller;
 
-    private serversLine1Controller serversLine1Controller;
-    private serversLine2Controller serversLine2Controller;
+    private static serversLine1Controller serversLine1Controller;
+    private static serversLine2Controller serversLine2Controller;
 
-    private periphTestUserController periphTestUserController;
-    private posTestUserController posTestUserController;
-    private retailTestUserController retailTestUserController;
-    private serversTestUserController serversTestUserController;
-    private opticTestUserController opticTestUserController;
+    private static periphTestUserController periphTestUserController;
+    private static posTestUserController posTestUserController;
+    private static retailTestUserController retailTestUserController;
+    private static serversTestUserController serversTestUserController;
+    private static opticTestUserController opticTestUserController;
 
-    private qualityHomeController qualityHomeController;
+    private static qualityHomeController qualityHomeController;
+
+    private static Resolutionizer resolutionizer;
 
     private String date;
 
-    private void setMessenger(Methods _class)
-    {
+    private  ArrayList<String> posBar1ProdList;
+    private  ArrayList<String> questProdList;
+    private  ArrayList<String> kiwi2XsProdList;
+    private  ArrayList<String> pantherEPC4sProdList;
+    private  ArrayList<String> xrProdList;
+    private  ArrayList<String> nextGenProdList;
+    private  ArrayList<String> s500ProdList;
+    private  ArrayList<String> mediaProdList;
+    private Controller controller;
+    private ArrayList<Controller> controllers;
+    private Scene loadingScene;
+    private Scene navigationScene;
+    private static String[] myArguments;
+
+    private void setMessenger(Methods _class) {
         _class.setMessenger(messenger);
     }
 
-    public static void main(String[] args)
+    private void setup(Stage myStage) throws IOException
     {
-        System.out.println(args.length + " number of arguments.");
-        if(args.length >0)
-        {
-            argument = args[0];
-        }
-        launch(args);
-    }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        //---------------------------------Creating the Tools for the graphs--------------------------------------------
-        rt = Runtime.getRuntime();
-        Tool dataBaseTool = new Tool();
-
-        MapTool mapTool = new MapTool();
-        GoalTool goalTool = new GoalTool();
 
         //---------------------------------List Storage Area for Running Group Values ----------------------------------
-        //posBar1ProdList.add("7734");
-        ArrayList<String> posBar1ProdList = new ArrayList<>(Arrays.asList("7734", "7745", "7761"));
-        /*posBar1ProdList.add("7745");
-        posBar1ProdList.add("7761");*/
+        posBar1ProdList = new ArrayList<>(Arrays.asList("7734", "7745", "7761"));
 
-        ArrayList<String> questProdList = new ArrayList<>(Arrays.asList("7791", "7792"));
-        /*questProdList.add("7791");
-        questProdList.add("7792");*/
+        questProdList = new ArrayList<>(Arrays.asList("7791", "7792"));
 
-        ArrayList<String> kiwi2XsProdList = new ArrayList<>(Arrays.asList("1642", "1924"));
-        /*kiwi2XsProdList.add("1642");
-        kiwi2XsProdList.add("1924");*/
+        kiwi2XsProdList = new ArrayList<>(Arrays.asList("1642", "1924"));
 
-        ArrayList<String> pantherEPC4sProdList = new ArrayList<>(Arrays.asList("1646", "1651"));
-        /*pantherEPC4sProdList.add("1646");
-        pantherEPC4sProdList.add("1651");*/
+         pantherEPC4sProdList = new ArrayList<>(Arrays.asList("1646", "1651"));
 
-        ArrayList<String> xrProdList = new ArrayList<>(Arrays.asList("7701","7702","7703"));
-        /*xrProdList.add("7701");
-        xrProdList.add("7702");
-        xrProdList.add("7703");*/
+         xrProdList = new ArrayList<>(Arrays.asList("7701","7702","7703"));
 
-        ArrayList<String> nextGenProdList = new ArrayList<>(Arrays.asList("497","5985"));
-        /*nextGenProdList.add("497");
-        nextGenProdList.add("5985");*/
+         nextGenProdList = new ArrayList<>(Arrays.asList("497","5985"));
 
-        ArrayList<String> s500ProdList = new ArrayList<>(Arrays.asList("1611","1612"));
-        /*s500ProdList.add("1611");
-        s500ProdList.add("1612");*/
+         s500ProdList = new ArrayList<>(Arrays.asList("1611","1612"));
 
-        ArrayList<String> mediaProdList = new ArrayList<>(Arrays.asList("1656","1657"));
-        /*mediaProdList.add("1656");
-        mediaProdList.add("1657");*/
+         mediaProdList = new ArrayList<>(Arrays.asList("1656","1657"));
 
         loadingController = new LoadingController();
         navigationController = new NavigationController();
@@ -226,7 +208,7 @@ public class Main extends Application {
         periphStageController = new PeriphStageController();
         serversStageController = new ServersStageController();
 
-        Resolutionizer resolutionizer = new Resolutionizer();
+        resolutionizer = new Resolutionizer();
 
         posBuildOverviewController = new posBuildOverviewController();
         retailBuildOverviewController = new retailBuildOverviewController();
@@ -267,7 +249,9 @@ public class Main extends Application {
 
         qualityHomeController = new qualityHomeController();
 
-        ArrayList<Controller> controllers = new ArrayList<>();
+        messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, myStage);
+
+        controllers = new ArrayList<>();
 
         controllers.add(loadingController);
         controllers.add(navigationController);
@@ -315,9 +299,6 @@ public class Main extends Application {
         controllers.add(serversTestUserController);
         controllers.add(opticTestUserController);
         controllers.add(qualityHomeController);
-
-
-        messenger = new Messenger(loadingController, navigationController, timeLineController, buildController, testController, stageController, posBuildController, retailBuildController, serversBuildController, periphBuildController, opticBuildController, posStageController, retailStageController, periphStageController, primaryStage);
 
         Controller controller = new Controller();
 
@@ -397,12 +378,12 @@ public class Main extends Application {
         root = new FXMLLoader(getClass().getResource("/FXML/LoadingScreen.fxml"));
         root.setController(loadingController);
         GridPane loadPane = root.load();
-        Scene loadingScene = new Scene(loadPane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        loadingScene = new Scene(loadPane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
 
         root = new FXMLLoader(getClass().getResource("/FXML/NavigationScreen.fxml"));
         root.setController(navigationController);
         GridPane navigationPane = root.load();
-        Scene navigationScene = new Scene(navigationPane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
+        navigationScene = new Scene(navigationPane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         navigationScene.getStylesheets().add(getClass().getResource("/BasicStyle.css").toExternalForm());
         messenger.setNavigationScene(navigationScene);
 
@@ -685,11 +666,28 @@ public class Main extends Application {
         Scene qualityHomeScene = new Scene(qualityHomePane, resolutionizer.setPaneWidth(), resolutionizer.setPaneHeight());
         messenger.setQualityHome(qualityHomeScene);
 
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(loadingScene);
-        primaryStage.show();
+        myStage.initStyle(StageStyle.UNDECORATED);
+        myStage.setScene(loadingScene);
+        myStage.show();
+    }
+    public static void main(String[] args) throws IOException
+    {
+        myArguments = args.clone();
 
+        System.out.println(args.length + " number of arguments.");
 
+        launch(args);
+    }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        //---------------------------------Creating the Tools for the graphs--------------------------------------------
+        rt = Runtime.getRuntime();
+        Tool dataBaseTool = new Tool();
+
+        MapTool mapTool = new MapTool();
+        GoalTool goalTool = new GoalTool();
+
+        setup(primaryStage);
 
         //---------------------------------Scheduled Service for All Updates--------------------------------------------
         ScheduledService buildVariables = new ScheduledService() {
@@ -706,13 +704,6 @@ public class Main extends Application {
                             heapSize = Runtime.getRuntime().totalMemory();
                             heapMaxSize = Runtime.getRuntime().maxMemory();
                             heapFreeSize = Runtime.getRuntime().freeMemory();
-
-//                            System.out.println("\n");
-//                            System.out.println("Current heap size: "+heapSize);
-//                            System.out.println("Max heap size: "+heapMaxSize);
-//                            System.out.println("Free heap size: "+heapFreeSize);
-
-                            //logger.info("Current heap size: "+heapSize);
 
                             buildMap = dataBaseTool.buildQuery();
 
@@ -1080,6 +1071,34 @@ public class Main extends Application {
                                 {
                                     threadArray[i].setUncaughtExceptionHandler(h);
                                 }
+                                if(myArguments.length >0)
+                                {
+                                    System.out.println(myArguments[0] + " argument supplied.");
+
+                                    argument = myArguments[0];
+
+                                    if(argument.equalsIgnoreCase("-r"))
+                                    {
+                                        timeLineController.setRetailTimeline();
+                                    }
+                                    if(argument.equalsIgnoreCase("-h"))
+                                    {
+                                        timeLineController.setPOSTimeline();
+                                    }
+                                    if(argument.equalsIgnoreCase("-o"))
+                                    {
+                                        timeLineController.setOpticTimeline();
+                                    }
+                                    if(argument.equalsIgnoreCase("-p"))
+                                    {
+                                        timeLineController.setPeriphTimeline();
+                                    }
+                                    if(argument.equalsIgnoreCase("-s"))
+                                    {
+                                        timeLineController.setServersTimeline();
+                                    }
+                                }
+
 
                             }
 
